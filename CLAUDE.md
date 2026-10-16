@@ -20,6 +20,10 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Chạy cả 7 ngày trong tuần. Đến giờ là cập nhật và đăng thẳng lên web, KHÔNG hỏi lại anh Hải (anh đã dặn ngày 16/10/2026).
 - Thứ Bảy, Chủ Nhật và ngày lễ (sàn Việt Nam nghỉ): không viết như thể có phiên giao dịch. Bản tin xoay sang tổng kết tuần của thị trường Việt Nam (giữ số đóng cửa phiên gần nhất, ghi rõ ngày), tin vĩ mô, NHNN, doanh nghiệp công bố cuối tuần, thế giới, crypto (chạy cả cuối tuần), và những điều cần để ý cho tuần tới. Lịch cần nhớ ưu tiên sự kiện tuần tới.
 
+## Bác sĩ danh mục (`site/bac-si-danh-muc/`)
+- Công cụ chạy hoàn toàn trên trình duyệt: danh mục và nhật ký lưu localStorage của người dùng, không gửi về máy chủ. Giá lấy từ `/api/stock` (`netlify/functions/stock.mjs`, VNDirect, trễ 15 phút). Ngành và nhóm so sánh ở `sectors.js`.
+- Định vị: không khuyến nghị bán/giữ; chỉ mô tả tình trạng, nguyên nhân (tách bằng chứng / giả thuyết / thiếu thông tin) và hệ quả từng phương án. Lịch tự động không sửa phần này.
+
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
 - Thuộc tính `data-q` trên các ô giá ở trang chủ, và máy lấy giá `netlify/functions/quotes.mjs` (/api/quotes: Yahoo và VNDirect; chỉ số Việt Nam cố ý trễ 15 phút). Số tĩnh trong HTML chỉ là số dự phòng khi máy lấy giá lỗi.
