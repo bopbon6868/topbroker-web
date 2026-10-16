@@ -21,8 +21,6 @@ TB.PRODUCTS = [
    desc:'Tin chuẩn và tin mạng xã hội tách bạch, theo sát động thái bơm hút tiền của Ngân hàng Nhà nước.', nav:'Radar'},
   {id:'giai-ma', name:'Giải mã cổ phiếu',          group:'Phân tích',       status:'live', href:'co-phieu/index.html', icon:'chart', tint:['#5AA5FF','#1F6FD1'], short:'Cổ phiếu',
    desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 11 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR.', nav:'Cổ phiếu'},
-  {id:'tin',     name:'Tin nhanh',                 group:'Tin tức & vĩ mô', status:'live', href:'tin/index.html', icon:'radar', tint:['#FF8A4C','#E4500A'], short:'Tin nhanh',
-   desc:'Tin ngắn trong ngày, ghi rõ nguồn.', nav:'Tin nhanh'},
   {id:'bai-viet',name:'Bài viết',                  group:'Phân tích',       status:'live', href:'bai-viet/index.html', icon:'book', tint:['#5AA5FF','#1F6FD1'], short:'Bài viết',
    desc:'Góc nhìn, phân tích và chuyện nghề đầu tư.', nav:'Bài viết'},
   {id:'giai-ngo',name:'Giải ngố chứng khoán',      group:'Học đầu tư',      status:'live', href:'giai-ngo/index.html', icon:'tea', tint:['#FFB24D','#F0760F'], short:'Giải ngố',

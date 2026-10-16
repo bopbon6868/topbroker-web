@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Dựng trang Tin nhanh và Bài viết từ nội dung soạn ở trang quản trị (topbroker.fun/admin).
+"""Dựng trang Bài viết từ nội dung soạn ở trang quản trị (topbroker.fun/admin).
 
-Nguồn:  site/content/tin/*.json       (mỗi tin một file)
-        site/content/bai-viet/*.json  (mỗi bài một file, phần thân viết bằng Markdown)
-Kết quả: site/tin/index.html, site/bai-viet/index.html, site/bai-viet/<slug>/index.html
-         và khối "Tin nhanh · Bài viết mới" trên trang chủ (giữa <!--CMS--> và <!--/CMS-->).
+Nguồn:  site/content/bai-viet/*.json  (mỗi bài một file, phần thân viết bằng Markdown)
+Kết quả: site/bai-viet/index.html, site/bai-viet/<slug>/index.html
+         và khối "Bài viết mới" trên trang chủ (giữa <!--CMS--> và <!--/CMS-->).
 
 Netlify tự chạy file này mỗi lần có thay đổi (xem netlify.toml). Không cần thư viện ngoài.
 """
@@ -145,12 +144,7 @@ def tin_item(d, r=''):
 
 
 def build():
-    tin, bai = load('tin'), load('bai-viet')
-
-    # Tin nhanh
-    page(os.path.join(ROOT, 'tin', 'index.html'), '../', 'tin', 'Tin nhanh', 'Tin nhanh thị trường do Top Broker cập nhật trong ngày.',
-         '<header class="ch"><span class="kick">Top Broker</span><h1>Tin nhanh</h1><p class="dek">Tin ngắn trong ngày, ghi rõ nguồn. Tin mạng xã hội luôn gắn nhãn "Chưa xác minh".</p></header>'
-         + ('<div class="tl">' + ''.join(tin_item(d) for d in tin) + '</div>' if tin else '<p class="empty">Chưa có tin nào.</p>'))
+    bai = load('bai-viet')
 
     # Bài viết
     cards = ''.join(
@@ -172,17 +166,12 @@ def build():
     hp = os.path.join(ROOT, 'index.html')
     s = open(hp, encoding='utf-8').read()
     if '<!--CMS-->' in s and '<!--/CMS-->' in s:
-        tl = ''.join(f'<li><span class="tag {TAGS.get(d.get("nhan") or "Tin chuẩn", "s")}">{esc(d.get("nhan") or "Tin chuẩn")}</span>'
-                     f'<a href="tin/index.html#{esc(d["_slug"])}">{esc(d.get("tieu_de"))}</a><time>{fmt_dt(d["_dt"])}</time></li>' for d in tin[:5])
         bl = ''.join(f'<li><a href="bai-viet/{esc(d["_slug"])}/index.html">{esc(d.get("tieu_de"))}</a><span>{esc(d.get("chuyen_muc") or "Bài viết")} · {fmt_dt(d["_dt"], False)}</span></li>' for d in bai[:4])
-        block = ('<!--CMS-->\n  <div class="cms">'
-                 '<section class="card cmsb" aria-labelledby="h-tn"><div class="sh"><h2 id="h-tn">Tin nhanh</h2><a href="tin/index.html">Tất cả →</a></div>'
-                 + (f'<ul class="tnl">{tl}</ul>' if tl else '<p class="note">Chưa có tin.</p>') + '</section>'
-                 '<section class="card cmsb" aria-labelledby="h-bv"><div class="sh"><h2 id="h-bv">Bài viết mới</h2><a href="bai-viet/index.html">Tất cả →</a></div>'
-                 + (f'<ul class="bvl">{bl}</ul>' if bl else '<p class="note">Chưa có bài viết.</p>') + '</section></div>\n  <!--/CMS-->')
+        block = ('<!--CMS-->\n  <section class="card cmsb" aria-labelledby="h-bv"><div class="sh"><h2 id="h-bv">Bài viết mới</h2><a href="bai-viet/index.html">Tất cả →</a></div>'
+                 + (f'<ul class="bvl">{bl}</ul>' if bl else '<p class="note">Chưa có bài viết.</p>') + '</section>\n  <!--/CMS-->')
         s = re.sub(r'<!--CMS-->.*?<!--/CMS-->', lambda m: block, s, flags=re.S)
         open(hp, 'w', encoding='utf-8').write(s)
-    print(f'Đã dựng {len(tin)} tin nhanh, {len(bai)} bài viết.')
+    print(f'Đã dựng {len(bai)} bài viết.')
 
 
 if __name__ == '__main__':

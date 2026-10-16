@@ -21,28 +21,6 @@ slug:
   clean_accents: true
 
 collections:
-  - name: tin
-    label: Tin nhanh
-    label_singular: Tin
-    description: Tin ngắn trong ngày. Hiện ở trang chủ (5 tin mới nhất) và trang Tin nhanh. Luôn ghi nguồn.
-    folder: site/content/tin
-    format: json
-    extension: json
-    create: true
-    slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}-{{slug}}'
-    sortable_fields: [ngay, tieu_de]
-    summary: '{{nhan}} · {{tieu_de}}'
-    fields:
-      - {label: Tiêu đề, name: tieu_de, widget: string}
-      - {label: Nhãn, name: nhan, widget: select, options: [Tin chuẩn, NHNN, Chưa xác minh], default: Tin chuẩn,
-         hint: 'Tin từ mạng xã hội, diễn đàn bắt buộc chọn "Chưa xác minh".'}
-      - {label: Thời gian, name: ngay, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD/MM/YYYY', time_format: 'HH:mm'}
-      - {label: Tóm tắt (1–2 câu, giải thích tác động), name: tom_tat, widget: text}
-      - {label: Tên nguồn, name: nguon, widget: string, required: false, hint: 'Ví dụ: VnExpress, HOSE, NHNN'}
-      - {label: Link nguồn, name: nguon_link, widget: string, required: false}
-      - {label: Nội dung thêm (không bắt buộc), name: body, widget: markdown, required: false}
-      - {label: Ẩn tin này, name: an, widget: boolean, default: false, required: false}
-
   - name: bai-viet
     label: Bài viết
     label_singular: Bài viết
