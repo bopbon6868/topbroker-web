@@ -23,6 +23,11 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 ## Bác sĩ danh mục (`site/bac-si-danh-muc/`)
 - Công cụ chạy hoàn toàn trên trình duyệt: danh mục và nhật ký lưu localStorage của người dùng, không gửi về máy chủ. Giá lấy từ `/api/stock` (`netlify/functions/stock.mjs`, VNDirect, trễ 15 phút). Ngành và nhóm so sánh ở `sectors.js`.
 - Định vị: không khuyến nghị bán/giữ; chỉ mô tả tình trạng, nguyên nhân (tách bằng chứng / giả thuyết / thiếu thông tin) và hệ quả từng phương án. Lịch tự động không sửa phần này.
+- **Nguyên tắc cho phần phân tích (anh Hải chốt ngày 17/10/2026, áp dụng cho Bác sĩ danh mục và mọi phần phân tích trên web):**
+  1. **Công thức tính toán** tạo ra kết quả số học (giá vốn, lãi lỗ, tỷ trọng, Rtt, kịch bản). Số phải tính ra được, kiểm lại được.
+  2. **Dữ liệu doanh nghiệp** tạo cơ sở để đánh giá luận điểm đầu tư (báo cáo tài chính, định giá, tin công bố). Thiếu dữ liệu thì nói là thiếu.
+  3. **AI diễn giải và nêu các câu hỏi cần kiểm tra**: giải thích con số nghĩa là gì, tách rõ đâu là bằng chứng, đâu là giả thuyết; không kết luận thay người dùng.
+  4. **Người dùng quyết định phương án cuối cùng.** Không gợi ý, không xếp hạng "phương án nên chọn".
 
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
