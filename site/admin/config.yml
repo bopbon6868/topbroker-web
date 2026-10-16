@@ -1,0 +1,65 @@
+# Trang quản trị Top Broker (Sveltia CMS) – topbroker.fun/admin
+# Mỗi lần bấm Lưu, nội dung được ghi vào kho GitHub; Netlify tự dựng lại web sau khoảng 1 phút.
+backend:
+  name: github
+  repo: bopbon6868/topbroker-web
+  branch: main
+  commit_messages:
+    create: 'Thêm {{collection}}: {{slug}}'
+    update: 'Sửa {{collection}}: {{slug}}'
+    delete: 'Xóa {{collection}}: {{slug}}'
+    uploadMedia: 'Tải ảnh {{path}}'
+    deleteMedia: 'Xóa ảnh {{path}}'
+
+site_url: https://topbroker.fun
+display_url: https://topbroker.fun
+logo_url: /assets/logo.svg
+media_folder: site/uploads
+public_folder: /uploads
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: tin
+    label: Tin nhanh
+    label_singular: Tin
+    description: Tin ngắn trong ngày. Hiện ở trang chủ (5 tin mới nhất) và trang Tin nhanh. Luôn ghi nguồn.
+    folder: site/content/tin
+    format: json
+    extension: json
+    create: true
+    slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}-{{slug}}'
+    sortable_fields: [ngay, tieu_de]
+    summary: '{{nhan}} · {{tieu_de}}'
+    fields:
+      - {label: Tiêu đề, name: tieu_de, widget: string}
+      - {label: Nhãn, name: nhan, widget: select, options: [Tin chuẩn, NHNN, Chưa xác minh], default: Tin chuẩn,
+         hint: 'Tin từ mạng xã hội, diễn đàn bắt buộc chọn "Chưa xác minh".'}
+      - {label: Thời gian, name: ngay, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD/MM/YYYY', time_format: 'HH:mm'}
+      - {label: Tóm tắt (1–2 câu, giải thích tác động), name: tom_tat, widget: text}
+      - {label: Tên nguồn, name: nguon, widget: string, required: false, hint: 'Ví dụ: VnExpress, HOSE, NHNN'}
+      - {label: Link nguồn, name: nguon_link, widget: string, required: false}
+      - {label: Nội dung thêm (không bắt buộc), name: body, widget: markdown, required: false}
+      - {label: Ẩn tin này, name: an, widget: boolean, default: false, required: false}
+
+  - name: bai-viet
+    label: Bài viết
+    label_singular: Bài viết
+    description: Bài phân tích, góc nhìn. Hiện ở trang chủ (4 bài mới nhất) và trang Bài viết.
+    folder: site/content/bai-viet
+    format: json
+    extension: json
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: [ngay, tieu_de]
+    summary: '{{chuyen_muc}} · {{tieu_de}}'
+    fields:
+      - {label: Tiêu đề, name: tieu_de, widget: string}
+      - {label: Chuyên mục, name: chuyen_muc, widget: select, options: [Góc nhìn, Phân tích, Vĩ mô, Chuyện nghề, Hỏi đáp], default: Góc nhìn}
+      - {label: Ngày đăng, name: ngay, widget: datetime, format: 'YYYY-MM-DDTHH:mm', date_format: 'DD/MM/YYYY', time_format: 'HH:mm'}
+      - {label: Mô tả ngắn, name: mo_ta, widget: text, required: false}
+      - {label: Ảnh minh họa, name: anh, widget: image, required: false}
+      - {label: Tác giả, name: tac_gia, widget: string, default: Top Broker, required: false}
+      - {label: Nội dung, name: body, widget: markdown}
+      - {label: Ẩn bài này, name: an, widget: boolean, default: false, required: false}

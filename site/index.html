@@ -113,6 +113,15 @@ p{margin:0}
 .cal li{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:14px 16px;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.45}
 .cal .d{font-family:var(--tb-mono);font-size:14px;font-weight:600;color:var(--clay)}
 
+/* 4b · tin nhanh + bài viết (từ trang quản trị) */
+.cms{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
+.cmsb{padding:22px 24px 12px}
+.tnl,.bvl{list-style:none;margin:0;padding:0}
+.tnl li,.bvl li{padding:11px 0;border-top:1px solid #efebe3;display:flex;flex-direction:column;gap:2px}
+.tnl li:first-child,.bvl li:first-child{border-top:0;padding-top:2px}
+.tnl a,.bvl a{text-decoration:none;font-weight:700;font-size:16px;line-height:1.4}
+.tnl a:hover,.bvl a:hover{text-decoration:underline}
+.tnl time,.bvl span{font-family:var(--tb-mono);font-size:12px;color:var(--tb-ink3)}
 @media (max-width:1100px){.trio{grid-template-columns:1fr 1fr}.news{grid-column:1/-1}}
 @media (max-width:1000px){
   .hero{grid-template-columns:1fr;gap:24px}
@@ -135,6 +144,7 @@ p{margin:0}
   .q .v{font-size:17px}
   .feat h3{font-size:25px}
   .trio{grid-template-columns:1fr}
+  .cms{grid-template-columns:1fr}
   .news{padding:18px 18px 8px}
 }
 </style>
@@ -275,6 +285,11 @@ p{margin:0}
       <span class="play">Chơi ngay ↗</span>
     </a>
   </div>
+
+  <!-- 4b · TIN NHANH + BÀI VIẾT: tự dựng từ trang quản trị, KHÔNG sửa tay khối giữa hai dấu CMS -->
+  <!--CMS-->
+  <div class="cms"><section class="card cmsb" aria-labelledby="h-tn"><div class="sh"><h2 id="h-tn">Tin nhanh</h2><a href="tin/index.html">Tất cả →</a></div><ul class="tnl"><li><span class="tag x">Chưa xác minh</span><a href="tin/index.html#20261016-1140-qns-tin-don">Diễn đàn đồn &quot;QNS lãi trước thuế quý 3 tăng 19%&quot;</a><time>Thứ Sáu, 16/10/2026 · 11:40</time></li><li><span class="tag s">Tin chuẩn</span><a href="tin/index.html#20261016-1130-khoi-ngoai-ban-rong">VN-Index giữ mốc 1.700, khối ngoại bán ròng 662 tỷ trên HOSE</a><time>Thứ Sáu, 16/10/2026 · 11:35</time></li><li><span class="tag nh">NHNN</span><a href="tin/index.html#20261016-1130-nhnn-hut-rong">NHNN hút ròng 847 tỷ, lãi qua đêm hạ về 3,10%</a><time>Thứ Sáu, 16/10/2026 · 11:30</time></li></ul></section><section class="card cmsb" aria-labelledby="h-bv"><div class="sh"><h2 id="h-bv">Bài viết mới</h2><a href="bai-viet/index.html">Tất cả →</a></div><ul class="bvl"><li><a href="bai-viet/doc-top-broker-the-nao-cho-nhanh/index.html">Đọc Top Broker thế nào cho nhanh</a><span>Hỏi đáp · Thứ Sáu, 16/10/2026</span></li></ul></section></div>
+  <!--/CMS-->
 
   <!-- 5 · LỊCH -->
   <section class="cal" aria-labelledby="h-c">
