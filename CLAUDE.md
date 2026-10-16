@@ -21,7 +21,7 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Thứ Bảy, Chủ Nhật và ngày lễ (sàn Việt Nam nghỉ): không viết như thể có phiên giao dịch. Bản tin xoay sang tổng kết tuần của thị trường Việt Nam (giữ số đóng cửa phiên gần nhất, ghi rõ ngày), tin vĩ mô, NHNN, doanh nghiệp công bố cuối tuần, thế giới, crypto (chạy cả cuối tuần), và những điều cần để ý cho tuần tới. Lịch cần nhớ ưu tiên sự kiện tuần tới.
 
 ## Bác sĩ danh mục (`site/bac-si-danh-muc/`)
-- Công cụ chạy hoàn toàn trên trình duyệt: danh mục và nhật ký lưu localStorage của người dùng, không gửi về máy chủ. Giá lấy từ `/api/stock` (`netlify/functions/stock.mjs`, VNDirect, trễ 15 phút). Ngành và nhóm so sánh ở `sectors.js`.
+- Công cụ chạy trên trình duyệt: danh mục và nhật ký lưu localStorage của người dùng. Chỉ khi người dùng bấm "Nhờ AI diễn giải", bản tóm tắt số liệu mới được gửi tới `/api/ai` (`netlify/functions/ai.mjs`, Claude qua Netlify AI Gateway, tốn credit Netlify; không lưu dữ liệu). Giá lấy từ `/api/stock` (`netlify/functions/stock.mjs`, VNDirect, trễ 15 phút). Ngành và nhóm so sánh ở `sectors.js`.
 - Định vị: không khuyến nghị bán/giữ; chỉ mô tả tình trạng, nguyên nhân (tách bằng chứng / giả thuyết / thiếu thông tin) và hệ quả từng phương án. Lịch tự động không sửa phần này.
 - **Nguyên tắc cho phần phân tích (anh Hải chốt ngày 17/10/2026, áp dụng cho Bác sĩ danh mục và mọi phần phân tích trên web):**
   1. **Công thức tính toán** tạo ra kết quả số học (giá vốn, lãi lỗ, tỷ trọng, Rtt, kịch bản). Số phải tính ra được, kiểm lại được.
@@ -32,4 +32,5 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
 - Thuộc tính `data-q` trên các ô giá ở trang chủ, và máy lấy giá `netlify/functions/quotes.mjs` (/api/quotes: Yahoo và VNDirect; chỉ số Việt Nam cố ý trễ 15 phút). Số tĩnh trong HTML chỉ là số dự phòng khi máy lấy giá lỗi.
+- Thẻ `a.doc` (lối vào Bác sĩ danh mục) trên trang chủ.
 - Dòng ngày giờ `class="date"` (`data-clock`) trên trang chủ: tự chạy theo giờ thực.

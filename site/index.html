@@ -82,6 +82,16 @@ p{margin:0}
 .chips a:hover{box-shadow:inset 0 0 0 1.5px var(--tb-ink)}
 .chips .more{margin:0 0 0 auto;background:none;padding:0;font-family:var(--tb-sans);font-size:15px}
 
+/* 3b · bác sĩ danh mục */
+.doc{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:center;background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:24px 28px;text-decoration:none;color:var(--tb-ink)}
+.doc svg{width:100%;height:auto;display:block}
+.doc .dt{display:flex;flex-direction:column;gap:6px}
+.doc .e{font-size:12px;font-weight:700;letter-spacing:.08em;color:#128A63}
+.doc b{font-family:var(--serif);font-size:30px;line-height:1.15}
+.doc .d{font-size:16px;color:#34333a;max-width:60ch}
+.doc .go{align-self:flex-start;margin-top:6px;background:#128A63;color:#fff;font-weight:700;font-size:15px;padding:11px 20px;border-radius:999px}
+.doc:hover .go{background:#0d6e4f}
+@media (max-width:640px){.doc{grid-template-columns:1fr;gap:14px;padding:20px}.doc svg{max-width:240px}.doc b{font-size:25px}}
 /* 4 · tin, giải ngố, webgame */
 .trio{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:24px}
 .news{padding:22px 24px 12px}
@@ -229,6 +239,26 @@ p{margin:0}
       </div>
     </article>
   </section>
+
+  <!-- 3b · BÁC SĨ DANH MỤC: lối vào công cụ, KHÔNG sửa theo lịch cập nhật tin -->
+  <a class="doc" href="bac-si-danh-muc/index.html">
+    <svg viewBox="0 0 220 150" role="img" aria-label="Tranh minh họa: ống nghe bác sĩ đặt lên biểu đồ danh mục">
+      <rect width="220" height="150" rx="20" fill="#E6F5EE"/>
+      <rect x="22" y="26" width="120" height="96" rx="10" fill="#fff" stroke="#2C2A30" stroke-width="3"/>
+      <path d="M34 98 l20 -16 l18 8 l22 -30 l20 12 l16 -20" fill="none" stroke="#E05A47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M34 108 h96" stroke="#C9CED6" stroke-width="4" stroke-linecap="round"/>
+      <path d="M168 24 v36 a22 22 0 0 1 -44 0 v-8" fill="none" stroke="#2C2A30" stroke-width="5" stroke-linecap="round"/>
+      <path d="M196 24 v36 a22 22 0 0 1 -28 21" fill="none" stroke="#2C2A30" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="146" cy="98" r="14" fill="#2FA866" stroke="#2C2A30" stroke-width="4"/>
+      <path d="M140 98 h12 M146 92 v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span class="dt">
+      <span class="e">CÔNG CỤ MỚI · QUẢN LÝ TÀI SẢN</span>
+      <b>Bác sĩ danh mục</b>
+      <span class="d">Danh mục đang lỗ, không biết nên làm gì? Khám sức khỏe, tìm nguyên nhân, mô phỏng hệ quả từng phương án, có AI diễn giải. Không hô mua bán: bạn tự quyết.</span>
+      <span class="go">Khám danh mục ngay →</span>
+    </span>
+  </a>
 
   <!-- 4 · TIN · GIẢI NGỐ · WEBGAME -->
   <div class="trio">

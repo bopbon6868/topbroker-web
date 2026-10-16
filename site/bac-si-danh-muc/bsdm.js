@@ -45,7 +45,7 @@ function vnDate(iso) { var p = String(iso).slice(0, 10).split('-'); return p.len
 
 /* ---------- trạng thái ---------- */
 var S = load(KEY, { rows: [], cash: '', debt: '', call: '40', force: '30', fee: '0,15', tax: '0,1' });
-var PX = {}, HIST = {}, PORT = null, LAST_SIM = null;
+var PX = {}, HIST = {}, PORT = null, LAST_SIM = null, LAST_CAUSE = null, LAST_SC = null;
 var SECTOR_NAMES = Object.keys(window.TB_SECTORS || {}).concat(['Khác']);
 
 /* ---------- NHẬP ---------- */
@@ -195,7 +195,7 @@ function exam() {
     if (!b.rows.length) { msg.textContent = 'Không lấy được giá cho: ' + miss.join(', ') + '. Kiểm tra lại mã.'; return; }
     msg.textContent = (b.errs.length ? b.errs.join(' · ') + ' · ' : '') + (miss.length ? 'Không lấy được giá: ' + miss.join(', ') + ' (đã bỏ qua).' : '');
     PORT = calc(b.rows, b.st);
-    renderExam();
+    renderExam(); aiReset('kham');
     $('#kham').hidden = false; $('#nguyen-nhan').hidden = false; $('#mo-phong').hidden = false; updateSteps();
     initSim(); runCause(); renderJournal();
     $('#kham').scrollIntoView({ behavior: 'smooth' });
@@ -302,6 +302,14 @@ function renderCause(n) {
     lines.push({ r: r, R: R.r, S: Sx, hasS: secRet[r.sector] != null, v0: v0, dv: dv });
   });
   var nav0 = V0 + st.cash - st.debt;
+  LAST_CAUSE = { tu_ngay: M.d0, den_ngay: M.d1, so_phien: n, vnindex_bien_dong: M.r, gia_tri_cp_dau_ky: V0, gia_tri_cp_thay_doi: dV,
+    dong_gop: { thi_truong_chung: cM, nhom_nganh: cS, rieng_doanh_nghiep: cO }, tien_mat: st.cash, du_no_margin: st.debt,
+    tai_san_rong_dau_ky: nav0, bien_dong_tai_san_rong: nav0 > 0 ? dV / nav0 : null,
+    nganh: Object.keys(secRet).map(function (k) { return { nganh: k, bien_dong: secRet[k], so_voi_thi_truong: secRet[k] - M.r, ma_dung_de_tinh: secUsed[k] }; }),
+    tung_ma: lines.map(function (l) { return { ma: l.r.sym, nganh: l.r.sector, bien_dong_ma: l.R, thi_truong_chung: M.r, nganh_so_thi_truong: l.S - M.r, rieng_doanh_nghiep: l.R - l.S, co_du_lieu_nganh: l.hasS, dong_gop_dong: l.dv, ty_trong_dau_ky: V0 ? l.v0 / V0 : 0 }; }),
+    ma_da_co_bai_giai_ma: (window.TB_DECODED || []).filter(function (m) { return P.rows.some(function (r) { return r.sym === m; }); }),
+    gia_dinh: 'Giữ đúng khối lượng hiện tại suốt kỳ; tiền mặt và dư nợ không đổi; nhóm ngành = trung bình các mã cùng ngành' };
+  aiReset('nguyen-nhan');
   $('#cause-note').textContent = 'Từ ' + vnDate(M.d0) + ' đến ' + vnDate(M.d1) + ' (' + n + ' phiên). Giả định bạn giữ đúng khối lượng hiện tại suốt kỳ; tiền mặt và dư nợ không đổi.' + (short ? ' Một số mã chưa đủ lịch sử cho cả kỳ.' : '');
 
   var parts = [['Thị trường chung', cM, '#3b5b8a'], ['Nhóm ngành', cS, '#b4470a'], ['Riêng doanh nghiệp', cO, '#6b4fb8']];
@@ -437,6 +445,8 @@ function sim() {
       }).join('') + '</tr>';
     }).join('') + '</tbody>';
 
+  LAST_SC = { shocks: shocks, scope: scope, sc: sc };
+  aiReset('mo-phong');
   var hold = opts[0], d20 = shocks.indexOf(-0.2), u20 = shocks.indexOf(0.2);
   $('#trade').innerHTML = opts.map(function (x, i) {
     var o = x.o, dn = sc[d20][i].nav - sc[d20][0].nav, up = sc[u20][i].nav - sc[u20][0].nav, t = [];
@@ -535,6 +545,65 @@ $('#jr-import').addEventListener('change', function (e) {
     if (Array.isArray(d.nhatKy)) { J = d.nhatKy; store(JKEY, J); renderJournal(); }
   }).catch(function () { alert('File không đúng định dạng bản sao lưu.'); });
 });
+
+/* ---------- AI diễn giải ---------- */
+var AI_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/ai';
+var AI_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z" fill="currentColor"/></svg>';
+var AI_TITLE = { 'kham': 'AI đọc kết quả khám', 'nguyen-nhan': 'AI đọc nguyên nhân', 'mo-phong': 'AI đọc các phương án' };
+function r3(x) { return typeof x === 'number' ? Math.round(x * 1000) / 1000 : x; }
+function aiPayload(step) {
+  if (!PORT) return null;
+  var st = PORT.st;
+  if (step === 'kham') {
+    var d = dropAllToCall(PORT.mv, st.cash, st.debt, st.call);
+    return { tong: { gia_tri_co_phieu: Math.round(PORT.mv), gia_von: Math.round(PORT.cv), lai_lo_chua_chot: Math.round(PORT.mv - PORT.cv), lai_lo_pct: r3((PORT.mv - PORT.cv) / PORT.cv),
+        tien_mat: st.cash, du_no_margin: st.debt, tai_san_rong: Math.round(PORT.nav), rtt: st.debt ? r3(PORT.rtt) : null, nguong_goi_ky_quy: st.call, nguong_giai_chap: st.force,
+        don_bay_lan: st.debt ? r3(PORT.lev) : 1, ca_danh_muc_giam_them_thi_cham_nguong_goi: d.t === 'x' ? r3(d.x) : d.t },
+      tung_ma: PORT.rows.map(function (r) { return { ma: r.sym, nganh: r.sector, khoi_luong: r.qty, gia_von: Math.round(r.cost), thi_gia: r.p, gia_tri: Math.round(r.mv), ty_trong: r3(r.w), lai_lo_pct: r3(r.plp), bien_dong_hom_nay: r.ref ? r3(r.p / r.ref - 1) : null }; }),
+      ty_trong_nganh: PORT.sectors, canh_bao_theo_cong_thuc: $$('#flags li').map(function (li) { return li.textContent; }),
+      ma_da_co_bai_giai_ma: (window.TB_DECODED || []).filter(function (m) { return PORT.rows.some(function (r) { return r.sym === m; }); }) };
+  }
+  if (step === 'nguyen-nhan') return LAST_CAUSE;
+  if (step === 'mo-phong' && LAST_SIM && LAST_SC) {
+    var r = PORT.rows.filter(function (x) { return x.sym === LAST_SIM.sym; })[0];
+    return { ma: LAST_SIM.sym, hien_tai: { khoi_luong: r.qty, gia_von: Math.round(r.cost), thi_gia: r.p, lai_lo_pct: r3(r.plp), ty_trong: r3(r.w), tai_san_rong: Math.round(PORT.nav), rtt: st.debt ? r3(PORT.rtt) : null, du_no: st.debt, tien_mat: st.cash },
+      gia_gia_dinh_giao_dich: LAST_SIM.px, phi_giao_dich: st.fee, thue_ban: st.tax, nguong_goi_ky_quy: st.call, nguong_giai_chap: st.force,
+      phuong_an: LAST_SIM.opts.map(function (x) { var o = x.o; return { ten: x.label, khoi_luong_con: o.q, gia_von_binh_quan: Math.round(o.cost), lai_lo_da_chot: Math.round(o.realized), lai_lo_chua_chot: Math.round(o.unreal), tien_mat: Math.round(o.cash), du_no: Math.round(o.debt), ty_trong_ma: r3(o.w), tai_san_rong: Math.round(o.nav), rtt: o.debt ? r3(o.rtt) : null, ma_giam_them_thi_cham_nguong_goi: o.dtc.t === 'x' ? r3(o.dtc.x) : o.dtc.t }; }),
+      kich_ban: { pham_vi: LAST_SC.scope === 'all' ? 'cả danh mục cùng biến động' : 'chỉ mã này biến động',
+        bang: LAST_SC.shocks.map(function (sh, i) { return { bien_dong_gia: sh, tai_san_rong_tung_phuong_an: LAST_SC.sc[i].map(function (v) { return Math.round(v.nav); }), rtt_tung_phuong_an: LAST_SC.sc[i].map(function (v) { return r3(v.rtt); }) }; }) } };
+  }
+  return null;
+}
+function aiReset(step) {
+  var box = $('#ai-' + step); if (!box) return;
+  box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn ai-go">Nhờ AI diễn giải</button></div>' +
+    '<p class="consent">AI chỉ đọc các con số đã tính ở trên, giải thích chúng nghĩa là gì và nêu những câu hỏi bạn nên tự kiểm tra. AI không khuyên mua, bán hay giữ. Bấm nút là đồng ý gửi bản tóm tắt số liệu (không có tên, số tài khoản) để AI đọc; dữ liệu không được lưu lại.</p>';
+}
+function li(a) { return a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join(''); }
+function aiRun(step) {
+  var box = $('#ai-' + step), data = aiPayload(step);
+  if (!data) { box.querySelector('.consent').textContent = 'Chưa có số liệu cho bước này. Hãy khám danh mục trước.'; return; }
+  var btn = box.querySelector('.ai-go'); btn.disabled = true;
+  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>AI đang đọc số liệu, mất khoảng 10–20 giây…'; box.appendChild(ld);
+  var old = box.querySelector('.err'); if (old) old.remove();
+  fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
+    .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Lỗi'); return j; }); })
+    .then(function (j) {
+      box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Diễn giải lại</button></div>' +
+        (j.tom_tat ? '<p class="tt">' + esc(j.tom_tat) + '</p>' : '') +
+        '<div class="ai-grid">' +
+        (j.dien_giai.length ? '<div class="a"><h4>Số liệu nói gì</h4><ul>' + li(j.dien_giai) + '</ul></div>' : '') +
+        (j.gia_thuyet.length ? '<div class="b"><h4>Mới là giả thuyết</h4><ul>' + li(j.gia_thuyet) + '</ul></div>' : '') +
+        (j.cau_hoi.length ? '<div class="c"><h4>Câu hỏi bạn nên tự kiểm tra</h4><ul>' + li(j.cau_hoi) + '</ul></div>' : '') +
+        (j.thieu_du_lieu.length ? '<div class="d"><h4>Còn thiếu dữ liệu</h4><ul>' + li(j.thieu_du_lieu) + '</ul></div>' : '') +
+        '</div><p class="meta">Diễn giải bởi AI (' + esc(j.model || 'Claude') + ') dựa trên số liệu đã tính. AI có thể sai; quyết định cuối cùng là của bạn.</p>';
+    })
+    .catch(function (e) {
+      ld.remove(); btn.disabled = false;
+      var er = document.createElement('p'); er.className = 'err'; er.textContent = (e.message || 'Chưa gọi được AI.') + ' Trong lúc chờ, bạn xem phần ghi chú tự động bên dưới.'; box.appendChild(er);
+    });
+}
+document.addEventListener('click', function (e) { var b = e.target.closest('.ai-go'); if (!b) return; aiRun(b.closest('.ai').getAttribute('data-step')); });
 
 /* ---------- thanh bước ---------- */
 function updateSteps() {

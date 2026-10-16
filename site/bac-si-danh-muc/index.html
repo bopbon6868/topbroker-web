@@ -26,7 +26,8 @@
       <li><b>3 · Mô phỏng phương án</b><span>Giữ, bán bớt, bán hết, mua thêm: hệ quả của từng đường.</span></li>
       <li><b>4 · Nhật ký quyết định</b><span>Ghi lại lựa chọn và giả định, xem lại điều gì đã xảy ra.</span></li>
     </ul>
-    <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker hay bất kỳ máy chủ nào. Trang chỉ gửi đi mã cổ phiếu để lấy giá.</p>
+    <p class="bs-princ"><b>Cách Bác sĩ làm việc:</b> công thức tính ra con số · dữ liệu doanh nghiệp làm cơ sở đánh giá · AI diễn giải và nêu câu hỏi cần kiểm tra · <b>bạn quyết định</b>.</p>
+    <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá. Khi bạn bấm <b>"Nhờ AI diễn giải"</b>, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại.</p>
   </header>
 
   <nav class="bs-steps" aria-label="Các bước">
@@ -79,6 +80,7 @@
       <div class="card bs-pad"><h3>Những điểm cần nhìn kỹ</h3><ul class="bs-flags" id="flags"></ul>
         <p class="note">Các mốc 25% một mã, 40% một ngành là mốc tham khảo phổ biến về rủi ro tập trung, không phải quy tắc bắt buộc.</p></div>
     </div>
+    <div class="card bs-pad ai" id="ai-kham" data-step="kham"></div>
   </section>
 
   <!-- 2 NGUYÊN NHÂN -->
@@ -89,11 +91,13 @@
     <div class="card bs-pad"><h3>Danh mục biến động vì đâu</h3><div id="decomp"></div></div>
     <div class="card bs-pad"><div class="tw"><table class="bs-t" id="cause-tbl"></table></div>
       <p class="note">Cách tách: <b>Thị trường chung</b> = biến động VN-Index. <b>Nhóm ngành</b> = ngành mạnh hay yếu hơn VN-Index (ngành tính bằng trung bình các mã cùng ngành). <b>Riêng doanh nghiệp</b> = mã mạnh hay yếu hơn ngành của nó. Ba phần cộng lại bằng biến động của mã.</p></div>
+    <div class="card bs-pad ai" id="ai-nguyen-nhan" data-step="nguyen-nhan"></div>
+    <details class="bs-auto"><summary>Ghi chú tự động theo công thức (không dùng AI)</summary>
     <div class="bs-three">
       <div class="card bs-pad ev ok"><h3>Có số liệu chứng minh</h3><ul id="ev-ok"></ul></div>
       <div class="card bs-pad ev hy"><h3>Mới là giả thuyết</h3><ul id="ev-hy"></ul></div>
       <div class="card bs-pad ev miss"><h3>Còn thiếu thông tin</h3><ul id="ev-miss"></ul></div>
-    </div>
+    </div></details>
   </section>
 
   <!-- 3 MÔ PHỎNG -->
@@ -113,7 +117,9 @@
     <div class="card bs-pad"><h3>Ngay sau khi thực hiện</h3><div class="tw"><table class="bs-t bs-cmp" id="sim-tbl"></table></div></div>
     <div class="card bs-pad"><h3>Tài sản ròng nếu giá đi tiếp</h3><div class="tw"><table class="bs-t bs-cmp" id="sc-tbl"></table></div>
       <p class="note">Ô in đậm là phương án có tài sản ròng cao nhất trong từng kịch bản. Thứ tự đổi theo kịch bản: đó chính là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div>
-    <div class="card bs-pad bs-trade"><h3>Mỗi phương án đổi lấy điều gì</h3><div id="trade"></div></div>
+    <div class="card bs-pad ai" id="ai-mo-phong" data-step="mo-phong"></div>
+    <details class="bs-auto"><summary>Ghi chú tự động theo công thức (không dùng AI)</summary>
+    <div class="card bs-pad bs-trade"><h3>Mỗi phương án đổi lấy điều gì</h3><div id="trade"></div></div></details>
   </section>
 
   <!-- 4 NHẬT KÝ -->
@@ -135,7 +141,7 @@
     <div><b>Muốn ngồi xem kỹ danh mục cùng người trong nghề?</b><span>Top Broker xem cùng bạn từng con số, giải thích từng phương án. Không hô mã, không ép giao dịch.</span></div>
     <a class="btn" href="https://zalo.me/0939660996" target="_blank" rel="noopener">Nhắn Zalo 0939 660 996</a>
   </aside>
-  <p class="bs-disc">Bác sĩ danh mục là công cụ tính toán và giáo dục: mô tả tình trạng, nguyên nhân và hệ quả theo số liệu bạn nhập và giá thị trường (trễ 15 phút, nguồn VNDirect). Đây không phải khuyến nghị mua bán chứng khoán. Quyết định và trách nhiệm thuộc về người đầu tư.</p>
+  <p class="bs-disc">Bác sĩ danh mục là công cụ tính toán và giáo dục. Phần AI diễn giải do mô hình Claude (Anthropic) viết dựa trên số liệu đã tính, có thể sai sót; hãy kiểm tra lại các câu hỏi được nêu. Công cụ mô tả tình trạng, nguyên nhân và hệ quả theo số liệu bạn nhập và giá thị trường (trễ 15 phút, nguồn VNDirect). Đây không phải khuyến nghị mua bán chứng khoán. Quyết định và trách nhiệm thuộc về người đầu tư.</p>
 </main>
 
 <div id="tb-foot"></div>

@@ -63,7 +63,7 @@ export default async (req, context) => {
     const r = await fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 1800, temperature: 0.3, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model: MODEL, max_tokens: 1800, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
