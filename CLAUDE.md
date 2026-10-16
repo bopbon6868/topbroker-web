@@ -40,5 +40,6 @@ Trang bài: `/bai-viet/<slug>/`. Ảnh (nếu có) đặt trong `site/uploads/`,
 ## Không đụng
 - Khối `<!--CMS-->…<!--/CMS-->` trên trang chủ (tự dựng).
 - Bản tin, bảng Thị trường, 3 tin cần biết, Lịch: lịch tự động 7:45 và 12:15 cập nhật.
-- Phần đồng hồ (`TB.now`/`tbTick`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
+- Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
+- Thuộc tính `data-q` trên các ô giá ở trang chủ, và máy lấy giá `netlify/functions/quotes.mjs` (/api/quotes: Yahoo + VNDirect, chỉ số Việt Nam cố ý trễ 15 phút). Số tĩnh trong HTML chỉ là số dự phòng khi máy lấy giá lỗi.
 - Trang quản trị `/admin` (Sveltia CMS) là lối phụ để anh Hải tự gõ, dùng chung các file JSON trên.
