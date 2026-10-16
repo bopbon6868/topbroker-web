@@ -17,6 +17,9 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 ## Lịch tự động
 - 7:45, 12:15, 15:45 và 20:45 hằng ngày (mốc 8:00, 12:30, 16:00, 21:00), chạy trên mây: sửa bản tin, bảng Thị trường, 3 tin cần biết, Lịch (`site/index.html`), Radar (`site/radar/index.html`) và `TB.UPDATED`/`TB.TICKER` trong `site/assets/site.js`.
 
+- Chạy cả 7 ngày trong tuần. Đến giờ là cập nhật và đăng thẳng lên web, KHÔNG hỏi lại anh Hải (anh đã dặn ngày 16/10/2026).
+- Thứ Bảy, Chủ Nhật và ngày lễ (sàn Việt Nam nghỉ): không viết như thể có phiên giao dịch. Bản tin xoay sang tổng kết tuần của thị trường Việt Nam (giữ số đóng cửa phiên gần nhất, ghi rõ ngày), tin vĩ mô, NHNN, doanh nghiệp công bố cuối tuần, thế giới, crypto (chạy cả cuối tuần), và những điều cần để ý cho tuần tới. Lịch cần nhớ ưu tiên sự kiện tuần tới.
+
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
 - Thuộc tính `data-q` trên các ô giá ở trang chủ, và máy lấy giá `netlify/functions/quotes.mjs` (/api/quotes: Yahoo và VNDirect; chỉ số Việt Nam cố ý trễ 15 phút). Số tĩnh trong HTML chỉ là số dự phòng khi máy lấy giá lỗi.
