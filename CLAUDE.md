@@ -7,6 +7,7 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Thư mục `site/` là toàn bộ website. Push lên `main` thì Netlify tự đưa lên topbroker.fun sau khoảng 1 phút.
 - Kiểm tra: WebFetch `https://topbroker-web.netlify.app/?v=<số ngẫu nhiên>` (WebFetch hay trả bản cũ của topbroker.fun).
 - Nếu push bị từ chối: `git pull --rebase` rồi push lại.
+- Các trang gọi `site.js`/`site.css` kèm `?v=<phiên bản>` để điện thoại không giữ bản cũ. Khi sửa lớn giao diện, đổi số phiên bản ở mọi file HTML (lịch cập nhật tin hằng ngày thì không cần).
 
 ## Quy tắc nội dung (bắt buộc)
 - Không khuyến nghị mua/bán. Chỉ mô tả, phân tích, giải thích tác động.
