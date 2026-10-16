@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bác sĩ danh mục · Top Broker</title>
+<meta name="description" content="Khám sức khỏe danh mục, tìm nguyên nhân danh mục suy yếu, mô phỏng các phương án xử lý và theo dõi quyết định. Không trả lời bán hay giữ: giúp bạn thấy rõ lựa chọn và hệ quả.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="bsdm.css">
+</head>
+<body data-root="../" data-page="bac-si">
+<div id="tb-top"></div>
+
+<main class="bs">
+  <header class="bs-hd">
+    <span class="kick">Quản lý tài sản · Công cụ</span>
+    <h1>Bác sĩ danh mục</h1>
+    <p class="dek">Không trả lời "nên bán hay nên giữ". Bác sĩ giúp bạn trả lời câu khó hơn: <b>với danh mục đang có, tình hình thực sự thế nào, mình có những lựa chọn nào, và mỗi lựa chọn dẫn đến đâu.</b></p>
+    <ul class="bs-four">
+      <li><b>1 · Khám sức khỏe</b><span>Giá vốn, thị giá, lãi lỗ, tỷ trọng, mức tập trung, margin.</span></li>
+      <li><b>2 · Tìm nguyên nhân</b><span>Do thị trường, do ngành, do doanh nghiệp hay do đòn bẩy.</span></li>
+      <li><b>3 · Mô phỏng phương án</b><span>Giữ, bán bớt, bán hết, mua thêm: hệ quả của từng đường.</span></li>
+      <li><b>4 · Nhật ký quyết định</b><span>Ghi lại lựa chọn và giả định, xem lại điều gì đã xảy ra.</span></li>
+    </ul>
+    <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker hay bất kỳ máy chủ nào. Trang chỉ gửi đi mã cổ phiếu để lấy giá.</p>
+  </header>
+
+  <nav class="bs-steps" aria-label="Các bước">
+    <a href="#nhap" data-step="nhap">Nhập danh mục</a>
+    <a href="#kham" data-step="kham">1 · Khám</a>
+    <a href="#nguyen-nhan" data-step="nguyen-nhan">2 · Nguyên nhân</a>
+    <a href="#mo-phong" data-step="mo-phong">3 · Mô phỏng</a>
+    <a href="#nhat-ky" data-step="nhat-ky">4 · Nhật ký</a>
+  </nav>
+
+  <!-- NHẬP -->
+  <section id="nhap" class="bs-sec">
+    <div class="bs-sh"><h2>Nhập danh mục</h2><span class="note">Giá vốn và thị giá tính bằng đồng/cổ phiếu</span></div>
+    <div class="card bs-pad">
+      <div class="tw"><table class="bs-in" id="in-tbl">
+        <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Ngành</th><th><span class="sr">Xóa</span></th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <div class="bs-row">
+        <button type="button" class="btn" id="add-row">+ Thêm mã</button>
+        <button type="button" class="btn ghost" id="paste-toggle">Dán nhanh từ app</button>
+        <button type="button" class="btn ghost" id="demo">Dùng danh mục mẫu</button>
+        <button type="button" class="btn ghost danger" id="clear">Xóa hết</button>
+      </div>
+      <div id="paste-box" class="bs-paste" hidden>
+        <label for="paste">Mỗi dòng một mã: <b>Mã, khối lượng, giá vốn</b>. Ví dụ: <code>HPG 2.000 28.500</code></label>
+        <textarea id="paste" rows="5" placeholder="HPG 2000 28500&#10;VPB 3000 22000"></textarea>
+        <button type="button" class="btn" id="paste-go">Đưa vào bảng</button>
+      </div>
+      <div class="bs-grid3">
+        <label>Tiền mặt trong tài khoản<input id="cash" inputmode="numeric" placeholder="0"></label>
+        <label>Dư nợ margin<input id="debt" inputmode="numeric" placeholder="0"></label>
+        <label>Ngưỡng gọi ký quỹ (Rtt, %)<input id="call" inputmode="decimal" value="40"></label>
+        <label>Ngưỡng bán giải chấp (%)<input id="force" inputmode="decimal" value="30"></label>
+        <label>Phí giao dịch (%)<input id="fee" inputmode="decimal" value="0,15"></label>
+        <label>Thuế bán (%)<input id="tax" inputmode="decimal" value="0,1"></label>
+      </div>
+      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản − Nợ) ÷ Tài sản.</p>
+      <div class="bs-row end"><span id="in-msg" class="note" aria-live="polite"></span><button type="button" class="btn big" id="run">Khám danh mục →</button></div>
+    </div>
+  </section>
+
+  <!-- 1 KHÁM -->
+  <section id="kham" class="bs-sec" hidden>
+    <div class="bs-sh"><h2>1 · Khám sức khỏe danh mục</h2><span class="note" id="px-time"></span></div>
+    <div class="bs-kpi" id="kpi"></div>
+    <div class="card bs-pad"><div class="tw"><table class="bs-t" id="hold-tbl"></table></div></div>
+    <div class="bs-two">
+      <div class="card bs-pad"><h3>Phân bổ theo ngành</h3><div id="sector-bars"></div></div>
+      <div class="card bs-pad"><h3>Những điểm cần nhìn kỹ</h3><ul class="bs-flags" id="flags"></ul>
+        <p class="note">Các mốc 25% một mã, 40% một ngành là mốc tham khảo phổ biến về rủi ro tập trung, không phải quy tắc bắt buộc.</p></div>
+    </div>
+  </section>
+
+  <!-- 2 NGUYÊN NHÂN -->
+  <section id="nguyen-nhan" class="bs-sec" hidden>
+    <div class="bs-sh"><h2>2 · Vì sao danh mục suy yếu</h2>
+      <label class="bs-per">Xét trong<select id="period"><option value="21">1 tháng</option><option value="63" selected>3 tháng</option><option value="126">6 tháng</option><option value="252">1 năm</option></select></label></div>
+    <p class="note" id="cause-note"></p>
+    <div class="card bs-pad"><h3>Danh mục biến động vì đâu</h3><div id="decomp"></div></div>
+    <div class="card bs-pad"><div class="tw"><table class="bs-t" id="cause-tbl"></table></div>
+      <p class="note">Cách tách: <b>Thị trường chung</b> = biến động VN-Index. <b>Nhóm ngành</b> = ngành mạnh hay yếu hơn VN-Index (ngành tính bằng trung bình các mã cùng ngành). <b>Riêng doanh nghiệp</b> = mã mạnh hay yếu hơn ngành của nó. Ba phần cộng lại bằng biến động của mã.</p></div>
+    <div class="bs-three">
+      <div class="card bs-pad ev ok"><h3>Có số liệu chứng minh</h3><ul id="ev-ok"></ul></div>
+      <div class="card bs-pad ev hy"><h3>Mới là giả thuyết</h3><ul id="ev-hy"></ul></div>
+      <div class="card bs-pad ev miss"><h3>Còn thiếu thông tin</h3><ul id="ev-miss"></ul></div>
+    </div>
+  </section>
+
+  <!-- 3 MÔ PHỎNG -->
+  <section id="mo-phong" class="bs-sec" hidden>
+    <div class="bs-sh"><h2>3 · Mô phỏng các phương án</h2><span class="note">Không có phương án nào luôn tốt nhất</span></div>
+    <div class="card bs-pad">
+      <div class="bs-grid3">
+        <label>Mã cần xử lý<select id="sim-sym"></select></label>
+        <label>Bán bớt (% số đang có)<input id="sim-sell" inputmode="decimal" value="30"></label>
+        <label>Mua thêm (cổ phiếu)<input id="sim-buy" inputmode="numeric"></label>
+        <label>Tiền mua thêm lấy từ<select id="sim-src"><option value="cash">Tiền mặt</option><option value="margin">Vay margin</option></select></label>
+        <label>Giá giả định khi giao dịch<input id="sim-px" inputmode="numeric"></label>
+        <label>Kịch bản giá<select id="sim-scope"><option value="one">Chỉ mã này biến động</option><option value="all">Cả danh mục biến động cùng tỷ lệ</option></select></label>
+      </div>
+      <p class="note" id="sim-now"></p>
+    </div>
+    <div class="card bs-pad"><h3>Ngay sau khi thực hiện</h3><div class="tw"><table class="bs-t bs-cmp" id="sim-tbl"></table></div></div>
+    <div class="card bs-pad"><h3>Tài sản ròng nếu giá đi tiếp</h3><div class="tw"><table class="bs-t bs-cmp" id="sc-tbl"></table></div>
+      <p class="note">Ô in đậm là phương án có tài sản ròng cao nhất trong từng kịch bản. Thứ tự đổi theo kịch bản: đó chính là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div>
+    <div class="card bs-pad bs-trade"><h3>Mỗi phương án đổi lấy điều gì</h3><div id="trade"></div></div>
+  </section>
+
+  <!-- 4 NHẬT KÝ -->
+  <section id="nhat-ky" class="bs-sec">
+    <div class="bs-sh"><h2>4 · Nhật ký quyết định</h2><span class="note">Đánh giá cách mình ra quyết định, không chỉ kết quả</span></div>
+    <form class="card bs-pad" id="jr-form" hidden>
+      <h3>Ghi quyết định: <span id="jr-title"></span></h3>
+      <label>Giả định ban đầu: vì sao chọn phương án này?<textarea id="jr-why" rows="3" placeholder="Ví dụ: Tin lợi nhuận quý 3 sẽ hồi phục; dòng tiền chưa quay lại nên giảm margin trước."></textarea></label>
+      <label>Điều kiện cần theo dõi (mỗi dòng một điều)<textarea id="jr-watch" rows="3" placeholder="VN-Index giữ trên 1.650 điểm&#10;KQKD quý 3 công bố trước 20/10&#10;Rtt không xuống dưới 50%"></textarea></label>
+      <label>Ngày xem lại<input type="date" id="jr-review"></label>
+      <div class="bs-row end"><button type="button" class="btn ghost" id="jr-cancel">Hủy</button><button type="submit" class="btn">Lưu vào nhật ký</button></div>
+    </form>
+    <div id="jr-list"></div>
+    <div class="bs-row"><button type="button" class="btn ghost" id="jr-export">Tải bản sao lưu</button><label class="btn ghost" for="jr-import">Khôi phục từ bản sao lưu</label><input type="file" id="jr-import" accept="application/json" hidden></div>
+    <p class="note">Nhật ký lưu trên trình duyệt của máy này. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất, nên thỉnh thoảng tải bản sao lưu.</p>
+  </section>
+
+  <aside class="bs-cta card">
+    <div><b>Muốn ngồi xem kỹ danh mục cùng người trong nghề?</b><span>Top Broker xem cùng bạn từng con số, giải thích từng phương án. Không hô mã, không ép giao dịch.</span></div>
+    <a class="btn" href="https://zalo.me/0939660996" target="_blank" rel="noopener">Nhắn Zalo 0939 660 996</a>
+  </aside>
+  <p class="bs-disc">Bác sĩ danh mục là công cụ tính toán và giáo dục: mô tả tình trạng, nguyên nhân và hệ quả theo số liệu bạn nhập và giá thị trường (trễ 15 phút, nguồn VNDirect). Đây không phải khuyến nghị mua bán chứng khoán. Quyết định và trách nhiệm thuộc về người đầu tư.</p>
+</main>
+
+<div id="tb-foot"></div>
+<script src="../assets/site.js"></script>
+<script src="sectors.js"></script>
+<script src="bsdm.js"></script>
+</body>
+</html>

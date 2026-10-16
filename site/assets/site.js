@@ -27,6 +27,8 @@ TB.PRODUCTS = [
    desc:'Đu đỉnh, úp bô, lùa gà… giải nghĩa từng từ, kèm câu dùng thật.', nav:null},
   {id:'loc',     name:'Bộ lọc dòng tiền',          group:'Phân tích',       status:'soon', href:'sap-ra-mat/index.html#loc', icon:'filter', short:'Bộ lọc',
    desc:'Lọc cổ phiếu theo khối lượng, MACD, RSI, ADX và các đường trung bình.', nav:'Bộ lọc'},
+  {id:'bac-si',  name:'Bác sĩ danh mục',           group:'Quản lý tài sản', status:'live', href:'bac-si-danh-muc/index.html', icon:'pulse', tint:['#3FC79A','#128A63'], short:'Bác sĩ',
+   desc:'Khám sức khỏe danh mục, tìm nguyên nhân, mô phỏng phương án xử lý và ghi nhật ký quyết định.', nav:'Bác sĩ danh mục'},
   {id:'danh-muc',name:'Sổ danh mục khách hàng',    group:'Quản lý tài sản', status:'soon', href:'sap-ra-mat/index.html#danh-muc', icon:'case', short:'Danh mục',
    desc:'Báo cáo danh mục hằng tuần, viết dễ hiểu, gửi khách qua Zalo.', nav:'Danh mục'},
   {id:'lich',    name:'Lịch sự kiện & cổ tức',     group:'Tin tức & vĩ mô', status:'soon', href:'sap-ra-mat/index.html#lich', icon:'cal', short:'Lịch',
@@ -74,6 +76,7 @@ TB.GLYPH = {
   tea:'<path d="M5 10h11v3a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 11h1.3a2.4 2.4 0 0 1 0 4.8H15.6M9 4.5v2.5M12.5 4.5v2.5"/>',
   book:'<path d="M5.5 5.5A2 2 0 0 1 7.5 4H18v13H7.5a2 2 0 0 0-2 2zM5.5 19a2 2 0 0 0 2 1.5H18"/>',
   game:'<rect x="3" y="7.5" width="18" height="10" rx="5"/><path d="M8.2 10.5v4M6.2 12.5h4"/><circle cx="15.3" cy="11.3" r=".9" fill="#fff"/><circle cx="17.3" cy="13.6" r=".9" fill="#fff"/>',
+  pulse:'<path d="M3 12.5h4l2.2-5 4 10 2.3-5H21"/>',
   filter:'<path d="M4 5.5h16l-6 7.3v5.7l-4-2v-3.7z"/>',
   "case":'<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/>',
   cal:'<rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10.5h16M9 3.5v4M15 3.5v4"/>'
