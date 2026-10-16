@@ -12,11 +12,11 @@ const VN = { VNINDEX: 'VNINDEX', VN30: 'VN30', HNX: 'HNX', UPCOM: 'UPCOM' };
 const VN_DELAY = 15 * 60; // giây
 const UA = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36', Accept: 'application/json' };
 
-async function getJSON(url, ms = 6000) {
+async function getJSON(url, ms = 6000, headers = UA) {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms);
   try {
-    const r = await fetch(url, { headers: UA, signal: ctl.signal });
+    const r = await fetch(url, { headers, signal: ctl.signal });
     if (!r.ok) throw new Error(r.status + ' ' + url);
     return await r.json();
   } finally { clearTimeout(t); }
@@ -45,9 +45,32 @@ function vnOpen(ts) {
   return wd >= 1 && wd <= 5 && ((mins >= 540 && mins <= 690) || (mins >= 780 && mins <= 885));
 }
 
+const VN_YAHOO = { VNINDEX: '^VNINDEX.VN', VN30: '^VN30.VN', HNX: '^HASTC.VN', UPCOM: '^UPCOM.VN' };
+const VND_HEADERS = { 'User-Agent': UA['User-Agent'], Accept: '*/*', Origin: 'https://dchart.vndirect.com.vn', Referer: 'https://dchart.vndirect.com.vn/' };
+
+// Dự phòng: Yahoo (nến 5 phút), vẫn cắt trễ 15 phút
+async function vnYahoo(key) {
+  const sym = VN_YAHOO[key];
+  const j = await getJSON(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=5m&range=1d`);
+  const r = j?.chart?.result?.[0];
+  const m = r?.meta, ts = r?.timestamp || [], cl = r?.indicators?.quote?.[0]?.close || [];
+  if (!m) throw new Error('no data ' + sym);
+  const now = Math.floor(Date.now() / 1000), cut = now - VN_DELAY;
+  let i = ts.length - 1;
+  while (i >= 0 && (ts[i] > cut || cl[i] == null)) i--;
+  const p = i >= 0 ? cl[i] : m.regularMarketPrice, t = i >= 0 ? ts[i] : m.regularMarketTime;
+  const prev = m.chartPreviousClose ?? m.previousClose;
+  return { p: Math.round(p * 100) / 100, c: prev ? (p / prev - 1) * 100 : null, t, open: vnOpen(now), delay: 15, src: 'yahoo' };
+}
+
 async function vndirect(sym) {
+  try { return await vndirectRaw(sym); }
+  catch (e) { return await vnYahoo(sym); }
+}
+
+async function vndirectRaw(sym) {
   const now = Math.floor(Date.now() / 1000);
-  const j = await getJSON(`https://dchart-api.vndirect.com.vn/dchart/history?resolution=1&symbol=${sym}&from=${now - 8 * 86400}&to=${now}`);
+  const j = await getJSON(`https://dchart-api.vndirect.com.vn/dchart/history?resolution=1&symbol=${sym}&from=${now - 8 * 86400}&to=${now}`, 6000, VND_HEADERS);
   if (j?.s !== 'ok' || !j.t?.length) throw new Error('no data ' + sym);
   const cut = now - VN_DELAY;
   let i = j.t.length - 1;
