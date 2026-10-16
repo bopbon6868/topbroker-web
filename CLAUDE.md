@@ -15,7 +15,7 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Giọng văn: dễ hiểu, gọn, dí dỏm kiểu miền Bắc, không bôi nhọ ai.
 
 ## Lịch tự động
-- 7:45 và 12:15 hằng ngày, chạy trên mây: sửa bản tin, bảng Thị trường, 3 tin cần biết, Lịch (`site/index.html`), Radar (`site/radar/index.html`) và `TB.UPDATED`/`TB.TICKER` trong `site/assets/site.js`.
+- 7:45, 12:15, 15:45 và 20:45 hằng ngày (mốc 8:00, 12:30, 16:00, 21:00), chạy trên mây: sửa bản tin, bảng Thị trường, 3 tin cần biết, Lịch (`site/index.html`), Radar (`site/radar/index.html`) và `TB.UPDATED`/`TB.TICKER` trong `site/assets/site.js`.
 
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
