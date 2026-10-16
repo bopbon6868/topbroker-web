@@ -114,13 +114,6 @@ p{margin:0}
 .cal li{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:14px 16px;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.45}
 .cal .d{font-family:var(--tb-mono);font-size:14px;font-weight:600;color:var(--clay)}
 
-/* 4b · bài viết mới (từ trang quản trị) */
-.cmsb{padding:22px 24px 12px}
-.bvl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));column-gap:28px}
-.bvl li{padding:11px 0;border-top:1px solid #efebe3;display:flex;flex-direction:column;gap:2px}
-.bvl a{text-decoration:none;font-weight:700;font-size:16px;line-height:1.4}
-.bvl a:hover{text-decoration:underline}
-.bvl span{font-family:var(--tb-mono);font-size:12px;color:var(--tb-ink3)}
 @media (max-width:1100px){.trio{grid-template-columns:1fr 1fr}.news{grid-column:1/-1}}
 @media (max-width:1000px){
   .hero{grid-template-columns:1fr;gap:24px}
@@ -284,11 +277,6 @@ p{margin:0}
       <span class="play">Chơi ngay ↗</span>
     </a>
   </div>
-
-  <!-- 4b · BÀI VIẾT MỚI: tự dựng từ trang quản trị, KHÔNG sửa tay khối giữa hai dấu CMS -->
-  <!--CMS-->
-  <section class="card cmsb" aria-labelledby="h-bv"><div class="sh"><h2 id="h-bv">Bài viết mới</h2><a href="bai-viet/index.html">Tất cả →</a></div><ul class="bvl"><li><a href="bai-viet/doc-top-broker-the-nao-cho-nhanh/index.html">Đọc Top Broker thế nào cho nhanh</a><span>Hỏi đáp · Thứ Sáu, 16/10/2026</span></li></ul></section>
-  <!--/CMS-->
 
   <!-- 5 · LỊCH -->
   <section class="cal" aria-labelledby="h-c">
