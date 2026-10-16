@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Giải mã MWG · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Giải mã cổ phiếu MWG (Đầu tư Thế Giới Di Động) bằng tiếng dễ hiểu và những gì ít người nói cho bạn.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+/* Layout: phong cách iOS – thanh điều hướng mờ, tiêu đề lớn, danh sách bo góc kiểu "inset grouped", một cột rộng tối đa 720px */
+:root{ color-scheme:light;
+  --bg:#f6f4ef; --card:#fffdf9; --fill:#efece5; --label:#24232a; --label2:#55545c; --label3:#b9b6ae;
+  --sep:#e4e0d7; --blue:#1f6fd1; --green:#1e9e52; --red:#d93a2f; --orange:#c97a06; --indigo:#5a52c4; --teal:#1e93a8;
+  --green-t:rgba(52,199,89,.14); --red-t:rgba(255,59,48,.12); --orange-t:rgba(255,149,0,.15); --blue-t:rgba(0,122,255,.12);
+  --bar:rgba(246,244,239,.88);
+  --sf:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --sfd:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font-family:var(--sf);font-size:17px;line-height:1.65;letter-spacing:0;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bar)}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--sfd);margin:0;text-wrap:balance}
+p{margin:0}
+.tn{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .dn{color:var(--red)} .wn{color:var(--orange)} .mute{color:var(--label2)}
+
+/* nav bar */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+.navIn{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{color:var(--blue);font-size:17px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.navT{font-weight:600;font-size:17px;opacity:0;transition:opacity .2s}
+.nav.scrolled .navT{opacity:1}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.seg button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* large title + price */
+.hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:.01em;line-height:1.15}
+.sub{color:var(--label2);font-size:15px}
+.priceLine{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:6px}
+.price{font-family:var(--sfd);font-size:40px;font-weight:700;letter-spacing:-.02em}
+.chip{font-size:13px;font-weight:600;padding:4px 9px;border-radius:7px}
+.chip.r{background:var(--red-t);color:var(--red)} .chip.g{background:var(--green-t);color:var(--green)} .chip.o{background:var(--orange-t);color:var(--orange)} .chip.b{background:var(--blue-t);color:var(--blue)}
+
+/* section header iOS */
+section{display:flex;flex-direction:column;gap:8px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-inline:4px}
+.sh h2{font-size:22px;font-weight:700;letter-spacing:.005em}
+.foot-note{font-size:14.5px;color:var(--label2);padding-inline:16px;line-height:1.6}
+.badge{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo);background:color-mix(in srgb,var(--indigo) 14%,transparent);padding:3px 7px;border-radius:5px;white-space:nowrap}
+
+/* grouped list */
+.group{background:var(--card);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;position:relative}
+.row + .row::before{content:"";position:absolute;top:0;right:0;left:56px;border-top:.5px solid var(--sep)}
+.group.flat .row + .row::before{left:16px}
+.ic{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:700}
+.ic.g{background:var(--green)} .ic.o{background:var(--orange)} .ic.r{background:var(--red)} .ic.b{background:var(--blue)} .ic.i{background:var(--indigo)} .ic.t{background:var(--teal)}
+.rc{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rt{font-size:17px;font-weight:600;line-height:1.3}
+.rs{font-size:16px;color:var(--label2);line-height:1.6}
+.rv{font-size:15px;color:var(--label2);white-space:nowrap;align-self:center}
+.verdict{padding:14px 16px;font-size:16px;line-height:1.65;border-top:.5px solid var(--sep);background:color-mix(in srgb,var(--blue) 5%,var(--card))}
+
+/* widgets grid */
+.widgets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.w{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.w .k{font-size:13px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+.w .v{font-family:var(--sfd);font-size:28px;font-weight:700;letter-spacing:-.01em}
+.w .t{font-size:16px;line-height:1.6}
+
+/* chart card */
+.cc{background:var(--card);border-radius:16px;padding:14px 12px 10px;overflow-x:auto}
+.cc svg{display:block;width:100%;height:auto;min-width:500px}
+.cc.small svg{min-width:320px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--label2);padding:4px 6px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* table */
+.tw{background:var(--card);border-radius:12px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:.5px solid var(--sep)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td.wrap{white-space:normal;text-align:left;min-width:220px;color:var(--label2);font-size:15px}
+tr.hl td{background:color-mix(in srgb,var(--blue) 7%,transparent);font-weight:600}
+
+/* insight cards */
+.ins{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ch h3{font-size:17px;font-weight:600;line-height:1.3}
+.card p{font-size:16px;line-height:1.65}
+.ev{font-size:15px;line-height:1.55;color:var(--label2);background:var(--fill);border-radius:9px;padding:9px 11px}
+
+/* news */
+.news .row{align-items:flex-start}
+.dt{font-size:13px;color:var(--label2)}
+
+/* levels */
+.lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lv .w .v{font-size:22px}
+.teaser{background:var(--card);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center}
+.teaser button{margin-left:auto;font:600 15px var(--sf);color:#fff;background:var(--blue);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+
+.x,.xs{display:none}
+body.pro .x{display:revert} body.pro .xs{display:flex} body.pro .p,body.pro .teaser{display:none}
+.legal{font-size:12px;color:var(--label2);line-height:1.5;padding-inline:4px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:560px){.widgets,.lv{grid-template-columns:1fr}.hero h1{font-size:30px}.price{font-size:34px}.navT{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}.nav{z-index:15}.back a{color:var(--blue);text-decoration:none}.back span{color:var(--label2)}@media (max-width:560px){.back span{display:none}}</style>
+</head>
+<body data-root="../../" data-page="giai-ma">
+<div id="tb-top"></div>
+<nav class="nav" id="nav"><div class="navIn">
+  <span class="back"><a href="../index.html">Cổ phiếu</a> <span>/ MWG</span></span>
+  <span class="navT">MWG · 72.800</span>
+  <div class="seg" role="group" aria-label="Chế độ đọc"><button id="mPlain" aria-pressed="true">Dễ hiểu</button><button id="mPro" aria-pressed="false">Chuyên gia</button></div>
+</div></nav>
+<div class="wrap">
+  <header class="hero">
+    <span class="sub">HOSE · Bán lẻ · Chốt phiên 15/10/2026</span>
+    <h1>MWG</h1>
+    <span class="sub" style="font-size:17px;color:var(--label)">Đầu tư Thế Giới Di Động</span>
+    <div class="priceLine"><span class="price tn">72.800</span><span class="chip r tn">−11,3% · 1 năm</span><span class="chip g tn">+3,6% · 1 tháng</span><span class="chip r tn">−20% từ đỉnh 60 tuần</span></div>
+    <p class="sub p">Chuỗi bán lẻ lớn nhất Việt Nam: Thế Giới Di Động, Điện Máy Xanh, Bách Hóa Xanh. Hơn 67.000 nhân viên, nhà đầu tư nước ngoài nắm 49%.</p><p class="sub x tn">Vốn hóa 107.431 tỷ · EPS 6.679 · BVPS 24.178 · Doanh thu 4 quý 177.386 tỷ · Room NN 49,0%</p>
+  </header>
+  <section><div class="sh"><h2>Tóm tắt 30 giây</h2></div><div class="group"><div class="row"><span class="ic g">↑</span><div class="rc"><span class="rt">Làm ăn</span><span class="rs">Lãi quý 2/2026 đạt 3.303 tỷ, gấp đôi cùng kỳ. ROE 30%.</span></div></div><div class="row"><span class="ic o">!</span><div class="rc"><span class="rt">Ít người nói</span><span class="rs">Lãi gấp đôi mà giá vẫn thấp hơn năm ngoái. Người nội bộ vừa bán, nợ phải trả tăng nhanh.</span></div></div><div class="row"><span class="ic g">$</span><div class="rc"><span class="rt">Định giá</span><span class="rs">P/E 10,9: rẻ hơn nhiều so với mức 19 lần năm 2025.</span></div></div><div class="row"><span class="ic o">~</span><div class="rc"><span class="rt">Xu hướng giá</span><span class="rs">Đi ngang quanh 70.000–77.000. ADX 18, chưa có xu hướng rõ.</span></div></div><p class="verdict p"><b>Nói gọn:</b> Kinh doanh đang tốt lên rất nhanh và cổ phiếu không còn đắt. Nhưng thị trường vẫn dè dặt: người nội bộ bán ra và tiền nợ nhà cung cấp, ngân hàng tăng nhanh trong quý 2.</p><p class="verdict x"><b>Kết luận:</b> Q2/26: doanh thu +29,6% YoY, LN hoạt động +111%, LNST +100%. Biên gộp 22,2%, biên hoạt động 7,2%, ROE 30,2%. P/E 10,9× (Q2/25: 19,1×). Nợ phải trả/VCSH 1,3× → 1,9× trong một quý. Kỹ thuật: ADX 18, MACD sát signal.</p></div></section>
+  <section><div class="sh"><h2>Giá này đắt hay rẻ?</h2></div><div class="widgets"><div class="w"><span class="k">P/E</span><span class="v tn">10,9×</span><p class="t p">Bỏ 100 đồng mua MWG, công ty làm ra khoảng <b>9 đồng lãi</b> mỗi năm cho phần của anh.</p><p class="t x">Lợi suất lợi nhuận ≈ 9,2%. EPS 4 quý 6.679đ, tăng 20% so với quý trước.</p></div><div class="w"><span class="k">P/B</span><span class="v tn">3,0×</span><p class="t p">Trả 3 đồng cho 1 đồng vốn thật. Cao, nhưng hợp lý với công ty có ROE 30%.</p><p class="t x">BVPS 24.178.</p></div><div class="w"><span class="k">ROE</span><span class="v tn">30,2%</span><p class="t p">Cứ 100 đồng vốn của chủ, công ty đẻ ra 30 đồng lãi mỗi năm. Rất tốt.</p><p class="t x">Tăng đều từ 16,0% (Q1/25) lên 30,2% (Q2/26).</p></div><div class="w"><span class="k">Cổ tức</span><span class="v tn">2,3%</span><p class="t p">Mỗi năm nhận khoảng 2,3 đồng tiền mặt trên 100 đồng bỏ ra.</p><p class="t x">Vừa chốt danh sách trả cổ tức đợt 2 năm 2025 bằng tiền (25/9).</p></div></div></section>
+  <section><div class="sh"><h2>Làm ăn ra sao?</h2></div>
+    <div class="cc"><svg id="profitChart" viewBox="0 0 640 250" role="img" aria-label="Lợi nhuận theo quý"></svg><div class="legend"><span><i style="background:var(--blue)"></i>Lãi ròng cổ đông công ty mẹ (tỷ đồng)</span><span><i style="background:var(--red)"></i>Quý lỗ</span></div></div>
+    <div class="tw"><table><thead><tr><th>Quý</th><th>Doanh thu</th><th>Biên gộp</th><th>LN hoạt động</th><th>Lãi vay</th><th>Lãi ròng</th></tr></thead><tbody><tr><td>Q2/2026</td><td>48.751</td><td>22,2%</td><td>3.511</td><td>436</td><td>3.303</td></tr><tr><td>Q1/2026</td><td>46.462</td><td>20,9%</td><td>2.902</td><td>415</td><td>2.714</td></tr><tr><td>Q4/2025</td><td>42.321</td><td>20,7%</td><td>2.040</td><td>385</td><td>2.069</td></tr><tr><td>Q3/2025</td><td>39.853</td><td>18,8%</td><td>1.788</td><td>388</td><td>1.771</td></tr></tbody></table></div><p class="foot-note">Đơn vị: tỷ đồng. Nguồn: BCTC hợp nhất qua TCBS.</p></section>
+  <section><div class="sh"><h2>Những gì ít người nói cho bạn</h2></div><p class="foot-note" style="padding-inline:4px">Phần lớn báo cáo chỉ kể điểm sáng. Đây là những chỗ nên soi kỹ trước khi xuống tiền.</p><div class="ins"><article class="card"><div class="ch"><h3>Người nội bộ bán ra</h3><span class="chip o">Theo dõi</span></div><p class="p">Ông Đoàn Văn Hiểu Em, người nội bộ, đã bán xong 1 triệu cổ phiếu (25/9). Hai tổ chức có liên quan đến người nội bộ cũng báo cáo giao dịch trong tháng 9–10. Nên mở văn bản trên HOSE xem họ mua hay bán.</p><p class="x">Bán 1 triệu cp (25/9). Công ty TNHH Tư vấn Đầu tư Thế Giới Bán Lẻ và Quỹ từ thiện Mái Ấm Thế Giới Di Động: thông báo (23/9), báo cáo kết quả (6/10).</p></article><article class="card"><div class="ch"><h3>Nợ phải trả tăng nhanh trong một quý</h3><span class="chip o">Theo dõi</span></div><p class="p">Trong quý 2, nợ phải trả tăng từ 1,3 lên 1,9 lần vốn chủ. Phần vốn của chủ trong tổng tài sản giảm từ 42% xuống 34%. Có thể do trả cổ tức và nợ nhà cung cấp tăng theo doanh thu, nhưng cần theo dõi.</p><p class="x">Nợ phải trả/VCSH 1,3× (Q1/26) → 1,9× (Q2/26). VCSH/tổng tài sản 42% → 34%. Vay/EBITDA 2,5×, EBIT/lãi vay 8×.</p></article><article class="card"><div class="ch"><h3>Biên lợi nhuận vẫn mỏng</h3><span class="chip o">Theo dõi</span></div><p class="p">Cứ 100 đồng doanh thu, công ty còn khoảng 7 đồng lãi. Đã tốt hơn nhiều so với 4 đồng năm ngoái, nhưng chỉ cần một cuộc chiến giảm giá là lãi bị bào mòn nhanh.</p><p class="x">Biên hoạt động 7,2% (Q2/25: 4,4%); biên ròng 6,8%.</p></article><article class="card"><div class="ch"><h3>Lãi gấp đôi mà giá chưa theo</h3><span class="chip b">Bối cảnh</span></div><p class="p">Lãi quý 2 gấp đôi cùng kỳ, nhưng giá cổ phiếu vẫn thấp hơn khoảng 11% so với một năm trước. Thị trường đang nghi ngờ tốc độ tăng này có giữ được lâu hay không.</p><p class="x">P/E giảm từ 19,1× (Q2/25) xuống 10,9×. Nước ngoài nắm 49%.</p></article><article class="card"><div class="ch"><h3>Dòng tiền kinh doanh dương</h3><span class="chip b">Bối cảnh</span></div><p class="p">Quý 2 công ty thu về 2.382 tỷ tiền mặt từ kinh doanh, nghĩa là lãi trên giấy có đi kèm tiền thật.</p><p class="x">CFO Q2/26 +2.382 tỷ; Q1/26 +1.193 tỷ; Q4/25 −612 tỷ. Số ngày tồn kho ổn định quanh 70 ngày.</p></article></div></section>
+  <!--AX--><style>
+.ax .axk{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo)}
+.ax .card p{font-size:16px;line-height:1.7}
+.ax .axt{border-left:4px solid var(--indigo)}
+.ax ol.axd{list-style:none;margin:0;padding:0;counter-reset:d;display:flex;flex-direction:column}
+.ax ol.axd li{counter-increment:d;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:12px 0;border-top:1px solid var(--sep)}
+.ax ol.axd li:first-child{border-top:0;padding-top:4px}
+.ax ol.axd li::before{content:counter(d);grid-row:span 3;width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ax ol.axd b{font-size:16px}
+.ax ol.axd span{font-size:15px;color:var(--label2);line-height:1.55}
+.ax ol.axd em{font-style:normal;font-size:14.5px;line-height:1.55;background:var(--fill);border-radius:8px;padding:7px 10px;margin-top:4px}
+.ax ul.axs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ax ul.axs li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 10px;padding:10px 0;border-top:1px solid var(--sep)}
+.ax ul.axs li:first-child{border-top:0;padding-top:2px}
+.ax ul.axs li i{grid-row:span 2;font-style:normal;font-weight:800;font-size:15px;line-height:1.4}
+.ax ul.axs li.g i{color:var(--green)} .ax ul.axs li.r i{color:var(--red)}
+.ax ul.axs b{font-size:15.5px} .ax ul.axs span{font-size:15px;color:var(--label2);line-height:1.5}
+.ax .axc{background:color-mix(in srgb,var(--indigo) 7%,var(--card))}
+.ax table td:first-child{font-weight:600}
+</style><section class="xs ax"><div class="sh"><h2>Góc nhìn nhà phân tích</h2><span class="badge">Chuyên gia</span></div><article class="card axt"><span class="axk">Luận điểm cốt lõi</span><p>MWG đã chuyển từ câu chuyện mở rộng sang câu chuyện <b>tăng biên lợi nhuận</b>: biên hoạt động tăng từ 4,4% lên 7,2% trong 5 quý. Ở quy mô doanh thu gần 180.000 tỷ, mỗi điểm % biên là hơn 1.400 tỷ lợi nhuận. Câu hỏi then chốt là biên 7% là mức mới bền vững hay là đỉnh, khi đối thủ và sức mua có thể kéo biên về lại.</p></article><article class="card"><span class="axk">Giá hiện tại đang ngầm định gì?</span><p>P/E 10,9× tương đương lợi suất lợi nhuận 9,2%. Với lợi suất đòi hỏi 12%, thị trường ngầm định lợi nhuận dài hạn chỉ tăng khoảng <b>2,8%/năm</b>, ngay sau một năm lãi tăng gấp đôi. Thị trường đang định giá MWG như thể biên lợi nhuận đã ở đỉnh và sẽ quay đầu.</p><div class="ev">E/P = 1 / 10,9 ≈ 9,2%; g ngầm định ≈ 12% − 9,2% ≈ 2,8%. EV/EBITDA 11,1×.</div></article><article class="card"><span class="axk">Các biến số quyết định và độ nhạy</span><ol class="axd"><li><b>Biên hoạt động</b><span>Từ 4,4% (Q2/25) lên 7,2% (Q2/26).</span><em>Mỗi 1 điểm % trên doanh thu ~180.000 tỷ ≈ 1.800 tỷ EBIT ≈ 1.600 tỷ LNST ≈ 16% lãi.</em></li><li><b>Tăng trưởng doanh thu</b><span>+29,6% cùng kỳ trong quý 2.</span><em>Doanh thu tăng giúp chi phí cố định (thuê mặt bằng, nhân sự) được dàn mỏng, nên lợi nhuận tăng nhanh hơn doanh thu.</em></li><li><b>Vốn lưu động và nợ phải trả</b><span>Nợ phải trả/vốn chủ tăng từ 1,3 lên 1,9 trong một quý.</span><em>Nếu do chiếm dụng vốn nhà cung cấp theo mùa thì lành mạnh; nếu do vay ngắn hạn tăng thì chi phí lãi sẽ tăng.</em></li><li><b>Hành vi người nội bộ</b><span>Có người nội bộ bán ra khi P/E đã về 11 lần.</span><em>Người trong cuộc bán khi lợi nhuận tăng gấp đôi là thông tin cần cân nhắc, dù có thể vì lý do cá nhân.</em></li></ol></article><span class="axk" style="padding:8px 4px 0">Ma trận kịch bản: P/E, P/B ở giá hiện tại</span><div class="tw"><table><thead><tr><th>Kịch bản</th><th>Giả định 12 tháng tới</th><th>LNST</th><th>EPS</th><th>P/E ở 72.800</th></tr></thead><tbody><tr><td>Tiêu cực</td><td>Biên về 5%, doanh thu 200.000 tỷ</td><td>~9.000 tỷ</td><td>~6.100</td><td>~11,9×</td></tr><tr><td>Cơ sở</td><td>Biên 6,5%, doanh thu 205.000 tỷ</td><td>~12.000 tỷ</td><td>~8.130</td><td>~9,0×</td></tr><tr><td>Tích cực</td><td>Biên 7,5%, doanh thu 215.000 tỷ</td><td>~14.500 tỷ</td><td>~9.830</td><td>~7,4×</td></tr></tbody></table></div><p class="foot-note">LNST ước tính ≈ 90% EBIT (quý 2/2026 là 95%). EPS tính trên 1.475,7 triệu cp. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.</p><article class="card"><span class="axk">Tín hiệu xác nhận hoặc bác bỏ luận điểm</span><ul class="axs"><li class="g"><i>↑</i><b>Biên gộp quý 3 giữ trên 21%</b><span>Biên tăng là cấu trúc, không phải mùa vụ.</span></li><li class="r"><i>↓</i><b>Người nội bộ tiếp tục bán</b><span>Người hiểu doanh nghiệp nhất đang chốt lời; cần thận trọng.</span></li><li class="r"><i>↓</i><b>Vay ngắn hạn tăng nhanh hơn doanh thu</b><span>Tăng trưởng đang được tài trợ bằng nợ.</span></li><li class="g"><i>↑</i><b>Tiền từ kinh doanh 4 quý lớn hơn LNST</b><span>Lợi nhuận chất lượng cao, có tiền thật đi kèm.</span></li></ul></article><article class="card axc"><span class="axk">Điều thị trường có thể đang bỏ sót</span><p>Thị trường đang đặt cược rằng biên lợi nhuận sẽ quay đầu. Ngành bán lẻ thường có lợi thế quy mô: khi hệ thống cửa hàng đã tối ưu, chi phí cố định trên mỗi đồng doanh thu tiếp tục giảm. Nếu biên 6,5–7% là mức mới, P/E thực tế dưới 10 lần. Nhưng việc người nội bộ bán ra đúng lúc này là tín hiệu không nên bỏ qua: họ có thể thấy điều số liệu chưa cho thấy.</p></article></section><!--/AX-->
+  <div class="teaser"><span class="ic i">+</span><div class="rc"><span class="rt">Bảng phân tích chuyên sâu</span><span class="rs">Chỉ số chi tiết, cấu trúc tài chính và ghi chú của chuyên viên.</span></div><button id="goPro">Xem</button></div>
+  <div id="pro" style="display:contents"><section class="xs"><div class="sh"><h2>Hiệu quả theo quý</h2><span class="badge">Chuyên gia</span></div><div class="tw"><table><thead><tr><th>Quý</th><th>Biên gộp</th><th>Biên hoạt động</th><th>ROE</th><th>Ngày tồn kho</th><th>Ngày phải thu</th><th>Nợ phải trả/VCSH</th></tr></thead><tbody><tr><td>Q2/26</td><td>22,2%</td><td>7,2%</td><td>30,2%</td><td>71</td><td>56</td><td>1,9×</td></tr><tr><td>Q1/26</td><td>20,9%</td><td>6,2%</td><td>25,4%</td><td>69</td><td>59</td><td>1,3×</td></tr><tr><td>Q4/25</td><td>20,7%</td><td>4,8%</td><td>23,3%</td><td>72</td><td>58</td><td>1,5×</td></tr><tr><td>Q3/25</td><td>18,8%</td><td>4,5%</td><td>19,9%</td><td>70</td><td>67</td><td>1,5×</td></tr><tr><td>Q2/25</td><td>20,1%</td><td>4,4%</td><td>17,4%</td><td>71</td><td>66</td><td>1,7×</td></tr><tr><td>Q1/25</td><td>19,9%</td><td>4,4%</td><td>16,0%</td><td>71</td><td>66</td><td>1,4×</td></tr></tbody></table></div><p class="foot-note">Biên gộp và biên hoạt động cùng tăng đều, chứng tỏ lãi tăng nhờ bán hàng hiệu quả hơn chứ không phải nhờ khoản bất thường. Điểm cần theo dõi là đòn bẩy tăng vọt trong quý 2.</p></section></div>
+  <section><div class="sh"><h2>Giá đang đi về đâu?</h2></div>
+    <div class="cc"><svg id="priceChart" viewBox="0 0 640 270" role="img" aria-label="Giá tuần 60 tuần gần nhất"></svg><div class="legend"><span><i style="background:var(--label)"></i>Giá đóng cửa tuần</span><span><i style="background:var(--orange)"></i>MA 10 tuần (~2,5 tháng)</span><span><i style="background:var(--red)"></i>MA 40 tuần (~10 tháng)</span></div></div>
+    <div class="group"><div class="row"><span class="ic b">MA</span><div class="rc"><span class="rt">Đường trung bình</span><span class="rs p">Giá nằm sát đường 1 tháng (73.104). Chưa rõ hướng.</span><span class="rs x">Giá 72.800 < MA20 ngày 73.104.</span></div></div><div class="row"><span class="ic t">R</span><div class="rc"><span class="rt">RSI 48</span><span class="rs p">Trung tính, không nóng không lạnh.</span><span class="rs x">RSI 48,3; giảm từ 68,5 ngày 7/10.</span></div></div><div class="row"><span class="ic i">M</span><div class="rc"><span class="rt">MACD</span><span class="rs p">Đà tăng đầu tháng 10 đã gần hết.</span><span class="rs x">MACD 0,726 vừa sát signal 0,710; histogram giảm từ 0,58 xuống 0,016.</span></div></div><div class="row"><span class="ic o">A</span><div class="rc"><span class="rt">ADX 18</span><span class="rs p">Không có xu hướng rõ, giá đi ngang.</span><span class="rs x">ADX 18,4 (<20).</span></div></div><div class="row"><span class="ic g">W</span><div class="rc"><span class="rt">Đường tuần</span><span class="rs p">Đường trung bình 10 tuần ở 72.687, 40 tuần ở 77.521.</span><span class="rs x">MA10 tuần 72.687 · MA40 tuần 77.521 · Giá/MA40 −6,1%.</span></div></div></div></section>
+  <section><div class="sh"><h2>Tin chuẩn</h2></div><div class="group news"><div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">06/10 · HOSE</span><span class="rt">Tổ chức liên quan đến người nội bộ báo cáo kết quả giao dịch</span><span class="rs">Thế Giới Bán Lẻ và Quỹ Mái Ấm Thế Giới Di Động.</span></div></div><div class="row"><span class="ic o">!</span><div class="rc"><span class="dt">25/09 · HOSE</span><span class="rt">Ông Đoàn Văn Hiểu Em bán thành công 1 triệu cổ phiếu</span><span class="rs">Người nội bộ bán ra.</span></div></div><div class="row"><span class="ic g">$</span><div class="rc"><span class="dt">25/09 · HOSE</span><span class="rt">Thông báo ngày đăng ký cuối cùng trả cổ tức đợt 2 năm 2025 bằng tiền</span><span class="rs">Cổ đông nhận tiền mặt.</span></div></div></div></section>
+  <section><div class="sh"><h2>Các mốc giá cần nhớ</h2></div><div class="lv"><div class="w"><span class="k dn">Cảnh giác</span><span class="v dn tn">< 68.000</span><p class="t">Thủng đáy tháng 9. Có thể quay về vùng 61.000–66.000 của tháng 7.</p></div><div class="w"><span class="k wn">Tích lũy</span><span class="v wn tn">68.000–77.000</span><p class="t">Giá đi ngang trong vùng này từ tháng 8.</p></div><div class="w"><span class="k up">Tích cực</span><span class="v up tn">> 77.300</span><p class="t">Vượt đỉnh đầu tháng 10. Mốc xa hơn là 84.000–90.000.</p></div></div><p class="foot-note p">Thống nhất trước với nhau: giá về đâu thì làm gì. Khi thị trường biến động, mình làm theo kế hoạch chứ không theo cảm xúc.</p></section>
+  <footer class="legal"><p><b>Nguồn:</b> TCBS (BCTC, giá điều chỉnh, chỉ báo kỹ thuật, tin HOSE và báo chí). Dữ liệu chốt phiên 15/10/2026.</p><p>Công cụ tham khảo và giáo dục, không phải khuyến nghị mua hay bán. Các số "khoảng", "ước tính" được suy ra từ BCTC và cần đối chiếu thuyết minh gốc.</p></footer>
+</div>
+<div id="tb-foot"></div>
+<script src="../../assets/site.js"></script>
+<script>
+var S={"weekly": [68311, 75793, 72878, 76764, 76376, 75696, 74821, 79680, 82109, 83275, 80263, 74335, 79097, 77736, 77639, 82692, 76279, 80554, 84538, 85898, 83566, 84538, 83372, 90271, 85898, 90174, 90465, 80360, 79680, 77445, 78708, 77056, 79194, 84441, 81137, 81623, 82206, 79680, 77153, 74141, 75793, 74238, 75793, 76279, 76667, 74432, 74530, 66076, 68977, 70063, 71444, 74010, 74010, 72135, 70359, 71543, 72431, 72234, 75900, 72800], "profit": {"labels": ["Q1/25", "Q2/25", "Q3/25", "Q4/25", "Q1/26", "Q2/26"], "vals": [1546, 1648, 1771, 2069, 2714, 3303], "unit": "Lãi ròng cổ đông công ty mẹ (tỷ đồng)"}, "price": 72800};
+(function(){
+  var b=document.body,p=document.getElementById('mPlain'),x=document.getElementById('mPro');
+  function set(pro){b.classList.toggle('pro',pro);p.setAttribute('aria-pressed',String(!pro));x.setAttribute('aria-pressed',String(pro));try{localStorage.setItem('tbMode',pro?'pro':'plain')}catch(e){}}
+  p.onclick=function(){set(false)};x.onclick=function(){set(true)};
+  document.getElementById('goPro').onclick=function(){set(true);var f=document.querySelector('#pro .xs');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})};
+  try{if(localStorage.getItem('tbMode')==='pro')set(true)}catch(e){}
+  var nav=document.getElementById('nav');addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>90)},{passive:true});
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,par){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(par)par.appendChild(e);return e}
+  function tx(par,x,y,s,o){o=o||{};var e=el('text',{x:x,y:y,'font-size':o.fs||11,fill:o.fill||'var(--label2)','text-anchor':o.anchor||'middle','font-weight':o.fw||400,'font-family':'Be Vietnam Pro,-apple-system,sans-serif'},par);e.textContent=s;return e}
+  function f(n){return Math.round(n).toLocaleString('vi-VN')}
+  function nice(m){var p=Math.pow(10,Math.floor(Math.log10(m))),r=m/p;return (r<=1?1:r<=2?2:r<=2.5?2.5:r<=5?5:10)*p}
+  // lợi nhuận
+  (function(){var L=S.profit.labels,v=S.profit.vals,s=document.getElementById('profitChart'),W=640,H=250,l=56,r=8,T=20,B=30;
+    var mx=Math.max.apply(null,v.concat([0])),mn=Math.min.apply(null,v.concat([0])),st=nice((mx-mn)/4||1),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:y(g),y2:y(g),stroke:g===0?'var(--label3)':'var(--sep)'},s);tx(s,l-8,y(g)+4,f(g),{anchor:'end'})}
+    var bw=(W-l-r)/L.length;L.forEach(function(lb,i){var x0=l+i*bw+bw*.22,w=bw*.56,a=v[i],top=y(Math.max(a,0)),h=Math.abs(y(a)-y(0));
+      el('rect',{x:x0,y:top,width:w,height:Math.max(h,1.5),rx:5,fill:a<0?'var(--red)':'var(--blue)','fill-opacity':i===L.length-1?1:.6},s);
+      tx(s,x0+w/2,a<0?y(a)+14:y(a)-6,f(a),{fill:'var(--label)',fs:10.5,fw:600});tx(s,x0+w/2,H-10,lb)})})();
+  // giá tuần
+  (function(){var c=S.weekly,N=c.length,s=document.getElementById('priceChart'),W=640,H=270,l=58,r=60,T=14,B=26;
+    function ma(n){return c.map(function(_,i){if(i<n-1)return null;var t=0;for(var j=i-n+1;j<=i;j++)t+=c[j];return t/n})}
+    var m10=ma(10),m40=ma(40),mx=Math.max.apply(null,c),mn=Math.min.apply(null,c),st=nice((mx-mn)/4),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var X=function(i){return l+(W-l-r)*i/(N-1)},Y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:Y(g),y2:Y(g),stroke:'var(--sep)'},s);tx(s,l-8,Y(g)+4,f(g),{anchor:'end'})}
+    [[0,'8/2025'],[20,'1/2026'],[39,'6/2026'],[N-1,'10/2026']].forEach(function(t){tx(s,X(t[0]),H-6,t[1])});
+    var up=c[N-1]>=c[0],col=up?'var(--green)':'var(--red)';
+    var g2=el('linearGradient',{id:'pg',x1:0,x2:0,y1:0,y2:1},el('defs',{},s));el('stop',{offset:'0','stop-color':col,'stop-opacity':.18},g2);el('stop',{offset:'1','stop-color':col,'stop-opacity':0},g2);
+    var d=c.map(function(a,i){return(i?'L':'M')+X(i).toFixed(1)+' '+Y(a).toFixed(1)}).join('');
+    el('path',{d:d+'L'+X(N-1)+' '+Y(lo)+'L'+X(0)+' '+Y(lo)+'Z',fill:'url(#pg)'},s);
+    function line(a,cl,w){var dd='';a.forEach(function(v,i){if(v==null)return;dd+=(dd?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});el('path',{d:dd,fill:'none',stroke:cl,'stroke-width':w,'stroke-linejoin':'round'},s)}
+    line(m40,'var(--red)',1.5);line(m10,'var(--orange)',1.5);line(c,'var(--label)',2);
+    el('circle',{cx:X(N-1),cy:Y(c[N-1]),r:4.5,fill:'var(--label)',stroke:'var(--card)','stroke-width':2},s);
+    tx(s,X(N-1)+8,Y(c[N-1])+4,f(S.price),{anchor:'start',fill:'var(--label)',fw:700,fs:11.5})})();
+})();
+</script>
+</body>
+</html>

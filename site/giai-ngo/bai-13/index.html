@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Margin: vay tiền mua cổ phiếu, con dao hai lưỡi · Giải ngố chứng khoán</title>
+<meta name="description" content="Bài 13 Giải ngố chứng khoán: Margin: vay tiền mua cổ phiếu, con dao hai lưỡi">
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,600;0,700;1,500&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/giai-ngo.css">
+</head>
+<body data-root="../../" data-page="giai-ngo">
+<div id="tb-top"></div>
+<nav class="gn-crumb" aria-label="Đường dẫn"><a href="../../index.html">Trang chủ</a> / <a href="../index.html">Giải ngố chứng khoán</a> / Bài 13</nav>
+<article class="gn-art">
+  <header style="display:flex;flex-direction:column;gap:14px">
+    <div class="gn-meta"><b>Chặng 4 · Giữ tiền</b><span>Bài 13/20</span><span>Đọc 5 phút</span></div>
+    <h1>Margin: vay tiền mua cổ phiếu, con dao hai lưỡi</h1>
+    <div class="gn-q"><small>Câu hỏi ngố</small>"Công ty chứng khoán cho vay thêm, lãi gấp đôi chứ sao. Vay margin có gì sai?"</div>
+  </header>
+  <section class="gn-sec"><h2>Trà đá</h2><h3>Margin là con dao hai lưỡi, mà lưỡi quay về phía mình sắc hơn</h3><p>Margin là vay tiền công ty chứng khoán để mua thêm cổ phiếu, dùng chính cổ phiếu đó làm tài sản đảm bảo. Cổ phiếu tăng thì lãi nhân lên. Cổ phiếu giảm thì lỗ cũng nhân lên, cộng thêm tiền lãi vay tính theo từng ngày, kể cả ngày bạn đang khóc.</p><p>Khi giá giảm đến một ngưỡng, công ty chứng khoán sẽ <b>gọi ký quỹ</b> (call margin): yêu cầu nộp thêm tiền hoặc bán bớt cổ phiếu. Không nộp kịp thì họ tự bán, gọi là <b>bán giải chấp</b>, giá nào cũng bán. Những phiên cả bảng xanh lơ thường là phiên giải chấp hàng loạt: người này bán, kéo giá xuống, khiến người kia bị gọi ký quỹ, lại bán tiếp. Hiệu ứng domino, mà bạn là một quân cờ.</p><p>Người dùng margin thường không thua vì chọn sai cổ phiếu. Họ thua vì <b>không có thời gian chờ</b>. Người không vay có thể gồng qua cơn bão. Người vay thì bị bão quét trước khi trời kịp tạnh.</p></section>
+  <section class="gn-sec"><h2>Ví dụ bằng tiền thật</h2><h3>100 triệu vốn, vay thêm 100 triệu</h3><div class="gn-vd"><table><tr class="wide"><td>Tổng mua</td><td class="t">200 triệu cổ phiếu</td></tr><tr class="wide"><td>Cổ phiếu tăng 20%</td><td class="t">Tài sản 240 triệu, trả nợ 100 → còn 140, lãi 40% vốn</td></tr><tr class="wide"><td>Cổ phiếu giảm 20%</td><td class="t">Tài sản 160 triệu, trả nợ 100 → còn 60, lỗ 40% vốn</td></tr><tr class="wide"><td>Cổ phiếu giảm 30%</td><td class="t">Tài sản 140 triệu, trả nợ 100 → còn 40, lỗ 60% vốn</td></tr><tr class="wide"><td>Cổ phiếu giảm 50%</td><td class="t">Tài sản 100 triệu, trả nợ 100 → còn 0, mất trắng</td></tr></table></div><p>Chưa tính tiền lãi vay. Giả sử lãi margin 12%/năm, vay 100 triệu trong 3 tháng mất khoảng 3 triệu tiền lãi, dù giá lên hay xuống. Lãi suất cụ thể tùy công ty chứng khoán và có thể thay đổi.</p><p class="gn-aside">Bảng trên giả định không bị bán giải chấp giữa chừng. Thực tế, khi giảm khoảng 20–30%, bạn có thể đã bị gọi ký quỹ và bị bán ở giá thấp nhất.</p></section>
+  <section class="gn-sec"><h2>Cầm tay chỉ việc</h2><h3>Máy tính margin</h3><p>Chọn tỷ lệ vay và mức giá biến động để thấy vốn của bạn thay đổi ra sao.</p><div class="gn-calc" data-calc="margin">
+  <label for="cM"><span>Vay thêm so với vốn tự có <output id="oM">100%</output></span><input type="range" id="cM" min="0" max="150" step="10" value="100"></label>
+  <label for="cP"><span>Giá cổ phiếu thay đổi <output id="oP">−20%</output></span><input type="range" id="cP" min="-60" max="60" step="5" value="-20"></label>
+  <div class="gn-out"><div><small>Vốn 100 triệu còn</small><b id="rE">—</b></div><div><small>Lời / lỗ trên vốn</small><b id="rP">—</b></div><div><small>Không vay thì</small><b id="rU">—</b></div></div>
+  <p class="note">Chưa tính lãi vay, phí và khả năng bị bán giải chấp giữa chừng.</p></div><div class="gn-check" data-msgs='[&quot;4/4: Bạn dùng margin như dùng dao bếp: cẩn thận và đúng việc.&quot;, &quot;Bạn đang dùng margin với vài kẽ hở. Bão không cần nhiều kẽ hở.&quot;, &quot;Tạm thời đừng dùng margin. Không vay thì không bao giờ bị gọi lúc nửa đêm.&quot;]'><label><input type="checkbox" id="c13_0"> Tôi hiểu ngưỡng gọi ký quỹ và ngưỡng bán giải chấp của công ty mình.</label><label><input type="checkbox" id="c13_1"> Tôi có sẵn tiền dự phòng để nộp thêm khi bị gọi ký quỹ.</label><label><input type="checkbox" id="c13_2"> Khoản vay không quá một nửa vốn tự có.</label><label><input type="checkbox" id="c13_3"> Tôi chỉ vay cho mã có thanh khoản tốt, không vay mua penny.</label><div class="gn-res" aria-live="polite">Chưa đánh dấu câu nào.</div></div></section>
+  <section class="gn-sec"><h2>Bẫy hay gặp</h2><ul class="gn-trap"><li><b>"Vay ít thôi, không sao."</b>Vay ít mà mua mã biến động mạnh thì vẫn bị quét. Mức độ rủi ro phụ thuộc cả vào khoản vay lẫn loại cổ phiếu.</li><li><b>"Bị gọi ký quỹ thì nộp thêm là xong."</b>Nộp thêm để giữ một vị thế đang lỗ là ném tiền vào chỗ đang thủng. Hãy hỏi lại lý do mua trước khi nộp.</li><li><b>"Công ty cho vay mã này nghĩa là mã này an toàn."</b>Danh sách cho vay chỉ là tiêu chí quản lý rủi ro của công ty, không phải lời bảo đảm cổ phiếu sẽ tăng.</li></ul></section>
+  <p class="gn-nho">Margin không làm bạn giỏi hơn.<br>Nó chỉ làm cái giỏi và cái dở của bạn to gấp đôi.</p>
+  <section class="gn-sec"><h2>Đố vui 30 giây</h2><div class="gn-quiz" data-q='[[&quot;Vốn 100 triệu, vay thêm 100 triệu, cổ phiếu giảm 30%. Vốn còn bao nhiêu?&quot;, [&quot;40 triệu&quot;, &quot;70 triệu&quot;, &quot;85 triệu&quot;], 0, &quot;Tài sản 140 triệu trừ nợ 100 triệu còn 40 triệu.&quot;], [&quot;Bán giải chấp là gì?&quot;, [&quot;Công ty chứng khoán tự bán cổ phiếu khi bạn không nộp đủ ký quỹ&quot;, &quot;Bạn tự bán chốt lời&quot;, &quot;Bán cổ phiếu lô lẻ&quot;], 0, &quot;Họ bán để thu hồi khoản vay, giá nào cũng bán.&quot;], [&quot;Người dùng margin thường thua vì điều gì nhất?&quot;, [&quot;Không có thời gian chờ giá hồi phục&quot;, &quot;Phí mở tài khoản&quot;, &quot;Chọn mã có tên khó nhớ&quot;], 0, &quot;Áp lực ký quỹ buộc bán đúng lúc giá thấp.&quot;]]'></div></section>
+  <aside class="gn-cta"><div><b>Còn ngố chỗ nào?</b><p>Nhắn Zalo hỏi thẳng. Không mất phí, không bị lùa, không phải vào nhóm VIP.</p></div><div class="gn-zalo"><span id="zalo">0939 660 996</span><button id="copyZ" type="button">Chép số</button></div></aside>
+  <nav class="gn-nav" aria-label="Bài trước và sau"><a href="../bai-12/index.html"><small>Bài 12</small>Cắt lỗ: đau một lần còn hơn ôm cả đời</a><a class="r" href="../bai-14/index.html"><small>Bài 14</small>Đu đỉnh và bán đáy: vì sao ta luôn mua lúc đắt</a></nav>
+  <p class="gn-legal">Bài viết mang tính giáo dục, không phải khuyến nghị mua bán chứng khoán. Quy định giao dịch, phí và thuế có thể thay đổi; hãy kiểm tra với công ty chứng khoán của bạn. Số liệu doanh nghiệp lấy từ TCBS ngày 15/10/2026.</p>
+</article>
+<div id="tb-foot"></div>
+<script src="../../assets/site.js"></script>
+<script>
+(function(){
+  [].forEach.call(document.querySelectorAll('.gn-check'),function(box){
+    var msgs=JSON.parse(box.getAttribute('data-msgs')),inp=[].slice.call(box.querySelectorAll('input')),res=box.querySelector('.gn-res'),N=inp.length;
+    function u(){var n=inp.filter(function(i){return i.checked}).length;res.className='gn-res';
+      if(!n){res.textContent='Chưa đánh dấu câu nào.';return}
+      if(n===N){res.classList.add('g');res.textContent=msgs[0]}else if(n>=Math.ceil(N/2)){res.classList.add('y');res.textContent=n+'/'+N+': '+msgs[1]}else{res.classList.add('r');res.textContent=n+'/'+N+': '+msgs[2]}}
+    inp.forEach(function(i){i.addEventListener('change',u)})});
+  function f(x,d){return x.toLocaleString('vi-VN',{maximumFractionDigits:d||0})}
+  function $(id){return document.getElementById(id)}
+  var c=document.querySelector('[data-calc="compound"]');if(c){var u=function(){var A=+$('cA').value,R=+$('cR').value,Y=+$('cY').value,V=A*Math.pow(1+R/100,Y);
+    $('oA').textContent=f(A)+' triệu';$('oR').textContent=f(R,1)+'%';$('oY').textContent=Y+' năm';$('rV').textContent=f(V,1)+' triệu';$('rI').textContent='+'+f(V-A,1)+' triệu';$('rD').textContent=f(Math.log(2)/Math.log(1+R/100),1)+' năm'};
+    ['cA','cR','cY'].forEach(function(i){$(i).addEventListener('input',u)});u()}
+  var r=document.querySelector('[data-calc="recover"]');if(r){var v=function(){var L=+$('cL').value;$('oL').textContent=L+'%';$('rN').textContent='+'+f(L/(100-L)*100,1)+'%';$('rL').textContent=f(100-L)+' triệu'};$('cL').addEventListener('input',v);v()}
+  var m=document.querySelector('[data-calc="margin"]');if(m){var w=function(){var M=+$('cM').value/100,P=+$('cP').value/100,E=100*(1+M)*(1+P)-100*M,pc=E/100-1;
+    $('oM').textContent=f(M*100)+'%';$('oP').textContent=(P>0?'+':P<0?'−':'')+f(Math.abs(P*100))+'%';
+    $('rE').textContent=E<=0?'0 (mất trắng)':f(E,1)+' triệu';$('rE').className=E<100?'neg':'pos';
+    $('rP').textContent=(pc>=0?'+':'−')+f(Math.abs(Math.max(pc,-1))*100,1)+'%';$('rP').className=pc<0?'neg':'pos';
+    $('rU').textContent=(P>=0?'+':'−')+f(Math.abs(P*100))+'%'};$('cM').addEventListener('input',w);$('cP').addEventListener('input',w);w()}
+  [].forEach.call(document.querySelectorAll('.gn-quiz'),function(qz){var Q=JSON.parse(qz.getAttribute('data-q'));
+    Q.forEach(function(q,i){var d=document.createElement('div');d.className='gn-qz';var p=document.createElement('p');p.textContent=(i+1)+'. '+q[0];d.appendChild(p);
+      var ex=document.createElement('div');ex.className='ex';ex.hidden=true;ex.textContent=q[3];
+      q[1].forEach(function(o,j){var b=document.createElement('button');b.type='button';b.textContent=o;b.onclick=function(){[].forEach.call(d.querySelectorAll('button'),function(x){x.classList.remove('ok','no')});b.classList.add(j===q[2]?'ok':'no');if(j!==q[2])d.querySelectorAll('button')[q[2]].classList.add('ok');ex.hidden=false};d.appendChild(b)});
+      d.appendChild(ex);qz.appendChild(d)})});
+  var cb=document.getElementById('copyZ');if(cb)cb.onclick=function(){var done=function(){cb.textContent='Đã chép'};
+    function sel(){var rg=document.createRange();rg.selectNodeContents(document.getElementById('zalo'));var s=getSelection();s.removeAllRanges();s.addRange(rg);cb.textContent='Đã chọn số'}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText('0939660996').then(done,sel)}else sel()};
+})();
+</script>
+</body>
+</html>

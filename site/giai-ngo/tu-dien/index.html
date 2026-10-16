@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Từ điển chứng khoán vỉa hè · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Từ điển chứng khoán vỉa hè: đu đỉnh, úp bô, lùa gà, cá mập... giải thích dễ hiểu, kèm một câu thâm.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,600;0,700;1,500&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/giai-ngo.css">
+<style>
+/* Layout: masthead của mục, thanh tìm kiếm + bộ lọc, lưới mục từ 2 cột */
+.tools{max-width:1240px;margin:0 auto;padding-top:22px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools input{flex:1;min-width:220px;font:500 16px var(--tb-sans);padding:11px 14px;border:1px solid var(--tb-ink);background:var(--tb-card);color:var(--tb-ink)}
+.tools button{font:600 14px var(--tb-sans);padding:10px 14px;border:1px solid var(--tb-rule2);background:var(--tb-card);color:var(--tb-ink);cursor:pointer}
+.tools button[aria-pressed="true"]{background:var(--tb-ink);color:var(--tb-paper);border-color:var(--tb-ink)}
+.cnt{max-width:1240px;margin:10px auto 0;font-size:13px;color:var(--tb-ink3)}
+.grid{max-width:1240px;margin:12px auto 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--tb-ink)}
+.en{padding:16px 18px 16px 0;border-bottom:1px solid var(--tb-rule);display:flex;flex-direction:column;gap:6px;min-width:0}
+.en:nth-child(odd){padding-right:24px;border-right:1px solid var(--tb-rule)}
+.en:nth-child(even){padding-left:24px}
+.en h2{font-family:var(--gn-serif);font-size:24px;font-weight:700;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.en h2 span{font-family:var(--tb-sans);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px}
+.en h2 .lg{background:var(--gn-tea-t);color:var(--gn-tea)} .en h2 .ch{background:#e3eefb;color:var(--tb-link)}
+.en p{font-size:16px;line-height:1.6}
+.en i{font-family:var(--gn-serif);color:var(--gn-tea);font-size:16px}
+.empty{grid-column:1/-1;padding:24px 0;color:var(--tb-ink2)}
+@media (max-width:700px){.grid{grid-template-columns:1fr}.en:nth-child(odd),.en:nth-child(even){padding:16px 0;border-right:0}}
+</style>
+</head>
+<body data-root="../../" data-page="giai-ngo">
+<div id="tb-top"></div>
+<nav class="gn-crumb" aria-label="Đường dẫn"><a href="../../index.html">Trang chủ</a> / <a href="../index.html">Giải ngố chứng khoán</a> / Từ điển vỉa hè</nav>
+<header class="gn-mast">
+  <div>
+    <span class="k">Giải ngố chứng khoán</span>
+    <h1>Từ điển chứng khoán vỉa hè</h1>
+    <p>Những từ dân chứng khoán nói với nhau ở quán trà đá, dịch ra tiếng người, kèm một câu để nhớ lâu.</p>
+  </div>
+</header>
+<div class="tools">
+  <label for="q" style="position:absolute;left:-9999px">Tìm từ</label>
+  <input id="q" type="search" placeholder="Tìm từ, ví dụ: đu đỉnh, margin, cá mập…" autocomplete="off">
+  <button data-k="all" aria-pressed="true">Tất cả</button>
+  <button data-k="lóng" aria-pressed="false">Tiếng lóng</button>
+  <button data-k="chuẩn" aria-pressed="false">Thuật ngữ chuẩn</button>
+</div>
+<p class="cnt" id="cnt"></p>
+<div class="grid" id="grid"></div>
+<div style="max-width:1240px;margin:28px auto 0" class="gn-cta"><div><b>Còn từ nào nghe mà chưa hiểu?</b><p>Nhắn Zalo, từ đó sẽ có mặt trong bản cập nhật sau.</p></div><div class="gn-zalo"><span>0939 660 996</span></div></div>
+
+<div id="tb-foot"></div>
+<script src="../../assets/site.js"></script>
+<script src="../../assets/giai-ngo.js"></script>
+<script>
+(function(){
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d')}
+  var data=GN.DICT.slice().sort(function(a,b){return a[0].localeCompare(b[0],'vi')}),kind='all',q=document.getElementById('q');
+  function render(){var t=norm(q.value.trim());
+    var list=data.filter(function(d){return(kind==='all'||d[1]===kind)&&(!t||norm(d[0]+' '+d[2]).indexOf(t)>=0)});
+    document.getElementById('cnt').textContent=list.length+' mục từ';
+    document.getElementById('grid').innerHTML=list.length?list.map(function(d){return '<article class="en"><h2>'+esc(d[0])+'<span class="'+(d[1]==='lóng'?'lg':'ch')+'">'+(d[1]==='lóng'?'Tiếng lóng':'Thuật ngữ')+'</span></h2><p>'+esc(d[2])+'</p><i>'+esc(d[3])+'</i></article>'}).join(''):'<p class="empty">Chưa có từ này. Nhắn Zalo để được bổ sung nhé.</p>'}
+  q.addEventListener('input',render);
+  document.querySelectorAll('.tools button').forEach(function(b){b.onclick=function(){kind=b.dataset.k;document.querySelectorAll('.tools button').forEach(function(o){o.setAttribute('aria-pressed',String(o===b))});render()}});
+  render();
+})();
+</script>
+</body>
+</html>

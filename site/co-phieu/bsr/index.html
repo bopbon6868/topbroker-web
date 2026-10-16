@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Giải mã BSR · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Giải mã cổ phiếu BSR (Lọc hóa dầu Bình Sơn) bằng tiếng dễ hiểu và những gì ít người nói cho bạn.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+/* Layout: phong cách iOS – thanh điều hướng mờ, tiêu đề lớn, danh sách bo góc kiểu "inset grouped", một cột rộng tối đa 720px */
+:root{ color-scheme:light;
+  --bg:#f6f4ef; --card:#fffdf9; --fill:#efece5; --label:#24232a; --label2:#55545c; --label3:#b9b6ae;
+  --sep:#e4e0d7; --blue:#1f6fd1; --green:#1e9e52; --red:#d93a2f; --orange:#c97a06; --indigo:#5a52c4; --teal:#1e93a8;
+  --green-t:rgba(52,199,89,.14); --red-t:rgba(255,59,48,.12); --orange-t:rgba(255,149,0,.15); --blue-t:rgba(0,122,255,.12);
+  --bar:rgba(246,244,239,.88);
+  --sf:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --sfd:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font-family:var(--sf);font-size:17px;line-height:1.65;letter-spacing:0;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bar)}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--sfd);margin:0;text-wrap:balance}
+p{margin:0}
+.tn{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .dn{color:var(--red)} .wn{color:var(--orange)} .mute{color:var(--label2)}
+
+/* nav bar */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+.navIn{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{color:var(--blue);font-size:17px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.navT{font-weight:600;font-size:17px;opacity:0;transition:opacity .2s}
+.nav.scrolled .navT{opacity:1}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.seg button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* large title + price */
+.hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:.01em;line-height:1.15}
+.sub{color:var(--label2);font-size:15px}
+.priceLine{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:6px}
+.price{font-family:var(--sfd);font-size:40px;font-weight:700;letter-spacing:-.02em}
+.chip{font-size:13px;font-weight:600;padding:4px 9px;border-radius:7px}
+.chip.r{background:var(--red-t);color:var(--red)} .chip.g{background:var(--green-t);color:var(--green)} .chip.o{background:var(--orange-t);color:var(--orange)} .chip.b{background:var(--blue-t);color:var(--blue)}
+
+/* section header iOS */
+section{display:flex;flex-direction:column;gap:8px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-inline:4px}
+.sh h2{font-size:22px;font-weight:700;letter-spacing:.005em}
+.foot-note{font-size:14.5px;color:var(--label2);padding-inline:16px;line-height:1.6}
+.badge{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo);background:color-mix(in srgb,var(--indigo) 14%,transparent);padding:3px 7px;border-radius:5px;white-space:nowrap}
+
+/* grouped list */
+.group{background:var(--card);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;position:relative}
+.row + .row::before{content:"";position:absolute;top:0;right:0;left:56px;border-top:.5px solid var(--sep)}
+.group.flat .row + .row::before{left:16px}
+.ic{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:700}
+.ic.g{background:var(--green)} .ic.o{background:var(--orange)} .ic.r{background:var(--red)} .ic.b{background:var(--blue)} .ic.i{background:var(--indigo)} .ic.t{background:var(--teal)}
+.rc{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rt{font-size:17px;font-weight:600;line-height:1.3}
+.rs{font-size:16px;color:var(--label2);line-height:1.6}
+.rv{font-size:15px;color:var(--label2);white-space:nowrap;align-self:center}
+.verdict{padding:14px 16px;font-size:16px;line-height:1.65;border-top:.5px solid var(--sep);background:color-mix(in srgb,var(--blue) 5%,var(--card))}
+
+/* widgets grid */
+.widgets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.w{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.w .k{font-size:13px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+.w .v{font-family:var(--sfd);font-size:28px;font-weight:700;letter-spacing:-.01em}
+.w .t{font-size:16px;line-height:1.6}
+
+/* chart card */
+.cc{background:var(--card);border-radius:16px;padding:14px 12px 10px;overflow-x:auto}
+.cc svg{display:block;width:100%;height:auto;min-width:500px}
+.cc.small svg{min-width:320px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--label2);padding:4px 6px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* table */
+.tw{background:var(--card);border-radius:12px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:.5px solid var(--sep)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td.wrap{white-space:normal;text-align:left;min-width:220px;color:var(--label2);font-size:15px}
+tr.hl td{background:color-mix(in srgb,var(--blue) 7%,transparent);font-weight:600}
+
+/* insight cards */
+.ins{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ch h3{font-size:17px;font-weight:600;line-height:1.3}
+.card p{font-size:16px;line-height:1.65}
+.ev{font-size:15px;line-height:1.55;color:var(--label2);background:var(--fill);border-radius:9px;padding:9px 11px}
+
+/* news */
+.news .row{align-items:flex-start}
+.dt{font-size:13px;color:var(--label2)}
+
+/* levels */
+.lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lv .w .v{font-size:22px}
+.teaser{background:var(--card);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center}
+.teaser button{margin-left:auto;font:600 15px var(--sf);color:#fff;background:var(--blue);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+
+.x,.xs{display:none}
+body.pro .x{display:revert} body.pro .xs{display:flex} body.pro .p,body.pro .teaser{display:none}
+.legal{font-size:12px;color:var(--label2);line-height:1.5;padding-inline:4px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:560px){.widgets,.lv{grid-template-columns:1fr}.hero h1{font-size:30px}.price{font-size:34px}.navT{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}.nav{z-index:15}.back a{color:var(--blue);text-decoration:none}.back span{color:var(--label2)}@media (max-width:560px){.back span{display:none}}</style>
+</head>
+<body data-root="../../" data-page="giai-ma">
+<div id="tb-top"></div>
+<nav class="nav" id="nav"><div class="navIn">
+  <span class="back"><a href="../index.html">Cổ phiếu</a> <span>/ BSR</span></span>
+  <span class="navT">BSR · 28.200</span>
+  <div class="seg" role="group" aria-label="Chế độ đọc"><button id="mPlain" aria-pressed="true">Dễ hiểu</button><button id="mPro" aria-pressed="false">Chuyên gia</button></div>
+</div></nav>
+<div class="wrap">
+  <header class="hero">
+    <span class="sub">HOSE · Dầu khí · Chốt phiên 15/10/2026</span>
+    <h1>BSR</h1>
+    <span class="sub" style="font-size:17px;color:var(--label)">Lọc hóa dầu Bình Sơn</span>
+    <div class="priceLine"><span class="price tn">28.200</span><span class="chip g tn">+66,3% · 1 năm</span><span class="chip r tn">−7,4% · 1 tháng</span><span class="chip r tn">−23% từ đỉnh 60 tuần</span></div>
+    <p class="sub p">Vận hành nhà máy lọc dầu Dung Quất (Quảng Ngãi), cung cấp phần lớn xăng dầu sản xuất trong nước. Nhà nước nắm phần lớn qua PVN, nước ngoài chỉ 1,6%.</p><p class="sub x tn">Vốn hóa 141.206 tỷ · EPS 3.974 · BVPS 14.885 · Doanh thu 4 quý 177.552 tỷ · Room NN 1,6%</p>
+  </header>
+  <section><div class="sh"><h2>Tóm tắt 30 giây</h2></div><div class="group"><div class="row"><span class="ic g">↑</span><div class="rc"><span class="rt">Giá 1 năm</span><span class="rs">Tăng khoảng 66% trong 12 tháng.</span></div></div><div class="row"><span class="ic r">!</span><div class="rc"><span class="rt">Ít người nói</span><span class="rs">Lãi tăng vọt nhờ giá dầu cao. P/E thấp lúc lãi đang ở đỉnh là cái bẫy quen thuộc của cổ phiếu chu kỳ.</span></div></div><div class="row"><span class="ic o">$</span><div class="rc"><span class="rt">Định giá</span><span class="rs">P/E 7,1 tính trên lãi đỉnh; P/B 1,9.</span></div></div><div class="row"><span class="ic r">↓</span><div class="rc"><span class="rt">Xu hướng giá</span><span class="rs">Giảm 6,3% phiên 15/10, rơi dưới đường 1 tháng. MACD cắt xuống.</span></div></div><p class="verdict p"><b>Nói gọn:</b> Nhà máy đang có thời "trúng đậm" vì giá xăng dầu cao. Lãi đẹp, ít nợ. Nhưng lãi này đi theo giá dầu, khi giá dầu hạ thì lãi có thể quay về mức rất thấp như năm 2025.</p><p class="verdict x"><b>Kết luận:</b> LNST 4 quý 19.900 tỷ so với cả năm 2025 khoảng 5.215 tỷ. Biên gộp 1,2–2,9% (Q1–Q3/25) lên 20,7% (Q1/26), 15,0% (Q2/26). Q2/26 LNST −7,2% QoQ. P/E 7,1× trên EPS đỉnh. Vay/EBITDA 0,5×. PVN thoái 2,13% trước 3/2027. Kỹ thuật: dưới MA20, MACD < signal.</p></div></section>
+  <section><div class="sh"><h2>Giá này đắt hay rẻ?</h2></div><div class="widgets"><div class="w"><span class="k">P/E</span><span class="v tn">7,1×</span><p class="t p">Bỏ 100 đồng mua BSR, công ty đang làm ra khoảng <b>14 đồng lãi</b> mỗi năm. Nhưng đây là lãi của năm "được mùa".</p><p class="t x">Lợi suất lợi nhuận ≈ 14%. Tính theo lãi năm 2025, P/E khoảng 27×.</p></div><div class="w"><span class="k">P/B</span><span class="v tn">1,9×</span><p class="t p">Trả gần 2 đồng để mua 1 đồng vốn thật. Một năm trước chỉ khoảng 1 đồng.</p><p class="t x">BVPS 14.885. P/B Q2/25 1,0×.</p></div><div class="w"><span class="k">ROE</span><span class="v tn">30,4%</span><p class="t p">Cứ 100 đồng vốn, công ty đẻ ra 30 đồng lãi. Năm ngoái gần như bằng 0.</p><p class="t x">ROE Q2/25 −0,1% → Q2/26 30,4%.</p></div><div class="w"><span class="k">Nợ vay</span><span class="v tn">Rất ít</span><p class="t p">Gần như không phải lo trả nợ: lãi hoạt động gấp 91 lần tiền lãi vay.</p><p class="t x">Vay/EBITDA 0,5×; EBIT/lãi vay 91×; cổ tức 1,9%.</p></div></div></section>
+  <section><div class="sh"><h2>Làm ăn ra sao?</h2></div>
+    <div class="cc"><svg id="profitChart" viewBox="0 0 640 250" role="img" aria-label="Lợi nhuận theo quý"></svg><div class="legend"><span><i style="background:var(--blue)"></i>Lãi ròng quý (tỷ đồng)</span><span><i style="background:var(--red)"></i>Quý lỗ</span></div></div>
+    <div class="tw"><table><thead><tr><th>Quý</th><th>Doanh thu</th><th>Biên gộp</th><th>LN hoạt động</th><th>Lãi ròng</th><th>YoY</th></tr></thead><tbody><tr><td>Q2/2026</td><td>58.716</td><td>15,0%</td><td>8.337</td><td>7.666</td><td class="up">+806%</td></tr><tr><td>Q1/2026</td><td>45.920</td><td>20,7%</td><td>8.957</td><td>8.265</td><td class="up">+1.973%</td></tr><tr><td>Q4/2025</td><td>37.625</td><td>9,9%</td><td>3.133</td><td>3.062</td><td>—</td></tr><tr><td>Q3/2025</td><td>35.290</td><td>2,9%</td><td>668</td><td>908</td><td>—</td></tr></tbody></table></div><p class="foot-note">Đơn vị: tỷ đồng. Nguồn: BCTC hợp nhất qua TCBS.</p></section>
+  <section><div class="sh"><h2>Những gì ít người nói cho bạn</h2></div><p class="foot-note" style="padding-inline:4px">Phần lớn báo cáo chỉ kể điểm sáng. Đây là những chỗ nên soi kỹ trước khi xuống tiền.</p><div class="ins"><article class="card"><div class="ch"><h3>Lãi đi theo giá dầu</h3><span class="chip r">Cần soi kỹ</span></div><p class="p">Năm 2025, cứ 100 đồng bán xăng dầu, nhà máy chỉ lãi gộp 1–3 đồng. Sang 2026, khi giá dầu thế giới vọt lên trên 100 USD/thùng, con số này lên 15–21 đồng. Lãi tăng chủ yếu nhờ giá thị trường, không phải nhà máy đột nhiên giỏi hơn.</p><p class="x">Biên gộp: 1,2% (Q1/25), 2,8% (Q2/25), 2,9% (Q3/25), 9,9% (Q4/25), 20,7% (Q1/26), 15,0% (Q2/26). Brent ~104,6 USD (15/10).</p><div class="ev">Lãi của BSR phụ thuộc vào chênh lệch giá xăng dầu và giá dầu thô, thứ công ty không kiểm soát được.</div></article><article class="card"><div class="ch"><h3>P/E thấp lúc lãi đỉnh là cái bẫy</h3><span class="chip r">Rủi ro</span></div><p class="p">P/E 7 lần trông rẻ vì đang tính trên lãi của năm "được mùa". Nếu lãi quay về mức năm 2025 (khoảng 5.200 tỷ), P/E thực tế sẽ lên khoảng 27 lần.</p><p class="x">LNST 4 quý 19.900 tỷ; năm 2025: 399 + 846 + 908 + 3.062 = 5.215 tỷ. Vốn hóa 141.206 tỷ / 5.215 ≈ 27×.</p></article><article class="card"><div class="ch"><h3>Quý 2 đã chậm lại</h3><span class="chip o">Theo dõi</span></div><p class="p">Doanh thu quý 2 tăng 28% so với quý 1 nhưng lãi lại giảm 7%. Biên lãi gộp hạ từ 20,7% xuống 15%: thời điểm "trúng đậm" nhất có thể đã qua.</p><p class="x">Q2/26: doanh thu +27,9% QoQ, LNST −7,2% QoQ, biên gộp 20,7% → 15,0%.</p></article><article class="card"><div class="ch"><h3>Nhà nước sắp bán bớt</h3><span class="chip o">Theo dõi</span></div><p class="p">PVN (Tập đoàn Dầu khí) sẽ thoái 2,13% vốn tại BSR trước tháng 3/2027, tương đương khoảng 107 triệu cổ phiếu ra thị trường.</p><p class="x">Tin ĐTCK 16/10/2026. 2,13% × 5.007,3 triệu cp ≈ 106,7 triệu cp.</p></article><article class="card"><div class="ch"><h3>Tài chính khỏe, tiền thu hơi chậm</h3><span class="chip b">Bối cảnh</span></div><p class="p">Công ty gần như không vay nợ và có trả cổ tức. Điểm cần để ý là khách hàng mất khoảng 106 ngày mới trả tiền, lâu hơn thời gian giữ hàng trong kho.</p><p class="x">Vay/EBITDA 0,5×; số ngày phải thu 106, tồn kho 31, phải trả 30. Có giao dịch với bên liên quan PVOIL (8/9).</p></article></div></section>
+  <!--AX--><style>
+.ax .axk{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo)}
+.ax .card p{font-size:16px;line-height:1.7}
+.ax .axt{border-left:4px solid var(--indigo)}
+.ax ol.axd{list-style:none;margin:0;padding:0;counter-reset:d;display:flex;flex-direction:column}
+.ax ol.axd li{counter-increment:d;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:12px 0;border-top:1px solid var(--sep)}
+.ax ol.axd li:first-child{border-top:0;padding-top:4px}
+.ax ol.axd li::before{content:counter(d);grid-row:span 3;width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ax ol.axd b{font-size:16px}
+.ax ol.axd span{font-size:15px;color:var(--label2);line-height:1.55}
+.ax ol.axd em{font-style:normal;font-size:14.5px;line-height:1.55;background:var(--fill);border-radius:8px;padding:7px 10px;margin-top:4px}
+.ax ul.axs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ax ul.axs li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 10px;padding:10px 0;border-top:1px solid var(--sep)}
+.ax ul.axs li:first-child{border-top:0;padding-top:2px}
+.ax ul.axs li i{grid-row:span 2;font-style:normal;font-weight:800;font-size:15px;line-height:1.4}
+.ax ul.axs li.g i{color:var(--green)} .ax ul.axs li.r i{color:var(--red)}
+.ax ul.axs b{font-size:15.5px} .ax ul.axs span{font-size:15px;color:var(--label2);line-height:1.5}
+.ax .axc{background:color-mix(in srgb,var(--indigo) 7%,var(--card))}
+.ax table td:first-child{font-weight:600}
+</style><section class="xs ax"><div class="sh"><h2>Góc nhìn nhà phân tích</h2><span class="badge">Chuyên gia</span></div><article class="card axt"><span class="axk">Luận điểm cốt lõi</span><p>Lợi nhuận BSR là hàm số của <b>chênh lệch giá sản phẩm xăng dầu với giá dầu thô</b> nhân với sản lượng lọc. Nhà máy không thay đổi, giá thị trường thay đổi. Vì vậy, với BSR, câu hỏi định giá đúng là lợi nhuận trung bình chu kỳ bằng bao nhiêu, không phải lợi nhuận 4 quý gần nhất.</p></article><article class="card"><span class="axk">Giá hiện tại đang ngầm định gì?</span><p>Ở P/B 1,9×, với lợi suất đòi hỏi 14% và tăng trưởng 3%, thị trường ngầm định ROE bền vững khoảng <b>24%</b>. Năm 2025 ROE dưới 10%, ROE 4 quý gần nhất 30%. Thị trường đang ngầm giả định phần lớn "thời được mùa" của năm 2026 sẽ kéo dài nhiều năm. Nếu lấy trung bình hai năm 2025–2026 làm mức chu kỳ, ROE khoảng 18–20%, thấp hơn mức thị trường đang định giá.</p><div class="ev">ROE ngầm định = 1,9 × (14% − 3%) + 3% ≈ 23,9%. LNST 2025 ≈ 5.215 tỷ; 4 quý gần nhất 19.900 tỷ.</div></article><article class="card"><span class="axk">Các biến số quyết định và độ nhạy</span><ol class="axd"><li><b>Biên gộp (chênh lệch giá sản phẩm và dầu thô)</b><span>Từ 1–3% năm 2025 lên 15–21% năm 2026.</span><em>Mỗi 1 điểm % biên gộp trên doanh thu ~177.500 tỷ ≈ 1.780 tỷ ≈ 1.600 tỷ LNST ≈ 8% lãi.</em></li><li><b>Lãi, lỗ tồn kho theo giá dầu</b><span>Tồn kho khoảng 31 ngày giá vốn, ước tính khoảng 13.000 tỷ.</span><em>Giá dầu giảm 20% có thể gây lỗ tồn kho một lần khoảng 2.600 tỷ; giá dầu tăng thì ngược lại, làm lãi "đẹp" hơn thực chất.</em></li><li><b>Sản lượng và bảo dưỡng</b><span>Nhà máy dừng bảo dưỡng định kỳ làm mất sản lượng cả quý.</span><em>Một đợt bảo dưỡng lớn có thể làm lợi nhuận quý đó giảm mạnh dù giá thị trường tốt.</em></li><li><b>Thoái vốn của PVN</b><span>2,13% vốn, khoảng 107 triệu cp, trước 3/2027.</span><em>Khoảng 3.000 tỷ cổ phiếu ở giá hiện tại cần người mua; tăng tỷ lệ cổ phiếu tự do.</em></li></ol></article><span class="axk" style="padding:8px 4px 0">Ma trận kịch bản: P/E, P/B ở giá hiện tại</span><div class="tw"><table><thead><tr><th>Kịch bản</th><th>Biên gộp bình quân</th><th>LNST</th><th>EPS</th><th>P/E ở 28.200</th></tr></thead><tbody><tr><td>Tiêu cực</td><td>5% (giữa 2025 và 2026)</td><td>~5.900 tỷ</td><td>~1.180</td><td>~23,9×</td></tr><tr><td>Cơ sở</td><td>10%</td><td>~13.600 tỷ</td><td>~2.720</td><td>~10,4×</td></tr><tr><td>Tích cực</td><td>15% (giữ như Q2/26)</td><td>~21.200 tỷ</td><td>~4.240</td><td>~6,7×</td></tr></tbody></table></div><p class="foot-note">Giả định doanh thu ~170.000 tỷ, chi phí bán hàng và quản lý ~1.900 tỷ, thuế ~10%, 5.007 triệu cp. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.</p><article class="card"><span class="axk">Tín hiệu xác nhận hoặc bác bỏ luận điểm</span><ul class="axs"><li class="g"><i>↑</i><b>Biên gộp quý 3 giữ trên 12% dù giá dầu điều chỉnh</b><span>Chênh lệch giá sản phẩm bền hơn kỳ vọng; kịch bản cơ sở có thể bị vượt.</span></li><li class="r"><i>↓</i><b>Brent giảm nhanh về dưới 85 USD</b><span>Lỗ tồn kho và biên co lại cùng lúc.</span></li><li class="r"><i>↓</i><b>Lịch bảo dưỡng tổng thể được công bố</b><span>Sản lượng một quý bị mất, lợi nhuận giảm mạnh.</span></li><li class="g"><i>↑</i><b>Cổ tức tiền mặt tăng mạnh từ lợi nhuận năm 2026</b><span>Doanh nghiệp chia lại "lãi được mùa" cho cổ đông thay vì giữ lại.</span></li></ul></article><article class="card axc"><span class="axk">Điều thị trường có thể đang bỏ sót</span><p>Nhiều người nhìn BSR như cổ phiếu Nhà nước ổn định, ít nợ, an toàn. Ít nợ là đúng, nhưng lợi nhuận lại thuộc loại biến động mạnh nhất sàn. P/E thấp lúc lãi đỉnh là cái bẫy kinh điển của cổ phiếu chu kỳ: lúc lợi nhuận cao nhất thì P/E trông rẻ nhất. Với BSR, cách định giá an toàn hơn là dùng lợi nhuận trung bình nhiều năm, ở mức đó P/E không còn thấp.</p></article></section><!--/AX-->
+  <div class="teaser"><span class="ic i">+</span><div class="rc"><span class="rt">Bảng phân tích chuyên sâu</span><span class="rs">Chỉ số chi tiết, cấu trúc tài chính và ghi chú của chuyên viên.</span></div><button id="goPro">Xem</button></div>
+  <div id="pro" style="display:contents"><section class="xs"><div class="sh"><h2>Biên lợi nhuận theo quý</h2><span class="badge">Chuyên gia</span></div><div class="tw"><table><thead><tr><th>Quý</th><th>Doanh thu</th><th>Biên gộp</th><th>Biên hoạt động</th><th>ROE</th><th>Ngày phải thu</th></tr></thead><tbody><tr><td>Q2/26</td><td>58.716</td><td>15,0%</td><td>14,2%</td><td>30,4%</td><td>106</td></tr><tr><td>Q1/26</td><td>45.920</td><td>20,7%</td><td>19,5%</td><td>21,0%</td><td>112</td></tr><tr><td>Q4/25</td><td>37.625</td><td>9,9%</td><td>8,3%</td><td>9,0%</td><td>111</td></tr><tr><td>Q3/25</td><td>35.290</td><td>2,9%</td><td>1,9%</td><td>3,7%</td><td>107</td></tr><tr><td>Q2/25</td><td>36.772</td><td>2,8%</td><td>1,7%</td><td>−0,1%</td><td>112</td></tr><tr><td>Q1/25</td><td>31.895</td><td>1,2%</td><td>0,3%</td><td>−0,2%</td><td>119</td></tr></tbody></table></div><p class="foot-note">ROE tính trên lợi nhuận 4 quý gần nhất. Biên lợi nhuận của nhà máy lọc dầu dao động rất mạnh theo chênh lệch giá sản phẩm và giá dầu thô; nên nhìn chu kỳ nhiều năm thay vì vài quý tốt.</p></section></div>
+  <section><div class="sh"><h2>Giá đang đi về đâu?</h2></div>
+    <div class="cc"><svg id="priceChart" viewBox="0 0 640 270" role="img" aria-label="Giá tuần 60 tuần gần nhất"></svg><div class="legend"><span><i style="background:var(--label)"></i>Giá đóng cửa tuần</span><span><i style="background:var(--orange)"></i>MA 10 tuần (~2,5 tháng)</span><span><i style="background:var(--red)"></i>MA 40 tuần (~10 tháng)</span></div></div>
+    <div class="group"><div class="row"><span class="ic b">MA</span><div class="rc"><span class="rt">Đường trung bình</span><span class="rs p">Giá vừa rơi xuống dưới đường 1 tháng (30.920).</span><span class="rs x">Giá 28.200 < MA20 ngày 30.920; phiên 15/10 −6,3%.</span></div></div><div class="row"><span class="ic t">R</span><div class="rc"><span class="rt">RSI 39</span><span class="rs p">Đã nguội nhanh từ vùng nóng cuối tháng 9.</span><span class="rs x">RSI 39,4; đỉnh 74 ngày 17/9 và 21/9.</span></div></div><div class="row"><span class="ic i">M</span><div class="rc"><span class="rt">MACD</span><span class="rs p">Đà giảm đang mạnh lên.</span><span class="rs x">MACD 0,356 < signal 0,795; histogram −0,44, âm dần từ 2/10.</span></div></div><div class="row"><span class="ic o">A</span><div class="rc"><span class="rt">ADX 26</span><span class="rs p">Có xu hướng nhưng đang yếu đi.</span><span class="rs x">ADX 25,6, giảm từ 36,8 cuối tháng 9.</span></div></div><div class="row"><span class="ic g">W</span><div class="rc"><span class="rt">Đường tuần</span><span class="rs p">Đường trung bình 10 tuần ở 28.340, 40 tuần ở 26.716.</span><span class="rs x">MA10 tuần 28.340 · MA40 tuần 26.716 · Giá/MA40 +5,6%.</span></div></div></div></section>
+  <section><div class="sh"><h2>Tin chuẩn</h2></div><div class="group news"><div class="row"><span class="ic o">!</span><div class="rc"><span class="dt">16/10 · ĐTCK</span><span class="rt">PVN sẽ thoái 2,13% vốn tại BSR trước tháng 3/2027</span><span class="rs">Thêm nguồn cung cổ phiếu, đồng thời tăng tỷ lệ cổ phiếu tự do.</span></div></div><div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">30/09 · HOSE</span><span class="rt">Thông báo thay đổi nhân sự</span><span class="rs">Thay đổi nhân sự quản lý.</span></div></div><div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">28/08 · HOSE</span><span class="rt">Giải trình BCTC 6 tháng đầu năm 2026 sau soát xét</span><span class="rs">Giải thích lợi nhuận tăng mạnh so với cùng kỳ.</span></div></div></div></section>
+  <section><div class="sh"><h2>Các mốc giá cần nhớ</h2></div><div class="lv"><div class="w"><span class="k dn">Cảnh giác</span><span class="v dn tn">< 26.000</span><p class="t">Thủng vùng nền tháng 8–9. Có thể về lại 23.000–24.000.</p></div><div class="w"><span class="k wn">Tích lũy</span><span class="v wn tn">26.000–31.000</span><p class="t">Giá đang dao động trong vùng này.</p></div><div class="w"><span class="k up">Tích cực</span><span class="v up tn">> 32.500</span><p class="t">Vượt đỉnh cuối tháng 9. Đỉnh cao nhất 60 tuần là 36.635 (3/2026).</p></div></div><p class="foot-note p">Thống nhất trước với nhau: giá về đâu thì làm gì. Khi thị trường biến động, mình làm theo kế hoạch chứ không theo cảm xúc.</p></section>
+  <footer class="legal"><p><b>Nguồn:</b> TCBS (BCTC, giá điều chỉnh, chỉ báo kỹ thuật, tin HOSE và báo chí). Dữ liệu chốt phiên 15/10/2026.</p><p>Công cụ tham khảo và giáo dục, không phải khuyến nghị mua hay bán. Các số "khoảng", "ước tính" được suy ra từ BCTC và cần đối chiếu thuyết minh gốc.</p></footer>
+</div>
+<div id="tb-foot"></div>
+<script src="../../assets/site.js"></script>
+<script>
+var S={"weekly": [17052, 16225, 16684, 16654, 15919, 16837, 15950, 17878, 16960, 16715, 16464, 15771, 15821, 15623, 15326, 15030, 13349, 15771, 16068, 15920, 19479, 19924, 20419, 22149, 24275, 24226, 30851, 36635, 34806, 27736, 27291, 26055, 26450, 26401, 24720, 23336, 25659, 31394, 29367, 29417, 28181, 27785, 25758, 23978, 24423, 25214, 24621, 23731, 25066, 25907, 25350, 26850, 26600, 26750, 27550, 30200, 30400, 30450, 31050, 28200], "profit": {"labels": ["Q1/25", "Q2/25", "Q3/25", "Q4/25", "Q1/26", "Q2/26"], "vals": [399, 846, 908, 3062, 8265, 7666], "unit": "Lãi ròng quý (tỷ đồng)"}, "price": 28200};
+(function(){
+  var b=document.body,p=document.getElementById('mPlain'),x=document.getElementById('mPro');
+  function set(pro){b.classList.toggle('pro',pro);p.setAttribute('aria-pressed',String(!pro));x.setAttribute('aria-pressed',String(pro));try{localStorage.setItem('tbMode',pro?'pro':'plain')}catch(e){}}
+  p.onclick=function(){set(false)};x.onclick=function(){set(true)};
+  document.getElementById('goPro').onclick=function(){set(true);var f=document.querySelector('#pro .xs');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})};
+  try{if(localStorage.getItem('tbMode')==='pro')set(true)}catch(e){}
+  var nav=document.getElementById('nav');addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>90)},{passive:true});
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,par){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(par)par.appendChild(e);return e}
+  function tx(par,x,y,s,o){o=o||{};var e=el('text',{x:x,y:y,'font-size':o.fs||11,fill:o.fill||'var(--label2)','text-anchor':o.anchor||'middle','font-weight':o.fw||400,'font-family':'Be Vietnam Pro,-apple-system,sans-serif'},par);e.textContent=s;return e}
+  function f(n){return Math.round(n).toLocaleString('vi-VN')}
+  function nice(m){var p=Math.pow(10,Math.floor(Math.log10(m))),r=m/p;return (r<=1?1:r<=2?2:r<=2.5?2.5:r<=5?5:10)*p}
+  // lợi nhuận
+  (function(){var L=S.profit.labels,v=S.profit.vals,s=document.getElementById('profitChart'),W=640,H=250,l=56,r=8,T=20,B=30;
+    var mx=Math.max.apply(null,v.concat([0])),mn=Math.min.apply(null,v.concat([0])),st=nice((mx-mn)/4||1),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:y(g),y2:y(g),stroke:g===0?'var(--label3)':'var(--sep)'},s);tx(s,l-8,y(g)+4,f(g),{anchor:'end'})}
+    var bw=(W-l-r)/L.length;L.forEach(function(lb,i){var x0=l+i*bw+bw*.22,w=bw*.56,a=v[i],top=y(Math.max(a,0)),h=Math.abs(y(a)-y(0));
+      el('rect',{x:x0,y:top,width:w,height:Math.max(h,1.5),rx:5,fill:a<0?'var(--red)':'var(--blue)','fill-opacity':i===L.length-1?1:.6},s);
+      tx(s,x0+w/2,a<0?y(a)+14:y(a)-6,f(a),{fill:'var(--label)',fs:10.5,fw:600});tx(s,x0+w/2,H-10,lb)})})();
+  // giá tuần
+  (function(){var c=S.weekly,N=c.length,s=document.getElementById('priceChart'),W=640,H=270,l=58,r=60,T=14,B=26;
+    function ma(n){return c.map(function(_,i){if(i<n-1)return null;var t=0;for(var j=i-n+1;j<=i;j++)t+=c[j];return t/n})}
+    var m10=ma(10),m40=ma(40),mx=Math.max.apply(null,c),mn=Math.min.apply(null,c),st=nice((mx-mn)/4),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var X=function(i){return l+(W-l-r)*i/(N-1)},Y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:Y(g),y2:Y(g),stroke:'var(--sep)'},s);tx(s,l-8,Y(g)+4,f(g),{anchor:'end'})}
+    [[0,'8/2025'],[20,'1/2026'],[39,'6/2026'],[N-1,'10/2026']].forEach(function(t){tx(s,X(t[0]),H-6,t[1])});
+    var up=c[N-1]>=c[0],col=up?'var(--green)':'var(--red)';
+    var g2=el('linearGradient',{id:'pg',x1:0,x2:0,y1:0,y2:1},el('defs',{},s));el('stop',{offset:'0','stop-color':col,'stop-opacity':.18},g2);el('stop',{offset:'1','stop-color':col,'stop-opacity':0},g2);
+    var d=c.map(function(a,i){return(i?'L':'M')+X(i).toFixed(1)+' '+Y(a).toFixed(1)}).join('');
+    el('path',{d:d+'L'+X(N-1)+' '+Y(lo)+'L'+X(0)+' '+Y(lo)+'Z',fill:'url(#pg)'},s);
+    function line(a,cl,w){var dd='';a.forEach(function(v,i){if(v==null)return;dd+=(dd?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});el('path',{d:dd,fill:'none',stroke:cl,'stroke-width':w,'stroke-linejoin':'round'},s)}
+    line(m40,'var(--red)',1.5);line(m10,'var(--orange)',1.5);line(c,'var(--label)',2);
+    el('circle',{cx:X(N-1),cy:Y(c[N-1]),r:4.5,fill:'var(--label)',stroke:'var(--card)','stroke-width':2},s);
+    tx(s,X(N-1)+8,Y(c[N-1])+4,f(S.price),{anchor:'start',fill:'var(--label)',fw:700,fs:11.5})})();
+})();
+</script>
+</body>
+</html>

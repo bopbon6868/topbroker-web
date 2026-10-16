@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Giải ngố chứng khoán · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Giải ngố chứng khoán: kiến thức đầu tư kiểu trà đá vỉa hè, dễ nghe, dễ hiểu, cầm tay chỉ việc.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,600;0,700;1,500&display=swap">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/giai-ngo.css">
+<style>
+/* Layout mục lục: masthead của mục, rồi lưới 8/4 – trái là 6 chặng học, phải là từ điển + Zalo + lịch ra bài */
+.wrapG{max-width:1240px;margin:0 auto;padding-top:28px;display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:40px}
+.start{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+.btn{display:inline-block;background:var(--tb-ink);color:var(--tb-paper);text-decoration:none;font-weight:700;font-size:15px;padding:11px 18px}
+.btn.alt{background:transparent;color:var(--tb-ink);border:1px solid var(--tb-ink)}
+.stage{display:flex;flex-direction:column;gap:0;margin-bottom:28px}
+.stage h2{display:flex;align-items:baseline;gap:12px;padding-bottom:8px;border-bottom:2px solid var(--tb-ink)}
+.stage h2 .no{font-family:var(--tb-mono);font-size:13px;color:var(--gn-tea);font-weight:600}
+.stage h2 .nm{font-family:var(--gn-serif);font-size:24px;font-weight:700}
+.stage h2 .nt{font-size:14px;color:var(--tb-ink3);font-weight:400;margin-left:auto;text-align:right}
+.ls{list-style:none;margin:0;padding:0}
+.ls li{border-bottom:1px solid var(--tb-rule)}
+.ls a,.ls .soon{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;text-decoration:none;color:var(--tb-ink);align-items:baseline}
+.ls .n{font-family:var(--tb-mono);font-size:13px;color:var(--tb-ink3)}
+.ls .t{font-weight:700;font-size:17px;line-height:1.4}
+.ls .q{grid-column:2;font-size:14.5px;color:var(--tb-ink2);font-style:italic;font-family:var(--gn-serif)}
+.ls .st{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.ls a .st{color:var(--gn-leaf)} .ls .soon .st{color:var(--tb-ink3)}
+.ls .soon .t{color:var(--tb-ink2)}
+.ls a:hover .t{text-decoration:underline}
+.rail{display:flex;flex-direction:column;gap:24px}
+.box{background:var(--tb-card);border:1px solid var(--tb-rule);padding:16px;display:flex;flex-direction:column;gap:10px}
+.box h3{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.dict dt{font-weight:800;font-size:16px}
+.dict dd{margin:0 0 10px;font-size:14.5px;line-height:1.5;color:var(--tb-ink2)}
+.dict dd i{display:block;color:var(--gn-tea);font-family:var(--gn-serif)}
+.prog{height:6px;background:var(--tb-rule)}
+.prog span{display:block;height:100%;background:var(--gn-tea)}
+@media (max-width:980px){.wrapG{grid-template-columns:1fr}}
+@media (max-width:600px){.stage h2 .nt{display:none}.ls a,.ls .soon{grid-template-columns:34px minmax(0,1fr)}.ls .st{grid-column:2}}
+</style>
+</head>
+<body data-root="../" data-page="giai-ngo">
+<div id="tb-top"></div>
+<nav class="gn-crumb" aria-label="Đường dẫn"><a href="../index.html">Trang chủ</a> / Giải ngố chứng khoán</nav>
+<header class="gn-mast">
+  <div>
+    <span class="k">Học đầu tư · Trà đá vỉa hè</span>
+    <h1>Giải ngố chứng khoán</h1>
+    <p>Kiến thức đầu tư nói bằng tiếng người: dễ nghe, dễ hiểu, cầm tay chỉ việc. Mỗi bài đọc vừa hết một cốc trà đá.</p>
+    <div class="start"><a class="btn" href="bai-01/index.html">Bắt đầu từ bài 1 →</a><a class="btn alt" href="tu-dien/index.html">Từ điển chứng khoán vỉa hè</a></div>
+  </div>
+  <svg class="gn-cup" viewBox="0 0 84 84" aria-hidden="true"><path d="M20 30h40l-5 42H25z" fill="#f5e6d3" stroke="#a85a0c" stroke-width="2.5"/><path d="M22 44h36" stroke="#a85a0c" stroke-width="2"/><rect x="25" y="44" width="30" height="26" fill="#a85a0c" opacity=".35"/><path d="M33 22c-3-5 3-7 0-12M43 22c-3-5 3-7 0-12M53 22c-3-5 3-7 0-12" stroke="#8b8984" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+</header>
+
+<div class="wrapG">
+  <main id="stages"></main>
+  <aside class="rail">
+    <div class="box">
+      <h3>Tiến độ bộ bài</h3>
+      <div class="prog"><span id="pbar"></span></div>
+      <p id="ptxt" style="font-size:14.5px;color:var(--tb-ink2)"></p>
+      <p style="font-size:14.5px;color:var(--tb-ink2)">Sau 15 bài đầu, mỗi tuần ra 2 bài mới, không trùng chủ đề.</p>
+    </div>
+    <div class="box">
+      <h3>Từ điển vỉa hè</h3>
+      <dl class="dict" id="dict" style="margin:0"></dl>
+      <a href="tu-dien/index.html" style="font-weight:700;font-size:14px">Xem đủ 30 từ →</a>
+    </div>
+    <div class="gn-cta" style="flex-direction:column;align-items:flex-start">
+      <div><b>Hỏi gì cũng được</b><p>Câu hỏi hay sẽ thành bài viết tiếp theo.</p></div>
+      <div class="gn-zalo"><span>0939 660 996</span></div>
+      <p style="font-size:13px">Zalo · Không khuyến nghị mua bán mã</p>
+    </div>
+  </aside>
+</div>
+
+<div id="tb-foot"></div>
+<script src="../assets/site.js"></script>
+<script src="../assets/giai-ngo.js"></script>
+<script>
+(function(){
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  var html='';GN.STAGES.forEach(function(s){
+    html+='<section class="stage"><h2><span class="no">CHẶNG '+s.id+'</span><span class="nm">'+esc(s.name)+'</span><span class="nt">'+esc(s.note)+'</span></h2><ul class="ls">';
+    GN.LESSONS.filter(function(l){return l.s===s.id}).forEach(function(l){
+      var nn=('0'+l.n).slice(-2),inner='<span class="n">'+nn+'</span><span class="t">'+esc(l.t)+'</span><span class="st">'+(l.status==='live'?'Đọc '+l.min+' phút':'Đang viết')+'</span><span class="q">“'+esc(l.q)+'”</span>';
+      html+='<li>'+(l.status==='live'?'<a href="bai-'+nn+'/index.html">'+inner+'</a>':'<div class="soon">'+inner+'</div>')+'</li>'});
+    html+='</ul></section>'});
+  document.getElementById('stages').innerHTML=html;
+  var live=GN.LESSONS.filter(function(l){return l.status==='live'}).length,tot=GN.LESSONS.length;
+  document.getElementById('pbar').style.width=(live/tot*100)+'%';
+  document.getElementById('ptxt').textContent=live+'/'+tot+' bài đã lên sóng.';
+  document.getElementById('dict').innerHTML=[0,3,4,9,11,21].map(function(i){var d=GN.DICT[i];return '<dt>'+esc(d[0])+'</dt><dd>'+esc(d[2])+'<i>'+esc(d[3])+'</i></dd>'}).join('');
+})();
+</script>
+</body>
+</html>

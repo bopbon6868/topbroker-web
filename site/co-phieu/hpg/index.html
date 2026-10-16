@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Giải mã HPG · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Giải mã cổ phiếu HPG bằng tiếng dễ hiểu và những gì ít người nói cho bạn.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+/* Layout: phong cách iOS – thanh điều hướng mờ, tiêu đề lớn, danh sách bo góc kiểu "inset grouped", một cột rộng tối đa 720px */
+:root{ color-scheme:light;
+  --bg:#f6f4ef; --card:#fffdf9; --fill:#efece5; --label:#24232a; --label2:#55545c; --label3:#b9b6ae;
+  --sep:#e4e0d7; --blue:#1f6fd1; --green:#1e9e52; --red:#d93a2f; --orange:#c97a06; --indigo:#5a52c4; --teal:#1e93a8;
+  --green-t:rgba(52,199,89,.14); --red-t:rgba(255,59,48,.12); --orange-t:rgba(255,149,0,.15); --blue-t:rgba(0,122,255,.12);
+  --bar:rgba(246,244,239,.88);
+  --sf:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --sfd:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font-family:var(--sf);font-size:17px;line-height:1.65;letter-spacing:0;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bar)}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--sfd);margin:0;text-wrap:balance}
+p{margin:0}
+.tn{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .dn{color:var(--red)} .wn{color:var(--orange)} .mute{color:var(--label2)}
+
+/* nav bar */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+.navIn{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{color:var(--blue);font-size:17px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.navT{font-weight:600;font-size:17px;opacity:0;transition:opacity .2s}
+.nav.scrolled .navT{opacity:1}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.seg button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* large title + price */
+.hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:.01em;line-height:1.15}
+.sub{color:var(--label2);font-size:15px}
+.priceLine{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:6px}
+.price{font-family:var(--sfd);font-size:40px;font-weight:700;letter-spacing:-.02em}
+.chip{font-size:13px;font-weight:600;padding:4px 9px;border-radius:7px}
+.chip.r{background:var(--red-t);color:var(--red)} .chip.g{background:var(--green-t);color:var(--green)} .chip.o{background:var(--orange-t);color:var(--orange)} .chip.b{background:var(--blue-t);color:var(--blue)}
+
+/* section header iOS */
+section{display:flex;flex-direction:column;gap:8px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-inline:4px}
+.sh h2{font-size:22px;font-weight:700;letter-spacing:.005em}
+.foot-note{font-size:14.5px;color:var(--label2);padding-inline:16px;line-height:1.6}
+.badge{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo);background:color-mix(in srgb,var(--indigo) 14%,transparent);padding:3px 7px;border-radius:5px;white-space:nowrap}
+
+/* grouped list */
+.group{background:var(--card);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;position:relative}
+.row + .row::before{content:"";position:absolute;top:0;right:0;left:56px;border-top:.5px solid var(--sep)}
+.group.flat .row + .row::before{left:16px}
+.ic{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:700}
+.ic.g{background:var(--green)} .ic.o{background:var(--orange)} .ic.r{background:var(--red)} .ic.b{background:var(--blue)} .ic.i{background:var(--indigo)} .ic.t{background:var(--teal)}
+.rc{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rt{font-size:17px;font-weight:600;line-height:1.3}
+.rs{font-size:16px;color:var(--label2);line-height:1.6}
+.rv{font-size:15px;color:var(--label2);white-space:nowrap;align-self:center}
+.verdict{padding:14px 16px;font-size:16px;line-height:1.65;border-top:.5px solid var(--sep);background:color-mix(in srgb,var(--blue) 5%,var(--card))}
+
+/* widgets grid */
+.widgets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.w{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.w .k{font-size:13px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+.w .v{font-family:var(--sfd);font-size:28px;font-weight:700;letter-spacing:-.01em}
+.w .t{font-size:16px;line-height:1.6}
+
+/* chart card */
+.cc{background:var(--card);border-radius:16px;padding:14px 12px 10px;overflow-x:auto}
+.cc svg{display:block;width:100%;height:auto;min-width:500px}
+.cc.small svg{min-width:320px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--label2);padding:4px 6px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* table */
+.tw{background:var(--card);border-radius:12px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:.5px solid var(--sep)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td.wrap{white-space:normal;text-align:left;min-width:220px;color:var(--label2);font-size:15px}
+tr.hl td{background:color-mix(in srgb,var(--blue) 7%,transparent);font-weight:600}
+
+/* insight cards */
+.ins{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ch h3{font-size:17px;font-weight:600;line-height:1.3}
+.card p{font-size:16px;line-height:1.65}
+.ev{font-size:15px;line-height:1.55;color:var(--label2);background:var(--fill);border-radius:9px;padding:9px 11px}
+
+/* news */
+.news .row{align-items:flex-start}
+.dt{font-size:13px;color:var(--label2)}
+
+/* levels */
+.lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lv .w .v{font-size:22px}
+.teaser{background:var(--card);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center}
+.teaser button{margin-left:auto;font:600 15px var(--sf);color:#fff;background:var(--blue);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+
+.x,.xs{display:none}
+body.pro .x{display:revert} body.pro .xs{display:flex} body.pro .p,body.pro .teaser{display:none}
+.legal{font-size:12px;color:var(--label2);line-height:1.5;padding-inline:4px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:560px){.widgets,.lv{grid-template-columns:1fr}.hero h1{font-size:30px}.price{font-size:34px}.navT{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}.nav{z-index:15}.back a{color:var(--blue);text-decoration:none}.back span{color:var(--label2)}@media (max-width:560px){.back span{display:none}}</style>
+</head>
+<body data-root="../../" data-page="giai-ma">
+
+<div id="tb-top"></div>
+<nav class="nav" id="nav"><div class="navIn">
+  <span class="back"><a href="../index.html">Cổ phiếu</a> <span>/ HPG</span></span>
+  <span class="navT">HPG · 20.750</span>
+  <div class="seg" role="group" aria-label="Chế độ đọc">
+    <button id="mPlain" aria-pressed="true">Dễ hiểu</button>
+    <button id="mPro" aria-pressed="false">Chuyên gia</button>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="sub">HOSE · Thép · Chốt phiên 15/10/2026</span>
+    <h1>HPG</h1>
+    <span class="sub" style="font-size:17px;color:var(--label)">Tập đoàn Hòa Phát</span>
+    <div class="priceLine">
+      <span class="price tn">20.750</span>
+      <span class="chip r tn">−17,7% · 1 năm</span>
+      <span class="chip r tn">−21% từ đỉnh</span>
+    </div>
+    <p class="sub p">Nhà sản xuất thép lớn nhất Việt Nam. Hơn 31.800 nhân viên, gần 166.000 cổ đông, nhà đầu tư nước ngoài nắm 21,7%.</p>
+    <p class="sub x tn">Vốn hóa 175.192 tỷ · 8.443 triệu cp · Room NN 21,7% · EPS 2.750 · BVPS 16.660 · EV/EBITDA 7,3</p>
+  </header>
+
+  <!-- tóm tắt -->
+  <section>
+    <div class="sh"><h2>Tóm tắt 30 giây</h2></div>
+    <div class="group">
+      <div class="row"><span class="ic g">↑</span><div class="rc"><span class="rt">Làm ăn</span><span class="rs">Lãi 6 tháng 2026 khoảng 15.400 tỷ, gần bằng cả năm 2025. Biên lãi đang tốt lên.</span></div></div>
+      <div class="row"><span class="ic o">!</span><div class="rc"><span class="rt">Ít người nói</span><span class="rs">Lãi quý 1 có phần "trúng một lần". Kho hàng và nợ vay cùng tăng nhanh.</span></div></div>
+      <div class="row"><span class="ic o">~</span><div class="rc"><span class="rt">Xu hướng giá</span><span class="rs">Nhích lên ngắn hạn, nhưng vẫn dưới đường trung bình 50 và 200 phiên.</span></div></div>
+      <div class="row"><span class="ic o">$</span><div class="rc"><span class="rt">Dòng tiền</span><span class="rs">Thanh khoản thấp. Con trai Chủ tịch đăng ký mua 50 triệu cp đến 5/11.</span></div></div>
+      <p class="verdict p"><b>Nói gọn:</b> Công ty đang làm ăn tốt hơn, giá cổ phiếu lại rẻ hơn năm ngoái. Đổi lại, tiền đang bị "giam" vào kho hàng và nhà máy mới, và giá chưa xác nhận xu hướng tăng.</p>
+      <p class="verdict x"><b>Kết luận:</b> Cơ bản cải thiện (LNST Q2 +49,7% YoY, biên gộp 19%). P/E báo cáo 7,5 nhưng P/E lõi ≈ 9,4 sau khi loại khoản bất thường Q1. Vốn lưu động phình to, FCF âm. Kỹ thuật: MACD cắt lên dưới 0, ADX giảm, giá &lt; MA50 &lt; MA200 → tích lũy, chưa có xu hướng.</p>
+    </div>
+  </section>
+
+  <!-- định giá -->
+  <section>
+    <div class="sh"><h2>Giá này đắt hay rẻ?</h2></div>
+    <div class="widgets">
+      <div class="w"><span class="k">P/E</span><span class="v tn">7,5×</span>
+        <p class="t p">Bỏ 100 đồng mua HPG, công ty làm ra khoảng <b>13 đồng lãi</b> mỗi năm cho phần của anh.</p>
+        <p class="t x">Lợi suất lợi nhuận 13,3%. P/E lõi (loại ~4.600 tỷ LNST bất thường Q1/26) ≈ 9,4×.</p></div>
+      <div class="w"><span class="k">P/B</span><span class="v tn">1,2×</span>
+        <p class="t p">Trả 1,2 đồng để mua 1 đồng tài sản thật của công ty, sau khi đã trừ hết nợ.</p>
+        <p class="t x">BVPS 16.660. Thấp hơn vùng 1,5–2,3× giai đoạn 2020–2025.</p></div>
+      <div class="w"><span class="k">ROE</span><span class="v tn">17,7%</span>
+        <p class="t p">Cứ 100 đồng vốn của chủ, công ty đẻ ra gần <b>18 đồng lãi</b> mỗi năm. Mức khá.</p>
+        <p class="t x">TTM. Năm 2025 chỉ 12,7%; mức TTM được đẩy lên bởi khoản bất thường Q1.</p></div>
+      <div class="w"><span class="k">Cổ tức</span><span class="v tn">2,1%</span>
+        <p class="t p">Thấp hơn gửi tiết kiệm. HPG giữ tiền lại xây nhà máy, nên đừng mua HPG để ăn cổ tức.</p>
+        <p class="t x">Tiền mặt 5%/năm (500đ/cp) + cổ phiếu 10–35%. Pha loãng đều đặn.</p></div>
+    </div>
+  </section>
+
+  <!-- KQKD -->
+  <section>
+    <div class="sh"><h2>Làm ăn ra sao?</h2></div>
+    <div class="cc"><svg id="profitChart" viewBox="0 0 640 250" role="img" aria-label="Lợi nhuận quý HPG Q1/2024 đến Q2/2026"></svg>
+      <div class="legend"><span><i style="background:var(--blue)"></i>Lãi ròng quý (tỷ đồng)</span><span><i style="background:var(--orange)"></i>Phần lãi bất thường ước tính (Q1/26)</span></div></div>
+    <div class="tw"><table>
+      <thead><tr><th>Quý</th><th>Doanh thu</th><th>Biên gộp</th><th>Lãi ròng</th><th>YoY</th></tr></thead>
+      <tbody>
+        <tr><td>Q2/2026</td><td>55.159</td><td>19,0%</td><td>6.371</td><td class="up">+49,7%</td></tr>
+        <tr><td>Q1/2026</td><td>52.901</td><td>15,8%</td><td>8.994</td><td class="up">+169%</td></tr>
+        <tr><td>Q4/2025</td><td>46.176</td><td>13,9%</td><td>3.864</td><td class="up">+37,6%</td></tr>
+        <tr><td>Q3/2025</td><td>36.407</td><td>16,7%</td><td>3.988</td><td class="up">+31,9%</td></tr>
+        <tr><td>Q2/2025</td><td>35.911</td><td>18,4%</td><td>4.256</td><td class="up">+28,2%</td></tr>
+      </tbody>
+    </table></div>
+    <p class="foot-note">Đơn vị: tỷ đồng. Lãi ròng là lợi nhuận sau thuế của cổ đông công ty mẹ.</p>
+  </section>
+
+  <!-- ít người nói -->
+  <section>
+    <div class="sh"><h2>Những gì ít người nói cho bạn</h2></div>
+    <p class="foot-note" style="padding-inline:4px">Phần lớn báo cáo chỉ kể điểm sáng. Đây là những chỗ nên soi kỹ trước khi xuống tiền.</p>
+    <div class="ins">
+      <article class="card">
+        <div class="ch"><h3>Lãi quý 1 có phần "trúng một lần"</h3><span class="chip r">Cần soi kỹ</span></div>
+        <p class="p">Quý 1/2026, tiền lãi từ việc bán thép chỉ khoảng 6.600 tỷ, nhưng lãi trước thuế lên tới 10.762 tỷ. Khoảng 5.400 tỷ đến từ nguồn khác, nhiều khả năng không lặp lại. Đừng lấy lãi quý 1 nhân 4 để đoán cả năm.</p>
+        <p class="x">LN HĐKD 6.634 − chi phí lãi vay 1.333 = 5.301 tỷ. LNTT báo cáo 10.762 tỷ → chênh ~5.460 tỷ từ doanh thu tài chính/thu nhập khác. Các quý khác chỉ 100–250 tỷ. Cần thuyết minh BCTC để xác định nguồn (thoái vốn, đánh giá lại, tỷ giá…).</p>
+        <div class="ev">Bỏ khoản này đi, lãi 6 tháng thực chất khoảng 10.800 tỷ, không phải 15.400 tỷ.</div>
+      </article>
+      <article class="card">
+        <div class="ch"><h3>Kho hàng phình to</h3><span class="chip r">Rủi ro giá thép</span></div>
+        <p class="p">Chỉ trong 3 tháng, hàng tồn kho tăng từ 43.500 lên 55.600 tỷ (+28%). Hàng nằm kho trung bình gần 4 tháng. Nếu giá thép giảm, công ty phải bán rẻ hoặc trích lập dự phòng.</p>
+        <p class="x">Tồn kho Q2/26 55.608 tỷ (Q1 43.516). Số ngày tồn kho năm 2025 là 137 ngày, cao nhất 6 năm. Rủi ro giảm giá trị hàng tồn kho nếu giá HRC/quặng biến động.</p>
+      </article>
+      <article class="card">
+        <div class="ch"><h3>Lãi trên giấy chưa thành tiền mặt</h3><span class="chip o">Theo dõi</span></div>
+        <p class="p">Quý 2, công ty báo lãi 6.424 tỷ nhưng tiền thật thu về chỉ 5.825 tỷ, trong khi chi 7.034 tỷ xây nhà máy. Quý này tiêu nhiều hơn kiếm.</p>
+        <p class="x">CFO Q2/26 5.825 &lt; LNST 6.424. Capex 7.034 → FCF ≈ −1.200 tỷ. 6T/26 CFO 12.642 ≈ 82% LNST. Dự án thép ray đề xuất nâng tổng vốn lên ~30.000 tỷ.</p>
+      </article>
+      <article class="card">
+        <div class="ch"><h3>Tiền lãi vay gấp 3,5 lần</h3><span class="chip o">Theo dõi</span></div>
+        <p class="p">Tiền lãi trả ngân hàng quý 2 là 1.520 tỷ, gấp 3,5 lần cùng kỳ. Nhà máy Dung Quất 2 đã chạy nên lãi vay giờ tính thẳng vào chi phí. Khả năng trả nợ vẫn ổn: mỗi 1 đồng lãi vay có 5,6 đồng lợi nhuận gánh.</p>
+        <p class="x">Vay NH 71.433 (+13,7% QoQ), DH 27.097. Lãi vay Q2/26 1.520 vs 439 Q2/25 (ngừng vốn hóa lãi vay DQ2). EBIT/lãi vay 5,6×; Nợ vay/EBITDA 2,6×; nợ ròng/VCSH ≈ 0,43×.</p>
+      </article>
+      <article class="card">
+        <div class="ch"><h3>Thép là ngành chu kỳ, không phải tăng đều</h3><span class="chip b">Bối cảnh</span></div>
+        <p class="p">Năm 2021 HPG lãi 34.500 tỷ, năm 2023 chỉ còn 6.800 tỷ. Lợi nhuận 5 năm qua chỉ tăng trung bình 2,8%/năm. Ai thích "tăng đều" cần hiểu HPG lên xuống theo giá thép thế giới.</p>
+        <p class="x">P/E thấp ở đỉnh lợi nhuận là cái bẫy kinh điển của cổ phiếu chu kỳ: năm 2021 P/E chỉ 5,8× nhưng sau đó LN giảm 75%. Định giá chu kỳ nên dùng P/B và EV/EBITDA trung bình chu kỳ.</p>
+      </article>
+      <article class="card">
+        <div class="ch"><h3>Người trong nhà: có bán, có mua</h3><span class="chip b">Trung tính</span></div>
+        <p class="p">Thành viên HĐQT Nguyễn Ngọc Quang đã bán 6,6 triệu cp (6–7/2026). Chị gái Phó Chủ tịch bán 350.000 cp. Ngược lại, con trai Chủ tịch Trần Đình Long đăng ký <b>mua 50 triệu cp</b> (7/10–5/11), khoảng 1.000 tỷ.</p>
+        <p class="x">Bán: Nguyễn Ngọc Quang −6,6tr cp (1,63%→1,56%). Mua: Trần Vũ Minh đăng ký +50tr (2,73% → ~3,32%). Cần theo dõi báo cáo kết quả sau 5/11.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Teaser chế độ chuyên gia -->
+  <!--AX--><style>
+.ax .axk{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo)}
+.ax .card p{font-size:16px;line-height:1.7}
+.ax .axt{border-left:4px solid var(--indigo)}
+.ax ol.axd{list-style:none;margin:0;padding:0;counter-reset:d;display:flex;flex-direction:column}
+.ax ol.axd li{counter-increment:d;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:12px 0;border-top:1px solid var(--sep)}
+.ax ol.axd li:first-child{border-top:0;padding-top:4px}
+.ax ol.axd li::before{content:counter(d);grid-row:span 3;width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ax ol.axd b{font-size:16px}
+.ax ol.axd span{font-size:15px;color:var(--label2);line-height:1.55}
+.ax ol.axd em{font-style:normal;font-size:14.5px;line-height:1.55;background:var(--fill);border-radius:8px;padding:7px 10px;margin-top:4px}
+.ax ul.axs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ax ul.axs li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 10px;padding:10px 0;border-top:1px solid var(--sep)}
+.ax ul.axs li:first-child{border-top:0;padding-top:2px}
+.ax ul.axs li i{grid-row:span 2;font-style:normal;font-weight:800;font-size:15px;line-height:1.4}
+.ax ul.axs li.g i{color:var(--green)} .ax ul.axs li.r i{color:var(--red)}
+.ax ul.axs b{font-size:15.5px} .ax ul.axs span{font-size:15px;color:var(--label2);line-height:1.5}
+.ax .axc{background:color-mix(in srgb,var(--indigo) 7%,var(--card))}
+.ax table td:first-child{font-weight:600}
+</style><section class="xs ax"><div class="sh"><h2>Góc nhìn nhà phân tích</h2><span class="badge">Chuyên gia</span></div><article class="card axt"><span class="axk">Luận điểm cốt lõi</span><p>HPG đang ở pha giữa của chu kỳ phục hồi biên lợi nhuận, cùng lúc Dung Quất 2 chuyển từ "tài sản xây dựng" sang "tài sản vận hành". Câu hỏi đúng không phải là lãi có tăng hay không, mà là <b>lãi lõi bền vững bằng bao nhiêu</b> khi Dung Quất 2 chạy đủ công suất, lãi vay đã tính hết vào chi phí và giá thép trở về mức bình thường. Mọi con số "rẻ" hay "đắt" đều phải quy về câu hỏi này.</p></article><article class="card"><span class="axk">Giá hiện tại đang ngầm định gì?</span><p>Ở P/B 1,2×, nếu giả định nhà đầu tư đòi lợi suất 13%/năm và lợi nhuận dài hạn tăng 5%/năm, thị trường đang ngầm định HPG duy trì ROE khoảng <b>14,6%</b>. ROE lõi 4 quý gần nhất (đã loại khoản bất thường quý 1) chỉ khoảng 13,1%. Nói cách khác, ở giá này HPG <b>không rẻ như P/E 7,5 gợi ý</b>: nó được định giá khá sát với năng lực sinh lời lõi, và chỉ thực sự rẻ nếu ROE lõi vượt 15% một cách bền vững.</p><div class="ev">ROE ngầm định = P/B × (r − g) + g = 1,2 × (13% − 5%) + 5% ≈ 14,6%. ROE lõi = (23.217 − ~4.600) / 141.516 ≈ 13,1%.</div></article><article class="card"><span class="axk">Các biến số quyết định và độ nhạy</span><ol class="axd"><li><b>Biên gộp (giá HRC trừ giá quặng, than)</b><span>Biến số lớn nhất. Biên gộp 2021 đạt 27,5%, năm 2023 chỉ 10,9%.</span><em>Mỗi 1 điểm % biên gộp trên doanh thu 4 quý ~190.600 tỷ ≈ 1.900 tỷ lãi gộp ≈ 1.500 tỷ LNST ≈ 8% lãi lõi.</em></li><li><b>Sản lượng Dung Quất 2</b><span>Vòng quay tài sản đã giảm từ 0,8 xuống 0,6 vì nhà máy mới chưa tạo đủ doanh thu.</span><em>Đưa vòng quay về 0,7–0,8 với biên ròng giữ nguyên là cách duy nhất để ROE vượt 18% mà không cần giá thép tăng.</em></li><li><b>Lãi suất và vốn lưu động</b><span>Lãi vay quý 2 là 1.520 tỷ, khoảng 6.000 tỷ/năm, sau khi thôi vốn hóa lãi vay Dung Quất 2.</span><em>Mỗi 1 điểm % lãi suất trên 98.530 tỷ nợ vay ≈ 985 tỷ chi phí/năm ≈ 5% lãi lõi. Tồn kho 55.600 tỷ: giá thép giảm 10% có thể buộc trích dự phòng vài nghìn tỷ.</em></li><li><b>Pha loãng cổ phiếu</b><span>Cổ tức cổ phiếu 10–35%/năm làm số cổ phiếu tăng đều.</span><em>Đợt 10% năm 2026 kéo EPS giảm tương ứng ~9%; tăng trưởng lợi nhuận phải vượt tốc độ pha loãng thì cổ đông mới thực sự có lợi.</em></li></ol></article><span class="axk" style="padding:8px 4px 0">Ma trận kịch bản: P/E, P/B ở giá hiện tại</span><div class="tw"><table><thead><tr><th>Kịch bản</th><th>Giả định 12 tháng tới</th><th>LNST lõi</th><th>EPS</th><th>P/E ở 20.750</th><th>ROE</th></tr></thead><tbody><tr><td>Tiêu cực</td><td>Biên gộp về 13% như Q4/25</td><td>~14.000 tỷ</td><td>~1.660</td><td>~12,5×</td><td>~9,9%</td></tr><tr><td>Cơ sở</td><td>Biên gộp 16–17%, DQ2 tăng dần</td><td>~19.000 tỷ</td><td>~2.250</td><td>~9,2×</td><td>~13,4%</td></tr><tr><td>Tích cực</td><td>Giữ biên 19% của Q2/26 cả năm</td><td>~25.000 tỷ</td><td>~2.960</td><td>~7,0×</td><td>~17,7%</td></tr></tbody></table></div><p class="foot-note">EPS tính trên 8.443 triệu cổ phiếu, chưa tính đợt cổ tức cổ phiếu tiếp theo. Đây là phép thử độ nhạy, không phải dự báo hay giá mục tiêu.</p><article class="card"><span class="axk">Tín hiệu xác nhận hoặc bác bỏ luận điểm</span><ul class="axs"><li class="g"><i>↑</i><b>Biên gộp quý 3/2026 từ 18% trở lên</b><span>Xác nhận quý 2 không phải đỉnh mùa vụ; kịch bản tích cực có cơ sở.</span></li><li class="r"><i>↓</i><b>Biên gộp quý 3 dưới 15%</b><span>Lãi quý 2 là đỉnh; P/E thực tế quay về vùng 10–12 lần.</span></li><li class="g"><i>↑</i><b>Tồn kho giảm dưới 50.000 tỷ, tiền từ kinh doanh lớn hơn LNST</b><span>Lãi đang chuyển thành tiền thật, áp lực vay giảm.</span></li><li class="r"><i>↓</i><b>Vay ngắn hạn tiếp tục tăng hơn 10%/quý</b><span>Vốn lưu động phình to, rủi ro tái cấp vốn khi lãi suất tăng.</span></li><li class="g"><i>↑</i><b>Báo cáo kết quả mua 50 triệu cp của con trai Chủ tịch sau 5/11</b><span>Mua đủ là tín hiệu người trong cuộc đánh giá giá hiện tại hấp dẫn.</span></li></ul></article><article class="card axc"><span class="axk">Điều thị trường có thể đang bỏ sót</span><p>Thị trường đang chú ý quá nhiều vào khoản bất thường quý 1 mà bỏ qua chi tiết quan trọng hơn: từ quý 2, lãi vay Dung Quất 2 đã tính thẳng vào chi phí (1.520 tỷ, gấp 3,5 lần cùng kỳ). Nghĩa là con số 6.371 tỷ của quý 2 là lãi đã "sạch" chi phí vốn của nhà máy mới. Nếu quý 2 là nhịp chạy ổn định, lãi năm hóa khoảng 25.000 tỷ và P/E thực khoảng 7 lần. Điểm yếu của lập luận này: quý 2 thường là mùa cao điểm xây dựng, nên cần thêm quý 3 để kiểm chứng.</p></article></section><!--/AX-->
+  <div class="teaser"><span class="ic i">7</span><div class="rc"><span class="rt">Bảng phân tích chuyên sâu</span><span class="rs">DuPont, biên lợi nhuận, chu kỳ tiền mặt, bảng cân đối, dòng tiền, so sánh ngành, cổ tức.</span></div><button id="goPro">Xem</button></div>
+
+  <!-- PRO -->
+  <section class="xs" id="pro">
+    <div class="sh"><h2>Phân tích DuPont</h2><span class="badge">Chuyên gia</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Năm</th><th>Biên ròng</th><th>Vòng quay TS</th><th>Đòn bẩy</th><th>ROE</th><th>P/E cuối năm</th></tr></thead>
+      <tbody>
+        <tr><td>2021</td><td>23,0%</td><td>0,8×</td><td>2,0×</td><td>46,1%</td><td>5,8</td></tr>
+        <tr><td>2022</td><td>6,0%</td><td>0,8×</td><td>1,8×</td><td>9,1%</td><td>12,1</td></tr>
+        <tr><td>2023</td><td>5,7%</td><td>0,6×</td><td>1,8×</td><td>6,9%</td><td>23,3</td></tr>
+        <tr><td>2024</td><td>8,7%</td><td>0,6×</td><td>2,0×</td><td>11,1%</td><td>13,9</td></tr>
+        <tr><td>2025</td><td>9,9%</td><td>0,6×</td><td>2,0×</td><td>12,7%</td><td>12,9</td></tr>
+        <tr class="hl"><td>TTM Q2/26</td><td>12,2%</td><td>0,7×</td><td>2,0×</td><td>17,7%</td><td>7,5</td></tr>
+      </tbody>
+    </table></div>
+    <p class="foot-note">ROE = Biên lãi ròng × Vòng quay tài sản × Đòn bẩy (Tổng tài sản/VCSH). Biên ròng là biến số quyết định; vòng quay tài sản giảm từ 0,8 xuống 0,6 do tài sản Dung Quất 2 chưa tạo đủ doanh thu. TTM: LNST 23.217 / DT 190.644; TS 278.930 / VCSH 141.516.</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>Biên lợi nhuận qua chu kỳ</h2><span class="badge">Chuyên gia</span></div>
+    <div class="cc small"><svg id="marginChart" viewBox="0 0 640 230" role="img" aria-label="Biên lợi nhuận gộp, hoạt động và ròng 2020 đến 2025"></svg>
+      <div class="legend"><span><i style="background:var(--blue)"></i>Biên gộp</span><span><i style="background:var(--teal)"></i>Biên hoạt động</span><span><i style="background:var(--indigo)"></i>Biên ròng</span></div></div>
+    <p class="foot-note">Biên gộp 2025 (15,7%) mới hồi về khoảng giữa đáy 2023 (10,9%) và đỉnh 2021 (27,5%). Còn dư địa nếu giá thép phục hồi, nhưng cũng cho thấy lợi nhuận hiện tại chưa phải "đỉnh chu kỳ".</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>Chu kỳ chuyển đổi tiền mặt</h2><span class="badge">Chuyên gia</span></div>
+    <div class="cc small"><svg id="cccChart" viewBox="0 0 640 250" role="img" aria-label="Số ngày phải thu, tồn kho, phải trả 2020 đến 2025"></svg>
+      <div class="legend"><span><i style="background:var(--blue)"></i>Ngày phải thu</span><span><i style="background:var(--orange)"></i>Ngày tồn kho</span><span><i style="background:var(--green)"></i>Ngày phải trả (trừ đi)</span></div></div>
+    <p class="foot-note">CCC = Ngày phải thu + Ngày tồn kho − Ngày phải trả. Tăng từ 91 ngày (2020) lên 115 ngày (2025): mỗi đồng doanh thu cần vốn lưu động lâu hơn khoảng 3 tuần. Đây là lý do CFO thấp hơn LNST.</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>Bảng cân đối Q2/2026</h2><span class="badge">Chuyên gia</span></div>
+    <div class="cc small"><svg id="bsChart" viewBox="0 0 640 210" role="img" aria-label="Cơ cấu tài sản và nguồn vốn quý 2 năm 2026"></svg></div>
+    <div class="tw"><table>
+      <thead><tr><th>Chỉ tiêu</th><th>Tỷ đồng</th><th>Tỷ trọng</th></tr></thead>
+      <tbody>
+        <tr><td>Tổng tài sản</td><td>278.930</td><td>100%</td></tr>
+        <tr><td>Tài sản cố định</td><td>132.716</td><td>47,6%</td></tr>
+        <tr><td>Hàng tồn kho</td><td>55.608</td><td>19,9%</td></tr>
+        <tr><td>Tiền + đầu tư ngắn hạn</td><td>37.256</td><td>13,4%</td></tr>
+        <tr><td>Vay ngắn hạn + dài hạn</td><td>98.530</td><td>35,3%</td></tr>
+        <tr><td>Nợ ròng</td><td>61.274</td><td>0,43× VCSH</td></tr>
+        <tr><td>Vốn chủ sở hữu</td><td>141.516</td><td>50,7%</td></tr>
+      </tbody>
+    </table></div>
+    <p class="foot-note">Thanh toán hiện hành 1,1× và thanh toán nhanh 0,5× (cuối 2025): tài sản ngắn hạn phụ thuộc lớn vào tồn kho. Vay ngắn hạn gấp 2,6 lần vay dài hạn, rủi ro tái cấp vốn nếu lãi suất tăng.</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>Dòng tiền 6 tháng 2026</h2><span class="badge">Chuyên gia</span></div>
+    <div class="cc small"><svg id="cfChart" viewBox="0 0 640 240" role="img" aria-label="Thác dòng tiền 6 tháng đầu năm 2026"></svg></div>
+    <p class="foot-note">Tiền từ kinh doanh gần như chỉ đủ bù capex; doanh nghiệp vay ròng thêm khoảng 3.300 tỷ để giữ tiền mặt tăng nhẹ. Nếu triển khai dự án thép ray mở rộng (+20.000 tỷ), nhu cầu vốn vay sẽ tăng tiếp.</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>So sánh cùng ngành thép</h2><span class="badge">Chuyên gia</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Mã</th><th>Vốn hóa (tỷ)</th><th>P/E</th><th>P/B</th><th>ROE</th><th>Tương quan với HPG</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>HPG</td><td>175.192</td><td>7,5</td><td>1,2</td><td>17,7%</td><td>1,00</td></tr>
+        <tr><td>HSG</td><td>8.436</td><td>12,9</td><td>0,7</td><td>5,7%</td><td>0,80</td></tr>
+        <tr><td>TVN</td><td>6.507</td><td>8,3</td><td>0,7</td><td>8,8%</td><td>0,80</td></tr>
+        <tr><td>NKG</td><td>5.169</td><td>31,0</td><td>0,7</td><td>2,2%</td><td>0,72</td></tr>
+      </tbody>
+    </table></div>
+    <p class="foot-note">HPG có ROE cao nhất nhóm, P/E thấp nhất, và được định giá trên giá trị sổ sách trong khi các mã khác dưới 1×. Thị trường đang trả phần bù cho quy mô và chuỗi giá trị khép kín (quặng → phôi → HRC).</p>
+  </section>
+
+  <section class="xs">
+    <div class="sh"><h2>Lịch sử cổ tức</h2><span class="badge">Chuyên gia</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Ngày thực hiện</th><th>Năm</th><th>Hình thức</th><th>Tỷ lệ</th></tr></thead>
+      <tbody>
+        <tr><td>25/05/2026</td><td>2026</td><td>Cổ phiếu</td><td>10%</td></tr>
+        <tr><td>11/05/2026</td><td>2025</td><td>Tiền mặt</td><td>5%</td></tr>
+        <tr><td>26/06/2025</td><td>2025</td><td>Cổ phiếu</td><td>20%</td></tr>
+        <tr><td>17/06/2022</td><td>2022</td><td>Cổ phiếu</td><td>30%</td></tr>
+        <tr><td>17/06/2022</td><td>2021</td><td>Tiền mặt</td><td>5%</td></tr>
+        <tr><td>31/05/2021</td><td>2021</td><td>Cổ phiếu</td><td>35%</td></tr>
+        <tr><td>31/05/2021</td><td>2020</td><td>Tiền mặt</td><td>5%</td></tr>
+      </tbody>
+    </table></div>
+    <p class="foot-note">Cổ tức cổ phiếu không làm tăng tài sản của cổ đông; nó làm tăng số cổ phiếu và pha loãng EPS. Số cổ phiếu lưu hành đã tăng lên 8.443 triệu sau đợt niêm yết bổ sung 767,5 triệu cp ngày 15/7/2026.</p>
+  </section>
+
+  <!-- kỹ thuật -->
+  <section>
+    <div class="sh"><h2>Giá đang đi về đâu?</h2></div>
+    <div class="cc"><svg id="priceChart" viewBox="0 0 640 270" role="img" aria-label="Giá HPG 120 phiên gần nhất cùng các đường trung bình"></svg>
+      <div class="legend"><span><i style="background:var(--label)"></i>Giá</span><span><i style="background:var(--blue)"></i>MA20</span><span><i style="background:var(--orange)"></i>MA50</span><span><i style="background:var(--red)"></i>MA200</span></div></div>
+    <p class="foot-note p">Ba đường màu là giá trung bình 1 tháng, 2,5 tháng và 10 tháng. Giá nằm dưới đường nào nghĩa là người mua trung bình trong giai đoạn đó đang lỗ.</p>
+    <div class="group">
+      <div class="row"><span class="ic b">MA</span><div class="rc"><span class="rt">Đường trung bình</span><span class="rs p">Giá vừa vượt đường 1 tháng nhưng vẫn dưới đường 2,5 và 10 tháng. Ngắn hạn hồi, dài hạn còn yếu.</span><span class="rs x">Giá &gt; MA20 (20.568), &lt; MA50 (21.227) &lt; MA200 (23.169). Cấu trúc giảm trung hạn chưa phá vỡ.</span></div></div>
+      <div class="row"><span class="ic t">R</span><div class="rc"><span class="rt">RSI 49,8</span><span class="rs p">Ở giữa, không nóng không lạnh. Đầu tháng 10 từng xuống 33, gần vùng "bán quá tay".</span><span class="rs x">Trung tính, hồi từ 33,5 (1/10). Chưa có phân kỳ.</span></div></div>
+      <div class="row"><span class="ic i">M</span><div class="rc"><span class="rt">MACD</span><span class="rs p">Đà giảm đang yếu dần. Đây là tín hiệu sớm, chưa đủ để khẳng định đảo chiều.</span><span class="rs x">MACD −0,20 cắt lên signal −0,29 từ 12/10; histogram dương và mở rộng, vẫn dưới 0.</span></div></div>
+      <div class="row"><span class="ic o">A</span><div class="rc"><span class="rt">ADX 23,1</span><span class="rs p">Thị trường đang lưỡng lự, chưa có xu hướng rõ.</span><span class="rs x">ADX giảm 29 → 23: xu hướng giảm suy yếu, chuyển trạng thái đi ngang.</span></div></div>
+      <div class="row"><span class="ic g">V</span><div class="rc"><span class="rt">Thanh khoản và khối ngoại</span><span class="rs p">Ít người giao dịch, chưa thấy tiền lớn quay lại. Nước ngoài mua nhiều hơn bán nhưng chưa mạnh tay.</span><span class="rs x">KL TB20 ~18,7tr cp (2–4/2026 có phiên 100–145tr). NN mua ròng 10 phiên +6,8tr cp; lũy kế từ 15/7 +33,5tr cp.</span></div></div>
+    </div>
+  </section>
+
+  <!-- tin -->
+  <section>
+    <div class="sh"><h2>Tin chuẩn</h2></div>
+    <div class="group news">
+      <div class="row"><span class="ic g">↑</span><div class="rc"><span class="dt">12/10 · Giá +3,0%</span><span class="rt">Phiên tăng mạnh nhất tháng, khối ngoại mua ròng 6,3 triệu cp</span><span class="rs">Trùng thời gian con trai Chủ tịch được phép mua 50 triệu cp, nguồn cầu lớn có thể nâng đỡ giá đến 5/11.</span></div></div>
+      <div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">03/10 · ĐTCK</span><span class="rt">Hòa Phát sở hữu 25,13% Tương lai Sông Hồng</span><span class="rs">Mở rộng sang lĩnh vực mới, thêm một khoản tiền đi ra.</span></div></div>
+      <div class="row"><span class="ic g">↑</span><div class="rc"><span class="dt">02/10 · HOSE</span><span class="rt">Con trai Chủ tịch đăng ký mua 50 triệu cổ phiếu</span><span class="rs">Giá chạm đáy 1 năm (19.600 trong phiên) rồi bật lên.</span></div></div>
+      <div class="row"><span class="ic o">!</span><div class="rc"><span class="dt">20/09 · Báo chí</span><span class="rt">Dự án thép ray đề xuất tăng vốn thêm 20.000 tỷ</span><span class="rs">Tốt cho tăng trưởng dài hạn, nhưng cần thêm tiền và có thể thêm nợ.</span></div></div>
+      <div class="row"><span class="ic r">↓</span><div class="rc"><span class="dt">20/07 · Giá −5,7%</span><span class="rt">Phiên giảm mạnh, khối lượng 53 triệu cp</span><span class="rs">Vài phiên sau khi 767,5 triệu cp thưởng được giao dịch (15/7). Lượng hàng về có thể tạo áp lực bán.</span></div></div>
+    </div>
+  </section>
+
+  <!-- mốc -->
+  <section>
+    <div class="sh"><h2>Các mốc giá cần nhớ</h2></div>
+    <div class="lv">
+      <div class="w"><span class="k dn">Cảnh giác</span><span class="v dn tn">&lt; 19.600</span><p class="t">Thủng đáy 1 năm. Xu hướng giảm tiếp diễn, cần xem lại toàn bộ luận điểm.</p></div>
+      <div class="w"><span class="k wn">Tích lũy</span><span class="v wn tn">20.000–21.200</span><p class="t">Giá đang dao động ở đây. Phù hợp quan sát.</p></div>
+      <div class="w"><span class="k up">Tích cực</span><span class="v up tn">&gt; 21.200</span><p class="t">Vượt MA50 kèm khối lượng lớn. Mốc tiếp theo là MA200 quanh 23.200.</p></div>
+    </div>
+    <p class="foot-note p">Thống nhất trước với nhau: giá về đâu thì làm gì. Khi thị trường biến động, mình làm theo kế hoạch chứ không theo cảm xúc.</p>
+  </section>
+
+  <footer class="legal">
+    <p><b>Nguồn:</b> TCBS (BCTC hợp nhất, giá điều chỉnh, giao dịch nội bộ, tin HOSE). Dữ liệu chốt phiên 15/10/2026.</p>
+    <p>Công cụ tham khảo và giáo dục, không phải khuyến nghị mua hay bán. Các số "khoảng", "ước tính" được suy ra từ BCTC và cần đối chiếu thuyết minh gốc.</p>
+    <p>Top Broker · Bản demo</p>
+  </footer>
+</div>
+
+<div id="tb-foot"></div>
+<script src="../../assets/site.js"></script>
+<script>
+(function(){
+  var b=document.body,p=document.getElementById('mPlain'),x=document.getElementById('mPro');
+  function set(pro){b.classList.toggle('pro',pro);p.setAttribute('aria-pressed',String(!pro));x.setAttribute('aria-pressed',String(pro));try{localStorage.setItem('hpgMode',pro?'pro':'plain')}catch(e){}}
+  p.onclick=function(){set(false)};x.onclick=function(){set(true)};
+  document.getElementById('goPro').onclick=function(){set(true);var el=document.getElementById('pro');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})};
+  try{if(localStorage.getItem('hpgMode')==='pro')set(true)}catch(e){}
+  var nav=document.getElementById('nav');addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>90)},{passive:true});
+
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,par){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(par)par.appendChild(e);return e}
+  function tx(par,x,y,s,o){o=o||{};var e=el('text',{x:x,y:y,'font-size':o.fs||11,fill:o.fill||'var(--label2)','text-anchor':o.anchor||'middle','font-weight':o.fw||400,'font-family':'Be Vietnam Pro,-apple-system,sans-serif'},par);e.textContent=s;return e}
+  function f(n){return Math.round(n).toLocaleString('vi-VN')}
+  function grid(s,L,R,W,y,vals,fmt){vals.forEach(function(v){el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:'var(--sep)','stroke-width':1},s);tx(s,L-8,y(v)+4,fmt(v),{anchor:'end'})})}
+
+  // lợi nhuận quý
+  (function(){var q=['Q1/24','Q2/24','Q3/24','Q4/24','Q1/25','Q2/25','Q3/25','Q4/25','Q1/26','Q2/26'],v=[2871,3319,3023,2809,3344,4256,3988,3864,8994,6371];
+    var s=document.getElementById('profitChart'),W=640,H=250,L=48,R=8,T=18,B=30,max=10000,y=function(a){return T+(H-T-B)*(1-a/max)};
+    grid(s,L,R,W,y,[0,2500,5000,7500,10000],f);var bw=(W-L-R)/q.length;
+    q.forEach(function(lb,i){var x0=L+i*bw+bw*.2,w=bw*.6;
+      if(i===8){var core=4450;el('rect',{x:x0,y:y(core),width:w,height:y(0)-y(core),rx:5,fill:'var(--blue)'},s);el('rect',{x:x0,y:y(v[i]),width:w,height:y(core)-y(v[i]),rx:5,fill:'var(--orange)'},s)}
+      else el('rect',{x:x0,y:y(v[i]),width:w,height:y(0)-y(v[i]),rx:5,fill:'var(--blue)','fill-opacity':i===9?1:.55},s);
+      tx(s,x0+w/2,y(v[i])-6,f(v[i]),{fill:'var(--label)',fs:10.5,fw:600});tx(s,x0+w/2,H-10,lb)})})();
+
+  // biên lợi nhuận
+  (function(){var yr=['2020','2021','2022','2023','2024','2025'],g=[21,27.5,11.9,10.9,13.3,15.7],o=[19,25.2,9.2,8.1,10.5,13.1],n=[14.9,23,6,5.7,8.7,9.9];
+    var s=document.getElementById('marginChart'),W=640,H=230,L=40,R=40,T=14,B=28,y=function(a){return T+(H-T-B)*(1-a/30)},X=function(i){return L+(W-L-R)*i/5};
+    grid(s,L,R,W,y,[0,10,20,30],function(v){return v+'%'});yr.forEach(function(t,i){tx(s,X(i),H-8,t)});
+    [[g,'var(--blue)'],[o,'var(--teal)'],[n,'var(--indigo)']].forEach(function(sr){var d=sr[0].map(function(v,i){return(i?'L':'M')+X(i)+' '+y(v)}).join('');el('path',{d:d,fill:'none',stroke:sr[1],'stroke-width':2.5,'stroke-linejoin':'round','stroke-linecap':'round'},s);
+      sr[0].forEach(function(v,i){el('circle',{cx:X(i),cy:y(v),r:3.5,fill:sr[1]},s)});tx(s,X(5)+8,y(sr[0][5])+4,String(sr[0][5]).replace('.',',')+'%',{anchor:'start',fill:sr[1],fw:600})})})();
+
+  // chu kỳ tiền mặt
+  (function(){var yr=['2020','2021','2022','2023','2024','2025'],rc=[17,31,50,45,30,24],iv=[117,115,112,119,122,137],py=[43,51,54,40,37,46],cc=[91,95,108,123,115,115];
+    var s=document.getElementById('cccChart'),W=640,H=250,L=40,R=10,T=16,B=28,z=60,sc=(H-T-B)/(200+60),y=function(a){return T+(200-a)*sc};
+    grid(s,L,R,W,y,[-50,0,50,100,150,200],function(v){return v});var bw=(W-L-R)/6;
+    yr.forEach(function(t,i){var x0=L+i*bw+bw*.25,w=bw*.5;
+      el('rect',{x:x0,y:y(rc[i]),width:w,height:y(0)-y(rc[i]),fill:'var(--blue)'},s);
+      el('rect',{x:x0,y:y(rc[i]+iv[i]),width:w,height:y(rc[i])-y(rc[i]+iv[i]),fill:'var(--orange)'},s);
+      el('rect',{x:x0,y:y(0),width:w,height:y(-py[i])-y(0),fill:'var(--green)'},s);
+      tx(s,x0+w/2,y(rc[i]+iv[i])-6,'CCC '+cc[i],{fill:'var(--label)',fs:10.5,fw:600});tx(s,x0+w/2,H-8,t)});})();
+
+  // bảng cân đối
+  (function(){var s=document.getElementById('bsChart'),W=640,L=96,R=10,tot=278930,sc=(W-L-R)/tot;
+    var A=[['TSCĐ',132716,'var(--indigo)'],['Tồn kho',55608,'var(--orange)'],['Tiền+ĐTNH',37256,'var(--green)'],['Phải thu',18040,'var(--teal)'],['Khác',35310,'var(--label3)']];
+    var C=[['Vay NH',71433,'var(--red)'],['Vay DH',27097,'color-mix(in srgb,var(--red) 55%,var(--card))'],['Nợ khác',38884,'var(--label3)'],['Vốn chủ',141516,'var(--blue)']];
+    function bar(arr,yy,lbl){tx(s,L-10,yy+26,lbl,{anchor:'end',fill:'var(--label)',fs:13,fw:600});var x=L;arr.forEach(function(a){var w=a[1]*sc;el('rect',{x:x,y:yy,width:Math.max(w-2,1),height:42,rx:4,fill:a[2]},s);
+      if(w>62){tx(s,x+w/2,yy+19,a[0],{fill:'#fff',fs:11,fw:600});tx(s,x+w/2,yy+34,Math.round(a[1]/tot*100)+'%',{fill:'#fff',fs:11})}x+=w})}
+    bar(A,24,'Tài sản');bar(C,110,'Nguồn vốn');tx(s,L,190,'Tổng 278.930 tỷ đồng',{anchor:'start'})})();
+
+  // thác dòng tiền
+  (function(){var s=document.getElementById('cfChart'),W=640,H=240,L=56,R=10,T=20,B=40,lo=-2000,hi=14000,y=function(a){return T+(H-T-B)*(1-(a-lo)/(hi-lo))};
+    grid(s,L,R,W,y,[0,5000,10000],f);var st=[['Tiền từ\nkinh doanh',12642],['Đầu tư\nnhà máy',-12524],['Đầu tư\nkhác',-1919],['Vay ròng &\ntài chính',3256],['Tiền mặt\ntăng',null]];
+    var bw=(W-L-R)/st.length,cum=0;st.forEach(function(d,i){var x0=L+i*bw+bw*.2,w=bw*.6,a,b2,col;
+      if(d[1]===null){a=0;b2=cum;col='var(--blue)'}else{a=cum;b2=cum+d[1];col=d[1]>=0?'var(--green)':'var(--red)';cum=b2}
+      var top=y(Math.max(a,b2)),h=Math.abs(y(a)-y(b2));el('rect',{x:x0,y:top,width:w,height:Math.max(h,2),rx:4,fill:col},s);
+      tx(s,x0+w/2,top-6,(d[1]===null?'+':(d[1]>0?'+':'−'))+f(Math.abs(d[1]===null?cum:d[1])),{fill:'var(--label)',fs:11,fw:600});
+      d[0].split('\n').forEach(function(l,k){tx(s,x0+w/2,H-24+k*13,l)});
+      if(i<st.length-1&&d[1]!==null)el('line',{x1:x0+w,x2:x0+bw,y1:y(cum),y2:y(cum),stroke:'var(--label3)','stroke-dasharray':'3 3'},s)})})();
+
+  // biểu đồ giá
+  var c=[25220,25220,24997,23256,23925,23836,23658,23568,23434,23925,24327,24015,23836,23256,23881,23479,23300,23256,23613,23747,24104,23702,24015,24372,24550,24640,24327,24461,24193,24015,24193,24015,23702,23658,23658,23925,24372,24104,23881,23568,23791,23702,23211,23434,23836,23568,23568,23836,24015,23881,23702,23434,24015,23836,23658,23568,23167,23167,23747,23568,23390,24550,24327,24327,24640,24640,24729,24327,23925,23970,23881,23479,23613,23836,24193,23925,23702,23881,25264,24595,23925,23881,23702,23970,24015,23970,24550,25264,26157,26246,25711,25443,24729,24729,24327,24327,22631,24193,24461,23925,23791,23881,24015,23925,23836,23122,22765,23167,23524,23122,23658,24015,24015,24238,24416,23791,23970,23925,24997,25220,24997,24818,25488,25041,24952,24997,25398,25488,25175,24818,24907,24773,24773,24640,24372,24640,24773,24863,24546,24455,24637,24591,24137,24046,23864,23818,24137,23955,24100,24250,24150,24000,24000,24050,23700,24150,23950,23750,23300,23550,23600,23300,23200,24350,24200,24000,23650,23600,23600,23300,23500,23400,23500,23650,23300,23450,23400,23250,23100,23100,23200,23200,22950,22400,22500,22400,22200,21850,20600,20800,20700,20800,20800,20350,21000,21650,21800,21700,22550,22150,22000,21850,22000,22100,22050,22100,21700,21250,21200,21000,21200,21150,21700,22250,21800,22050,22200,22100,21600,21700,21550,21850,22050,21850,21300,20900,21200,20950,21200,21550,21100,21150,21050,20800,20650,20200,20300,20150,20050,20050,20500,20500,20350,20150,20100,20700,20450,20800,20750];
+  function sma(n){return c.map(function(_,i){if(i<n-1)return null;var t=0;for(var j=i-n+1;j<=i;j++)t+=c[j];return t/n})}
+  (function(){var N=120,st=c.length-N,m20=sma(20),m50=sma(50),m200=sma(200);
+    var s=document.getElementById('priceChart'),W=640,H=270,L=52,R=56,T=14,B=26,lo=19500,hi=25500,X=function(i){return L+(W-L-R)*i/(N-1)},Y=function(v){return T+(H-T-B)*(1-(v-lo)/(hi-lo))};
+    grid(s,L,R,W,Y,[20000,21000,22000,23000,24000,25000],f);
+    [[4,'T5'],[24,'T6'],[46,'T7'],[69,'T8'],[89,'T9'],[109,'T10']].forEach(function(t){tx(s,X(t[0]),H-6,t[1])});
+    var area='M'+X(0)+' '+Y(lo);for(var i=0;i<N;i++)area+='L'+X(i)+' '+Y(c[st+i]);area+='L'+X(N-1)+' '+Y(lo)+'Z';
+    var g=el('linearGradient',{id:'pg',x1:0,x2:0,y1:0,y2:1},el('defs',{},s));el('stop',{offset:'0','stop-color':'var(--red)','stop-opacity':.18},g);el('stop',{offset:'1','stop-color':'var(--red)','stop-opacity':0},g);
+    el('path',{d:area,fill:'url(#pg)'},s);
+    function line(a,col,w){var d='';for(var i=0;i<N;i++){var v=a[st+i];if(v==null)continue;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)}el('path',{d:d,fill:'none',stroke:col,'stroke-width':w,'stroke-linejoin':'round','stroke-linecap':'round'},s)}
+    line(m200,'var(--red)',1.5);line(m50,'var(--orange)',1.5);line(m20,'var(--blue)',1.5);line(c,'var(--label)',2);
+    var lx=X(N-1),ly=Y(c[c.length-1]);el('circle',{cx:lx,cy:ly,r:4.5,fill:'var(--label)',stroke:'var(--card)','stroke-width':2},s);
+    tx(s,lx+8,ly+4,'20.750',{anchor:'start',fill:'var(--label)',fw:700,fs:11.5});tx(s,lx+8,Y(m200[c.length-1])+4,'23.169',{anchor:'start',fill:'var(--red)',fs:10.5})})();
+})();
+</script>
+
+</body>
+</html>

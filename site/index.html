@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Top Broker: bản tin đầu tư mỗi sáng, viết dễ hiểu. Radar tin nóng, giải mã cổ phiếu, theo sát Ngân hàng Nhà nước.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* Trang chủ concept D "Tạp chí buổi sáng": bản tin + tranh minh họa → thị trường → giải mã → tin, giải ngố, webgame → lịch */
+:root{color-scheme:light;--r:24px;--sh:0 1px 2px rgba(28,27,32,.04),0 10px 28px rgba(28,27,32,.06);--serif:"Lora",Georgia,"Times New Roman",serif;--clay:#b4470a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--tb-paper);color:var(--tb-ink);font-family:var(--tb-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--tb-accent);outline-offset:2px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.up{color:#1e7a46} .dn{color:#c0352b} .wn{color:var(--tb-warn)}
+.main{max-width:1160px;margin:0 auto;padding:36px 0 8px;display:flex;flex-direction:column;gap:44px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh)}
+.sh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:14px}
+.sh h2{font-size:22px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.sh a{font-size:14px;font-weight:600;color:var(--clay);text-decoration:none;white-space:nowrap}
+.note{font-size:12px;color:var(--tb-ink3)}
+.more{display:block;width:fit-content;margin-left:auto;text-align:right;color:var(--clay);font-weight:700;font-size:14.5px;white-space:nowrap;text-decoration:none;margin-top:6px}
+.cap{font-size:12px;color:var(--tb-ink3)}
+
+/* 1 · bản tin + tranh */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:40px;align-items:center}
+.date{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);font-variant-numeric:tabular-nums}
+.hero h1{font-family:var(--serif);font-size:clamp(38px,5vw,56px);line-height:1.06;font-weight:700;letter-spacing:-.02em;margin:10px 0 16px}
+.bl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.bl li{font-size:18px;line-height:1.6;color:#34333a;padding-left:22px;position:relative}
+.bl li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:3px;background:var(--tb-accent)}
+.bl b{color:var(--tb-ink);font-weight:700}
+.bn{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--tb-rule);border-bottom:1px solid var(--tb-rule);padding:12px 0;margin-top:20px}
+.bn div{display:flex;flex-direction:column;line-height:1.3;min-width:0;padding-right:8px}
+.bn div+div{border-left:1px solid var(--tb-rule);padding-left:14px}
+.bn span{font-size:12px;color:var(--tb-ink3);font-weight:600}
+.bn b{font-family:var(--tb-mono);font-size:18px;font-weight:600;white-space:nowrap;letter-spacing:-.02em}
+.bn em{font-style:normal;font-family:var(--tb-mono);font-size:13px;font-weight:600}
+.bf{display:flex;justify-content:space-between;gap:4px 12px;font-size:12.5px;color:var(--tb-ink3);margin-top:10px;flex-wrap:wrap}
+.bf b{color:var(--tb-ink2);font-weight:700;font-family:var(--tb-mono);font-weight:600}
+.art{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.art svg{width:100%;height:auto;display:block;border-radius:28px}
+
+/* 2 · thị trường: bảng liền khối */
+.qg{background:#fff;border-radius:20px;box-shadow:var(--sh);overflow:hidden}
+.qr{display:grid;grid-template-columns:150px repeat(4,minmax(0,1fr))}
+.qr+.qr{border-top:1px solid #eee9df}
+.qr h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--clay);background:#fbf9f4;padding:14px 16px;display:flex;align-items:center;line-height:1.35}
+.q{padding:12px 16px;display:flex;flex-direction:column;gap:1px;min-width:0;border-left:1px solid #eee9df}
+.q .n{font-size:13px;font-weight:600;color:var(--tb-ink2);display:flex;justify-content:space-between;gap:6px;white-space:nowrap}
+.q .n span{font-family:var(--tb-mono);font-size:10.5px;font-weight:500;color:var(--tb-ink3)}
+.q .v{font-family:var(--tb-mono);font-size:19px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;line-height:1.35}
+.q .v.wn{font-family:var(--tb-sans);font-weight:800;letter-spacing:0}
+.q .c{font-family:var(--tb-mono);font-size:12.5px;font-weight:600;white-space:nowrap}
+.q .c.wn{color:var(--tb-ink3)}
+
+/* 3 · giải mã */
+.feat{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:32px;padding:28px;align-items:center}
+.feat svg{width:100%;height:auto;display:block}
+.feat .tkr{font-size:12px;font-weight:700;letter-spacing:.08em;color:#3b5b8a;text-transform:uppercase}
+.feat h3{font-family:var(--serif);font-size:30px;line-height:1.2;font-weight:700;margin:6px 0 10px}
+.feat h3 a{text-decoration:none}
+.feat h3 a:hover{text-decoration:underline}
+.px{font-family:var(--tb-mono);font-size:22px;font-weight:600}
+.px span{font-size:14px}
+.feat ul{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.feat li{font-size:15.5px;line-height:1.55;padding-left:18px;position:relative;color:#34333a}
+.feat li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:3px;background:var(--tb-dn)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.chips a{font-family:var(--tb-mono);font-size:14px;font-weight:600;text-decoration:none;background:var(--tb-paper);padding:6px 12px;border-radius:10px}
+.chips a:hover{box-shadow:inset 0 0 0 1.5px var(--tb-ink)}
+.chips .more{margin:0 0 0 auto;background:none;padding:0;font-family:var(--tb-sans);font-size:15px}
+
+/* 4 · tin, giải ngố, webgame */
+.trio{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:24px}
+.news{padding:22px 24px 12px}
+.nl{list-style:none;margin:0;padding:0}
+.nl li{padding:13px 0;border-top:1px solid #efebe3;display:flex;flex-direction:column;gap:3px}
+.nl li:first-child{border-top:0;padding-top:2px}
+.tag{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.tag.nh{color:#1d4f91} .tag.s{color:#1e7a46} .tag.x{color:#a85a0c}
+.nl a{text-decoration:none;font-size:16.5px;font-weight:700;line-height:1.4}
+.nl a:hover{text-decoration:underline}
+.nl p{font-size:14.5px;color:var(--tb-ink2);line-height:1.55}
+.nl .more{font-size:14px;margin-top:2px}
+.lesson,.game{border-radius:var(--r);padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px}
+.lesson svg,.game svg{width:100%;height:auto;display:block}
+.lesson{background:#FFF1E3}
+.lesson .e{font-size:12px;font-weight:700;letter-spacing:.08em;color:#a85a0c}
+.lesson b{font-size:20px;line-height:1.3;font-weight:800}
+.lesson p{font-size:14.5px;color:#6b4a2e}
+.lesson .more{margin-top:auto}
+.lesson:hover b{text-decoration:underline}
+.game{background:#2A1E6B;color:#fff}
+.game .e{font-size:12px;font-weight:700;letter-spacing:.08em;color:#C9BEFF}
+.game b{font-size:20px;line-height:1.3;font-weight:800}
+.game .play{align-self:flex-start;margin-top:auto;background:#FFD84A;color:#2A1E6B;font-weight:800;font-size:14px;padding:10px 18px;border-radius:999px;white-space:nowrap}
+.game .u{font-family:var(--tb-mono);font-size:12px;color:#B9B0E8}
+.game:hover .play{background:#ffe680}
+
+/* 5 · lịch */
+.cal ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.cal li{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:14px 16px;display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.45}
+.cal .d{font-family:var(--tb-mono);font-size:14px;font-weight:600;color:var(--clay)}
+
+@media (max-width:1100px){.trio{grid-template-columns:1fr 1fr}.news{grid-column:1/-1}}
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;gap:24px}
+  .qr{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .qr h3{grid-column:1/-1;padding:10px 16px}
+  .qr .q:nth-child(2){border-left:0}
+  .feat{grid-template-columns:1fr;gap:18px;padding:22px}
+  .feat svg{max-width:420px}
+}
+@media (max-width:640px){
+  .main{padding-top:24px;gap:36px}
+  .bl li{font-size:16.5px}
+  .bn{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}
+  .bn div:nth-child(3){border-left:0;padding-left:0}
+  .art svg{border-radius:20px}
+  .qr{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qr .q:nth-child(4){border-left:0}
+  .qr .q:nth-child(n+4){border-top:1px solid #eee9df}
+  .q{padding:10px 14px}
+  .q .v{font-size:17px}
+  .feat h3{font-size:25px}
+  .trio{grid-template-columns:1fr}
+  .news{padding:18px 18px 8px}
+}
+</style>
+</head>
+<body data-root="" data-page="home">
+<div id="tb-top"></div>
+
+<main class="main">
+  <!-- 1 · BẢN TIN: sửa 3 câu data-t, 4 ô .bn và giờ số liệu trong .bf mỗi phiên. Ngày giờ ở .date chạy tự động. -->
+  <section class="hero" aria-labelledby="h-brief">
+    <div>
+      <span class="date" data-clock="dateline">Thứ Sáu, 16 tháng 10 · 11:30</span>
+      <h1 id="h-brief">Bản tin hôm nay</h1>
+      <article id="brief" aria-label="Tóm tắt thị trường">
+        <ul class="bl">
+          <li><span data-t>VN-Index hồi lên <b>1.705 điểm</b> sau 7 phiên giảm, nhưng khối ngoại vẫn <b>bán ròng hơn 700 tỷ</b> hôm qua.</span></li>
+          <li><span data-t>Ngân hàng Nhà nước tiếp tục <b>hút tiền nhẹ</b>, lãi huy động đã lên 6,46%: tiền rẻ chưa quay lại.</span></li>
+          <li><span data-t>Vàng giữ quanh đỉnh, Bitcoin mất hơn 3%: <b>tiền đang tìm chỗ trú, chưa tìm chỗ đánh.</b></span></li>
+        </ul>
+        <div class="bn">
+          <div><span>VN-Index</span><b>1.705,23</b><em class="up">+0,41%</em></div>
+          <div><span>Vàng (oz)</span><b>4.190,5</b><em class="up">+0,49%</em></div>
+          <div><span>Dầu Brent</span><b>104,60</b><em class="dn">−1,34%</em></div>
+          <div><span>Bitcoin</span><b>80.747</b><em class="dn">−3,18%</em></div>
+        </div>
+        <div class="bf"><span>Số liệu cập nhật <b>16/10/2026 · 11:30</b></span><span>Thông tin tham khảo, không phải khuyến nghị</span></div>
+      </article>
+    </div>
+    <figure class="art">
+      <svg viewBox="0 0 560 400" role="img" aria-label="Tranh minh họa: thành phố buổi sáng với các tòa nhà hình nến chứng khoán bên dòng sông, có con thuyền nhỏ">
+        <rect width="560" height="400" fill="#FFE9D6"/>
+        <circle cx="420" cy="118" r="70" fill="#FFD3AE"/><circle cx="420" cy="118" r="48" fill="#FF9A4A"/>
+        <path d="M0 250 C80 210 150 228 230 214 C320 198 400 226 560 196 V400 H0Z" fill="#F7D0B2"/>
+        <path d="M86 70 l8 6 l8 -6 M120 92 l6 5 l6 -5 M300 60 l7 5 l7 -5" fill="none" stroke="#8a5a3c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M30 220 C120 200 170 170 250 150 S400 90 500 60" fill="none" stroke="#B4470A" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+        <path d="M488 52 l16 6 l-10 13" fill="none" stroke="#B4470A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <g stroke="#2C2A30" stroke-width="3"><line x1="62" y1="216" x2="62" y2="300"/><line x1="118" y1="176" x2="118" y2="300"/><line x1="176" y1="200" x2="176" y2="300"/><line x1="236" y1="140" x2="236" y2="300"/><line x1="298" y1="120" x2="298" y2="300"/><line x1="358" y1="150" x2="358" y2="300"/><line x1="420" y1="96" x2="420" y2="300"/><line x1="486" y1="124" x2="486" y2="300"/></g>
+        <rect x="44" y="230" width="36" height="70" rx="5" fill="#E05A47"/><rect x="98" y="190" width="40" height="110" rx="5" fill="#2FA866"/><rect x="158" y="214" width="36" height="86" rx="5" fill="#E05A47"/><rect x="214" y="152" width="44" height="148" rx="5" fill="#2FA866"/><rect x="276" y="134" width="44" height="166" rx="5" fill="#249157"/><rect x="340" y="166" width="36" height="134" rx="5" fill="#E05A47"/><rect x="396" y="110" width="48" height="190" rx="5" fill="#2FA866"/><rect x="466" y="140" width="40" height="160" rx="5" fill="#249157"/>
+        <g fill="#FFF6EC" fill-opacity=".85"><rect x="106" y="204" width="8" height="8" rx="2"/><rect x="122" y="204" width="8" height="8" rx="2"/><rect x="106" y="222" width="8" height="8" rx="2"/><rect x="122" y="240" width="8" height="8" rx="2"/><rect x="224" y="168" width="8" height="8" rx="2"/><rect x="240" y="168" width="8" height="8" rx="2"/><rect x="224" y="188" width="8" height="8" rx="2"/><rect x="240" y="208" width="8" height="8" rx="2"/><rect x="286" y="150" width="8" height="8" rx="2"/><rect x="302" y="150" width="8" height="8" rx="2"/><rect x="286" y="170" width="8" height="8" rx="2"/><rect x="302" y="190" width="8" height="8" rx="2"/><rect x="406" y="126" width="8" height="8" rx="2"/><rect x="424" y="126" width="8" height="8" rx="2"/><rect x="406" y="146" width="8" height="8" rx="2"/><rect x="424" y="166" width="8" height="8" rx="2"/><rect x="476" y="156" width="8" height="8" rx="2"/><rect x="490" y="176" width="8" height="8" rx="2"/></g>
+        <rect x="0" y="300" width="560" height="100" fill="#BFDDEE"/>
+        <path d="M40 330 h60 M160 350 h90 M320 326 h70 M430 360 h80 M70 378 h50" stroke="#E9F4FA" stroke-width="4" stroke-linecap="round"/>
+        <path d="M190 352 Q250 376 310 352 L300 364 Q250 382 200 364Z" fill="#7A4A2A"/>
+        <line x1="250" y1="352" x2="250" y2="318" stroke="#2C2A30" stroke-width="3"/>
+        <path d="M232 334 L250 310 L268 334Z" fill="#F2C14E" stroke="#2C2A30" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="244" y="334" width="12" height="18" rx="4" fill="#3B6EA8"/>
+        <path d="M274 330 L306 316 L306 344Z" fill="#FFF6EC" stroke="#2C2A30" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <figcaption class="cap">Minh họa do AI vẽ · Top Broker</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2 · THỊ TRƯỜNG: chỉ tên và chỉ số -->
+  <section aria-labelledby="h-w">
+    <div class="sh"><h2 id="h-w">Thị trường</h2><span class="note">Nguồn: TCBS, NHNN, Yahoo Finance, FRED, Simplize, CoinDesk</span></div>
+    <div class="qg">
+      <div class="qr"><h3>Việt Nam</h3><div class="q"><span class="n">VN-Index<span>11:30</span></span><span class="v">1.705,23</span><span class="c up">+0,41%</span></div><div class="q"><span class="n">VN30<span>11:30</span></span><span class="v">1.851,50</span><span class="c up">+0,42%</span></div><div class="q"><span class="n">UPCoM<span>11:30</span></span><span class="v">125,71</span><span class="c up">+1,26%</span></div><div class="q"><span class="n">HNX-Index<span>11:30</span></span><span class="v">260,83</span><span class="c up">+0,59%</span></div></div>
+      <div class="qr"><h3>Mỹ</h3><div class="q"><span class="n">Dow Jones<span>15/10</span></span><span class="v">52.177,69</span><span class="c up">+1,1%</span></div><div class="q"><span class="n">Nasdaq<span>15/10</span></span><span class="v">26.713,03</span><span class="c up">+0,1%</span></div><div class="q"><span class="n">S&amp;P 500<span>15/10</span></span><span class="v">7.744,06</span><span class="c up">+0,3%</span></div><div class="q"><span class="n">VIX (sợ hãi)<span>14/10</span></span><span class="v">16,87</span><span class="c dn">+10,5%</span></div></div>
+      <div class="qr"><h3>Á – Âu</h3><div class="q"><span class="n">Nikkei 225<span>09:16</span></span><span class="v">65.316,29</span><span class="c up">+1,38%</span></div><div class="q"><span class="n">Hang Seng<span>09:16</span></span><span class="v">24.278,87</span><span class="c up">+0,90%</span></div><div class="q"><span class="n">KOSPI<span>09:16</span></span><span class="v">5.698,49</span><span class="c up">+2,60%</span></div><div class="q"><span class="n">FTSE 100<span>15/10</span></span><span class="v">10.840,35</span><span class="c up">+1,1%</span></div></div>
+      <div class="qr"><h3>Hàng hóa &amp; tiền số</h3><div class="q"><span class="n">Vàng<span>USD/oz</span></span><span class="v">4.190,5</span><span class="c up">+0,49%</span></div><div class="q"><span class="n">Dầu Brent<span>USD</span></span><span class="v">104,60</span><span class="c dn">−1,34%</span></div><div class="q"><span class="n">Bitcoin<span>USD</span></span><span class="v">80.747</span><span class="c dn">−3,18%</span></div><div class="q"><span class="n">Ethereum<span>USD</span></span><span class="v">2.454</span><span class="c up">+1,43%</span></div></div>
+      <div class="qr"><h3>Dòng tiền</h3><div class="q"><span class="n">Van tiền NHNN<span>15/10</span></span><span class="v wn">Hút nhẹ</span><span class="c wn">hút ròng 847 tỷ</span></div><div class="q"><span class="n">Khối ngoại<span>HOSE</span></span><span class="v">−662 tỷ</span><span class="c dn">bán ròng 15/10</span></div><div class="q"><span class="n">Tỷ giá trung tâm<span>15/10</span></span><span class="v">25.642</span><span class="c dn">−4 đ</span></div><div class="q"><span class="n">Lãi suất qua đêm<span>LNH</span></span><span class="v">3,10%</span><span class="c dn">−0,40 điểm %</span></div></div>
+    </div>
+  </section>
+
+  <!-- 3 · GIẢI MÃ -->
+  <section aria-labelledby="h-g">
+    <div class="sh"><h2 id="h-g">Giải mã cổ phiếu</h2><a href="co-phieu/index.html">Tất cả mã →</a></div>
+    <article class="card feat">
+      <svg viewBox="0 0 300 220" role="img" aria-label="Tranh minh họa: kính lúp soi vào thanh thép và bảng lợi nhuận">
+        <rect width="300" height="220" rx="20" fill="#EEF2F7"/>
+        <rect x="34" y="40" width="150" height="140" rx="10" fill="#fff" stroke="#2C2A30" stroke-width="3"/>
+        <path d="M54 66 h90 M54 86 h110 M54 106 h70" stroke="#C9CED6" stroke-width="6" stroke-linecap="round"/>
+        <rect x="54" y="128" width="16" height="34" rx="3" fill="#2FA866"/><rect x="78" y="116" width="16" height="46" rx="3" fill="#2FA866"/><rect x="102" y="138" width="16" height="24" rx="3" fill="#E05A47"/><rect x="126" y="104" width="16" height="58" rx="3" fill="#F2A13B"/>
+        <path d="M150 150 h110 l-14 20 h-110Z" fill="#8C96A3" stroke="#2C2A30" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M160 132 h100 l-14 18 h-100Z" fill="#AAB3BF" stroke="#2C2A30" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="200" cy="86" r="40" fill="#FFF6EC" fill-opacity=".75" stroke="#2C2A30" stroke-width="6"/>
+        <path d="M184 92 l10 -14 l10 8 l12 -18" fill="none" stroke="#B4470A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="229" y1="116" x2="262" y2="150" stroke="#2C2A30" stroke-width="12" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <span class="tkr">HOSE · Thép</span>
+        <h3><a href="co-phieu/hpg/index.html">HPG: lãi tăng mạnh, nhưng 5.400 tỷ đến từ ngoài việc bán thép</a></h3>
+        <div class="px">20.750 <span class="dn">−17,7% 1 năm</span></div>
+        <ul>
+          <li>Bỏ khoản lãi bất thường quý 1, lãi 6 tháng thực chất khoảng 10.800 tỷ, không phải 15.400 tỷ.</li>
+          <li>Hàng tồn kho tăng 28% chỉ trong một quý, lên 55.600 tỷ.</li>
+          <li>Quý 2 tiêu nhiều hơn kiếm: dòng tiền tự do khoảng −1.200 tỷ.</li>
+          <li>Con trai Chủ tịch đăng ký mua 50 triệu cổ phiếu đến 5/11.</li>
+        </ul>
+        <div class="chips"><a href="co-phieu/vpb/index.html">VPB</a><a href="co-phieu/vic/index.html">VIC</a><a href="co-phieu/fpt/index.html">FPT</a><a href="co-phieu/pnj/index.html">PNJ</a><a href="co-phieu/vix/index.html">VIX</a><a href="co-phieu/shb/index.html">SHB</a><a href="co-phieu/msb/index.html">MSB</a><a href="co-phieu/nvl/index.html">NVL</a><a href="co-phieu/mwg/index.html">MWG</a><a href="co-phieu/bsr/index.html">BSR</a><a class="more" href="co-phieu/hpg/index.html">Đọc tiếp phân tích HPG →</a></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 4 · TIN · GIẢI NGỐ · WEBGAME -->
+  <div class="trio">
+    <section class="card news" aria-labelledby="h-n">
+      <div class="sh"><h2 id="h-n">3 tin cần biết</h2><a href="radar/index.html">Mở Radar →</a></div>
+      <ol class="nl">
+        <li><span class="tag nh">NHNN</span><a href="radar/index.html">Ngân hàng Nhà nước khép bớt van tiền: hút ròng hơn 90.000 tỷ trong hai tuần</a>
+          <p>Phần lớn là thu về tiền đã bơm dịp cuối quý 3. Dòng tiền từ tiết kiệm sang chứng khoán sẽ chưa mạnh trong ngắn hạn.</p><a class="more" href="radar/index.html">Đọc tiếp →</a></li>
+        <li><span class="tag s">Tin chuẩn</span><a href="radar/index.html">VN-Index hồi phục đầu phiên sau 7 phiên giảm liên tiếp</a>
+          <p>Nhịp hồi kỹ thuật, thanh khoản chưa xác nhận. Khối ngoại vẫn bán ròng, chủ yếu ở nhóm vốn hóa lớn.</p><a class="more" href="radar/index.html">Đọc tiếp →</a></li>
+        <li><span class="tag x">Chưa xác minh</span><a href="radar/index.html">Diễn đàn đồn "QNS lãi trước thuế quý 3 tăng 19%"</a>
+          <p>Doanh nghiệp chưa công bố. Tin chưa có nguồn thì đừng xuống tiền theo.</p><a class="more" href="radar/index.html">Đọc tiếp →</a></li>
+      </ol>
+    </section>
+
+    <a class="lesson" href="giai-ngo/bai-15/index.html">
+      <svg viewBox="0 0 240 120" role="img" aria-label="Tranh minh họa: cú mèo đeo kính đọc sách">
+        <ellipse cx="120" cy="108" rx="90" ry="8" fill="#F5D5B6"/>
+        <path d="M60 96 Q120 80 120 96 Q120 80 180 96 V104 Q120 90 120 104 Q120 90 60 104Z" fill="#fff" stroke="#2C2A30" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="60" rx="34" ry="32" fill="#B9835A" stroke="#2C2A30" stroke-width="3"/>
+        <path d="M92 36 L98 22 L108 32 M148 36 L142 22 L132 32" fill="#B9835A" stroke="#2C2A30" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="106" cy="54" r="11" fill="#fff" stroke="#2C2A30" stroke-width="3"/><circle cx="134" cy="54" r="11" fill="#fff" stroke="#2C2A30" stroke-width="3"/>
+        <line x1="117" y1="54" x2="123" y2="54" stroke="#2C2A30" stroke-width="3"/>
+        <circle cx="108" cy="56" r="4" fill="#2C2A30"/><circle cx="136" cy="56" r="4" fill="#2C2A30"/>
+        <path d="M116 68 L120 74 L124 68Z" fill="#F2A13B" stroke="#2C2A30" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M188 30 l4 8 l8 4 l-8 4 l-4 8 l-4 -8 l-8 -4 l8 -4Z" fill="#F2A13B"/>
+      </svg>
+      <span class="e">GIẢI NGỐ · BÀI 15/20 · 5 PHÚT</span>
+      <b>Phím hàng, hội nhóm Zalo và nghệ thuật lùa gà</b>
+      <p>Nhóm VIP thu phí có đáng tin không? Đọc xong tự biết mình có đang bị lùa.</p>
+      <span class="more" style="color:#a85a0c">Đọc tiếp →</span>
+    </a>
+
+    <a class="game" href="https://game.topbroker.fun" target="_blank" rel="noopener">
+      <svg viewBox="0 0 240 120" role="img" aria-label="Tranh minh họa: nhà đầu tư nhỏ đứng trên đỉnh cây nến cao nhất">
+        <rect x="20" y="70" width="28" height="40" rx="4" fill="#E05A47"/><rect x="62" y="50" width="28" height="60" rx="4" fill="#2FA866"/><rect x="104" y="28" width="28" height="82" rx="4" fill="#2FA866"/><rect x="146" y="58" width="28" height="52" rx="4" fill="#E05A47"/><rect x="188" y="80" width="28" height="30" rx="4" fill="#E05A47"/>
+        <circle cx="118" cy="12" r="8" fill="#FFD9B8"/>
+        <path d="M112 20 h12 v10 h-12Z" fill="#FF9A4A"/>
+        <path d="M112 22 L102 14 M124 22 L134 14" stroke="#FFD9B8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M184 18 l3 6 l6 3 l-6 3 l-3 6 l-3 -6 l-6 -3 l6 -3Z" fill="#FFD84A"/>
+        <path d="M40 24 l2 4 l4 2 l-4 2 l-2 4 l-2 -4 l-4 -2 l4 -2Z" fill="#FFD84A"/>
+      </svg>
+      <span class="e">WEBGAME TOP BROKER</span>
+      <b>Đu Đỉnh Ký: nghỉ tay 5 phút, chơi một ván</b>
+      <span class="u">game.topbroker.fun</span>
+      <span class="play">Chơi ngay ↗</span>
+    </a>
+  </div>
+
+  <!-- 5 · LỊCH -->
+  <section class="cal" aria-labelledby="h-c">
+    <div class="sh"><h2 id="h-c">Lịch cần nhớ</h2></div>
+    <ul>
+      <li><span class="d">19/10</span><span>HOSE dự kiến công bố rổ VN Diamond mới, KDH có thể bị loại</span></li>
+      <li><span class="d">20/10</span><span>Hạn chót doanh nghiệp niêm yết công bố báo cáo tài chính quý 3</span></li>
+      <li><span class="d">23/10</span><span>Hết hạn công ty con Masan mua 73 triệu cp MCH</span></li>
+      <li><span class="d">26–30/10</span><span>Các quỹ ETF VN Diamond dự kiến cơ cấu danh mục</span></li>
+      <li><span class="d">27–28/10</span><span>Fed họp chính sách tiền tệ</span></li>
+      <li><span class="d">05/11</span><span>Hết hạn con trai Chủ tịch HPG mua 50 triệu cp</span></li>
+      <li><span class="d">19/11</span><span>Đáo hạn hợp đồng tương lai VN30 tháng 11</span></li>
+    </ul>
+  </section>
+
+</main>
+
+<div id="tb-foot"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>

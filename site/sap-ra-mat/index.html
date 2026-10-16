@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sắp ra mắt · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* Layout: một cột đọc 820px, mỗi sản phẩm sắp ra mắt là một khối có neo #id để menu trỏ thẳng tới */
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--tb-paper);color:var(--tb-ink);font-family:var(--tb-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+a{color:var(--tb-link)}
+h1,h2{margin:0;text-wrap:balance}
+p{margin:0}
+.main{max-width:820px;margin:0 auto;padding-top:32px;display:flex;flex-direction:column;gap:28px}
+.kick{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tb-accent)}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.dek{font-size:18px;color:var(--tb-ink2)}
+.item{background:var(--tb-card);border:1px solid var(--tb-rule);border-top:3px solid var(--tb-ink);padding:20px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.item:target{border-top-color:var(--tb-accent)}
+.g{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tb-ink3)}
+.item h2{font-size:24px;font-weight:800;letter-spacing:-.01em}
+.item ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;color:var(--tb-ink2)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--tb-ink3);border-top:1px solid var(--tb-rule);padding-top:10px}
+.meta b{color:var(--tb-ink);font-weight:600}
+</style>
+</head>
+<body data-root="../" data-page="soon">
+<div id="tb-top"></div>
+<main class="main">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="kick">Lộ trình sản phẩm</span>
+    <h1>Những công cụ sắp ra mắt</h1>
+    <p class="dek">Top Broker được xây từng phần, mỗi công cụ giải quyết một việc. Đây là những gì đang trên bàn thiết kế.</p>
+  </header>
+
+  <section class="item" id="loc">
+    <span class="g">Phân tích · Giai đoạn 1</span>
+    <h2>Bộ lọc dòng tiền</h2>
+    <p>Lọc toàn thị trường theo đúng bộ chỉ báo anh đang dùng, để mỗi sáng có ngay danh sách mã đáng xem.</p>
+    <ul><li>Khối lượng đột biến so với trung bình 20 phiên</li><li>MACD cắt lên, RSI thoát vùng quá bán, ADX xác nhận xu hướng</li><li>Giá so với MA20, MA50, MA200</li><li>Gắn cờ "điểm tối" từ báo cáo tài chính để loại mã rủi ro</li></ul>
+    <div class="meta"><span><b>Dữ liệu:</b> TCBS</span><span><b>Cần từ anh:</b> file Excel bộ lọc đang dùng</span></div>
+  </section>
+
+  <section class="item" id="danh-muc">
+    <span class="g">Quản lý tài sản · Giai đoạn 2</span>
+    <h2>Sổ danh mục khách hàng</h2>
+    <p>Anh nhập danh mục giúp khách, hệ thống tạo báo cáo tuần bằng tiếng dễ hiểu, gửi qua Zalo bằng một đường link riêng.</p>
+    <ul><li>Lãi lỗ, tỷ trọng, so sánh với VN-Index và lãi tiết kiệm</li><li>Kế hoạch giá đã thống nhất trước với khách cho từng mã</li><li>Cảnh báo khi mã trong danh mục có tin mới</li></ul>
+    <div class="meta"><span><b>Lưu ý:</b> cần làm đúng quy định bảo vệ dữ liệu cá nhân</span></div>
+  </section>
+
+
+  <section class="item" id="lich">
+    <span class="g">Tin tức & vĩ mô · Giai đoạn 2</span>
+    <h2>Lịch sự kiện &amp; cổ tức</h2>
+    <p>Mọi mốc ngày quan trọng của các mã anh và khách đang nắm, ở cùng một chỗ.</p>
+    <ul><li>Ngày đăng ký cuối cùng, ngày trả cổ tức tiền và cổ phiếu</li><li>Họp ĐHCĐ, công bố KQKD, giao dịch nội bộ</li><li>Lịch họp Fed, NHNN, công bố CPI</li></ul>
+    <div class="meta"><span><b>Dữ liệu:</b> TCBS (sự kiện doanh nghiệp, lịch sử cổ tức)</span></div>
+  </section>
+</main>
+<div id="tb-foot"></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

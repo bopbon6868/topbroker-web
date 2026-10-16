@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Radar Tin Nóng · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Radar tin nóng: tin chuẩn và tin mạng xã hội tách bạch, theo sát Ngân hàng Nhà nước.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* Layout: phong cách iOS (Stocks/News) – thẻ thị trường ở đầu, bộ lọc phân đoạn, danh sách tin dạng thẻ; tin mạng xã hội có dải cảnh báo màu cam */
+:root{ color-scheme:light;
+  --bg:#f6f4ef; --card:#fffdf9; --fill:#efece5; --label:#24232a; --label2:#55545c; --label3:#b9b6ae;
+  --sep:#e4e0d7; --blue:#1f6fd1; --green:#1e9e52; --red:#d93a2f; --orange:#c97a06; --indigo:#5a52c4; --teal:#1e93a8; --gray:#8e8e93;
+  --green-t:rgba(52,199,89,.14); --red-t:rgba(255,59,48,.12); --orange-t:rgba(255,149,0,.14); --blue-t:rgba(0,122,255,.12); --gray-t:rgba(142,142,147,.16);
+  --bar:rgba(246,244,239,.88);
+  --sf:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --sfd:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font-family:var(--sf);font-size:17px;line-height:1.65;letter-spacing:0;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bar)}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--sfd);margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--blue);text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tn{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .dn{color:var(--red)} .mute{color:var(--label2)}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+.navIn{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{color:var(--blue);white-space:nowrap}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--label2);white-space:nowrap}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--red)}
+@media (prefers-reduced-motion:no-preference){.live i{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}}
+
+.hero{display:flex;flex-direction:column;gap:4px;padding-top:6px}
+.hero h1{font-size:34px;font-weight:700;line-height:1.15}
+.sub{color:var(--label2);font-size:15px}
+
+/* market card */
+.mk{background:var(--card);border-radius:16px;padding:16px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+.idx .k{font-size:13px;color:var(--label2);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.idx .v{font-family:var(--sfd);font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:1px 6px;border-radius:5px;white-space:nowrap;line-height:1.6}
+.idx .chip{font-size:13px;padding:3px 8px;border-radius:7px}
+.chip.g{background:var(--green-t);color:var(--green)} .chip.r{background:var(--red-t);color:var(--red)} .chip.o{background:var(--orange-t);color:var(--orange)} .chip.b{background:var(--blue-t);color:var(--blue)} .chip.n{background:var(--gray-t);color:var(--label2)}
+.mk svg{display:block;width:100%;height:auto}
+.mini{display:flex;flex-direction:column;gap:12px;min-width:0}
+.mini .k{font-size:13px;color:var(--label2);font-weight:600}
+.breadth{display:flex;height:8px;border-radius:4px;overflow:hidden;gap:2px;margin-top:6px}
+.breadth span{display:block}
+.bl{display:flex;justify-content:space-between;font-size:12px;color:var(--label2);margin-top:4px}
+.hot{display:flex;flex-wrap:wrap;gap:6px}
+.tk{font:600 13px var(--sf);padding:5px 10px;border-radius:999px;background:var(--fill);color:var(--label);border:0;cursor:pointer}
+.tk[aria-pressed="true"]{background:var(--blue);color:#fff}
+
+/* segmented */
+.seg{display:grid;grid-template-columns:repeat(4,1fr);background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:7px 6px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.count{font-size:13px;color:var(--label2);padding-inline:4px}
+
+/* news cards */
+.feed{display:flex;flex-direction:column;gap:12px}
+.item{background:var(--card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.warn{display:flex;align-items:center;gap:6px;background:var(--orange-t);color:var(--orange);font-size:11.5px;font-weight:600;padding:4px 16px}
+.ib{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.src{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--label2)}
+.av{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff;flex:0 0 22px}
+.src b{color:var(--label);font-weight:600}
+.item h3{font-size:18px;font-weight:600;line-height:1.3}
+.mean{font-size:16px;line-height:1.65;color:var(--label)}
+.ctx{font-size:15px;color:var(--label2);background:var(--fill);border-radius:10px;padding:10px 12px;line-height:1.6}
+.meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;opacity:.92}
+.rel{display:flex;flex-direction:column;gap:6px;border-top:.5px solid var(--sep);padding-top:10px;font-size:15px;line-height:1.55}
+.dots{display:inline-flex;gap:3px;vertical-align:middle;margin-left:6px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--label3)}
+.dots i.on{background:var(--orange)}
+.rel .row{display:flex;gap:8px}
+.rel .lab{color:var(--label2);flex:0 0 92px}
+.lk{font-size:14px}
+
+/* NHNN */
+.sbv{background:var(--card);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.sbv h2{font-size:20px;font-weight:700}
+.sbvh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between}
+.what{font-size:15.5px;line-height:1.6;color:var(--label2);background:var(--fill);border-radius:12px;padding:11px 13px}
+.what b{color:var(--label)}
+.gauge{display:flex;flex-direction:column;gap:6px}
+.gbar{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.gbar span{height:8px;border-radius:4px}
+.glab{display:grid;grid-template-columns:repeat(5,1fr);font-size:11.5px;color:var(--label2);text-align:center}
+.glab .on{color:var(--label);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.st{border:.5px solid var(--sep);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.st .k{font-size:12px;color:var(--label2);font-weight:600}
+.st .v{font-family:var(--sfd);font-size:22px;font-weight:700;line-height:1.25}
+.st .d{font-size:13.5px;color:var(--label2);line-height:1.45}
+.sbv svg{display:block;width:100%;max-width:520px;height:auto}
+.impact{display:flex;flex-direction:column;gap:8px}
+.impact h3{font-size:16px;font-weight:700}
+.imp{display:flex;gap:10px;font-size:15.5px;line-height:1.6}
+.imp i{flex:0 0 8px;height:8px;border-radius:50%;margin-top:9px;font-style:normal}
+.srcline{font-size:13px;color:var(--label2)}
+.note{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.note h2{font-size:17px;font-weight:600}
+.note p,.note li{font-size:16px;color:var(--label2);line-height:1.6}
+.note ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.legal{font-size:12px;color:var(--label2);line-height:1.5;padding-inline:4px;display:flex;flex-direction:column;gap:6px}
+.empty{background:var(--card);border-radius:16px;padding:20px;text-align:center;color:var(--label2);font-size:15px}
+@media (max-width:560px){.stats{grid-template-columns:1fr 1fr}.st .v{font-size:19px}.mk{grid-template-columns:1fr}.hero h1{font-size:30px}}
+</style>
+<style>body{margin:0}.nav{z-index:15}.back a{color:var(--blue);text-decoration:none}.back span{color:var(--label2)}</style>
+</head>
+<body data-root="../" data-page="radar">
+
+<div id="tb-top"></div>
+<nav class="nav"><div class="navIn">
+  <span class="back"><a href="../index.html">Trang chủ</a> <span>/ Radar</span></span>
+  <span class="live"><i></i>Cập nhật 09:53 · 16/10/2026</span>
+</div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <h1>Radar Tin Nóng</h1>
+    <p class="sub">Có tin gì mà thị trường chạy thế? Tin chuẩn và tin mạng xã hội, tách bạch rõ ràng. Theo sát từng động thái của Ngân hàng Nhà nước.</p>
+  </header>
+
+  <!-- thị trường -->
+  <div class="mk">
+    <div class="idx">
+      <div class="k">VN-Index · trong phiên</div>
+      <div class="v tn">1.713,18</div>
+      <span class="chip g tn">+14,83 · +0,87%</span>
+      <svg id="spark" viewBox="0 0 300 90" role="img" aria-label="VN-Index 25 phiên gần nhất" style="margin-top:10px"></svg>
+      <div class="bl"><span>14/9</span><span class="tn">Đỉnh đóng cửa 1.822,77 (17/9)</span><span>16/10</span></div>
+    </div>
+    <div class="mini">
+      <div>
+        <div class="k">Độ rộng HOSE lúc 09:53</div>
+        <div class="breadth" aria-hidden="true"><span style="flex:175;background:var(--green)"></span><span style="flex:57;background:var(--label3)"></span><span style="flex:84;background:var(--red)"></span></div>
+        <div class="bl tn"><span class="up">175 tăng</span><span>57 đứng</span><span class="dn">84 giảm</span></div>
+      </div>
+      <div>
+        <div class="k">Khối ngoại HOSE · 10 phiên (tỷ đồng)</div>
+        <svg id="fbar" viewBox="0 0 260 96" role="img" aria-label="Giá trị mua bán ròng khối ngoại 10 phiên"></svg>
+        <div class="bl tn"><span>2/10</span><span class="dn">Tổng −19.134</span><span>15/10</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="sbv" aria-labelledby="sbvT">
+    <div class="sbvh"><h2 id="sbvT">Ngân hàng Nhà nước &amp; dòng tiền</h2><span class="chip o">Cập nhật 15/10</span></div>
+    <p class="what"><b>Bơm, hút tiền là gì?</b> Hãy hình dung Ngân hàng Nhà nước giữ <b>van nước tổng</b> của hồ tiền. <b>Bơm</b> là cho các ngân hàng vay thêm, tiền dồi dào, lãi suất dễ giảm, thường tốt cho chứng khoán. <b>Hút</b> là thu tiền về, tiền eo hẹp hơn, lãi suất khó giảm.</p>
+    <div class="gauge" role="img" aria-label="Trạng thái van tiền: hút nhẹ">
+      <div class="gbar"><span style="background:var(--green)"></span><span style="background:color-mix(in srgb,var(--green) 45%,var(--fill))"></span><span style="background:var(--label3)"></span><span style="background:var(--orange);outline:2px solid var(--label);outline-offset:1px"></span><span style="background:color-mix(in srgb,var(--red) 45%,var(--fill))"></span></div>
+      <div class="glab"><span>Bơm mạnh</span><span>Bơm nhẹ</span><span>Trung tính</span><span class="on">▲ Hút nhẹ</span><span>Hút mạnh</span></div>
+    </div>
+    <div class="stats">
+      <div class="st"><span class="k">Hút ròng 2 tuần (28/9–9/10)</span><span class="v tn dn">&gt; 90.000 tỷ</span><span class="d">Riêng tuần 5–9/10 hút 36.598 tỷ</span></div>
+      <div class="st"><span class="k">Tiền NHNN đang cho vay (OMO)</span><span class="v tn">110.075 tỷ</span><span class="d">Ngày 9/10 còn 96.744 tỷ, thấp nhất từ 7/2025</span></div>
+      <div class="st"><span class="k">Lãi ngân hàng vay nhau qua đêm</span><span class="v tn">3,10%</span><span class="d">Đầu tuần trước có lúc chỉ 0,72%</span></div>
+      <div class="st"><span class="k">Tỷ giá trung tâm</span><span class="v tn">25.642</span><span class="d">VND tăng 1,12% so với USD từ đầu năm</span></div>
+    </div>
+    <div>
+      <div class="srcline" style="margin-bottom:4px">Lãi suất qua đêm liên ngân hàng so với lãi NHNN cho vay (4,5%)</div>
+      <svg id="ib" viewBox="0 0 320 120" role="img" aria-label="Lãi suất qua đêm liên ngân hàng tháng 10/2026"></svg>
+    </div>
+    <div class="impact">
+      <h3>Nghĩa là gì với túi tiền của bạn</h3>
+      <div class="imp"><i style="background:var(--green)"></i><span><b>Ngân hàng không thiếu tiền.</b> Các ngân hàng vay nhau chỉ 3,1%/năm, rẻ hơn mức NHNN cho vay 4,5%. Việc hút tiền chủ yếu là thu về phần đã bơm hỗ trợ dịp cuối quý 3, chưa phải siết chặt.</span></div>
+      <div class="imp"><i style="background:var(--orange)"></i><span><b>Nhưng tiền rẻ chưa quay lại.</b> NHNN không bơm thêm, lạm phát 9 tháng 4,52%, nên lãi tiết kiệm khó giảm. Dòng tiền từ ngân hàng chảy sang chứng khoán sẽ chưa mạnh trong ngắn hạn.</span></div>
+      <div class="imp"><i style="background:var(--green)"></i><span><b>Tỷ giá ổn định là điểm cộng.</b> VND tăng giá so với USD giúp giảm một nỗi lo của nhà đầu tư nước ngoài khi nắm giữ cổ phiếu Việt Nam.</span></div>
+    </div>
+    <p class="srcline">Thêm: dư nợ tín dụng 30/9 đạt 20,75 triệu tỷ, tăng 11,59% từ đầu năm. Lợi suất trái phiếu Chính phủ 10 năm 4,46%. Nguồn: <a href="https://thoibaonganhang.vn/diem-lai-thong-tin-kinh-te-ngay-1510-189099-189099.html" target="_blank" rel="noopener">Thời báo Ngân hàng</a> · <a href="https://thoibaotaichinhvietnam.vn/thi-truong-tien-te-tuan-5-9-10-lai-suat-qua-dem-xuong-duoi-1-vnd-thuoc-nhom-hiem-hoi-tang-gia-truoc-usd-205168.html" target="_blank" rel="noopener">Thời báo Tài chính</a> · <a href="https://tapchikinhtetaichinh.vn/du-no-tin-dung-dat-20-75-trieu-ty-dong-tiep-tuc-huong-von-vao-cac-dong-luc-tang-truong-168608.html" target="_blank" rel="noopener">Tạp chí KT-TC</a></p>
+  </section>
+
+  <div>
+    <div class="k" style="font-size:13px;color:var(--label2);font-weight:600;margin:0 4px 8px">Mã đang được nhắc nhiều</div>
+    <div class="hot" id="hot"></div>
+  </div>
+
+  <div class="seg" role="group" aria-label="Lọc nguồn tin">
+    <button data-f="all" aria-pressed="true">Tất cả</button>
+    <button data-f="cs" aria-pressed="false">Tin chuẩn</button>
+    <button data-f="nhnn" aria-pressed="false">NHNN</button>
+    <button data-f="mxh" aria-pressed="false">Mạng xã hội</button>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="feed" id="feed"></div>
+
+  <div class="note">
+    <h2>Cách đọc nhãn nguồn</h2>
+    <ul>
+      <li><b style="color:var(--blue)">Tin chuẩn</b>: dữ liệu sàn, báo chí có giấy phép, cơ quan nhà nước, công ty chứng khoán.</li>
+      <li><b style="color:var(--orange)">Mạng xã hội · chưa xác minh</b>: diễn đàn, hội nhóm. Chỉ để biết đám đông đang nói gì, không dùng làm căn cứ giao dịch.</li>
+      <li>Ủy ban Chứng khoán Nhà nước đã cảnh báo việc khuyến nghị cổ phiếu không phép trên mạng xã hội là vi phạm Luật Chứng khoán, và đã xử phạt trường hợp cụ thể (<a href="https://thoibaotaichinhvietnam.vn/canh-bao-rui-ro-tu-cac-khuyen-nghi-dau-tu-chung-khoan-khong-duoc-cap-phep-195908.html" target="_blank" rel="noopener">Thời báo Tài chính</a>).</li>
+    </ul>
+    <p>Bản này đã quét diễn đàn công khai F247. Facebook, Zalo, TikTok và Telegram là nhóm kín, cần đăng nhập nên chưa quét được.</p>
+  </div>
+
+  <footer class="legal">
+    <p><b>Dữ liệu thị trường:</b> TCBS. <b>Tin:</b> các nguồn được ghi trên từng thẻ, truy cập sáng 16/10/2026.</p>
+    <p>Công cụ tham khảo, không phải khuyến nghị mua bán. Phần "Nghĩa là gì" là diễn giải của Top Broker.</p>
+  </footer>
+</div>
+
+<div id="tb-foot"></div>
+<script src="../assets/site.js"></script>
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  // sparkline VN-Index
+  var v=[1788.23,1811.15,1810.11,1822.77,1815.66,1799.67,1816.93,1801.65,1775.09,1785.11,1780.68,1777.73,1768.62,1749.3,1737.71,1753.2,1759.08,1753.39,1738.97,1735.09,1720.98,1719.42,1704.87,1698.35,1713.18];
+  var s=document.getElementById('spark'),W=300,H=90,lo=1690,hi=1830,X=function(i){return 4+(W-8)*i/(v.length-1)},Y=function(a){return 6+(H-12)*(1-(a-lo)/(hi-lo))};
+  var g=el('linearGradient',{id:'sg',x1:0,x2:0,y1:0,y2:1},el('defs',{},s));el('stop',{offset:0,'stop-color':'var(--red)','stop-opacity':.22},g);el('stop',{offset:1,'stop-color':'var(--red)','stop-opacity':0},g);
+  var d=v.map(function(a,i){return(i?'L':'M')+X(i).toFixed(1)+' '+Y(a).toFixed(1)}).join('');
+  el('line',{x1:0,x2:W,y1:Y(1788.23),y2:Y(1788.23),stroke:'var(--label3)','stroke-dasharray':'2 3'},s);
+  el('path',{d:d+'L'+X(v.length-1)+' '+H+'L'+X(0)+' '+H+'Z',fill:'url(#sg)'},s);
+  el('path',{d:d,fill:'none',stroke:'var(--red)','stroke-width':2,'stroke-linejoin':'round'},s);
+  el('circle',{cx:X(v.length-1),cy:Y(v[v.length-1]),r:3.5,fill:'var(--green)'},s);
+
+  // lãi qua đêm
+  (function(){var d=[['5/10',2.05],['7/10',0.72],['8/10',0.99],['14/10',3.5],['15/10',3.1]],s=document.getElementById('ib'),W=320,H=120,L=30,R=12,T=10,B=22,mx=5,
+    X=function(i){return L+(W-L-R)*i/(d.length-1)},Y=function(v){return T+(H-T-B)*(1-v/mx)};
+    [0,2,4].forEach(function(v){el('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),stroke:'var(--sep)'},s);var t=el('text',{x:L-6,y:Y(v)+4,'text-anchor':'end','font-size':10,fill:'var(--label2)'},s);t.textContent=v+'%'});
+    el('line',{x1:L,x2:W-R,y1:Y(4.5),y2:Y(4.5),stroke:'var(--orange)','stroke-dasharray':'4 3','stroke-width':1.5},s);
+    var o=el('text',{x:W-R,y:Y(4.5)-5,'text-anchor':'end','font-size':10,fill:'var(--orange)','font-weight':600},s);o.textContent='NHNN cho vay 4,5%';
+    el('path',{d:d.map(function(p,i){return(i?'L':'M')+X(i)+' '+Y(p[1])}).join(''),fill:'none',stroke:'var(--blue)','stroke-width':2.2,'stroke-linejoin':'round'},s);
+    d.forEach(function(p,i){el('circle',{cx:X(i),cy:Y(p[1]),r:3.5,fill:'var(--blue)'},s);var a=el('text',{x:X(i),y:Y(p[1])-8,'text-anchor':'middle','font-size':10.5,fill:'var(--label)','font-weight':600},s);a.textContent=String(p[1]).replace('.',',');
+      var b2=el('text',{x:X(i),y:H-6,'text-anchor':'middle','font-size':10,fill:'var(--label2)'},s);b2.textContent=p[0]})})();
+
+  // khối ngoại
+  var fv=[-3322,-273,-2727,-878,-354,-9264,-526,-435,-693,-662],fd=['2/10','5/10','6/10','7/10','8/10','9/10','12/10','13/10','14/10','15/10'];
+  var b=document.getElementById('fbar'),BW=260,BH=96,mn=-9500,bw=BW/fv.length;
+  fv.forEach(function(a,i){var h=Math.max(2,(BH-20)*a/mn);var r=el('rect',{x:i*bw+3,y:4,width:bw-6,height:h,rx:3,fill:'var(--red)','fill-opacity':i===5?1:.6},b);
+    var t=el('title',{},r);t.textContent=fd[i]+': '+a.toLocaleString('vi-VN')+' tỷ'});
+  var lt=el('text',{x:5*bw+bw/2,y:BH-2,'text-anchor':'middle','font-size':10,fill:'var(--red)','font-weight':600,'font-family':'-apple-system,Be Vietnam Pro,sans-serif'},b);lt.textContent='−9.264';
+
+  var N=[
+   {f:'cs',nh:1,t:'15/10',src:'Người Quan Sát · Thời báo Ngân hàng',av:'NH',c:'var(--green)',imp:'0',tk:['NHNN','Ngân hàng'],
+    h:'NHNN hút ròng 847 tỷ qua thị trường mở, lãi suất qua đêm giảm về 3,1%',
+    m:'Lượng hút rất nhỏ, gần như giữ nguyên. Ngân hàng chỉ cần vay 125 tỷ trên 4.000 tỷ NHNN chào, cho thấy hệ thống không khát tiền.',
+    x:'Chào thầu 1.000 tỷ mỗi kỳ hạn 7, 14, 35, 91 ngày, lãi suất 4,5%; trúng thầu 125,72 tỷ (91 ngày); đáo hạn 973,09 tỷ. Số dư kênh cầm cố 110.074,85 tỷ.',
+    l:[['Người Quan Sát','https://nguoiquansat.vn/phien-15-10-nhnn-hut-rong-847-ty-dong-lai-suat-qua-dem-neo-3-5-322200.html'],['Thời báo Ngân hàng','https://thoibaonganhang.vn/diem-lai-thong-tin-kinh-te-ngay-1510-189099-189099.html']]},
+   {f:'cs',nh:1,t:'09/10',src:'Thời báo Tài chính Việt Nam',av:'TC',c:'var(--green)',imp:'-',tk:['NHNN','Ngân hàng'],
+    h:'Tuần 5–9/10: NHNN hút ròng 36.600 tỷ, hai tuần hút hơn 90.000 tỷ',
+    m:'NHNN đang thu về phần tiền đã bơm hỗ trợ dịp cuối quý. Tiền trong hệ thống vẫn đủ dùng, nhưng NHNN không có ý nới thêm.',
+    x:'Dư nợ OMO còn 96.744 tỷ (9/10), thấp nhất từ 7/2025. Lãi qua đêm từ 2,05% (5/10) xuống 0,72% (7/10). Yuanta cho rằng lãi suất khó ở vùng thấp lâu vì lạm phát 9 tháng 4,52%.',
+    l:[['Thời báo Tài chính','https://thoibaotaichinhvietnam.vn/thi-truong-tien-te-tuan-5-9-10-lai-suat-qua-dem-xuong-duoi-1-vnd-thuoc-nhom-hiem-hoi-tang-gia-truoc-usd-205168.html']]},
+   {f:'cs',nh:1,t:'15/10',src:'Thời báo Ngân hàng · Thời báo Tài chính',av:'NH',c:'var(--green)',imp:'+',tk:['NHNN','Tỷ giá'],
+    h:'Tỷ giá trung tâm 25.642 đồng/USD, VND thuộc nhóm hiếm hoi tăng giá so với USD',
+    m:'Đồng tiền ổn định giúp nhà đầu tư nước ngoài bớt lo mất tiền vì tỷ giá, và giúp NHNN không phải hút tiền mạnh để giữ tỷ giá.',
+    x:'Tỷ giá liên ngân hàng 25.874; tự do 26.020–26.120. Theo đại diện NHNN, VND tăng 1,12% so với USD.',
+    l:[['Thời báo Ngân hàng','https://thoibaonganhang.vn/diem-lai-thong-tin-kinh-te-ngay-1510-189099-189099.html']]},
+   {f:'cs',nh:1,t:'03/10',src:'Tạp chí Kinh tế – Tài chính',av:'KT',c:'var(--green)',imp:'+',tk:['NHNN','Ngân hàng'],
+    h:'Dư nợ tín dụng đạt 20,75 triệu tỷ đồng, tăng 11,59% sau 9 tháng',
+    m:'Ngân hàng vẫn cho vay mạnh, tiền đang chảy vào nền kinh tế. Đây là động lực cho lợi nhuận ngân hàng và doanh nghiệp.',
+    x:'Tăng 16,69% so với cùng kỳ. Các gói tín dụng ưu đãi có lãi suất thấp hơn 1–3,6 điểm % so với cho vay thông thường.',
+    l:[['Tạp chí KT-TC','https://tapchikinhtetaichinh.vn/du-no-tin-dung-dat-20-75-trieu-ty-dong-tiep-tuc-huong-von-vao-cac-dong-luc-tang-truong-168608.html']]},
+   {f:'cs',t:'09:53 · 16/10',src:'TCBS',av:'TC',c:'var(--blue)',imp:'+',tk:['VNINDEX'],
+    h:'VN-Index hồi phục đầu phiên, tăng 0,87% lên 1.713 điểm',
+    m:'Sau 7 phiên giảm liên tiếp, thị trường bật lên với số mã tăng gấp đôi số mã giảm. Mới là đầu phiên, chưa đủ để nói xu hướng đã đổi.'},
+   {f:'cs',t:'15/10',src:'TCBS · Tinnhanhchungkhoan',av:'TN',c:'var(--blue)',imp:'-',tk:['VNINDEX'],
+    h:'VN-Index đóng cửa 1.698 điểm, thấp nhất hơn một tháng, khối ngoại bán ròng hơn 710 tỷ',
+    m:'Chỉ số đã giảm 6,8% từ đỉnh 17/9. Nước ngoài bán ròng liên tục, thanh khoản không cao: tâm lý đang thận trọng.',
+    l:[['Tinnhanhchungkhoan','https://www.tinnhanhchungkhoan.vn/khoi-ngoai-tag146348.html']]},
+   {f:'cs',t:'10/10',src:'Tinnhanhchungkhoan · Finhay',av:'TN',c:'var(--blue)',imp:'-',tk:['MCH','MSN'],
+    h:'Khối ngoại bán ròng kỷ lục gần 14.000 tỷ trong tuần 5–9/10, riêng MCH khoảng 9.600 tỷ',
+    m:'Con số nghe rất đáng sợ, nhưng phần lớn đến từ một giao dịch thỏa thuận cổ phiếu MCH trong phiên 9/10, không phải nước ngoài bán tháo đồng loạt.',
+    x:'Cùng thời điểm, CTCP Đầu tư Lepus (Masan sở hữu gián tiếp 98%) đăng ký mua 73 triệu cp MCH từ 9/10 đến 23/10 qua thỏa thuận và khớp lệnh. Hai sự kiện trùng khớp nhưng chưa có công bố xác nhận bên bán.',
+    l:[['Tinnhanhchungkhoan','https://www.tinnhanhchungkhoan.vn/phien-910-tag228996.html'],['Finhay','https://www.finhay.com.vn/ban-tin-chung-khoan-09-10-2026'],['Mekong ASEAN','https://mekongasean.vn/cong-ty-thanh-vien-masan-du-chi-hon-10000-ty-dong-mua-co-phieu-mch-60379.html']]},
+   {f:'cs',t:'12/10',src:'Tinnhanhchungkhoan · HOSE',av:'TN',c:'var(--blue)',imp:'+',tk:['HPG'],
+    h:'Khối ngoại gom "cổ phiếu quốc dân" HPG, con trai Chủ tịch đăng ký mua 50 triệu cp',
+    m:'Dù bán ròng cả thị trường, nước ngoài vẫn mua HPG. Người nhà lãnh đạo mua 50 triệu cp đến 5/11 là nguồn cầu lớn cho cổ phiếu này.',
+    l:[['Tinnhanhchungkhoan','https://www.tinnhanhchungkhoan.vn/khoi-ngoai-tag146348.html']]},
+   {f:'cs',t:'Đầu 10/2026',src:'Tổng cục Thống kê · Tạp chí Công Thương',av:'TK',c:'var(--indigo)',imp:'-',tk:['Vĩ mô'],
+    h:'CPI 9 tháng 2026 tăng 4,52%, lạm phát cơ bản tăng 4,26%',
+    m:'Giá cả đang tăng nhanh hơn mấy năm trước. Lạm phát cao khiến ngân hàng khó hạ lãi suất, mà lãi suất cao thường không tốt cho chứng khoán.',
+    l:[['Tạp chí Công Thương','https://tapchicongthuong.vn/9-thang-nam-2026--cpi-tang-4-52-lam-phat-co-ban-tang-4-26-554941.htm']]},
+   {f:'cs',nh:1,t:'09/10',src:'Tạp chí Kinh tế – Tài chính',av:'KT',c:'var(--indigo)',imp:'-',tk:['Ngân hàng','Vĩ mô'],
+    h:'Lãi huy động bình quân lên 6,46%/năm, nhiều ngân hàng trả từ 7% cho kỳ hạn 12 tháng',
+    m:'Gửi 1 tỷ đồng 12 tháng ở mức 7% được khoảng 70 triệu tiền lãi, không rủi ro. Đây là mức mà cổ phiếu phải vượt mới đáng để chấp nhận rủi ro.',
+    x:'Lãi huy động mới bình quân tăng 1,22 điểm % so với cuối 2025; lãi cho vay bình quân 9,12%. Tỷ giá trung tâm 25.629 đồng/USD.',
+    l:[['Tạp chí KT-TC','https://tapchikinhtetaichinh.vn/lai-suat-ty-gia-hom-nay-lai-huy-dong-binh-quan-len-6-46-nam-usd-ngan-hang-giam-gia-169067.html']]},
+   {f:'cs',t:'03/10',src:'Doanh nghiệp Hội nhập (dẫn Reuters, LSEG)',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế'],
+    h:'Fed đã tăng lãi suất lần đầu từ 2023, lợi suất trái phiếu Mỹ 10 năm lên 5,28%, dầu Brent trên 100 USD',
+    m:'Tiền rẻ trên thế giới đang đắt lên. Khi gửi tiền ở Mỹ được lãi cao, dòng vốn có xu hướng rút khỏi các thị trường như Việt Nam. Fed họp tiếp ngày 27–28/10.',
+    x:'Giá dầu tăng do xung đột liên quan Mỹ, Israel và Iran. Thị trường đặt xác suất cao Fed tiếp tục tăng lãi suất trong tháng 12.',
+    l:[['Doanh nghiệp Hội nhập','https://doanhnghiephoinhap.vn/thi-truong-my-210-chung-khoan-tang-usd-suy-yeu-150571.html']]},
+   {f:'cs',t:'05/10',src:'Mekong ASEAN (dẫn báo cáo TCBS)',av:'MA',c:'var(--blue)',imp:'+',tk:['BSR','ACV','PVT','GAS','GVR','PLX','GMD','VHM','MSN','VJC'],
+    h:'10 doanh nghiệp được dự báo vượt kế hoạch lợi nhuận cả năm chỉ sau 9 tháng',
+    m:'Mùa báo cáo quý 3 sắp đến. Nhóm dầu khí, hàng không, cảng biển được dự báo làm ăn rất tốt, phần lớn nhờ giá dầu cao.',
+    l:[['Mekong ASEAN','https://mekongasean.vn/10-doanh-nghiep-duoc-du-bao-vuot-ke-hoach-loi-nhuan-nam-sau-9-thang-60316.html']]},
+   {f:'cs',t:'14/09',src:'Tạp chí Kinh tế – Tài chính (dẫn SSI Research)',av:'KT',c:'var(--indigo)',imp:'0',tk:['VPB','VHM','MCH','FPT','MSN','HPG'],
+    h:'FTSE nâng hạng Việt Nam có hiệu lực từ 21/9/2026, đợt đầu giải ngân khoảng 240 triệu USD',
+    m:'Nâng hạng là tin tốt dài hạn, nhưng tiền vào chia làm 4 đợt. Đợt tiếp theo là tháng 3/2027. Thực tế khối ngoại vẫn bán ròng mạnh sau nâng hạng.',
+    x:'Lộ trình: 10% (9/2026), 20% (3/2027), 35% (6/2027), 35% (9/2027). Mã được mua nhiều nhất đợt 1: VPB, VHM, MCH, FPT, MSN, HPG.',
+    l:[['Tạp chí KT-TC','https://tapchikinhtetaichinh.vn/tuan-dau-nang-hang-dong-tien-etf-se-chon-co-phieu-nao-166904.html']]},
+
+   {f:'mxh',t:'14/10 · ~6.900 lượt xem',src:'Diễn đàn F247',av:'F',c:'var(--orange)',imp:'-',tk:['Quốc tế'],
+    h:'"Lãi suất tiếp tục gặp khó": CPI Mỹ tháng 9 tăng 3,7%, khả năng Fed tăng lãi suất cuối tháng 10 lên khoảng 52%',
+    m:'Nếu đúng, áp lực lãi suất toàn cầu tiếp tục, khớp với bối cảnh Fed đã tăng lãi suất tháng 9.',
+    r:3,flag:'Bài tóm tắt của người dùng, có dẫn BLS và CME FedWatch nhưng không có link gốc.',chk:'Đối chiếu số CPI trên bls.gov và xác suất trên CME FedWatch.',
+    l:[['F247','https://f247.com/t/879868']]},
+   {f:'mxh',t:'14/10',src:'Diễn đàn F247',av:'F',c:'var(--orange)',imp:'+',tk:['QNS'],
+    h:'QNS: lợi nhuận trước thuế sơ bộ quý 3/2026 khoảng 530 tỷ, tăng 19%',
+    m:'Nếu đúng là tin tốt cho QNS. Nhưng đây chưa phải số công ty công bố.',
+    r:2,flag:'Không dẫn công bố của doanh nghiệp. Cuối bài có quảng cáo môi giới kèm số điện thoại.',chk:'Chờ QNS công bố BCTC quý 3 hoặc thông cáo chính thức.',
+    l:[['F247','https://f247.com/t/879871']]},
+   {f:'mxh',t:'12/10 · 177 bình luận · ~9.800 lượt xem',src:'Diễn đàn F247',av:'F',c:'var(--orange)',imp:'+',tk:['BVH'],
+    h:'"Doanh nghiệp có lượng tiền gửi bằng vốn điều lệ 3 ngân hàng lớn nhất cộng lại" (Bảo Việt)',
+    m:'Bài cho rằng BVH có hơn 290.000 tỷ gửi ngân hàng và trái phiếu, hưởng lợi khi lãi suất cao.',
+    r:2,flag:'Không dẫn BCTC. Tiền của doanh nghiệp bảo hiểm phần lớn là dự phòng nghiệp vụ, tức là tiền phải trả cho khách hàng, không phải tiền nhàn rỗi của cổ đông.',chk:'Xem BCTC hợp nhất BVH: tiền gửi, đầu tư tài chính và dự phòng nghiệp vụ.',
+    l:[['F247','https://f247.com/t/879723']]},
+   {f:'mxh',t:'08/10 · ~6.900 lượt xem',src:'Diễn đàn F247',av:'F',c:'var(--orange)',imp:'-',tk:['GVR','BSR','DCM'],
+    h:'"Cấp báo cực kỳ nguy hiểm": kêu bán ngay GVR, BSR, nhóm phân đạm',
+    m:'Tác giả cho rằng giá dầu, cao su, urê đang ở đỉnh nên cổ phiếu sẽ giảm. Lưu ý: trái ngược với dự báo của TCBS rằng BSR, GVR sẽ vượt kế hoạch năm.',
+    r:1,flag:'Không có số liệu hay nguồn. Giọng hô hào bán gấp, chế giễu người phản biện; nhiều bình luận nghi ngờ động cơ của tác giả.',chk:'Xem giá hàng hóa thực tế và KQKD quý 3 của từng doanh nghiệp.',
+    l:[['F247','https://f247.com/t/879524']]},
+   {f:'mxh',t:'Từ 13/08 · ~51.700 lượt xem',src:'Diễn đàn F247',av:'F',c:'var(--orange)',imp:'+',tk:['ASP'],
+    h:'"ASP – siêu penny hồi sinh dưới ánh mặt trời Nhật Bản", định giá 25–30 nghìn',
+    m:'Chủ đề kéo dài 2 tháng, hô giá mục tiêu cao gấp nhiều lần dựa trên câu chuyện "người Nhật vào quản trị".',
+    r:1,flag:'Số liệu không nguồn, không có công bố về cổ đông Nhật. Mẫu hình điển hình của chủ đề "thổi" cổ phiếu penny.',chk:'Xem BCTC, danh sách cổ đông lớn và công bố thông tin của ASP trên HOSE.',
+    l:[['F247','https://f247.com/t/876976']]}
+  ];
+
+  var IMP={'+':['g','Tích cực'],'-':['r','Tiêu cực'],'0':['n','Trung tính']};
+  var feed=document.getElementById('feed'),count=document.getElementById('count'),filter='all',tick=null;
+  function render(){
+    var list=N.filter(function(n){return(filter==='all'||n.f===filter||(filter==='nhnn'&&n.nh))&&(!tick||n.tk.indexOf(tick)>=0)});
+    count.textContent=list.length+' tin'+(tick?' về '+tick:'')+' · '+(filter==='mxh'?'mạng xã hội':filter==='cs'?'tin chuẩn':filter==='nhnn'?'Ngân hàng Nhà nước':'tất cả nguồn');
+    if(!list.length){feed.innerHTML='<div class="empty">Chưa có tin nào khớp bộ lọc này.</div>';return}
+    feed.innerHTML=list.map(function(n){
+      var im=IMP[n.imp],h='<article class="item">';
+      if(n.f==='mxh')h+='<div class="warn">⚠︎ Mạng xã hội · Chưa xác minh</div>';
+      h+='<div class="ib"><div class="src"><span class="av" style="background:'+n.c+'">'+esc(n.av)+'</span><b>'+esc(n.src)+'</b><span>· '+esc(n.t)+'</span></div>';
+      h+='<h3>'+esc(n.h)+'</h3><p class="mean"><b>Nghĩa là gì:</b> '+esc(n.m)+'</p>';
+      if(n.x)h+='<p class="ctx">'+esc(n.x)+'</p>';
+      h+='<div class="meta"><span class="chip '+(n.f==='cs'?'b':'o')+'">'+(n.f==='cs'?'Tin chuẩn':'Chưa xác minh')+'</span><span class="chip '+im[0]+'">'+im[1]+'</span>'+n.tk.map(function(t){return'<span class="chip n">'+esc(t)+'</span>'}).join('')+'</div>';
+      if(n.f==='mxh'){var dots='';for(var i=1;i<=5;i++)dots+='<i class="'+(i<=n.r?'on':'')+'"></i>';
+        h+='<div class="rel"><div class="row"><span class="lab">Độ tin cậy</span><span>'+['','Rất thấp','Thấp','Trung bình','Khá','Cao'][n.r]+'<span class="dots">'+dots+'</span></span></div><div class="row"><span class="lab">Cờ đỏ</span><span>'+esc(n.flag)+'</span></div><div class="row"><span class="lab">Cần kiểm tra</span><span>'+esc(n.chk)+'</span></div></div>'}
+      if(n.l)h+='<div class="lk">Nguồn: '+n.l.map(function(x){return'<a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'}).join(' · ')+'</div>';
+      return h+'</div></article>'}).join('');
+  }
+  document.querySelectorAll('.seg button').forEach(function(btn){btn.onclick=function(){filter=btn.dataset.f;document.querySelectorAll('.seg button').forEach(function(o){o.setAttribute('aria-pressed',String(o===btn))});render()}});
+  var hotT=['NHNN','HPG','MCH','BSR','GVR','VHM','MSN','QNS','BVH','ASP'],hot=document.getElementById('hot');
+  hotT.forEach(function(t){var bt=document.createElement('button');bt.className='tk';bt.textContent=t;bt.setAttribute('aria-pressed','false');
+    bt.onclick=function(){tick=tick===t?null:t;hot.querySelectorAll('.tk').forEach(function(o){o.setAttribute('aria-pressed',String(o.textContent===tick))});render()};hot.appendChild(bt)});
+  render();
+})();
+</script>
+
+</body>
+</html>
