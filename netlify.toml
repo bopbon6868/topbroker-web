@@ -1,3 +1,14 @@
 [build]
   publish = "site"
   command = ""
+
+# Luôn kiểm tra bản mới: điện thoại và trình duyệt trong Zalo không giữ bản cũ
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
