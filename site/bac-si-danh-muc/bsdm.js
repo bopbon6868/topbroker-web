@@ -51,10 +51,10 @@ var SECTOR_NAMES = Object.keys(window.TB_SECTORS || {}).concat(['Khác']);
 /* ---------- NHẬP ---------- */
 function rowHTML(r) {
   var opts = SECTOR_NAMES.map(function (n) { return '<option' + (n === r.sector ? ' selected' : '') + '>' + esc(n) + '</option>'; }).join('');
-  return '<tr><td><input aria-label="Mã" class="sym" value="' + esc(r.sym) + '" maxlength="8" autocapitalize="characters"></td>' +
-    '<td><input aria-label="Khối lượng" class="qty" inputmode="numeric" value="' + esc(r.qty) + '"></td>' +
-    '<td><input aria-label="Giá vốn" class="cost" inputmode="decimal" value="' + esc(r.cost) + '"></td>' +
-    '<td><select aria-label="Ngành" class="sec">' + opts + '</select></td>' +
+  return '<tr><td data-l="Mã"><input aria-label="Mã" class="sym" placeholder="VD: HPG" value="' + esc(r.sym) + '" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false"></td>' +
+    '<td data-l="Khối lượng"><input aria-label="Khối lượng" class="qty" inputmode="numeric" placeholder="1.000" value="' + esc(r.qty) + '"></td>' +
+    '<td data-l="Giá vốn (đ)"><input aria-label="Giá vốn" class="cost" inputmode="decimal" placeholder="25.000" value="' + esc(r.cost) + '"></td>' +
+    '<td data-l="Ngành"><select aria-label="Ngành" class="sec">' + opts + '</select></td>' +
     '<td><button type="button" class="x" aria-label="Xóa dòng">×</button></td></tr>';
 }
 function renderInputs() {

@@ -58,7 +58,8 @@ code{font-family:var(--tb-mono);font-size:13px;background:#f1ede4;padding:1px 6p
 table{border-collapse:collapse;width:100%}
 .bs-in th,.bs-t th{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tb-ink3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 .bs-in td{padding:6px 6px;border-bottom:1px solid var(--line)}
-.bs-in td:first-child input{text-transform:uppercase;font-weight:700;font-family:var(--tb-mono);max-width:110px}
+.bs-in td:first-child input{text-transform:uppercase;font-weight:700;font-family:var(--tb-mono);min-width:120px;font-size:17px;letter-spacing:.04em}
+.bs-in td:first-child input::placeholder{text-transform:none;font-weight:500;letter-spacing:0}
 .bs-in td:nth-child(2) input,.bs-in td:nth-child(3) input{font-family:var(--tb-mono);text-align:right;min-width:110px}
 .bs-in td:nth-child(4) select{min-width:170px}
 .bs-in .x{background:none;border:0;color:var(--tb-ink3);font-size:22px;width:44px;height:44px;cursor:pointer;border-radius:10px}
@@ -177,3 +178,25 @@ table{border-collapse:collapse;width:100%}
 .bs-auto summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--tb-ink2);padding:6px 2px}
 .bs-auto[open] summary{margin-bottom:12px}
 @media (max-width:700px){.ai-grid{grid-template-columns:1fr}}
+
+/* bảng nhập trên điện thoại: mỗi mã thành một thẻ 2 hàng, ô Mã to, vừa màn hình */
+@media (max-width:640px){
+  #in-tbl,#in-tbl tbody{display:block;width:100%}
+  #in-tbl thead{display:none}
+  #in-tbl tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;gap:10px 10px;background:#fbf9f4;border-radius:16px;padding:12px;margin-bottom:10px}
+  #in-tbl td{display:flex;flex-direction:column;gap:4px;padding:0;border:0;min-width:0}
+  #in-tbl td::before{content:attr(data-l);font-size:12px;font-weight:700;color:var(--tb-ink3);letter-spacing:.03em}
+  #in-tbl td:nth-child(1){grid-column:1;grid-row:1}
+  #in-tbl td:nth-child(4){grid-column:2;grid-row:1}
+  #in-tbl td:nth-child(5){grid-column:3;grid-row:1;justify-content:flex-end}
+  #in-tbl td:nth-child(5)::before{content:none}
+  #in-tbl td:nth-child(2){grid-column:1;grid-row:2}
+  #in-tbl td:nth-child(3){grid-column:2/4;grid-row:2}
+  #in-tbl input,#in-tbl select{min-width:0!important;width:100%;font-size:16px;background:#fff}
+  #in-tbl td:first-child input{font-size:19px;min-height:48px}
+  #in-tbl .x{width:44px;height:48px;background:#fff;border:1px solid var(--tb-rule2)}
+  .tw:has(#in-tbl){overflow:visible}
+  input,select,textarea{font-size:16px}
+}
+.bs-paste label{display:block;line-height:1.6}
+@media (max-width:560px){#nhap .bs-grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
