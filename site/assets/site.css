@@ -76,3 +76,12 @@
   .tb-foot .tb-in{grid-template-columns:1fr 1fr}
   .tb-foot .tb-brand{grid-column:1/-1}
 }
+
+/* giá tự cập nhật: nháy nền khi đổi giá */
+@media (prefers-reduced-motion:no-preference){
+  .tb-fu{animation:tbfu 1.2s ease-out}.tb-fd{animation:tbfd 1.2s ease-out}
+  @keyframes tbfu{0%{background-color:rgba(30,158,82,.22)}100%{background-color:transparent}}
+  @keyframes tbfd{0%{background-color:rgba(217,58,47,.2)}100%{background-color:transparent}}
+}
+.tb-livest{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--tb-ink3);font-family:var(--tb-mono)}
+.tb-livest::before{content:"";width:7px;height:7px;border-radius:50%;background:#1e9e52;box-shadow:0 0 0 3px rgba(30,158,82,.18)}

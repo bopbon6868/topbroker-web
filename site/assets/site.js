@@ -92,6 +92,10 @@ TB.appIcon = function(p){
 /* Logo A: biểu tượng iOS nến tăng */
 TB.LOGO = '<svg class="tb-mark" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="tbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF9A4A"/><stop offset="1" stop-color="#E4500A"/></linearGradient></defs><path d="M30 0H70C89.5 0 100 10.5 100 30V70C100 89.5 89.5 100 70 100H30C10.5 100 0 89.5 0 70V30C0 10.5 10.5 0 30 0Z" fill="url(#tbg)"/><rect x="26" y="52" width="12" height="24" rx="4" fill="#fff" fill-opacity=".72"/><rect x="44" y="40" width="12" height="36" rx="4" fill="#fff" fill-opacity=".86"/><rect x="62" y="26" width="12" height="50" rx="4" fill="#fff"/></svg>';
 
+/* Nhãn trên dải chữ chạy → mã giá tự cập nhật (xem /api/quotes) */
+TB.LIVEMAP = {'VN-Index':'VNINDEX','VN30':'VN30','HNX':'HNX','HNX-Index':'HNX','UPCoM':'UPCOM','S&P 500':'GSPC','Dow Jones':'DJI','Nasdaq':'IXIC','VIX':'VIX',
+  'Nikkei 225':'N225','Hang Seng':'HSI','KOSPI':'KS11','FTSE 100':'FTSE','Vàng':'GOLD','Brent':'BRENT','WTI':'WTI','BTC':'BTC','ETH':'ETH'};
+
 function header(){
   var nav = '<a href="'+TB.url('index.html')+'"'+(page==='home'?' aria-current="page"':'')+'>Trang chủ</a>';
   TB.PRODUCTS.forEach(function(p){
@@ -99,7 +103,7 @@ function header(){
     nav += '<a href="'+TB.url(p.href)+'"'+(page===p.id?' aria-current="page"':'')+(/^https?:/.test(p.href)?' class="tb-ext" target="_blank" rel="noopener"':'')+'>'+esc(p.nav)+(p.status==='soon'?'<span class="tb-soon">SẮP</span>':'')+'</a>';
   });
   var tick = TB.TICKER.map(function(t){
-    return '<li><b>'+esc(t[0])+'</b><span class="v">'+esc(t[1])+'</span>'+(t[2]?'<span class="'+t[3]+'">'+esc(t[2])+'</span>':'')+'<span class="t">'+esc(t[4])+'</span></li>';
+    var lk=TB.LIVEMAP[t[0]]; return '<li'+(lk?' data-q="'+lk+'"':'')+'><b>'+esc(t[0])+'</b><span class="v">'+esc(t[1])+'</span>'+(t[2]||lk?'<span class="c '+t[3]+'">'+esc(t[2])+'</span>':'')+'<span class="t">'+esc(t[4])+'</span></li>';
   }).join('');
   return '<div class="tb-in tb-bar"><a class="tb-logo" href="'+TB.url('index.html')+'">'+TB.LOGO+'Top Broker<small>ĐẦU TƯ</small></a>'+
          '<nav class="tb-nav" aria-label="Điều hướng chính">'+nav+'</nav><span class="tb-date" title="Số liệu cập nhật: '+esc(TB.UPDATED)+'"><span class="tb-live" aria-hidden="true"></span><span data-clock="full">'+esc(TB.UPDATED)+'</span></span></div>'+
@@ -158,6 +162,43 @@ document.addEventListener('click', function(e){
   if(win){ try{win.opener=null}catch(_){} win.focus(); e.preventDefault(); }
   /* trình duyệt chặn cửa sổ bật lên thì để link tự mở tab mới như bình thường */
 }, true);
+
+/* Giá tự cập nhật: mọi phần tử có data-q="MÃ" nhận giá mới mỗi 30 giây.
+   Trong phần tử: .v hoặc <b> = giá, .c hoặc <em> = % thay đổi, .n span hoặc .t = giờ của giá.
+   Chỉ số Việt Nam trễ 15 phút; lỗi mạng thì giữ nguyên số tĩnh có sẵn. */
+TB.LIVE = {
+  dec: {VNINDEX:2,VN30:2,HNX:2,UPCOM:2,DJI:2,IXIC:2,GSPC:2,VIX:2,N225:2,HSI:2,KS11:2,FTSE:2,GOLD:1,BRENT:2,WTI:2,BTC:0,ETH:0},
+  inverse: {VIX:1}
+};
+function tbNum(v,d){ try{ return v.toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d}) }catch(_){ return v.toFixed(d) } }
+function tbPct(c){ if(c==null||isNaN(c)) return ''; var a=Math.abs(c).toFixed(2).replace('.',','); return (c>0?'+':c<0?'\u2212':'')+a+'%' }
+function tbHM(ts){ var d=new Date((ts+7*3600)*1000); return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2) }
+function tbDM(ts){ var d=new Date((ts+7*3600)*1000); return ('0'+d.getUTCDate()).slice(-2)+'/'+('0'+(d.getUTCMonth()+1)).slice(-2) }
+function tbApply(data){
+  var q=data&&data.q||{}, els=document.querySelectorAll('[data-q]'), today=tbDM(Date.now()/1000), n=0;
+  for(var i=0;i<els.length;i++){
+    var el=els[i], k=el.getAttribute('data-q'), x=q[k]; if(!x||x.p==null) continue; n++;
+    var d=TB.LIVE.dec[k]==null?2:TB.LIVE.dec[k], v=el.querySelector('.v')||el.querySelector('b:not(:first-child)')||el.querySelector('b'),
+        c=el.querySelector('.c')||el.querySelector('em'), t=el.querySelector('.n span')||el.querySelector('.t');
+    if(el.tagName==='LI'){ v=el.querySelector('.v'); }
+    var nv=tbNum(x.p,d);
+    if(v&&v.textContent!==nv){ var up=parseFloat(v.textContent.replace(/\./g,'').replace(',','.'))<x.p; v.textContent=nv;
+      el.classList.remove('tb-fu','tb-fd'); void el.offsetWidth; el.classList.add(up?'tb-fu':'tb-fd'); }
+    if(c&&x.c!=null){ var good=TB.LIVE.inverse[k]?x.c<0:x.c>0, bad=TB.LIVE.inverse[k]?x.c>0:x.c<0;
+      c.textContent=tbPct(x.c);
+      if(el.tagName==='LI'){ c.className='c '+(x.c>0?'u':x.c<0?'d':'n'); } else { c.classList.remove('up','dn','wn'); c.classList.add(good?'up':bad?'dn':'wn'); } }
+    if(t&&x.t){ var dm=tbDM(x.t); t.textContent=(dm===today?tbHM(x.t):dm); }
+    el.setAttribute('data-open', x.open?'1':'0');
+  }
+  var st=document.getElementById('tb-live-st');
+  if(st&&n){ st.hidden=false; st.querySelector('span').textContent=tbHM(Date.now()/1000); }
+}
+function tbFetch(){
+  if(document.hidden) return;
+  var url=(location.protocol==='file:'?'https://topbroker.fun':'')+'/api/quotes';
+  fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){ if(j) tbApply(j) }).catch(function(){});
+}
+if(document.querySelector('[data-q]')){ tbFetch(); setInterval(tbFetch,30000); document.addEventListener('visibilitychange',function(){ if(!document.hidden) tbFetch() }); }
 
 /* tiện ích vẽ sparkline dùng chung */
 TB.spark = function(svg, v, opt){
