@@ -123,4 +123,4 @@ export default async (req, context) => {
   } finally { clearTimeout(timer); }
 };
 
-export const config = { path: '/api/ai', rateLimit: { windowLimit: 8, windowSize: 60, aggregateBy: ['ip', 'domain'] } };
+export const config = { path: '/api/ai-fn', rateLimit: { windowLimit: 8, windowSize: 60, aggregateBy: ['ip', 'domain'] } };
