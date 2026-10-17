@@ -72,7 +72,7 @@ export default async (req, context) => {
     const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: /sonnet-5/.test(model) ? 'between_tools' : 'disabled' }, system: SYSTEM, stream: true, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model, max_tokens: MAXTOK, ...(/opus-5/.test(model) ? { thinking: { type: 'adaptive' }, output_config: { effort: 'low' } } : { thinking: { type: /sonnet-5/.test(model) ? 'between_tools' : 'disabled' } }), system: SYSTEM, stream: true, messages: [{ role: 'user', content: userMsg }] }),
     });
     let r = await call(MODEL), used = MODEL, firstErr = null, data = {};
     if (!r.ok) data = await r.json().catch(() => ({}));
