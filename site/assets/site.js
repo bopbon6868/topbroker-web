@@ -21,14 +21,14 @@ TB.PRODUCTS = [
    desc:'Tin chuẩn và tin mạng xã hội tách bạch, theo sát động thái bơm hút tiền của Ngân hàng Nhà nước.', nav:'Radar'},
   {id:'giai-ma', name:'Giải mã cổ phiếu',          group:'Phân tích',       status:'live', href:'co-phieu/index.html', icon:'chart', tint:['#5AA5FF','#1F6FD1'], short:'Cổ phiếu',
    desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 16 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR, SSI, TCB, GEX, PDR, VCG.', nav:'Cổ phiếu'},
+  {id:'bac-si',  name:'Bác sĩ danh mục',           group:'Quản lý tài sản', status:'live', href:'bac-si-danh-muc/index.html', icon:'pulse', tint:['#3FC79A','#128A63'], short:'Bác sĩ',
+   desc:'Khám danh mục, làm rõ hoàn cảnh, so sánh phương án và chốt kế hoạch. Cuối buổi có AI tổng kết bằng lời dễ hiểu.', nav:'Bác sĩ danh mục', hot:'MUST TRY'},
   {id:'giai-ngo',name:'Giải ngố chứng khoán',      group:'Học đầu tư',      status:'live', href:'giai-ngo/index.html', icon:'tea', tint:['#FFB24D','#F0760F'], short:'Giải ngố',
    desc:'Kiến thức đầu tư kiểu trà đá vỉa hè: dễ nghe, dễ hiểu, cầm tay chỉ việc. Kèm Từ điển chứng khoán vỉa hè.', nav:'Giải ngố'},
   {id:'tu-dien', name:'Từ điển chứng khoán vỉa hè', group:'Học đầu tư',   status:'live', href:'giai-ngo/tu-dien/index.html', icon:'book', tint:['#9480F5','#5A3FC8'], short:'Từ điển',
    desc:'Đu đỉnh, úp bô, lùa gà… giải nghĩa từng từ, kèm câu dùng thật.', nav:null},
   {id:'loc',     name:'Bộ lọc dòng tiền',          group:'Phân tích',       status:'soon', href:'sap-ra-mat/index.html#loc', icon:'filter', short:'Bộ lọc',
    desc:'Lọc cổ phiếu theo khối lượng, MACD, RSI, ADX và các đường trung bình.', nav:'Bộ lọc'},
-  {id:'bac-si',  name:'Bác sĩ danh mục',           group:'Quản lý tài sản', status:'live', href:'bac-si-danh-muc/index.html', icon:'pulse', tint:['#3FC79A','#128A63'], short:'Bác sĩ',
-   desc:'Khám sức khỏe danh mục, tìm nguyên nhân, mô phỏng phương án xử lý và ghi nhật ký quyết định.', nav:'Bác sĩ danh mục'},
   {id:'danh-muc',name:'Sổ danh mục khách hàng',    group:'Quản lý tài sản', status:'soon', href:'sap-ra-mat/index.html#danh-muc', icon:'case', short:'Danh mục',
    desc:'Báo cáo danh mục hằng tuần, viết dễ hiểu, gửi khách qua Zalo.', nav:'Danh mục'},
   {id:'lich',    name:'Lịch sự kiện & cổ tức',     group:'Tin tức & vĩ mô', status:'soon', href:'sap-ra-mat/index.html#lich', icon:'cal', short:'Lịch',
@@ -101,7 +101,7 @@ function header(){
   var nav = '<a href="'+TB.url('index.html')+'"'+(page==='home'?' aria-current="page"':'')+'>Trang chủ</a>';
   TB.PRODUCTS.forEach(function(p){
     if(!p.nav) return;
-    nav += '<a href="'+TB.url(p.href)+'"'+(page===p.id?' aria-current="page"':'')+(/^https?:/.test(p.href)?' class="tb-ext" target="_blank" rel="noopener"':'')+'>'+esc(p.nav)+(p.status==='soon'?'<span class="tb-soon">SẮP</span>':'')+'</a>';
+    nav += '<a href="'+TB.url(p.href)+'"'+(page===p.id?' aria-current="page"':'')+(/^https?:/.test(p.href)?' class="tb-ext" target="_blank" rel="noopener"':'')+'>'+esc(p.nav)+(p.status==='soon'?'<span class="tb-soon">SẮP</span>':'')+(p.hot?'<span class="tb-hot">'+esc(p.hot)+'</span>':'')+'</a>';
   });
   var tick = TB.TICKER.map(function(t){
     var lk=TB.LIVEMAP[t[0]]; return '<li'+(lk?' data-q="'+lk+'"':'')+'><b>'+esc(t[0])+'</b><span class="v">'+esc(t[1])+'</span>'+(t[2]||lk?'<span class="c '+t[3]+'">'+esc(t[2])+'</span>':'')+'<span class="t">'+esc(t[4])+'</span></li>';
