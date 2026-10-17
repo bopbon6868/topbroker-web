@@ -29,8 +29,6 @@ TB.PRODUCTS = [
    desc:'Đu đỉnh, úp bô, lùa gà… giải nghĩa từng từ, kèm câu dùng thật.', nav:null},
   {id:'loc',     name:'Bộ lọc dòng tiền',          group:'Phân tích',       status:'soon', href:'sap-ra-mat/index.html#loc', icon:'filter', short:'Bộ lọc',
    desc:'Lọc cổ phiếu theo khối lượng, MACD, RSI, ADX và các đường trung bình.', nav:'Bộ lọc'},
-  {id:'danh-muc',name:'Sổ danh mục khách hàng',    group:'Quản lý tài sản', status:'soon', href:'sap-ra-mat/index.html#danh-muc', icon:'case', short:'Danh mục',
-   desc:'Báo cáo danh mục hằng tuần, viết dễ hiểu, gửi khách qua Zalo.', nav:'Danh mục'},
   {id:'lich',    name:'Lịch sự kiện & cổ tức',     group:'Tin tức & vĩ mô', status:'soon', href:'sap-ra-mat/index.html#lich', icon:'cal', short:'Lịch',
    desc:'Ngày chốt quyền, trả cổ tức, họp ĐHCĐ, công bố KQKD của các mã anh quan tâm.', nav:'Lịch'},
   {id:'game',    name:'Webgame Top Broker',        group:'Giải trí',        status:'live', href:'https://game.topbroker.fun', icon:'game', tint:['#8A6CFF','#3B22C4'], short:'Webgame',
