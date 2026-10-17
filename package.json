@@ -1,0 +1,8 @@
+{
+  "name": "topbroker-web",
+  "private": true,
+  "description": "Top Broker – topbroker.fun. Website tĩnh trong site/; gói này chỉ để Netlify cài thư viện cho functions (kho thành viên Bác sĩ danh mục).",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

@@ -130,8 +130,100 @@ $('#demo').addEventListener('click', function () {
 });
 $('#clear').addEventListener('click', function () {
   S.rows = []; S.cash = ''; S.debt = ''; S.apprtt = ''; store(KEY, S); renderInputs();
-  lockStages(true); $('#ket-qua').hidden = true; $('#deep').hidden = true;
+  lockStages(true); $('#ket-qua').hidden = true; $('#deep').hidden = true; $('#ocr-res').hidden = true;
 });
+
+/* ---------- NHẬP BẰNG ẢNH (thành viên có mã, anh Hải chốt 18/10/2026) ---------- */
+var MKEY = 'tb-member-v1', MB_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/thanh-vien', OCR_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/doc-anh';
+var MB = load(MKEY, null), SHOTS = [null, null];
+function setTab(t) {
+  $('#t-tay').setAttribute('aria-selected', String(t === 'tay')); $('#t-anh').setAttribute('aria-selected', String(t === 'anh'));
+  $('#tab-tay').hidden = t !== 'tay'; $('#tab-anh').hidden = t !== 'anh';
+  if (t === 'anh') mbShow();
+}
+$('#t-tay').addEventListener('click', function () { setTab('tay'); });
+$('#t-anh').addEventListener('click', function () { setTab('anh'); });
+function mbShow() {
+  var ok = !!(MB && MB.code);
+  $('#mb-gate').hidden = ok; $('#mb-up').hidden = !ok;
+  if (ok) { $('#mb-me').textContent = MB.code; $('#mb-left').textContent = MB.left == null ? 'đang kiểm tra lượt…' : 'còn ' + MB.left + ' lượt đọc ảnh hôm nay'; if (!MB.checked) mbCheck(MB.code, true); }
+  ocrReady();
+}
+function mbCheck(code, silent) {
+  code = String(code || '').trim().toUpperCase().replace(/\s+/g, '');
+  if (!/^TB-[A-Z0-9]{4,10}$/.test(code)) { $('#mb-msg').textContent = 'Mã có dạng TB-XXXXXX (chữ và số).'; return Promise.resolve(); }
+  if (!silent) $('#mb-msg').textContent = 'Đang kiểm tra mã…';
+  return getJSON(MB_API + '?code=' + encodeURIComponent(code)).then(function (j) {
+    if (j.ok) { MB = { code: code, left: j.con_lai, checked: true }; store(MKEY, { code: code }); $('#mb-msg').textContent = ''; mbShow(); }
+    else { if (silent) { MB = null; store(MKEY, null); mbShow(); } $('#mb-msg').textContent = j.error || 'Mã chưa đúng.'; }
+  }).catch(function () { $('#mb-msg').textContent = 'Chưa kiểm tra được mã (mạng hoặc máy chủ đang lỗi). Thử lại sau, hoặc nhập tay.'; if (MB) { MB.checked = true; mbShow(); } });
+}
+$('#mb-check').addEventListener('click', function () { mbCheck($('#mb-code').value); });
+$('#mb-code').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); mbCheck($('#mb-code').value); } });
+$('#mb-out').addEventListener('click', function () { MB = null; store(MKEY, null); $('#mb-code').value = ''; mbShow(); });
+/* Thu nhỏ ảnh trên máy trước khi gửi: cạnh dài tối đa 2000px, JPEG 0,85 */
+function shrink(file) {
+  return new Promise(function (ok, bad) {
+    var fr = new FileReader();
+    fr.onerror = bad;
+    fr.onload = function () {
+      var im = new Image();
+      im.onerror = function () { bad(new Error('Không mở được ảnh')); };
+      im.onload = function () {
+        var k = Math.min(1, 2000 / Math.max(im.width, im.height)), cv = document.createElement('canvas');
+        cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+        var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(im, 0, 0, cv.width, cv.height);
+        var url = cv.toDataURL('image/jpeg', 0.85);
+        ok({ type: 'image/jpeg', data: url.split(',')[1], url: url });
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+function ocrReady() { $('#ocr-go').disabled = !(MB && MB.code && SHOTS[0] || MB && MB.code && SHOTS[1]) || (MB && MB.left === 0); }
+$$('.mb-slots .slot').forEach(function (sl) {
+  var i = +sl.getAttribute('data-i'), inp = $('input', sl), img = $('img', sl), rm = $('.rm', sl);
+  inp.addEventListener('change', function () {
+    var f = inp.files[0]; if (!f) return;
+    $('#ocr-msg').textContent = 'Đang chuẩn bị ảnh…';
+    shrink(f).then(function (o) { SHOTS[i] = o; img.src = o.url; img.hidden = false; rm.hidden = false; sl.classList.add('has'); $('#ocr-msg').textContent = ''; ocrReady(); })
+      .catch(function () { $('#ocr-msg').textContent = 'Không mở được ảnh này. Thử ảnh chụp màn hình JPG hoặc PNG.'; });
+  });
+  rm.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); SHOTS[i] = null; img.hidden = true; img.removeAttribute('src'); rm.hidden = true; inp.value = ''; sl.classList.remove('has'); ocrReady(); });
+});
+$('#ocr-go').addEventListener('click', function () {
+  var imgs = SHOTS.filter(Boolean).map(function (o) { return { type: o.type, data: o.data }; });
+  if (!imgs.length || !MB) return;
+  var btn = $('#ocr-go'), msg = $('#ocr-msg'); btn.disabled = true; msg.innerHTML = '<span class="spin"></span>AI đang đọc ảnh, mất khoảng 10–30 giây…';
+  fetch(OCR_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: MB.code, images: imgs }) })
+    .then(function (r) { return r.text(); }).then(function (t) { var j = JSON.parse(t.trim() || '{}'); if (j.con_lai != null) MB.left = j.con_lai; if (j.member === false) { MB = null; store(MKEY, null); } if (j.error) throw new Error(j.error); return j; })
+    .then(function (j) { msg.textContent = ''; ocrApply(j); })
+    .catch(function (e) { msg.textContent = (e.message || 'Chưa đọc được ảnh.'); mbShow(); })
+    .then(function () { ocrReady(); if (MB) $('#mb-left').textContent = 'còn ' + MB.left + ' lượt đọc ảnh hôm nay'; });
+});
+function ocrApply(j) {
+  readInputs();
+  var had = S.rows.filter(function (r) { return r.sym; }).length;
+  var rows = (j.rows || []).map(function (r) { return { sym: r.sym, qty: fmtInt(r.qty), cost: r.cost ? fmtInt(Math.round(toDong(r.cost))) : '', sector: sectorOf(r.sym), ai: 1 }; });
+  if (rows.length) S.rows = rows;
+  if (j.cash != null) S.cash = fmtInt(j.cash);
+  if (j.debt != null) S.debt = fmtInt(j.debt); else if (rows.length) S.debt = S.debt || '';
+  if (j.rtt != null && j.rtt > 0 && j.rtt < 1000) S.apprtt = String(j.rtt).replace('.', ',');
+  store(KEY, S); renderInputs(); setTab('tay');
+  $$('#in-tbl tbody tr').forEach(function (tr, i) { if (S.rows[i] && S.rows[i].ai) { tr.classList.add('ai'); if (!S.rows[i].cost) { var c = $('.cost', tr); c.classList.add('need'); c.placeholder = 'Điền giá vốn'; } } });
+  var noCost = rows.filter(function (r) { return !r.cost; }).map(function (r) { return r.sym; });
+  var box = $('#ocr-res');
+  box.innerHTML = '<b>AI đã đọc ' + rows.length + ' mã' + (j.cash != null ? ', tiền mặt ' + money(j.cash) : '') + (j.debt != null ? ', dư nợ ' + money(j.debt) : '') + (j.rtt != null ? ', tỷ lệ ký quỹ ' + nf(j.rtt, 1) + '%' : '') + '.</b> ' +
+    'Soát lại từng dòng đánh dấu vàng ở bảng dưới (AI có thể đọc nhầm số), sửa nếu sai, rồi bấm <b>Bắt đầu khám</b>.' +
+    (had && rows.length ? ' Bảng cũ (' + had + ' mã) đã được thay bằng số đọc từ ảnh.' : '') +
+    (noCost.length ? '<br><b>Chưa đọc được giá vốn:</b> ' + noCost.join(', ') + '. Điền tay giúp nhé.' : '') +
+    (j.debt == null ? '<br>Không thấy dư nợ trong ảnh: nếu bạn có vay margin, chụp thêm màn hình tài sản hoặc điền tay.' : '') +
+    ((j.notes || []).length ? '<ul>' + j.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' : '');
+  box.hidden = false;
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+if (MB && MB.code) MB.checked = false;
 
 /* ---------- lấy giá ---------- */
 function getJSON(url) { return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }

@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261018a">
+<link rel="stylesheet" href="bsdm.css?v=20261018b">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -32,7 +32,7 @@
 <path d="M70 118 q4 40 44 48" fill="none" stroke="#3B5B8A" stroke-width="5" stroke-linecap="round"/>
 <circle cx="118" cy="168" r="11" fill="#B4C7E6" stroke="#2C2A30" stroke-width="4"/>
 </svg></div>
-   <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá và số liệu doanh nghiệp. Khi bạn bấm <b>"Hỏi chuyên gia"</b> ở cuối, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại.</span></p>
+   <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá và số liệu doanh nghiệp. Khi bạn bấm <b>"Hỏi chuyên gia"</b> ở cuối, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại. Thành viên dùng <b>Nhập bằng ảnh</b>: ảnh được gửi tới AI để đọc số rồi bỏ đi, không lưu ảnh.</span></p>
   </header>
 
   <!-- NHẬT KÝ QUYẾT ĐỊNH (hiện khi đã có kế hoạch lưu trên máy) -->
@@ -42,6 +42,34 @@
   <section id="nhap" class="bs-sec">
     <div class="bs-sh"><h2>Nhập danh mục</h2><span class="note">Giá vốn và thị giá tính bằng đồng/cổ phiếu</span></div>
     <div class="card bs-pad">
+      <div class="nh-tabs" role="tablist" aria-label="Cách nhập danh mục">
+        <button type="button" role="tab" id="t-tay" aria-controls="tab-tay" aria-selected="true">Nhập tay</button>
+        <button type="button" role="tab" id="t-anh" aria-controls="tab-anh" aria-selected="false">Nhập bằng ảnh <span class="mb-chip">Thành viên</span></button>
+      </div>
+      <div id="tab-anh" role="tabpanel" aria-labelledby="t-anh" hidden>
+        <div id="mb-gate" class="mb-gate">
+          <h3>Chụp màn hình app, AI đọc giúp bạn</h3>
+          <p>Dành cho <b>thành viên Top Broker</b>. Chụp màn hình danh mục trong app chứng khoán, AI đọc mã, khối lượng, giá vốn, tiền mặt, dư nợ và tỷ lệ ký quỹ. Bạn chỉ cần soát lại rồi bấm khám.</p>
+          <div class="mb-row"><label>Mã thành viên<input id="mb-code" placeholder="TB-XXXXXX" autocapitalize="characters" autocomplete="off" spellcheck="false" maxlength="16"></label><button type="button" class="btn" id="mb-check">Dùng mã</button></div>
+          <p class="mb-msg" id="mb-msg" aria-live="polite"></p>
+          <p class="note">Chưa có mã? <a href="https://zalo.me/0939660996" target="_blank" rel="noopener">Nhắn Zalo 0939 660 996</a> để đăng ký thành viên và nhận mã. Không có mã vẫn dùng đầy đủ Bác sĩ bằng cách <b>nhập tay</b>.</p>
+        </div>
+        <div id="mb-up" class="mb-up" hidden>
+          <div class="mb-who"><span>Thành viên <b id="mb-me"></b> · <span id="mb-left"></span></span><button type="button" class="btn sm ghost" id="mb-out">Đổi mã</button></div>
+          <div class="mb-slots">
+            <label class="slot" data-i="0"><input type="file" accept="image/*" hidden><span class="ph"><b>Ảnh 1 · Màn hình danh mục</b><em>Có mã, khối lượng, giá vốn (bắt buộc)</em></span><img alt="" hidden><button type="button" class="rm" aria-label="Bỏ ảnh" hidden>×</button></label>
+            <label class="slot" data-i="1"><input type="file" accept="image/*" hidden><span class="ph"><b>Ảnh 2 · Màn hình tài sản</b><em>Tiền mặt, dư nợ, tỷ lệ ký quỹ (nên có)</em></span><img alt="" hidden><button type="button" class="rm" aria-label="Bỏ ảnh" hidden>×</button></label>
+          </div>
+          <ul class="mb-tips">
+            <li>Chụp rõ các cột <b>Mã, Khối lượng, Giá vốn</b>. Danh mục dài thì chụp màn hình cuộn hoặc 2 lần.</li>
+            <li><b>Che hoặc cắt tên, số tài khoản</b> trước khi gửi.</li>
+            <li>Ảnh chỉ gửi tới AI để đọc số rồi bỏ đi, <b>không lưu lại</b>. Bấm "Đọc ảnh" là đồng ý gửi ảnh để đọc.</li>
+          </ul>
+          <div class="bs-row"><button type="button" class="btn big" id="ocr-go" disabled>Đọc ảnh</button><span class="note" id="ocr-msg" aria-live="polite"></span></div>
+        </div>
+      </div>
+      <div class="ocr-res" id="ocr-res" hidden></div>
+      <div id="tab-tay" role="tabpanel" aria-labelledby="t-tay">
       <div class="tw"><table class="bs-in" id="in-tbl">
         <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Ngành</th><th><span class="sr">Xóa</span></th></tr></thead>
         <tbody></tbody>
@@ -56,6 +84,7 @@
         <label for="paste">Mỗi dòng một mã: <b>Mã, khối lượng, giá vốn</b>. Ví dụ: <code>HPG 2,000 28,500</code></label>
         <textarea id="paste" rows="5" placeholder="HPG 2,000 28,500&#10;VPB 3,000 22,000"></textarea>
         <button type="button" class="btn" id="paste-go">Đưa vào bảng</button>
+      </div>
       </div>
       <div class="bs-grid3">
         <label>Tiền mặt trong tài khoản<input id="cash" inputmode="numeric" placeholder="0"></label>
@@ -283,6 +312,6 @@
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
-<script src="bsdm.js?v=20261018a"></script>
+<script src="bsdm.js?v=20261018b"></script>
 </body>
 </html>

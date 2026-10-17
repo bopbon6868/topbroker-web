@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Quản lý mã thành viên · Top Broker</title>
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{--ink:#2c2a30;--ink2:#55535b;--ink3:#8a8790;--paper:#f6f4ef;--rule:#e4dfd4;--clay:#b4470a;--up:#1e7a46;--dn:#c0352b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "Be Vietnam Pro",system-ui,sans-serif;padding:24px 16px 60px}
+main{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{margin:0;font-size:28px}
+.card{background:#fff;border-radius:18px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);padding:18px 20px}
+.note{font-size:13px;color:var(--ink3)}
+label{display:flex;flex-direction:column;gap:4px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+input,select{font:inherit;font-weight:500;color:var(--ink);border:1.5px solid var(--rule);border-radius:10px;padding:9px 11px;min-height:42px;background:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.row label{flex:1;min-width:160px}
+.btn{border:0;border-radius:999px;background:var(--ink);color:#fff;font:700 14px inherit;font-family:inherit;padding:0 16px;min-height:42px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--rule)}
+.btn.sm{min-height:32px;padding:0 12px;font-size:13px}
+.btn.red{color:var(--dn)}
+.msg{font-size:14px;min-height:1.2em}
+.msg.err{color:var(--dn)} .msg.ok{color:var(--up)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);padding:8px 8px;border-bottom:1px solid var(--rule)}
+td{padding:9px 8px;border-bottom:1px solid #f0ece3;vertical-align:top}
+.code{font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+.off{opacity:.5}
+.tag{font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;background:#e3f3e9;color:#1d7a47;white-space:nowrap}
+.tag.k{background:#fbe7e4;color:#b23a2b}
+.new{background:#fff8e8;border-radius:12px;padding:12px 14px;font-size:15px}
+.new .code{font-size:20px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+#app{display:flex;flex-direction:column;gap:18px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <header><a href="../" style="color:var(--clay);font-weight:700;text-decoration:none">← Bác sĩ danh mục</a><h1>Quản lý mã thành viên</h1>
+    <p class="note">Mã thành viên mở tính năng <b>Nhập bằng ảnh</b> (AI đọc ảnh chụp màn hình app). Mỗi mã mặc định 10 lượt đọc mỗi ngày. Trang này không có liên kết công khai và cần mật khẩu quản lý.</p></header>
+
+  <section class="card" id="login">
+    <div class="row"><label>Mật khẩu quản lý<input type="password" id="pw" autocomplete="current-password"></label><button class="btn" id="go">Vào</button></div>
+    <p class="msg" id="lmsg"></p>
+  </section>
+
+  <div id="app" hidden>
+    <section class="card">
+      <h2 style="margin:0 0 10px;font-size:18px">Cấp mã mới</h2>
+      <div class="row">
+        <label>Tên khách<input id="n-ten" placeholder="VD: Anh Minh"></label>
+        <label>Số Zalo<input id="n-zalo" inputmode="tel" placeholder="09xx xxx xxx"></label>
+        <label>Ghi chú<input id="n-note" placeholder="VD: khách margin, quen qua hội thảo"></label>
+        <label style="max-width:130px;min-width:110px">Lượt/ngày<input id="n-hm" inputmode="numeric" value="10"></label>
+        <button class="btn" id="add">Tạo mã</button>
+      </div>
+      <p class="msg" id="amsg"></p>
+      <div class="new" id="newbox" hidden></div>
+    </section>
+    <section class="card">
+      <div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px">Danh sách thành viên <span class="note" id="cnt"></span></h2><div class="acts"><input id="q" placeholder="Tìm tên, Zalo, mã" style="min-height:36px"><button class="btn ghost sm" id="reload">Tải lại</button><button class="btn ghost sm" id="out">Thoát</button></div></div>
+      <div class="tw"><table><thead><tr><th>Mã</th><th>Khách</th><th>Ghi chú</th><th>Hôm nay</th><th>Tổng lượt</th><th>Trạng thái</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+      <p class="msg" id="lstmsg"></p>
+    </section>
+    <p class="note">Gửi mã cho khách qua Zalo, kèm hướng dẫn: vào topbroker.fun → Bác sĩ danh mục → Nhập bằng ảnh → nhập mã. Khóa mã khi cần tạm ngừng; xóa mã là khách mất quyền ngay. Danh sách lưu trong kho Netlify Blobs của website, không công khai.</p>
+  </div>
+</main>
+<script>
+(function () {
+  var API = '/api/thanh-vien', PW = '', ALL = [];
+  var $ = function (s) { return document.querySelector(s); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function post(o) {
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-tb-admin': PW }, body: JSON.stringify(o) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.error) throw new Error(j.error || ('Lỗi ' + r.status)); return j; }); });
+  }
+  function d(iso) { if (!iso) return ''; var x = new Date(iso); return ('0' + x.getDate()).slice(-2) + '/' + ('0' + (x.getMonth() + 1)).slice(-2) + '/' + x.getFullYear(); }
+  function login() {
+    PW = $('#pw').value; $('#lmsg').className = 'msg'; $('#lmsg').textContent = 'Đang kiểm tra…';
+    post({ action: 'login' }).then(function () { try { sessionStorage.setItem('tb-adm', PW); } catch (e) {} $('#login').hidden = true; $('#app').hidden = false; list(); })
+      .catch(function (e) { $('#lmsg').className = 'msg err'; $('#lmsg').textContent = e.message; });
+  }
+  function render() {
+    var q = $('#q').value.trim().toLowerCase(), rows = ALL.filter(function (m) { return !q || (m.code + ' ' + m.ten + ' ' + m.zalo + ' ' + m.ghi_chu).toLowerCase().indexOf(q) >= 0; });
+    $('#cnt').textContent = '(' + ALL.length + ' mã, ' + ALL.filter(function (m) { return m.active; }).length + ' đang mở)';
+    $('#tb').innerHTML = rows.map(function (m) {
+      return '<tr class="' + (m.active ? '' : 'off') + '" data-c="' + esc(m.code) + '"><td class="code">' + esc(m.code) + '<div class="note">' + d(m.created) + '</div></td><td>' + esc(m.ten) + (m.zalo ? '<div class="note">' + esc(m.zalo) + '</div>' : '') + '</td><td>' + esc(m.ghi_chu) + '</td><td>' + m.hom_nay + '/' + m.han_muc + '</td><td>' + m.tong + (m.lan_cuoi ? '<div class="note">lần cuối ' + d(m.lan_cuoi) + '</div>' : '') + '</td><td><span class="tag' + (m.active ? '' : ' k') + '">' + (m.active ? 'Đang mở' : 'Đã khóa') + '</span></td>' +
+        '<td><div class="acts"><button class="btn ghost sm cp">Chép mã</button><button class="btn ghost sm tg">' + (m.active ? 'Khóa' : 'Mở lại') + '</button><button class="btn ghost sm ed">Sửa</button><button class="btn ghost sm red del">Xóa</button></div></td></tr>';
+    }).join('') || '<tr><td colspan="7" class="note">Chưa có mã nào.</td></tr>';
+  }
+  function list() {
+    $('#lstmsg').textContent = 'Đang tải…';
+    post({ action: 'list' }).then(function (j) { ALL = j.members || []; $('#lstmsg').textContent = ''; render(); })
+      .catch(function (e) { $('#lstmsg').className = 'msg err'; $('#lstmsg').textContent = e.message; });
+  }
+  $('#go').addEventListener('click', login);
+  $('#pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') login(); });
+  $('#reload').addEventListener('click', list);
+  $('#q').addEventListener('input', render);
+  $('#out').addEventListener('click', function () { try { sessionStorage.removeItem('tb-adm'); } catch (e) {} location.reload(); });
+  $('#add').addEventListener('click', function () {
+    $('#amsg').className = 'msg'; $('#amsg').textContent = 'Đang tạo…';
+    post({ action: 'create', ten: $('#n-ten').value, zalo: $('#n-zalo').value, ghi_chu: $('#n-note').value, han_muc: +$('#n-hm').value || 10 }).then(function (j) {
+      $('#amsg').textContent = ''; var m = j.member;
+      var msg = 'Mã thành viên Bác sĩ danh mục của ' + (m.ten || 'bạn') + ': ' + m.code + '. Vào topbroker.fun → Bác sĩ danh mục → Nhập bằng ảnh → nhập mã này. Mỗi ngày ' + m.han_muc + ' lượt đọc ảnh.';
+      $('#newbox').innerHTML = 'Đã tạo mã <span class="code">' + esc(m.code) + '</span> cho ' + esc(m.ten || '(chưa ghi tên)') + '.<br><span class="note">Tin nhắn gửi khách:</span><br><i>' + esc(msg) + '</i><br><button class="btn sm" id="cpmsg" style="margin-top:8px">Chép tin nhắn</button>';
+      $('#newbox').hidden = false; $('#cpmsg').onclick = function () { copy(msg, this); };
+      ['#n-ten', '#n-zalo', '#n-note'].forEach(function (k) { $(k).value = ''; });
+      list();
+    }).catch(function (e) { $('#amsg').className = 'msg err'; $('#amsg').textContent = e.message; });
+  });
+  function copy(t, b) { (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Đã chép ✓'; }, function () { window.prompt('Chép:', t); }); }
+  $('#tb').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-c]'); if (!tr) return; var c = tr.getAttribute('data-c'), m = ALL.filter(function (x) { return x.code === c; })[0];
+    if (e.target.classList.contains('cp')) return copy(c, e.target);
+    if (e.target.classList.contains('tg')) return post({ action: 'update', code: c, active: !m.active }).then(list).catch(function (er) { alert(er.message); });
+    if (e.target.classList.contains('del')) { if (confirm('Xóa mã ' + c + '? Khách sẽ không dùng được nữa.')) post({ action: 'delete', code: c }).then(list).catch(function (er) { alert(er.message); }); return; }
+    if (e.target.classList.contains('ed')) {
+      var ten = prompt('Tên khách', m.ten); if (ten === null) return;
+      var zalo = prompt('Số Zalo', m.zalo); if (zalo === null) return;
+      var note = prompt('Ghi chú', m.ghi_chu); if (note === null) return;
+      var hm = prompt('Lượt đọc ảnh mỗi ngày', m.han_muc); if (hm === null) return;
+      post({ action: 'update', code: c, ten: ten, zalo: zalo, ghi_chu: note, han_muc: +hm || 10 }).then(list).catch(function (er) { alert(er.message); });
+    }
+  });
+  try { var s = sessionStorage.getItem('tb-adm'); if (s) { $('#pw').value = s; login(); } } catch (e) {}
+})();
+</script>
+</body>
+</html>
