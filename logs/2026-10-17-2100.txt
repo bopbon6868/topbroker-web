@@ -1,0 +1,16 @@
+Cập nhật phiên tối 17/10/2026 · 21:00 (Thứ Bảy, sàn VN nghỉ: giữ số đóng cửa 16/10, bản tin dạng tổng kết tuần + tin cuối tuần)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED -> 'Thứ Bảy, 17/10/2026 · 21:00'; TB.TICKER thêm Tàu qua Hormuz (2 chuyến 11/10, thường 85/ngày), Mục tiêu GDP 2027 ≥10% (CPI ~4,5%), GDP quý 3 +9,95%; BTC 81.507 (−0,72%), ETH 2.425 (−0,80%).
+- site/index.html: giờ số liệu .bf -> 17/10/2026 · 21:00; bản tin 5 tin mới (1 Hormuz: siêu tàu thứ 2 trúng mìn, IRGC tuyên bố eo "đã đóng"; 2 VN-Index tuần + vùng hỗ trợ/kháng cự; 3 mục tiêu GDP 2027; 4 VDS lỗ quý 3, TGĐ DRC bị khởi tố, hạn BCTC 20/10; 5 Mỹ hoãn trừng phạt Nga + BTC); tranh mới "Eo Hormuz bị khóa" (vách đá, xích có ổ khóa, thủy lôi, hai tàu dầu chờ, khói); ô BTC và dòng Bitcoin/Ethereum cập nhật; 3 tin cần biết mới. Lịch giữ nguyên (7 sự kiện đều sắp tới). Các số VN, Mỹ, Á–Âu, vàng, dầu, Dòng tiền giữ nguyên (sàn nghỉ).
+- site/radar/index.html: giờ 21:00; sửa tin Hormuz (diễn biến chiều 17/10), gộp tin Houthi vào; thêm tin thế giới Mỹ hoãn trừng phạt Nga (tg Chính trị); thêm tin mục tiêu GDP 2027; thêm tin VDS + DRC (gộp tin CTCK quý 3 cũ). Giữ 4 tin thế giới. Khối NHNN giữ nguyên (cuối tuần không có OMO).
+
+NGUỒN
+- Anadolu qua A News 17/10 16:07 (giờ TNK): siêu tàu thứ 2 trúng thủy lôi.
+- Al Jazeera liveblog 17/10: IRGC tuyên bố eo "đã đóng", 4 tàu bị báo trúng đòn từ thứ Sáu.
+- Straits.live 17/10 (IMF PortWatch): 2 chuyến 11/10 vs 85/ngày; 157 tàu neo chờ 03:22 UTC.
+- Japan Times 17/10, Brussels Morning: Mỹ hoãn gói trừng phạt Nga, thuế tới 100% với 5 nước mua dầu khí Nga lớn nhất.
+- Thanh Niên 17/10 09:36: mục tiêu 2027 GDP ≥10%, CPI ~4,5%, 6.100 USD/người; GDP Q3 9,95%, 9T 9,01%.
+- CafeF 17/10 13:30: VDS lỗ trước thuế quý 3 105,1 tỷ. Thanh Niên 16/10 21:42: TGĐ DRC bị khởi tố.
+- ASEAN Securities 16/10 18:33: hỗ trợ 1.680–1.700, kháng cự 1.715–1.735.
+- CoinDesk 17/10: BTC 81.507 (−0,72%), ETH 2.425 (−0,80%).
