@@ -58,5 +58,5 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.
 - Thuộc tính `data-q` trên các ô giá ở trang chủ, và máy lấy giá `netlify/functions/quotes.mjs` (/api/quotes: Yahoo và VNDirect; chỉ số Việt Nam cố ý trễ 15 phút). Số tĩnh trong HTML chỉ là số dự phòng khi máy lấy giá lỗi.
-- Thẻ `a.doc` (lối vào Bác sĩ danh mục) trên trang chủ.
+- Thẻ `a.doc` (lối vào Bác sĩ danh mục) trên trang chủ: khối xanh nổi bật có tranh minh họa, đặt ngay trên mục Giải mã cổ phiếu (anh Hải yêu cầu 18/10/2026). Lịch cập nhật tin không sửa thẻ này.
 - Dòng ngày giờ `class="date"` (`data-clock`) trên trang chủ: tự chạy theo giờ thực.

@@ -83,15 +83,20 @@ p{margin:0}
 .chips .more{margin:0 0 0 auto;background:none;padding:0;font-family:var(--tb-sans);font-size:15px}
 
 /* 3b · bác sĩ danh mục */
-.doc{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:center;background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:24px 28px;text-decoration:none;color:var(--tb-ink)}
-.doc svg{width:100%;height:auto;display:block}
-.doc .dt{display:flex;flex-direction:column;gap:6px}
-.doc .e{font-size:12px;font-weight:700;letter-spacing:.08em;color:#128A63}
-.doc b{font-family:var(--serif);font-size:30px;line-height:1.15}
-.doc .d{font-size:16px;color:#34333a;max-width:60ch}
-.doc .go{align-self:flex-start;margin-top:6px;background:#128A63;color:#fff;font-weight:700;font-size:15px;padding:11px 20px;border-radius:999px}
-.doc:hover .go{background:#0d6e4f}
-@media (max-width:640px){.doc{grid-template-columns:1fr;gap:14px;padding:20px}.doc svg{max-width:240px}.doc b{font-size:25px}}
+.doc{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:30px;align-items:center;background:linear-gradient(135deg,#0E5A43 0%,#128A63 100%);border-radius:var(--r);box-shadow:0 18px 40px rgba(14,90,67,.28);padding:32px 34px;text-decoration:none;color:#fff;overflow:hidden}
+.doc::after{content:"";position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.doc svg{width:100%;height:auto;display:block;border-radius:22px;position:relative;z-index:1}
+.doc .dt{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.doc .e{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.08em;color:#0E5A43;background:#FFE29A;border-radius:999px;padding:4px 11px}
+.doc b{font-family:var(--serif);font-size:42px;line-height:1.08;letter-spacing:-.01em}
+.doc .d{font-size:17px;line-height:1.55;color:#E3F4EC;max-width:52ch}
+.doc .ft{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.doc .ft li{display:flex;gap:10px;align-items:flex-start;font-size:15.5px;line-height:1.45;color:#fff}
+.doc .ft li::before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:50%;background:#FFE29A url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%230E5A43' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
+.doc .go{align-self:flex-start;margin-top:8px;background:#FFE29A;color:#0E5A43;font-weight:800;font-size:16.5px;padding:14px 26px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .15s}
+.doc:hover .go{transform:translateY(-2px);background:#fff}
+.doc .mb{font-size:13px;color:#BFE3D2}
+@media (max-width:640px){.doc{grid-template-columns:1fr;gap:18px;padding:22px 20px}.doc svg{order:-1}.doc b{font-size:32px}.doc .d{font-size:16px}.doc .go{align-self:stretch;text-align:center}}
 /* 4 · tin, giải ngố, webgame */
 .trio{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:24px}
 .news{padding:22px 24px 12px}
@@ -229,6 +234,51 @@ p{margin:0}
     <p class="note qnote">Chỉ số Việt Nam trễ 15 phút (nguồn VNDirect). Chỉ số quốc tế, vàng, dầu: Yahoo Finance, có thể trễ vài phút. Bitcoin, Ethereum gần thời gian thực. Khối ngoại, NHNN, tỷ giá trung tâm, lãi suất: cập nhật theo phiên (TCBS, NHNN).</p>
   </section>
 
+  <!-- 2b · BÁC SĨ DANH MỤC: lối vào công cụ, đặt trên Giải mã (anh Hải yêu cầu 18/10/2026). KHÔNG sửa theo lịch cập nhật tin -->
+  <a class="doc" href="bac-si-danh-muc/index.html">
+    <span class="dt">
+      <span class="e">CÔNG CỤ MIỄN PHÍ · KHÁM TRONG 30 GIÂY</span>
+      <b>Bác sĩ danh mục</b>
+      <span class="d">Danh mục đang lỗ, đang vay margin, hay đang lãi mà không biết giữ thế nào? Nhập mã đang cầm, Bác sĩ khám ngay cho bạn.</span>
+      <ul class="ft">
+        <li>Điểm sức khỏe danh mục và điều đáng lo nhất, tính bằng tiền</li>
+        <li>Giá nào thì bị call margin, biết trước để không bị động</li>
+        <li>So hệ quả từng phương án, chuyên gia AI nói rõ bước tiếp theo</li>
+      </ul>
+      <span class="go">Khám danh mục ngay →</span>
+      <span class="mb">Không hô mua bán, bạn là người quyết định. Khám chuyên sâu dành cho thành viên.</span>
+    </span>
+    <svg viewBox="0 0 440 320" role="img" aria-label="Tranh minh họa: bảng khám bệnh có đường nhịp tim chuyển thành mũi tên đi lên, ống nghe quấn quanh, đồng hồ đo sức khỏe kim chỉ vùng xanh và tấm khiên an toàn">
+      <rect width="440" height="320" rx="28" fill="#E3F4EC"/>
+      <circle cx="78" cy="40" r="18" fill="#FFE29A"/>
+      <path d="M52 278 q60 -26 120 -6 q70 22 150 -4 q50 -16 90 2 v30 h-360z" fill="#CDEBDD"/>
+      <rect x="58" y="62" width="190" height="220" rx="16" fill="#fff" stroke="#2C2A30" stroke-width="4"/>
+      <rect x="112" y="46" width="82" height="30" rx="8" fill="#9AD3B9" stroke="#2C2A30" stroke-width="4"/>
+      <circle cx="153" cy="60" r="6" fill="#2C2A30"/>
+      <path d="M78 150 h22 l10 -24 l14 48 l12 -38 l9 14 h12 l16 -26 l22 -6 l14 -28" fill="none" stroke="#E05A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M197 102 l12 -2 l-2 12" fill="none" stroke="#E05A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M80 196 h120 M80 218 h90 M80 240 h108" stroke="#D5DCE3" stroke-width="7" stroke-linecap="round"/>
+      <path d="M276 92 v58 a34 34 0 0 1 -68 0 v-12" fill="none" stroke="#2C2A30" stroke-width="6" stroke-linecap="round"/>
+      <path d="M312 92 v58 a34 34 0 0 1 -36 34" fill="none" stroke="#2C2A30" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="276" cy="86" r="7" fill="#2C2A30"/><circle cx="312" cy="86" r="7" fill="#2C2A30"/>
+      <path d="M276 184 q8 40 -30 56" fill="none" stroke="#2C2A30" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="242" cy="246" r="18" fill="#B4C7E6" stroke="#2C2A30" stroke-width="5"/>
+      <g transform="translate(348 240)">
+        <path d="M-62 0 a62 62 0 0 1 124 0" fill="#fff" stroke="#2C2A30" stroke-width="4"/>
+        <path d="M-50 0 a50 50 0 0 1 14.6 -35.4" fill="none" stroke="#E05A47" stroke-width="12"/>
+        <path d="M-35.4 -35.4 a50 50 0 0 1 50 -14.6 a50 50 0 0 1 4 0.2" fill="none" stroke="#F2A13B" stroke-width="12"/>
+        <path d="M18.6 -46.4 a50 50 0 0 1 31.4 46.4" fill="none" stroke="#2FA866" stroke-width="12"/>
+        <line x1="0" y1="0" x2="30" y2="-34" stroke="#2C2A30" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="0" cy="0" r="9" fill="#2C2A30"/>
+        <rect x="-70" y="0" width="140" height="10" rx="5" fill="#2C2A30"/>
+      </g>
+      <path d="M374 34 l34 12 v26 q0 26 -34 40 q-34 -14 -34 -40 v-26z" fill="#2FA866" stroke="#2C2A30" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M360 68 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M408 150 l4 9 l9 4 l-9 4 l-4 9 l-4 -9 l-9 -4 l9 -4z" fill="#F2A13B"/>
+      <path d="M30 120 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3z" fill="#F2A13B"/>
+    </svg>
+  </a>
+
   <!-- 3 · GIẢI MÃ -->
   <section aria-labelledby="h-g">
     <div class="sh"><h2 id="h-g">Giải mã cổ phiếu</h2><a href="co-phieu/index.html">Tất cả mã →</a></div>
@@ -257,25 +307,6 @@ p{margin:0}
     </article>
   </section>
 
-  <!-- 3b · BÁC SĨ DANH MỤC: lối vào công cụ, KHÔNG sửa theo lịch cập nhật tin -->
-  <a class="doc" href="bac-si-danh-muc/index.html">
-    <svg viewBox="0 0 220 150" role="img" aria-label="Tranh minh họa: ống nghe bác sĩ đặt lên biểu đồ danh mục">
-      <rect width="220" height="150" rx="20" fill="#E6F5EE"/>
-      <rect x="22" y="26" width="120" height="96" rx="10" fill="#fff" stroke="#2C2A30" stroke-width="3"/>
-      <path d="M34 98 l20 -16 l18 8 l22 -30 l20 12 l16 -20" fill="none" stroke="#E05A47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M34 108 h96" stroke="#C9CED6" stroke-width="4" stroke-linecap="round"/>
-      <path d="M168 24 v36 a22 22 0 0 1 -44 0 v-8" fill="none" stroke="#2C2A30" stroke-width="5" stroke-linecap="round"/>
-      <path d="M196 24 v36 a22 22 0 0 1 -28 21" fill="none" stroke="#2C2A30" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="146" cy="98" r="14" fill="#2FA866" stroke="#2C2A30" stroke-width="4"/>
-      <path d="M140 98 h12 M146 92 v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-    </svg>
-    <span class="dt">
-      <span class="e">CÔNG CỤ MỚI · QUẢN LÝ TÀI SẢN</span>
-      <b>Bác sĩ danh mục</b>
-      <span class="d">Danh mục đang lỗ, không biết nên làm gì? Khám sức khỏe, tìm nguyên nhân, mô phỏng hệ quả từng phương án, có AI diễn giải. Không hô mua bán: bạn tự quyết.</span>
-      <span class="go">Khám danh mục ngay →</span>
-    </span>
-  </a>
 
   <!-- 4 · TIN · GIẢI NGỐ · WEBGAME -->
   <div class="trio">
