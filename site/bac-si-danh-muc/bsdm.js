@@ -116,7 +116,7 @@ $('#demo').addEventListener('click', function () {
 });
 $('#clear').addEventListener('click', function () {
   S.rows = []; S.cash = ''; S.debt = ''; store(KEY, S); renderInputs();
-  $$('#kham,#hoan-canh,#mo-phong').forEach(function (s) { s.hidden = true; }); updateSteps();
+  lockStages(true);
 });
 
 /* ---------- lấy giá ---------- */
@@ -196,9 +196,9 @@ function exam() {
     msg.textContent = (b.errs.length ? b.errs.join(' · ') + ' · ' : '') + (miss.length ? 'Không lấy được giá: ' + miss.join(', ') + ' (đã bỏ qua).' : '');
     PORT = calc(b.rows, b.st);
     renderExam(); aiReset('tong-ket'); $('#ai-tong-ket').hidden = false;
-    $('#kham').hidden = false; $('#hoan-canh').hidden = false; $('#mo-phong').hidden = false; updateSteps();
+    lockStages(false);
     renderCtx(); initSim(); runCause(); renderJournal();
-    $('#kham').scrollIntoView({ behavior: 'smooth' });
+    openStage('kham', true);
   }).catch(function () { msg.textContent = 'Chưa lấy được giá (mạng hoặc nguồn giá đang lỗi). Thử lại sau ít phút.'; });
 }
 $('#run').addEventListener('click', exam);
@@ -459,136 +459,245 @@ function renderCtx() {
   $('#ctx-notes').innerHTML = out.map(function (x) { return '<li class="' + x[0] + '"><span>' + x[1] + '</span></li>'; }).join('');
 }
 
-/* ---------- 3 · MÔ PHỎNG ---------- */
+/* ---------- 3 · LÊN PHÁC ĐỒ ---------- */
+var OPT_ORDER = ['hold', 'sell', 'sellpay', 'swap', 'all', 'buy', 'deposit'];
+var PD = { sym: null, on: {}, q: {}, to: '', src: 'cash', dep: { m: 'rtt', v: 0.6 } };
+function curRow() { return PORT.rows.filter(function (x) { return x.sym === PD.sym; })[0]; }
 function initSim() {
-  var sel = $('#sim-sym'), cur = sel.value;
   var rows = PORT.rows.slice().sort(function (a, b) { return a.plp - b.plp; });
-  sel.innerHTML = rows.map(function (r) { return '<option value="' + r.sym + '">' + r.sym + ' · ' + pct(r.plp, 0) + ' so với giá vốn</option>'; }).join('');
-  if (cur && PORT.rows.some(function (r) { return r.sym === cur; })) sel.value = cur;
-  simDefaults(); fillTo(); sim();
+  $('#pd-syms').innerHTML = rows.map(function (r) {
+    return '<button type="button" class="pd-chip sym" role="radio" data-sym="' + r.sym + '"><b>' + r.sym + '</b><span class="' + cls(r.plp) + '">' + pct(r.plp, 0) + '</span><em>' + pct(r.w, 0, false) + ' danh mục</em></button>';
+  }).join('');
+  setSym(PD.sym && PORT.rows.some(function (r) { return r.sym === PD.sym; }) ? PD.sym : rows[0].sym);
 }
-function simDefaults() {
-  var r = PORT.rows.filter(function (x) { return x.sym === $('#sim-sym').value; })[0];
-  $('#sim-px').value = nf(r.p); $('#sim-buy').value = nf(Math.max(100, lot(r.qty * 0.3)));
-  $('#sim-src').value = PORT.st.debt ? 'margin' : 'cash';
+function setSym(sym) {
+  var st = PORT.st; PD.sym = sym;
+  var r = curRow();
+  PD.on = { hold: true }; PD.on[st.debt ? 'sellpay' : 'sell'] = true;
+  PD.q = { sell: { m: 'pct', v: 0.25 }, sellpay: { m: 'pct', v: 0.25 }, swap: { m: 'pct', v: 0.25 }, buy: { m: 'pct', v: 0.25 } };
+  var others = PORT.rows.filter(function (x) { return x.sym !== sym; }).sort(function (a, b) { return b.plp - a.plp; });
+  PD.to = others.length ? others[0].sym : ''; PD.src = st.cash > 0 ? 'cash' : 'margin'; PD.dep = { m: 'rtt', v: 0.6 };
+  $('#sim-px').value = nf(r.p); $('#pd-guess').value = '';
+  $$('#pd-syms .pd-chip').forEach(function (b) { var on = b.getAttribute('data-sym') === sym; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); });
+  $$('.pd-sym').forEach(function (e) { e.textContent = sym; });
+  renderOpts(); sim();
 }
-function fillTo() {
-  var sym = $('#sim-sym').value, cur = $('#sim-to').value;
-  var o = PORT.rows.filter(function (r) { return r.sym !== sym; });
-  $('#sim-to').innerHTML = '<option value="">Không tính phương án này</option>' + o.map(function (r) { return '<option value="' + r.sym + '">' + r.sym + ' (' + esc(r.sector) + ')</option>'; }).join('');
-  if (cur && cur !== sym && o.some(function (r) { return r.sym === cur; })) $('#sim-to').value = cur; else if (o.length) $('#sim-to').value = o.slice().sort(function (a, b) { return b.plp - a.plp; })[0].sym;
+function canPartial(r) { return r.qty >= 200; }
+function optInfo(k) {
+  var st = PORT.st, r = curRow();
+  return {
+    hold: ['Giữ nguyên', 'Không làm gì, chấp nhận biến động giá.'],
+    sell: ['Bán bớt, giữ tiền mặt', 'Giảm tỷ trọng một phần, tiền để lại trong tài khoản.'],
+    sellpay: ['Bán bớt để trả nợ', 'Bán một phần, dùng tiền thu về trả nợ margin.'],
+    swap: ['Chuyển sang mã khác', 'Bán bớt mã này, dùng tiền thu về mua mã khác.'],
+    all: ['Bán hết', 'Rút hẳn khỏi ' + r.sym + (st.debt ? ', tiền thu về ưu tiên trả nợ margin.' : ', giữ tiền mặt.')],
+    buy: ['Mua thêm', 'Tăng số cổ phiếu ' + r.sym + ', kéo giá vốn bình quân xuống.'],
+    deposit: ['Nộp thêm tiền trả nợ', 'Không bán gì, nộp tiền từ ngoài vào để giảm dư nợ margin.']
+  }[k];
 }
-$('#sim-sym').addEventListener('change', function () { simDefaults(); fillTo(); sim(); });
-$$('#sim-sell,#sim-buy,#sim-src,#sim-px,#sim-scope,#sim-to').forEach(function (el) { el.addEventListener('input', sim); el.addEventListener('change', sim); });
+function qtyHTML(k, mode) {
+  var pcts = mode === 'buy' ? [[0.25, '25%'], [0.5, '50%'], [1, '100%']] : [[0.25, '25%'], [0.5, '50%'], [0.75, '75%']];
+  return '<div class="pd-q"><span class="pd-lbl">' + (mode === 'buy' ? 'Mua thêm bao nhiêu? <small>(% so với số đang có)</small>' : 'Bán bao nhiêu? <small>(% số đang có)</small>') + '</span>' +
+    '<div class="pd-chips">' + pcts.map(function (p) { return '<button type="button" class="pd-chip" data-k="' + k + '" data-pct="' + p[0] + '">' + p[1] + '</button>'; }).join('') + '</div>' +
+    '<div class="pd-2"><label>Hoặc số cổ phiếu<input data-qk="' + k + '" data-m="q" inputmode="numeric" placeholder="VD: 1.000"></label>' +
+    '<label>Hoặc số tiền ' + (mode === 'buy' ? 'muốn bỏ ra' : 'muốn thu về') + ' (đ)<input data-qk="' + k + '" data-m="m" inputmode="numeric" placeholder="VD: 50.000.000"></label></div></div>';
+}
+function renderOpts() {
+  var st = PORT.st, r = curRow();
+  var others = PORT.rows.filter(function (x) { return x.sym !== r.sym; });
+  $('#pd-opts').innerHTML = OPT_ORDER.map(function (k) {
+    var inf = optInfo(k), dis = '', inner = '';
+    if ((k === 'sellpay' || k === 'deposit') && !st.debt) dis = 'Bạn không vay margin nên không có nợ để trả.';
+    if ((k === 'sell' || k === 'sellpay' || k === 'swap') && !canPartial(r)) dis = dis || 'Chỉ có ' + nf(r.qty) + ' cp, không bán bớt được theo lô 100.';
+    if (k === 'sell' || k === 'sellpay') inner = qtyHTML(k, 'sell');
+    if (k === 'swap') inner = qtyHTML(k, 'sell') + '<div class="pd-q"><span class="pd-lbl">Mua mã nào?</span><div class="pd-chips">' +
+      others.map(function (x) { return '<button type="button" class="pd-chip" data-to="' + x.sym + '">' + x.sym + '</button>'; }).join('') + '</div>' +
+      '<div class="pd-2"><label>Hoặc gõ mã khác<input id="pd-to-new" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="VD: FPT"></label></div></div>';
+    if (k === 'buy') inner = qtyHTML(k, 'buy') + '<div class="pd-q"><span class="pd-lbl">Tiền lấy từ đâu?</span><div class="pd-chips"><button type="button" class="pd-chip" data-src="cash">Tiền mặt</button><button type="button" class="pd-chip" data-src="margin">Vay margin</button></div></div>';
+    if (k === 'deposit') inner = '<div class="pd-q"><span class="pd-lbl">Nộp bao nhiêu?</span><div class="pd-chips"><button type="button" class="pd-chip" data-dep="0.5">Đủ đưa Rtt lên 50%</button><button type="button" class="pd-chip" data-dep="0.6">Đủ đưa Rtt lên 60%</button><button type="button" class="pd-chip" data-dep="all">Trả hết nợ</button></div>' +
+      '<div class="pd-2"><label>Hoặc số tiền nộp (đ)<input id="pd-dep-m" inputmode="numeric" placeholder="VD: 30.000.000"></label></div></div>';
+    if (dis) PD.on[k] = false;
+    return '<div class="pd-o' + (dis ? ' dis' : '') + (PD.on[k] ? ' on' : '') + '" data-k="' + k + '"><label class="pd-chk"><input type="checkbox" data-k="' + k + '"' + (PD.on[k] ? ' checked' : '') + (dis ? ' disabled' : '') + '><span><b>' + inf[0] + '</b><em>' + (dis || inf[1]) + '</em></span></label>' +
+      (inner ? '<div class="pd-in"' + (PD.on[k] ? '' : ' hidden') + '>' + inner + '<p class="pd-res" id="res-' + k + '"></p></div>' : '') + '</div>';
+  }).join('');
+}
+$('#pd-syms').addEventListener('click', function (e) { var b = e.target.closest('[data-sym]'); if (b) setSym(b.getAttribute('data-sym')); });
+$('#pd-opts').addEventListener('change', function (e) {
+  var t = e.target;
+  if (t.type === 'checkbox') { var k = t.getAttribute('data-k'); PD.on[k] = t.checked; var box = t.closest('.pd-o'); box.classList.toggle('on', t.checked); var inn = box.querySelector('.pd-in'); if (inn) inn.hidden = !t.checked; sim(); }
+  if (t.id === 'pd-to-new') newTarget(t.value);
+});
+$('#pd-opts').addEventListener('click', function (e) {
+  var b = e.target.closest('.pd-chip'); if (!b) return;
+  if (b.hasAttribute('data-pct')) PD.q[b.getAttribute('data-k')] = { m: 'pct', v: +b.getAttribute('data-pct') };
+  if (b.hasAttribute('data-to')) { PD.to = b.getAttribute('data-to'); var ni = $('#pd-to-new'); if (ni) ni.value = ''; }
+  if (b.hasAttribute('data-src')) PD.src = b.getAttribute('data-src');
+  if (b.hasAttribute('data-dep')) { var v = b.getAttribute('data-dep'); PD.dep = v === 'all' ? { m: 'all' } : { m: 'rtt', v: +v }; }
+  sim();
+});
+$('#pd-opts').addEventListener('input', function (e) {
+  var t = e.target, v = toDong(parseNum(t.value));
+  if (t.hasAttribute('data-qk')) { if (v > 0) PD.q[t.getAttribute('data-qk')] = { m: t.getAttribute('data-m'), v: t.getAttribute('data-m') === 'q' ? parseNum(t.value) : parseNum(t.value) }; sim(); }
+  if (t.id === 'pd-dep-m') { if (parseNum(t.value) > 0) PD.dep = { m: 'm', v: parseNum(t.value) }; sim(); }
+});
+$('#pd-opts').addEventListener('keydown', function (e) { if (e.target.id === 'pd-to-new' && e.key === 'Enter') { e.preventDefault(); newTarget(e.target.value); } });
+function newTarget(v) {
+  v = String(v || '').trim().toUpperCase(); if (!/^[A-Z0-9]{3,8}$/.test(v)) return;
+  PD.to = v;
+  if (PX[v] || PORT.rows.some(function (r) { return r.sym === v; })) { sim(); return; }
+  $('#res-swap') && ($('#res-swap').textContent = 'Đang lấy giá ' + v + '…');
+  fetchQuotes([v]).then(function () { sim(); }, function () { sim(); });
+}
+$$('#sim-px,#sim-scope,#pd-guess').forEach(function (el) { el.addEventListener('input', sim); el.addEventListener('change', sim); });
 
 function scenarioNAV(o, sym, shock, scope) {
   var mv = 0;
   PORT.rows.forEach(function (r) {
-    var q = r.sym === sym ? o.q : r.qty + (o.alt && o.alt.sym === r.sym ? o.alt.q : 0), p = r.sym === sym ? o.basePx : r.p;
+    var q = r.sym === sym ? o.q : r.qty, p = r.sym === sym ? o.basePx : r.p;
     mv += q * p * (1 + (scope === 'all' || r.sym === sym ? shock : 0));
   });
+  if (o.alt) mv += o.alt.q * o.alt.px * (1 + (scope === 'all' ? shock : 0));
   var assets = mv + o.cash;
   return { nav: assets - o.debt, rtt: assets ? (assets - o.debt) / assets : 1 };
 }
 
 function sim() {
-  if (!PORT) return;
-  var st = PORT.st, sym = $('#sim-sym').value, r = PORT.rows.filter(function (x) { return x.sym === sym; })[0];
-  var px = toDong(parseNum($('#sim-px').value)) || r.p, sp = Math.min(100, Math.max(0, parseNum($('#sim-sell').value) || 0)) / 100;
-  var bq = lot(parseNum($('#sim-buy').value) || 0), src = $('#sim-src').value, scope = $('#sim-scope').value;
-  $('#sim-now').innerHTML = '<b>' + sym + '</b> hiện có ' + nf(r.qty) + ' cp, giá vốn ' + nf(r.cost) + ' đ, thị giá ' + nf(r.p) + ' đ (' + pct(r.plp) + '), chiếm ' + pct(r.w, 1, false) + ' giá trị cổ phiếu. Giao dịch đều làm tròn lô 100 cp; giá giả định ' + nf(px) + ' đ.';
+  if (!PORT || !PD.sym) return;
+  var st = PORT.st, sym = PD.sym, r = curRow();
+  var px = toDong(parseNum($('#sim-px').value)) || r.p, scope = $('#sim-scope').value;
+  var netK = 1 - st.fee - st.tax, buyK = 1 + st.fee;
+  $('#sim-now').innerHTML = '<b>' + sym + '</b> đang có ' + nf(r.qty) + ' cp, giá vốn ' + nf(r.cost) + ' đ, thị giá ' + nf(r.p) + ' đ (' + pct(r.plp) + '), chiếm ' + pct(r.w, 1, false) + ' giá trị cổ phiếu.';
   var mvOther = PORT.mv - r.mv;
+  function qOf(k) {
+    var s = PD.q[k] || { m: 'pct', v: 0.25 }, q;
+    if (k === 'buy') q = s.m === 'pct' ? Math.max(100, lot(r.qty * s.v)) : s.m === 'q' ? lot(s.v) : lot(s.v / (px * buyK));
+    else { q = s.m === 'pct' ? lot(r.qty * s.v) : s.m === 'q' ? lot(s.v) : lot(s.v / (px * netK)); if (q === 0 && s.m === 'pct') q = 100; q = Math.min(q, r.qty); }
+    return q;
+  }
   function sell(q, repay) {
-    var gross = q * px, net = gross * (1 - st.fee - st.tax), realized = net - q * r.cost;
+    var gross = q * px, net = gross * netK, realized = net - q * r.cost;
     var pay = repay ? Math.min(st.debt, net) : 0;
-    return { q: r.qty - q, cost: r.qty - q > 0 ? r.cost : 0, cash: st.cash + net - pay, debt: st.debt - pay, realized: realized, fees: gross * (st.fee + st.tax), basePx: px };
+    return { q: r.qty - q, cost: r.qty - q > 0 ? r.cost : 0, cash: st.cash + net - pay, debt: st.debt - pay, realized: realized, fees: gross * (st.fee + st.tax), basePx: px, net: net, pay: pay };
   }
-  var opts = [];
-  opts.push({ k: 'hold', label: 'Giữ nguyên', o: { q: r.qty, cost: r.cost, cash: st.cash, debt: st.debt, realized: 0, fees: 0, basePx: px } });
-  var sq = Math.min(r.qty, lot(r.qty * sp) || (sp > 0 && r.qty >= 100 ? 100 : 0));
-  if (sq > 0 && sq < r.qty) {
-    opts.push({ k: 'sell', label: 'Bán bớt ' + nf(sq) + ' cp, giữ tiền', o: sell(sq, false) });
-    if (st.debt) opts.push({ k: 'sellpay', label: 'Bán bớt ' + nf(sq) + ' cp, trả nợ margin', o: sell(sq, true) });
-    var to = $('#sim-to').value, tr = to && PORT.rows.filter(function (x) { return x.sym === to; })[0];
-    if (tr) {
-      var so = sell(sq, false), net = so.cash - st.cash, aq = lot(net / (tr.p * (1 + st.fee)));
-      if (aq > 0) {
-        so.cash -= aq * tr.p * (1 + st.fee); so.fees += aq * tr.p * st.fee; so.alt = { sym: to, q: aq, px: tr.p };
-        opts.push({ k: 'swap', label: 'Cơ cấu: bán ' + nf(sq) + ' cp, mua ' + nf(aq) + ' ' + to, o: so });
-      }
+  var res = {}, opts = [];
+  OPT_ORDER.forEach(function (k) {
+    if (!PD.on[k]) return;
+    if (k === 'hold') opts.push({ k: k, label: 'Giữ nguyên', o: { q: r.qty, cost: r.cost, cash: st.cash, debt: st.debt, realized: 0, fees: 0, basePx: px } });
+    if (k === 'sell' || k === 'sellpay' || k === 'swap') {
+      var q = qOf(k), o = sell(q, k === 'sellpay');
+      if (!q) { res[k] = 'Chưa đủ 100 cp để bán.'; return; }
+      res[k] = '→ Bán <b>' + nf(q) + ' cp</b> (' + pct(q / r.qty, 0, false) + ' số đang có), thu về ≈ <b>' + money(o.net) + '</b> sau phí, thuế' + (k === 'sellpay' ? '; trả nợ ' + money(o.pay) + (o.net > o.pay ? ', còn dư ' + money(o.net - o.pay) + ' tiền mặt' : '') : '') + '.';
+      if (k === 'swap') {
+        var to = PD.to, inP = PORT.rows.filter(function (x) { return x.sym === to; })[0], tp = inP ? inP.p : PX[to] ? PX[to].p : null;
+        if (!to) { res[k] += ' Chọn mã muốn mua.'; return; }
+        if (to === sym) { res[k] += ' Mã mua phải khác ' + sym + '.'; return; }
+        if (!tp) { res[k] += ' Chưa lấy được giá ' + to + '.'; return; }
+        var aq = lot(o.net / (tp * buyK));
+        if (!aq) { res[k] += ' Số tiền chưa đủ mua 100 cp ' + to + '.'; return; }
+        o.cash -= aq * tp * buyK; o.fees += aq * tp * st.fee; o.alt = { sym: to, q: aq, px: tp, ext: !inP };
+        res[k] += ' Mua <b>' + nf(aq) + ' cp ' + to + '</b> giá ' + nf(tp) + ' đ' + (inP ? '' : ' (mã mới)') + '.';
+        opts.push({ k: k, label: 'Bán ' + nf(q) + ' cp, mua ' + nf(aq) + ' ' + to, o: o });
+      } else opts.push({ k: k, label: 'Bán ' + nf(q) + ' cp, ' + (k === 'sellpay' ? 'trả nợ' : 'giữ tiền'), o: o });
     }
+    if (k === 'all') opts.push({ k: k, label: 'Bán hết' + (st.debt ? ', trả nợ' : ''), o: sell(r.qty, !!st.debt) });
+    if (k === 'buy') {
+      var bq = qOf('buy'), cost = bq * px * buyK, fromCash = PD.src === 'cash' ? Math.min(st.cash, cost) : 0, borrow = cost - fromCash;
+      res[k] = '→ Mua <b>' + nf(bq) + ' cp</b>, tốn ≈ <b>' + money(cost) + '</b> (gồm phí)' + (borrow > 0 ? (fromCash > 0 ? ': ' + money(fromCash) + ' tiền mặt, vay thêm ' + money(borrow) : ', vay margin toàn bộ') : ', trả bằng tiền mặt') + '.' + (PD.src === 'cash' && borrow > 0 ? ' Tiền mặt không đủ nên phần thiếu tính là vay margin.' : '');
+      opts.push({ k: k, label: 'Mua thêm ' + nf(bq) + ' cp' + (borrow > 0 ? ' (vay)' : ''), o: { q: r.qty + bq, cost: (r.qty * r.cost + cost) / (r.qty + bq), cash: st.cash - fromCash, debt: st.debt + borrow, realized: 0, fees: bq * px * st.fee, basePx: px } });
+    }
+    if (k === 'deposit') {
+      var A = PORT.mv + st.cash, amt = PD.dep.m === 'all' ? st.debt : PD.dep.m === 'm' ? Math.min(PD.dep.v, st.debt) : Math.max(0, Math.min(st.debt, st.debt - A * (1 - PD.dep.v)));
+      if (!amt) { res[k] = 'Tỷ lệ ký quỹ đã ở mức này, không cần nộp thêm.'; return; }
+      var nd = st.debt - amt;
+      res[k] = '→ Nộp <b>' + money(amt) + '</b>, dư nợ còn ' + money(nd) + ', tỷ lệ ký quỹ lên ' + pct(A ? (A - nd) / A : 1, 1, false) + '.';
+      opts.push({ k: k, label: 'Nộp ' + money(amt) + ' trả nợ', o: { q: r.qty, cost: r.cost, cash: st.cash, debt: nd, realized: 0, fees: 0, basePx: px, dep: amt } });
+    }
+  });
+  // cập nhật dòng kết quả và trạng thái nút
+  OPT_ORDER.forEach(function (k) { var e = $('#res-' + k); if (e) e.innerHTML = PD.on[k] ? (res[k] || '') : ''; });
+  $$('#pd-opts .pd-chip[data-pct]').forEach(function (b) { var s = PD.q[b.getAttribute('data-k')]; b.classList.toggle('on', !!s && s.m === 'pct' && Math.abs(s.v - +b.getAttribute('data-pct')) < 1e-9); });
+  $$('#pd-opts .pd-chip[data-to]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-to') === PD.to); });
+  $$('#pd-opts .pd-chip[data-src]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-src') === PD.src); });
+  $$('#pd-opts .pd-chip[data-dep]').forEach(function (b) { var v = b.getAttribute('data-dep'); b.classList.toggle('on', v === 'all' ? PD.dep.m === 'all' : PD.dep.m === 'rtt' && PD.dep.v === +v); });
+  $$('#pd-opts input[data-qk]').forEach(function (inp) { var s = PD.q[inp.getAttribute('data-qk')]; if (document.activeElement !== inp && (!s || s.m !== inp.getAttribute('data-m'))) inp.value = ''; });
+
+  if (!opts.length) {
+    LAST_SIM = { sym: sym, px: px, opts: [], date: today() }; LAST_SC = null;
+    ['#sim-tbl', '#sc-tbl', '#w-tbl'].forEach(function (id) { $(id).innerHTML = '<tbody><tr><td class="empty">Tích ít nhất một phương án ở Bước 2 để xem hệ quả.</td></tr></tbody>'; });
+    $('#trade').innerHTML = ''; aiReset('tong-ket'); return;
   }
-  opts.push({ k: 'all', label: 'Bán hết' + (st.debt ? ', trả nợ margin' : ', giữ tiền'), o: sell(r.qty, !!st.debt) });
-  if (bq > 0) {
-    var cost = bq * px * (1 + st.fee), fromCash = src === 'cash' ? Math.min(st.cash, cost) : 0, borrow = cost - fromCash;
-    opts.push({ k: 'buy', label: 'Mua thêm ' + nf(bq) + ' cp' + (borrow > 0 ? (fromCash > 0 ? ' (thiếu tiền mặt, vay thêm ' + money(borrow) + ')' : ' bằng margin') : ' bằng tiền mặt'),
-      o: { q: r.qty + bq, cost: (r.qty * r.cost + cost) / (r.qty + bq), cash: st.cash - fromCash, debt: st.debt + borrow, realized: 0, fees: bq * px * st.fee, basePx: px } });
-  }
+  var C = ctx();
   opts.forEach(function (x) {
     var o = x.o, altV = o.alt ? o.alt.q * o.alt.px : 0, mv = mvOther + altV + o.q * px, assets = mv + o.cash;
     o.mv = mv; o.nav = assets - o.debt; o.rtt = assets ? o.nav / assets : 1; o.w = mv ? o.q * px / mv : 0;
-    o.unreal = o.q * (px - o.cost); o.dtc = dropToCall(mvOther + altV, o.q, px, o.cash, o.debt, st.call);
-    var C = ctx(); o.tolX = null;
+    o.unreal = o.q * (px - o.cost); o.dtc = dropToCall(mvOther + altV, o.q, px, o.cash, o.debt, st.call); o.tolX = null;
     if (C.tol) {
       var expo = scope === 'all' ? mv : o.q * px, lim = (1 - C.tol) * PORT.nav;
       o.tolX = !expo ? { t: 'indep' } : o.nav <= lim ? { t: 'over' } : (o.nav - lim) / expo >= 1 ? { t: 'safe' } : { t: 'x', x: (o.nav - lim) / expo };
     }
   });
   LAST_SIM = { sym: sym, px: px, opts: opts, date: today() };
+  var anyDep = opts.some(function (x) { return x.o.dep; });
   var head = '<thead><tr><th></th>' + opts.map(function (x, i) { return '<th><b>' + esc(x.label) + '</b><button type="button" class="btn sm ghost pick" data-i="' + i + '">Chọn phương án này</button></th>'; }).join('') + '</tr></thead>';
   function row(lbl, f) { return '<tr><td>' + lbl + '</td>' + opts.map(function (x) { return '<td>' + f(x.o) + '</td>'; }).join('') + '</tr>'; }
   $('#sim-tbl').innerHTML = head + '<tbody>' +
-    row('Khối lượng ' + sym + ' còn lại', function (o) { return nf(o.q); }) +
-    row('Giá vốn bình quân', function (o) { return o.q ? nf(o.cost) : '–'; }) +
-    row('Lãi/lỗ đã chốt (sau phí, thuế)', function (o) { return '<span class="' + cls(o.realized) + '">' + (o.realized ? money(o.realized, true) : '0') + '</span>'; }) +
-    row('Lãi/lỗ chưa chốt của ' + sym, function (o) { return o.q ? '<span class="' + cls(o.unreal) + '">' + money(o.unreal, true) + '</span>' : '–'; }) +
+    row('Vốn chủ ước tính', function (o) { return '<b>' + money(o.nav) + '</b>' + (o.dep ? '<span class="sub">gồm ' + money(o.dep) + ' nộp thêm</span>' : ''); }) +
     row('Tiền mặt', function (o) { return money(o.cash); }) +
     row('Dư nợ margin', function (o) { return money(o.debt); }) +
-    row('Phí + thuế dự kiến', function (o) { return o.fees ? '<span class="dn">' + money(-o.fees) + '</span>' : '0'; }) +
-    row('Tỷ trọng ' + sym + ' trong cổ phiếu', function (o) { return pct(o.w, 1, false); }) +
-    row('Vốn chủ ước tính', function (o) { return money(o.nav); }) +
     row('Tỷ lệ ký quỹ Rtt', function (o) { return o.debt ? pct(o.rtt, 1, false) : '–'; }) +
+    (anyDep ? row('Tiền nộp thêm từ ngoài', function (o) { return o.dep ? money(o.dep) : '0'; }) : '') +
+    row('Khối lượng ' + sym + ' còn lại', function (o) { return nf(o.q); }) +
+    row('Giá vốn bình quân ' + sym, function (o) { return o.q ? nf(o.cost) : '–'; }) +
+    row('Tỷ trọng ' + sym + ' trong cổ phiếu', function (o) { return pct(o.w, 1, false); }) +
+    row('Lãi/lỗ đã chốt (sau phí, thuế)', function (o) { return '<span class="' + cls(o.realized) + '">' + (o.realized ? money(o.realized, true) : '0') + '</span>'; }) +
+    row('Lãi/lỗ chưa chốt của ' + sym, function (o) { return o.q ? '<span class="' + cls(o.unreal) + '">' + money(o.unreal, true) + '</span>' : '–'; }) +
+    row('Phí + thuế dự kiến', function (o) { return o.fees ? '<span class="dn">' + money(-o.fees) + '</span>' : '0'; }) +
     row(sym + ' giảm bao nhiêu thì chạm ngưỡng gọi ký quỹ', function (o) { return dtcText(o.dtc); }) +
-    (ctx().tol ? row((scope === 'all' ? 'Cả danh mục' : sym) + ' giảm bao nhiêu thì vượt mức chịu đựng ' + pct(ctx().tol, 0, false) + ' của bạn', function (o) { var t = o.tolX; return !t ? '–' : t.t === 'over' ? '<span class="dn">Đã vượt</span>' : t.t === 'safe' ? 'Không vượt' : t.t === 'indep' ? 'Không phụ thuộc mã này' : 'giảm thêm ' + pct(t.x, 1, false); }) : '') +
+    (C.tol ? row((scope === 'all' ? 'Cả danh mục' : sym) + ' giảm bao nhiêu thì vượt mức chịu đựng ' + pct(C.tol, 0, false) + ' của bạn', function (o) { var t = o.tolX; return !t ? '–' : t.t === 'over' ? '<span class="dn">Đã vượt</span>' : t.t === 'safe' ? 'Không vượt' : t.t === 'indep' ? 'Không phụ thuộc mã này' : 'giảm thêm ' + pct(t.x, 1, false); }) : '') +
     '</tbody>';
 
-  var shocks = [-0.3, -0.2, -0.1, 0, 0.1, 0.2];
+  var shocks = [-0.3, -0.2, -0.1, 0, 0.1, 0.2], labels = shocks.map(function (s) { return s ? pct(s, 0) : 'Đứng giá'; });
+  var g = toDong(parseNum($('#pd-guess').value));
+  if (g > 0) { shocks.push(g / px - 1); labels.push('Giá bạn đoán ' + nf(g) + ' đ (' + pct(g / px - 1, 0) + ')'); }
   var sc = shocks.map(function (s) { return opts.map(function (x) { return scenarioNAV(x.o, sym, s, scope); }); });
   $('#sc-tbl').innerHTML = '<thead><tr><th>' + (scope === 'all' ? 'Cả danh mục' : sym) + ' đi tiếp</th>' + opts.map(function (x) { return '<th><b>' + esc(x.label) + '</b></th>'; }).join('') + '</tr></thead><tbody>' +
     sc.map(function (rw, i) {
       var best = Math.max.apply(null, rw.map(function (v) { return v.nav; }));
-      return '<tr><td>' + (shocks[i] ? pct(shocks[i], 0) : 'Đứng giá') + '</td>' + rw.map(function (v) {
-        var tag = PORT.st.debt || v.rtt < 1 ? (v.rtt < st.force ? ' <span class="dn">· giải chấp</span>' : v.rtt < st.call ? ' <span class="dn">· gọi ký quỹ</span>' : '') : '';
+      return '<tr' + (i === 6 ? ' class="guess"' : '') + '><td>' + labels[i] + '</td>' + rw.map(function (v) {
+        var tag = v.rtt < st.force ? ' <span class="dn">· giải chấp</span>' : v.rtt < st.call ? ' <span class="dn">· gọi ký quỹ</span>' : '';
         return '<td class="' + (Math.abs(v.nav - best) < 1 && rw.length > 1 ? 'best' : '') + '">' + money(v.nav) + '<span class="sub ' + cls(v.nav - PORT.nav) + '">' + money(v.nav - PORT.nav, true) + ' so với hiện tại</span>' + tag + '</td>';
       }).join('') + '</tr>';
     }).join('') + '</tbody>';
-
   LAST_SC = { shocks: shocks, scope: scope, sc: sc };
-  var KIND = { hold: 'Giữ nguyên và chấp nhận biến động.', sell: 'Giảm tỷ trọng một phần, giữ tiền mặt.', sellpay: 'Bán một phần để giảm dư nợ margin.', swap: 'Điều chỉnh cơ cấu: chuyển tiền bán được sang mã khác.', all: 'Rút hẳn khỏi mã này.', buy: 'Tăng tỷ trọng, kéo giá vốn xuống.' };
-  $('#sim-list').innerHTML = opts.map(function (x) { return '<li><b>' + esc(x.label) + '</b><span>' + KIND[x.k] + '</span></li>'; }).join('');
-  var allSyms = PORT.rows.slice().sort(function (a, b) { return b.mv - a.mv; }).map(function (z) { return z.sym; });
+
+  var syms = PORT.rows.slice().sort(function (a, b) { return b.mv - a.mv; }).map(function (z) { return z.sym; });
+  opts.forEach(function (x) { if (x.o.alt && syms.indexOf(x.o.alt.sym) < 0) syms.push(x.o.alt.sym); });
   $('#w-tbl').innerHTML = '<thead><tr><th>Mã</th>' + opts.map(function (x) { return '<th><b>' + esc(x.label) + '</b></th>'; }).join('') + '</tr></thead><tbody>' +
-    allSyms.map(function (m) {
-      var cur = PORT.rows.filter(function (z) { return z.sym === m; })[0];
-      return '<tr><td><span class="tk">' + m + '</span><span class="sub">hiện ' + pct(cur.w, 1, false) + '</span></td>' + opts.map(function (x) {
-        var o = x.o, v = m === sym ? o.q * px : cur.mv + (o.alt && o.alt.sym === m ? o.alt.q * o.alt.px : 0), w = o.mv ? v / o.mv : 0, dw = w - cur.w;
+    syms.map(function (m) {
+      var cur = PORT.rows.filter(function (z) { return z.sym === m; })[0], cw = cur ? cur.w : 0;
+      return '<tr><td><span class="tk">' + m + '</span><span class="sub">' + (cur ? 'hiện ' + pct(cw, 1, false) : 'mã mới') + '</span></td>' + opts.map(function (x) {
+        var o = x.o, v = (m === sym ? o.q * px : cur ? cur.mv : 0) + (o.alt && o.alt.sym === m ? o.alt.q * o.alt.px : 0), w = o.mv ? v / o.mv : 0, dw = w - cw;
         return '<td>' + pct(w, 1, false) + (Math.abs(dw) >= 0.001 ? '<span class="sub ' + (dw > 0 ? 'up' : 'dn') + '">' + (dw > 0 ? '+' : MINUS) + nf(Math.abs(dw * 100), 1) + ' điểm</span>' : '') + '</td>';
       }).join('') + '</tr>';
     }).join('') + '<tr><td>Tiền mặt / vốn chủ</td>' + opts.map(function (x) { return '<td>' + (x.o.nav > 0 ? pct(x.o.cash / x.o.nav, 1, false) : '–') + '</td>'; }).join('') + '</tr></tbody>';
   aiReset('tong-ket');
-  var hold = opts[0], d20 = shocks.indexOf(-0.2), u20 = shocks.indexOf(0.2);
-  $('#trade').innerHTML = opts.map(function (x, i) {
-    var o = x.o, dn = sc[d20][i].nav - sc[d20][0].nav, up = sc[u20][i].nav - sc[u20][0].nav, t = [];
+  var holdO = { q: r.qty, cost: r.cost, cash: st.cash, debt: st.debt, basePx: px }, h20 = scenarioNAV(holdO, sym, -0.2, scope).nav, hu20 = scenarioNAV(holdO, sym, 0.2, scope).nav;
+  $('#trade').innerHTML = opts.map(function (x) {
+    var o = x.o, dn = scenarioNAV(o, sym, -0.2, scope).nav - h20, up = scenarioNAV(o, sym, 0.2, scope).nav - hu20, t = [];
     if (x.k === 'hold') {
       t.push('Không tốn phí, không chốt lỗ, giữ nguyên cơ hội hồi phục.');
-      t.push('Nếu ' + sym + ' giảm thêm 20%, vốn chủ mất ' + money(PORT.nav - sc[d20][0].nav) + '.');
+      t.push('Nếu ' + sym + ' giảm thêm 20%, vốn chủ mất ' + money(PORT.nav - h20) + '.');
       if (o.debt) t.push('Rtt giữ nguyên ' + pct(o.rtt, 1, false) + '. ' + dtcSentence(o.dtc, sym));
+    } else if (x.k === 'deposit') {
+      t.push('Nộp thêm ' + money(o.dep) + ' từ ngoài: nợ còn ' + money(o.debt) + ', Rtt lên ' + pct(o.rtt, 1, false) + '. Không chốt lỗ, không tốn phí giao dịch.');
+      t.push('Vốn chủ tăng đúng bằng số tiền nộp: đó là tiền của bạn chuyển vào, không phải lãi. Số tiền này không còn dùng cho việc khác được.');
+      t.push(dtcSentence(o.dtc, sym));
     } else {
       if (o.realized) t.push((o.realized < 0 ? 'Chốt lỗ ' : 'Chốt lãi ') + money(Math.abs(o.realized)) + ' (đã gồm ' + money(o.fees) + ' phí, thuế).');
       if (x.k === 'swap') t.push('Tỷ trọng ' + sym + ' từ ' + pct(r.w, 0, false) + ' còn ' + pct(o.w, 0, false) + '; tiền chuyển sang ' + o.alt.sym + ', nợ giữ nguyên. Rủi ro chuyển từ ' + sym + ' sang ' + o.alt.sym + ' chứ không mất đi.');
       else if (x.k === 'buy') t.push('Giá vốn từ ' + nf(r.cost) + ' xuống ' + nf(o.cost) + ' đ: đẹp hơn trên giấy, nhưng tỷ trọng ' + sym + ' tăng lên ' + pct(o.w, 0, false) + (o.debt > st.debt ? ' và nợ tăng ' + money(o.debt - st.debt) : '') + '.');
       else t.push('Tỷ trọng ' + sym + ' từ ' + pct(r.w, 0, false) + ' còn ' + pct(o.w, 0, false) + (o.debt < st.debt ? '; nợ giảm ' + money(st.debt - o.debt) : '; tiền mặt tăng ' + money(o.cash - st.cash)) + '.');
-      t.push('So với giữ nguyên: nếu giá giảm thêm 20% thì <span class="' + cls(dn) + '">' + money(dn, true) + '</span>; nếu tăng 20% thì <span class="' + cls(up) + '">' + money(up, true) + '</span>.');
+      t.push('So với giữ nguyên: nếu ' + sym + ' giảm thêm 20% thì <span class="' + cls(dn) + '">' + money(dn, true) + '</span>; nếu tăng 20% thì <span class="' + cls(up) + '">' + money(up, true) + '</span>.');
       if (o.debt) t.push('Rtt ' + pct(o.rtt, 1, false) + '. ' + dtcSentence(o.dtc, sym));
     }
     x.trade = t.map(function (s) { return s.replace(/<[^>]+>/g, ''); });
@@ -598,6 +707,29 @@ function sim() {
 $('#sim-tbl').addEventListener('click', function (e) {
   var b = e.target.closest('.pick'); if (!b || !LAST_SIM) return;
   openJournal(+b.getAttribute('data-i'));
+});
+
+/* ---------- các chặng: bấm mới mở ---------- */
+function openStage(id, scroll) {
+  $$('.bs-stage').forEach(function (s) {
+    var on = s.id === id, h = $('.bs-stage-h', s), b = $('.bs-stage-b', s);
+    b.hidden = !on; h.setAttribute('aria-expanded', String(on)); s.classList.toggle('open', on);
+  });
+  if (scroll) setTimeout(function () { $('#' + id).scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  updateSteps();
+}
+function lockStages(lock) {
+  ['kham', 'bat-benh', 'phac-do'].forEach(function (id) { var s = $('#' + id); s.classList.toggle('locked', lock); $('.bs-stage-h', s).disabled = lock; if (lock) { $('.bs-stage-b', s).hidden = true; s.classList.remove('open'); } });
+  $('#lock-note').hidden = !lock; updateSteps();
+}
+$$('.bs-stage-h').forEach(function (h) {
+  h.addEventListener('click', function () { var s = h.closest('.bs-stage'); if (s.classList.contains('open')) { $('.bs-stage-b', s).hidden = true; h.setAttribute('aria-expanded', 'false'); s.classList.remove('open'); updateSteps(); } else openStage(s.id, true); });
+});
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-open]'); if (b) { openStage(b.getAttribute('data-open'), true); return; }
+  var a = e.target.closest('.bs-steps a'); if (!a) return;
+  var id = a.getAttribute('data-step'), s = $('#' + id);
+  if (s && s.classList.contains('bs-stage')) { e.preventDefault(); if (!s.classList.contains('locked')) openStage(id, true); }
 });
 
 /* ---------- 4 · CHỐT KẾ HOẠCH ---------- */
@@ -637,7 +769,7 @@ function openJournal(i) {
   var days = C.hz === 's' ? 14 : C.hz === 'l' ? 90 : 30;
   var d = new Date(Date.now() + 7 * 3600 * 1000 + days * 86400000); $('#jr-review').value = d.toISOString().slice(0, 10);
   $('#jr-why').value = ''; $('#jr-watch').value = w.join('\n');
-  aiReset('tong-ket'); $('#jr-form').hidden = false; $('#jr-hint').hidden = true; $('#ke-hoach').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { $('#jr-why').focus(); }, 400);
+  aiReset('tong-ket'); $('#jr-form').hidden = false; $('#jr-hint').hidden = true; openStage('tien-hanh', true); setTimeout(function () { $('#jr-why').focus(); }, 400);
 }
 $('#jr-cancel').addEventListener('click', function () { $('#jr-form').hidden = true; $('#jr-hint').hidden = false; PENDING = null; });
 $('#jr-form').addEventListener('submit', function (e) {
@@ -786,13 +918,7 @@ document.addEventListener('click', function (e) { var b = e.target.closest('.ai-
 
 /* ---------- thanh bước ---------- */
 function updateSteps() {
-  $$('.bs-steps a').forEach(function (a) { var s = $('#' + a.getAttribute('data-step')); a.classList.toggle('off', !!(s && s.hidden)); });
-}
-if ('IntersectionObserver' in window) {
-  var io = new IntersectionObserver(function (ents) {
-    ents.forEach(function (en) { if (en.isIntersecting) $$('.bs-steps a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('data-step') === en.target.id); }); });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  $$('.bs-sec').forEach(function (s) { io.observe(s); });
+  $$('.bs-steps a').forEach(function (a) { var s = $('#' + a.getAttribute('data-step')); a.classList.toggle('off', !!(s && s.classList.contains('locked'))); a.classList.toggle('on', !!(s && s.classList.contains('open'))); });
 }
 
 renderInputs(); updateSteps(); renderJournal();
