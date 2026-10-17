@@ -130,7 +130,7 @@ $('#demo').addEventListener('click', function () {
 });
 $('#clear').addEventListener('click', function () {
   S.rows = []; S.cash = ''; S.debt = ''; S.apprtt = ''; store(KEY, S); renderInputs();
-  lockStages(true); $('#ket-qua').hidden = true; $('#deep').hidden = true; $('#ocr-res').hidden = true;
+  lockStages(true); $('#ket-qua').hidden = true; $('#deep').hidden = true; $('#deep-gate').hidden = true; $('#ocr-res').hidden = true;
 });
 
 /* ---------- NHẬP BẰNG ẢNH (thành viên có mã, anh Hải chốt 18/10/2026) ---------- */
@@ -149,18 +149,22 @@ function mbShow() {
   if (ok) { $('#mb-me').textContent = MB.code; $('#mb-left').textContent = MB.left == null ? 'đang kiểm tra lượt…' : 'còn ' + MB.left + ' lượt đọc ảnh hôm nay'; if (!MB.checked) mbCheck(MB.code, true); }
   ocrReady();
 }
-function mbCheck(code, silent) {
+function mbCheck(code, silent, msgSel) {
+  var M = $(msgSel || '#mb-msg');
   code = String(code || '').trim().toUpperCase().replace(/\s+/g, '');
-  if (!/^TB-[A-Z0-9]{4,10}$/.test(code)) { $('#mb-msg').textContent = 'Mã có dạng TB-XXXXXX (chữ và số).'; return Promise.resolve(); }
-  if (!silent) $('#mb-msg').textContent = 'Đang kiểm tra mã…';
+  if (!/^TB-[A-Z0-9]{4,10}$/.test(code)) { M.textContent = 'Mã có dạng TB-XXXXXX (chữ và số).'; return Promise.resolve(false); }
+  if (!silent) M.textContent = 'Đang kiểm tra mã…';
   return getJSON(MB_API + '?code=' + encodeURIComponent(code)).then(function (j) {
-    if (j.ok) { MB = { code: code, left: j.con_lai, checked: true }; store(MKEY, { code: code }); $('#mb-msg').textContent = ''; mbShow(); }
-    else { if (silent) { MB = null; store(MKEY, null); mbShow(); } $('#mb-msg').textContent = j.error || 'Mã chưa đúng.'; }
-  }).catch(function () { $('#mb-msg').textContent = 'Chưa kiểm tra được mã (mạng hoặc máy chủ đang lỗi). Thử lại sau, hoặc nhập tay.'; if (MB) { MB.checked = true; mbShow(); } });
+    if (j.ok) { MB = { code: code, left: j.con_lai, checked: true }; store(MKEY, { code: code }); M.textContent = ''; mbShow(); return true; }
+    if (silent) { MB = null; store(MKEY, null); mbShow(); mbRevoked(j.error); }
+    M.textContent = j.error || 'Mã chưa đúng.'; return false;
+  }).catch(function () { M.textContent = 'Chưa kiểm tra được mã (mạng hoặc máy chủ đang lỗi). Thử lại sau ít phút.'; if (MB) { MB.checked = true; mbShow(); } return !!(MB && MB.code); });
 }
+/* Mã đã lưu nhưng bị khóa/xóa: đóng phần chuyên sâu, hiện cổng nhập mã */
+function mbRevoked(err) { if (!$('#deep').hidden) { $('#deep').hidden = true; $('#deep-gate').hidden = false; $('#dg-msg').textContent = err || 'Mã thành viên không còn dùng được.'; } }
 $('#mb-check').addEventListener('click', function () { mbCheck($('#mb-code').value); });
 $('#mb-code').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); mbCheck($('#mb-code').value); } });
-$('#mb-out').addEventListener('click', function () { MB = null; store(MKEY, null); $('#mb-code').value = ''; mbShow(); });
+$('#mb-out').addEventListener('click', function () { MB = null; store(MKEY, null); $('#mb-code').value = ''; mbShow(); mbRevoked('Đã thoát mã thành viên. Nhập mã để mở lại phần khám chuyên sâu.'); });
 /* Thu nhỏ ảnh trên máy trước khi gửi: cạnh dài tối đa 2000px, JPEG 0,85 */
 function shrink(file) {
   return new Promise(function (ok, bad) {
@@ -223,7 +227,7 @@ function ocrApply(j) {
   box.hidden = false;
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-if (MB && MB.code) MB.checked = false;
+if (MB && MB.code) { MB.checked = false; mbCheck(MB.code, true); }
 
 /* ---------- lấy giá ---------- */
 function getJSON(url) { return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
@@ -722,7 +726,17 @@ function renderQuick() {
     mb.hidden = false;
   } else mb.hidden = true;
 }
-$('#deep-go').addEventListener('click', function () { $('#deep').hidden = false; openStage('kham', true); });
+/* Khám chuyên sâu chỉ cho thành viên có mã (anh Hải chốt 18/10/2026). Thẻ 30 giây ai cũng xem được. */
+var DEEP_WANT = 'kham';
+function openDeep(stage) {
+  if (MB && MB.code) { $('#deep-gate').hidden = true; $('#deep').hidden = false; openStage(stage || 'kham', true); return; }
+  DEEP_WANT = stage || 'kham'; $('#deep').hidden = true; $('#deep-gate').hidden = false; $('#dg-msg').textContent = '';
+  setTimeout(function () { $('#deep-gate').scrollIntoView({ behavior: 'smooth', block: 'start' }); try { $('#dg-code').focus({ preventScroll: true }); } catch (e) {} }, 30);
+}
+$('#deep-go').addEventListener('click', function () { openDeep('kham'); });
+function dgTry() { mbCheck($('#dg-code').value, false, '#dg-msg').then(function (ok) { if (ok) openDeep(DEEP_WANT); }); }
+$('#dg-check').addEventListener('click', dgTry);
+$('#dg-code').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); dgTry(); } });
 
 /* ---------- NHẬT KÝ QUYẾT ĐỊNH: lần trước bạn chọn gì, đến hôm nay ra sao (trung thực cả khi kết quả xấu) ---------- */
 function hb(n) { return n > 0 ? 'cao hơn' : 'thấp hơn'; }
@@ -760,7 +774,7 @@ function renderBrief() {
     '<p class="note">Kết quả tính tới hôm nay theo giá trễ 15 phút, <b>chưa phải kết luận đúng hay sai</b>: quyết định hợp lý vẫn có thể ra kết quả xấu trong ngắn hạn, và ngược lại. Hãy xem các điều kiện theo dõi có còn đúng.</p>';
   box.hidden = false;
 }
-document.addEventListener('click', function (e) { if (!e.target.closest('#jb-open')) return; $('#deep').hidden = false; openStage('tien-hanh', true); });
+document.addEventListener('click', function (e) { if (!e.target.closest('#jb-open')) return; openDeep('tien-hanh'); });
 
 /* ---------- 2 · NGUYÊN NHÂN ---------- */
 function ret(sym, n) {
@@ -1584,7 +1598,7 @@ function aiRun(step) {
   var btn = box.querySelector('.ai-go'); btn.disabled = true;
   var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>Chuyên gia đang đọc lại cả buổi khám, mất khoảng 15–40 giây…'; box.appendChild(ld);
   var old = box.querySelector('.err'); if (old) old.remove();
-  fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
+  fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data, code: MB && MB.code }) })
     .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.error) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
       box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Hỏi lại</button></div>' +

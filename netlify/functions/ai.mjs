@@ -2,6 +2,8 @@
 // Gọi Claude qua Netlify AI Gateway (biến môi trường tự có: NETLIFY_AI_GATEWAY_KEY/URL hoặc ANTHROPIC_API_KEY/BASE_URL).
 // Không lưu dữ liệu người dùng. AI đóng vai chuyên gia tư vấn: đọc khẩu vị khách và đưa lời khuyên bước tiếp theo (anh Hải yêu cầu 17/10/2026).
 
+import { getStore } from '@netlify/blobs';
+
 const MODEL = process.env.TB_AI_MODEL || 'claude-opus-5-5';
 const FALLBACK = 'claude-sonnet-5-5';
 
@@ -57,6 +59,13 @@ export default async (req, context) => {
   let body; try { body = JSON.parse(raw); } catch { return json({ error: 'Dữ liệu không hợp lệ.' }, 400); }
   const step = STEP[body.buoc] ? body.buoc : null;
   if (!step || typeof body.so_lieu !== 'object') return json({ error: 'Thiếu bước hoặc số liệu.' }, 400);
+  // Chuyên gia AI nằm trong phần khám chuyên sâu, chỉ cho thành viên có mã (anh Hải chốt 18/10/2026). Kho lỗi thì cho qua để không chặn nhầm.
+  if (!TEST) {
+    const code = String(body.code || '').trim().toUpperCase();
+    let m = null, storeOk = true;
+    try { m = code ? await getStore({ name: 'tb-thanh-vien', consistency: 'strong' }).get(code, { type: 'json' }) : null; } catch (e) { storeOk = false; }
+    if (storeOk && (!m || m.active === false)) return json({ error: 'Chuyên gia AI dành cho thành viên. Nhập mã thành viên ở phần Xem sâu, hoặc nhắn Zalo 0939 660 996 để đăng ký.', member: false }, 403);
+  }
 
   const viaAnthropic = !!(process.env.ANTHROPIC_API_KEY);
   const key = process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY;

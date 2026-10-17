@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261018b">
+<link rel="stylesheet" href="bsdm.css?v=20261018c">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -19,7 +19,7 @@
   <header class="bs-hd">
     <span class="kick">Quản lý tài sản · Công cụ</span>
     <div class="bs-hero"><div><h1>Bác sĩ danh mục</h1>
-    <p class="dek">Nhập danh mục, <b>30 giây sau</b> bạn có ngay một thẻ kết quả: <b>điểm sức khỏe</b>, <b>điều đáng lo nhất tính bằng tiền</b> và <b>việc cần kiểm tra</b>. Muốn kỹ hơn thì bấm <b>Xem sâu</b>: 4 chặng khám, so phương án và chuyên gia AI cuối buổi.</p></div>
+    <p class="dek">Nhập danh mục, <b>30 giây sau</b> bạn có ngay một thẻ kết quả: <b>điểm sức khỏe</b>, <b>điều đáng lo nhất tính bằng tiền</b> và <b>việc cần kiểm tra</b>. Thành viên Top Broker bấm <b>Xem sâu</b> để khám chuyên sâu: 4 chặng, so phương án và chuyên gia AI cuối buổi.</p></div>
     <svg class="bs-hero-art" viewBox="0 0 320 220" role="img" aria-label="Tranh minh họa: túi bác sĩ đựng biểu đồ đầu tư và ống nghe">
 <rect width="320" height="220" rx="24" fill="#E8F5EF"/>
 <circle cx="268" cy="44" r="18" fill="#FFE9A8"/>
@@ -115,8 +115,24 @@
       <div class="kq-margin" id="kq-margin" hidden></div>
       <details class="kq-why"><summary>Điểm được tính thế nào?</summary><ul id="kq-break"></ul>
         <p class="note">Bắt đầu từ 100 điểm, trừ theo 5 nhóm rủi ro tính từ số liệu bạn nhập: đòn bẩy margin (tối đa −40), mã lớn nhất (−20), một ngành (−10), tiền mặt so với nhu cầu (−15), mã đang yếu về xu hướng giá hoặc kinh doanh (−15). Từ 75 trở lên: Khỏe; 50–74: Cần để ý; dưới 50: Đáng lo. Điểm mô tả độ an toàn của danh mục, không chấm mã nào tốt hay xấu và không phải khuyến nghị.</p></details>
-      <div class="bs-row kq-act"><button type="button" class="btn" id="deep-go">Xem sâu: 4 chặng khám chi tiết →</button><span class="note">Kết luận, chẩn đoán, so phương án, kế hoạch và chuyên gia AI.</span></div>
+      <div class="bs-row kq-act"><button type="button" class="btn" id="deep-go">Xem sâu: khám chuyên sâu →</button><span class="note"><span class="mb-chip">Thành viên</span> Chẩn đoán, xét nghiệm từng mã, so phương án, kế hoạch và chuyên gia AI.</span></div>
     </div>
+  </section>
+
+  <!-- CỔNG THÀNH VIÊN cho phần khám chuyên sâu (anh Hải chốt 18/10/2026) -->
+  <section id="deep-gate" class="card bs-pad dgate" aria-labelledby="dgate-t" hidden>
+    <span class="kick2">Khám chuyên sâu · Thành viên</span>
+    <h2 id="dgate-t">Phần khám chuyên sâu dành cho thành viên Top Broker</h2>
+    <ul class="dgate-l">
+      <li><b>Chẩn đoán từng điểm</b> kèm hệ quả tính bằng tiền, khẩu vị đầu tư của bạn.</li>
+      <li><b>Xét nghiệm từng mã:</b> kết quả kinh doanh, xu hướng giá.</li>
+      <li><b>Lên phác đồ:</b> so hệ quả các phương án cho từng mã và cả danh mục.</li>
+      <li><b>Kế hoạch, ngày tái khám</b> và <b>chuyên gia AI</b> nói rõ bạn nên làm gì tiếp.</li>
+      <li>Kèm <b>nhập danh mục bằng ảnh</b> chụp màn hình app.</li>
+    </ul>
+    <div class="mb-row"><label>Mã thành viên<input id="dg-code" placeholder="TB-XXXXXX" autocapitalize="characters" autocomplete="off" spellcheck="false" maxlength="16"></label><button type="button" class="btn" id="dg-check">Mở khám chuyên sâu</button></div>
+    <p class="mb-msg" id="dg-msg" aria-live="polite"></p>
+    <p class="note">Chưa có mã? <a href="https://zalo.me/0939660996" target="_blank" rel="noopener">Nhắn Zalo 0939 660 996</a> để đăng ký thành viên và nhận mã. Thẻ kết quả 30 giây ở trên vẫn dùng được cho mọi người.</p>
   </section>
 
   <div id="deep" hidden>
@@ -312,6 +328,6 @@
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
-<script src="bsdm.js?v=20261018b"></script>
+<script src="bsdm.js?v=20261018c"></script>
 </body>
 </html>

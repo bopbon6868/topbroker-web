@@ -43,7 +43,7 @@ td{padding:9px 8px;border-bottom:1px solid #f0ece3;vertical-align:top}
 <body>
 <main>
   <header><a href="../" style="color:var(--clay);font-weight:700;text-decoration:none">← Bác sĩ danh mục</a><h1>Quản lý mã thành viên</h1>
-    <p class="note">Mã thành viên mở tính năng <b>Nhập bằng ảnh</b> (AI đọc ảnh chụp màn hình app). Mỗi mã mặc định 10 lượt đọc mỗi ngày. Trang này không có liên kết công khai và cần mật khẩu quản lý.</p></header>
+    <p class="note">Mã thành viên mở tính năng <b>Nhập bằng ảnh</b> (AI đọc ảnh chụp màn hình app). Mã thành viên cũng mở <b>phần khám chuyên sâu</b> (4 chặng và chuyên gia AI). Mỗi mã mặc định 10 lượt đọc ảnh mỗi ngày. Trang này không có liên kết công khai và cần mật khẩu quản lý.</p></header>
 
   <section class="card" id="login">
     <div class="row"><label>Mật khẩu quản lý<input type="password" id="pw" autocomplete="current-password"></label><button class="btn" id="go">Vào</button></div>
@@ -67,6 +67,12 @@ td{padding:9px 8px;border-bottom:1px solid #f0ece3;vertical-align:top}
       <div class="row" style="justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px">Danh sách thành viên <span class="note" id="cnt"></span></h2><div class="acts"><input id="q" placeholder="Tìm tên, Zalo, mã" style="min-height:36px"><button class="btn ghost sm" id="reload">Tải lại</button><button class="btn ghost sm" id="out">Thoát</button></div></div>
       <div class="tw"><table><thead><tr><th>Mã</th><th>Khách</th><th>Ghi chú</th><th>Hôm nay</th><th>Tổng lượt</th><th>Trạng thái</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
       <p class="msg" id="lstmsg"></p>
+    </section>
+    <section class="card">
+      <h2 style="margin:0 0 4px;font-size:18px">Đổi mật khẩu quản lý</h2>
+      <p class="note" style="margin:0 0 10px">Đặt mật khẩu anh dễ nhớ, ít nhất 8 ký tự. Mật khẩu cũ hết hiệu lực ngay sau khi đổi.</p>
+      <div class="row"><label>Mật khẩu mới<input type="password" id="p1" autocomplete="new-password"></label><label>Nhập lại mật khẩu mới<input type="password" id="p2" autocomplete="new-password"></label><button class="btn" id="chpw">Đổi mật khẩu</button></div>
+      <p class="msg" id="pmsg"></p>
     </section>
     <p class="note">Gửi mã cho khách qua Zalo, kèm hướng dẫn: vào topbroker.fun → Bác sĩ danh mục → Nhập bằng ảnh → nhập mã. Khóa mã khi cần tạm ngừng; xóa mã là khách mất quyền ngay. Danh sách lưu trong kho Netlify Blobs của website, không công khai.</p>
   </div>
@@ -108,7 +114,7 @@ td{padding:9px 8px;border-bottom:1px solid #f0ece3;vertical-align:top}
     $('#amsg').className = 'msg'; $('#amsg').textContent = 'Đang tạo…';
     post({ action: 'create', ten: $('#n-ten').value, zalo: $('#n-zalo').value, ghi_chu: $('#n-note').value, han_muc: +$('#n-hm').value || 10 }).then(function (j) {
       $('#amsg').textContent = ''; var m = j.member;
-      var msg = 'Mã thành viên Bác sĩ danh mục của ' + (m.ten || 'bạn') + ': ' + m.code + '. Vào topbroker.fun → Bác sĩ danh mục → Nhập bằng ảnh → nhập mã này. Mỗi ngày ' + m.han_muc + ' lượt đọc ảnh.';
+      var msg = 'Mã thành viên Bác sĩ danh mục của ' + (m.ten || 'bạn') + ': ' + m.code + '. Vào topbroker.fun → Bác sĩ danh mục, khám xong bấm "Xem sâu" và nhập mã này để mở phần khám chuyên sâu; mã cũng dùng cho Nhập bằng ảnh (' + m.han_muc + ' lượt mỗi ngày).';
       $('#newbox').innerHTML = 'Đã tạo mã <span class="code">' + esc(m.code) + '</span> cho ' + esc(m.ten || '(chưa ghi tên)') + '.<br><span class="note">Tin nhắn gửi khách:</span><br><i>' + esc(msg) + '</i><br><button class="btn sm" id="cpmsg" style="margin-top:8px">Chép tin nhắn</button>';
       $('#newbox').hidden = false; $('#cpmsg').onclick = function () { copy(msg, this); };
       ['#n-ten', '#n-zalo', '#n-note'].forEach(function (k) { $(k).value = ''; });
@@ -128,6 +134,14 @@ td{padding:9px 8px;border-bottom:1px solid #f0ece3;vertical-align:top}
       var hm = prompt('Lượt đọc ảnh mỗi ngày', m.han_muc); if (hm === null) return;
       post({ action: 'update', code: c, ten: ten, zalo: zalo, ghi_chu: note, han_muc: +hm || 10 }).then(list).catch(function (er) { alert(er.message); });
     }
+  });
+  $('#chpw').addEventListener('click', function () {
+    var a = $('#p1').value, b = $('#p2').value, m = $('#pmsg'); m.className = 'msg err';
+    if (a.length < 8) { m.textContent = 'Mật khẩu mới cần ít nhất 8 ký tự.'; return; }
+    if (a !== b) { m.textContent = 'Hai lần nhập chưa khớp nhau.'; return; }
+    m.className = 'msg'; m.textContent = 'Đang đổi…';
+    post({ action: 'doi_mat_khau', moi: a }).then(function () { PW = a; try { sessionStorage.setItem('tb-adm', a); } catch (e) {} $('#p1').value = ''; $('#p2').value = ''; m.className = 'msg ok'; m.textContent = 'Đã đổi mật khẩu. Lần sau đăng nhập bằng mật khẩu mới.'; })
+      .catch(function (e) { m.className = 'msg err'; m.textContent = e.message; });
   });
   try { var s = sessionStorage.getItem('tb-adm'); if (s) { $('#pw').value = s; login(); } } catch (e) {}
 })();

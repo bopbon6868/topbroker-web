@@ -2,7 +2,8 @@
 // Kho: Netlify Blobs "tb-thanh-vien", mỗi mã một bản ghi { code, ten, zalo, ghi_chu, active, created, han_muc, dung: { 'YYYY-MM-DD': n }, tong }.
 // GET  ?code=TB-XXXXXX            → kiểm tra mã (công khai): { ok, con_lai, han_muc }
 // POST { action, ... } + header x-tb-admin: <mật khẩu quản lý> → list | create | update | delete
-// Mật khẩu quản lý: so SHA-256('topbroker:' + mật khẩu) với TB_ADMIN_HASH (biến môi trường) hoặc mã băm mặc định bên dưới.
+// Mật khẩu quản lý: so SHA-256('topbroker:' + mật khẩu) với mã băm anh tự đặt trên trang quản lý (kho "tb-cau-hinh", khóa "admin");
+// chưa đặt thì dùng mã băm mặc định bên dưới. Biến môi trường TB_ADMIN_HASH (nếu có) luôn được chấp nhận thêm, dùng khi quên mật khẩu.
 import { getStore } from '@netlify/blobs';
 import { createHash, randomInt } from 'node:crypto';
 
@@ -13,10 +14,13 @@ const ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
 const today = () => new Date(Date.now() + 7 * 3600 * 1000).toISOString().slice(0, 10);
 const norm = c => String(c || '').trim().toUpperCase().replace(/\s+/g, '');
-const isAdmin = req => {
-  const pw = req.headers.get('x-tb-admin') || '';
-  const want = (process.env.TB_ADMIN_HASH || DEFAULT_HASH).toLowerCase();
-  return !!pw && createHash('sha256').update('topbroker:' + pw).digest('hex') === want;
+const hashOf = pw => createHash('sha256').update('topbroker:' + pw).digest('hex');
+const isAdmin = async req => {
+  const pw = req.headers.get('x-tb-admin') || ''; if (!pw) return false;
+  const h = hashOf(pw);
+  if (process.env.TB_ADMIN_HASH && h === process.env.TB_ADMIN_HASH.toLowerCase()) return true;
+  let cfg = null; try { cfg = await getStore({ name: 'tb-cau-hinh', consistency: 'strong' }).get('admin', { type: 'json' }); } catch (e) {}
+  return h === ((cfg && cfg.hash) || DEFAULT_HASH);
 };
 const pub = m => ({ code: m.code, ten: m.ten || '', zalo: m.zalo || '', ghi_chu: m.ghi_chu || '', active: m.active !== false, created: m.created, han_muc: m.han_muc || HAN_MUC, hom_nay: (m.dung || {})[today()] || 0, tong: m.tong || 0, lan_cuoi: m.lan_cuoi || null });
 const clip = (s, n) => String(s == null ? '' : s).slice(0, n);
@@ -37,10 +41,16 @@ export default async (req) => {
   }
 
   if (req.method !== 'POST') return json({ error: 'Chỉ nhận GET hoặc POST' }, 405);
-  if (!isAdmin(req)) return json({ error: 'Sai mật khẩu quản lý.' }, 401);
+  if (!(await isAdmin(req))) return json({ error: 'Sai mật khẩu quản lý.' }, 401);
   let b; try { b = await req.json(); } catch { return json({ error: 'Dữ liệu không hợp lệ.' }, 400); }
 
   if (b.action === 'login') return json({ ok: true });
+  if (b.action === 'doi_mat_khau') {
+    const moi = String(b.moi || '');
+    if (moi.length < 8) return json({ error: 'Mật khẩu mới cần ít nhất 8 ký tự.' }, 400);
+    await getStore({ name: 'tb-cau-hinh', consistency: 'strong' }).setJSON('admin', { hash: hashOf(moi), doi_luc: new Date().toISOString() });
+    return json({ ok: true });
+  }
   if (b.action === 'list') {
     const { blobs } = await store.list();
     const all = (await Promise.all(blobs.map(x => store.get(x.key, { type: 'json' })))).filter(Boolean).map(pub);

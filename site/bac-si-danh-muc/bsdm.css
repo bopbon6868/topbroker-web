@@ -440,3 +440,8 @@ details.ind ul{font-size:13.5px}
 #in-tbl input.need{box-shadow:inset 0 0 0 2px var(--dn)}
 #in-tbl input.need::placeholder{color:var(--dn);font-family:var(--tb-sans);font-size:13px}
 @media (max-width:640px){ .nh-tabs .mb-chip{display:none} }
+/* Cổng thành viên cho phần khám chuyên sâu (18/10/2026) */
+.dgate{display:flex;flex-direction:column;gap:12px;border:2px solid var(--clay)}
+.dgate h2{font-family:var(--serif);font-size:24px;font-weight:700}
+.dgate-l{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.kq-act .mb-chip{margin-right:4px}
