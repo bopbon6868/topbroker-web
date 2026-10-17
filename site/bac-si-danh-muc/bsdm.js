@@ -31,6 +31,20 @@ function money(n, signed) {
 function pct(x, d, signed) { if (x == null || !isFinite(x)) return '–'; var s = nf(Math.abs(x * 100), d == null ? 1 : d) + '%'; return signed === false ? (x < 0 ? MINUS : '') + s : sgn(x, s); }
 function cls(x) { return x > 0 ? 'up' : x < 0 ? 'dn' : ''; }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function fmtInt(n) { return String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ; }
+function dispNum(v) { var n = parseNum(v); return v !== '' && v != null && isFinite(n) && Math.abs(n - Math.round(n)) < 1e-9 && n >= 1000 ? fmtInt(n) : (v == null ? '' : v); }
+/* Ô nhập số: tự thêm dấu phẩy ngăn cách hàng nghìn khi gõ (1,000,000) */
+var NUMSEL = '#in-tbl .qty, #in-tbl .cost, #cash, #debt, #sim-px, #pd-guess, #pd-dep-m, input[data-qk]';
+document.addEventListener('input', function (e) {
+  var t = e.target; if (!t.matches || !t.matches(NUMSEL)) return;
+  var v = t.value; if (!/^[\d,]*$/.test(v)) return;
+  var caret = t.selectionStart == null ? v.length : t.selectionStart, before = v.slice(0, caret).replace(/,/g, '').length, raw = v.replace(/,/g, '').replace(/^0+(?=\d)/, '');
+  if (!raw) { t.value = ''; return; }
+  var nv = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ','); if (nv === v) return;
+  t.value = nv;
+  var pos = 0, cnt = 0; while (pos < nv.length && cnt < before) { if (nv[pos] !== ',') cnt++; pos++; }
+  try { t.setSelectionRange(pos, pos); } catch (er) {}
+}, true);
 function lot(q) { return Math.max(0, Math.floor(q / 100) * 100); }
 function sectorOf(sym) {
   var S = window.TB_SECTORS || {};
@@ -52,8 +66,8 @@ var SECTOR_NAMES = Object.keys(window.TB_SECTORS || {}).concat(['Khác']);
 function rowHTML(r) {
   var opts = SECTOR_NAMES.map(function (n) { return '<option' + (n === r.sector ? ' selected' : '') + '>' + esc(n) + '</option>'; }).join('');
   return '<tr><td data-l="Mã"><input aria-label="Mã" class="sym" placeholder="VD: HPG" value="' + esc(r.sym) + '" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false"></td>' +
-    '<td data-l="Khối lượng"><input aria-label="Khối lượng" class="qty" inputmode="numeric" placeholder="1.000" value="' + esc(r.qty) + '"></td>' +
-    '<td data-l="Giá vốn (đ)"><input aria-label="Giá vốn" class="cost" inputmode="decimal" placeholder="25.000" value="' + esc(r.cost) + '"></td>' +
+    '<td data-l="Khối lượng"><input aria-label="Khối lượng" class="qty" inputmode="numeric" placeholder="1,000" value="' + esc(dispNum(r.qty)) + '"></td>' +
+    '<td data-l="Giá vốn (đ)"><input aria-label="Giá vốn" class="cost" inputmode="decimal" placeholder="25,000" value="' + esc(dispNum(r.cost)) + '"></td>' +
     '<td data-l="Ngành"><select aria-label="Ngành" class="sec">' + opts + '</select></td>' +
     '<td><button type="button" class="x" aria-label="Xóa dòng">×</button></td></tr>';
 }
@@ -61,7 +75,7 @@ function renderInputs() {
   var tb = $('#in-tbl tbody');
   if (!S.rows.length) S.rows = [{ sym: '', qty: '', cost: '', sector: 'Khác' }];
   tb.innerHTML = S.rows.map(rowHTML).join('');
-  ['cash', 'debt', 'call', 'force', 'fee', 'tax'].forEach(function (k) { $('#' + k).value = S[k] == null ? '' : S[k]; });
+  ['cash', 'debt', 'call', 'force', 'fee', 'tax'].forEach(function (k) { $('#' + k).value = S[k] == null ? '' : (k === 'cash' || k === 'debt' ? dispNum(S[k]) : S[k]); });
 }
 function readInputs() {
   S.rows = $$('#in-tbl tbody tr').map(function (tr) {
@@ -105,12 +119,12 @@ $('#paste-go').addEventListener('click', function () {
 });
 $('#demo').addEventListener('click', function () {
   S = { rows: [
-    { sym: 'HPG', qty: '2.000', cost: '28.500', sector: 'Thép' },
-    { sym: 'VPB', qty: '3.000', cost: '22.000', sector: 'Ngân hàng' },
-    { sym: 'NVL', qty: '5.000', cost: '15.000', sector: 'Bất động sản' },
-    { sym: 'SSI', qty: '2.000', cost: '38.000', sector: 'Chứng khoán' },
-    { sym: 'MWG', qty: '500', cost: '68.000', sector: 'Bán lẻ' }
-  ], cash: '20.000.000', debt: '150.000.000', call: '40', force: '30', fee: '0,15', tax: '0,1' };
+    { sym: 'HPG', qty: '2,000', cost: '28,500', sector: 'Thép' },
+    { sym: 'VPB', qty: '3,000', cost: '22,000', sector: 'Ngân hàng' },
+    { sym: 'NVL', qty: '5,000', cost: '15,000', sector: 'Bất động sản' },
+    { sym: 'SSI', qty: '2,000', cost: '38,000', sector: 'Chứng khoán' },
+    { sym: 'MWG', qty: '500', cost: '68,000', sector: 'Bán lẻ' }
+  ], cash: '20,000,000', debt: '150,000,000', call: '40', force: '30', fee: '0,15', tax: '0,1' };
   store(KEY, S); renderInputs();
   $('#in-msg').textContent = 'Đây là danh mục mẫu để xem thử, không phải danh mục thật của ai.';
 });
@@ -477,7 +491,7 @@ function setSym(sym) {
   PD.q = { sell: { m: 'pct', v: 0.25 }, sellpay: { m: 'pct', v: 0.25 }, swap: { m: 'pct', v: 0.25 }, buy: { m: 'pct', v: 0.25 } };
   var others = PORT.rows.filter(function (x) { return x.sym !== sym; }).sort(function (a, b) { return b.plp - a.plp; });
   PD.to = others.length ? others[0].sym : ''; PD.src = st.cash > 0 ? 'cash' : 'margin'; PD.dep = { m: 'rtt', v: 0.6 };
-  $('#sim-px').value = nf(r.p); $('#pd-guess').value = '';
+  $('#sim-px').value = fmtInt(r.p); $('#pd-guess').value = '';
   $$('#pd-syms .pd-chip').forEach(function (b) { var on = b.getAttribute('data-sym') === sym; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); });
   $$('.pd-sym').forEach(function (e) { e.textContent = sym; });
   renderOpts(); sim();
@@ -499,8 +513,8 @@ function qtyHTML(k, mode) {
   var pcts = mode === 'buy' ? [[0.25, '25%'], [0.5, '50%'], [1, '100%']] : [[0.25, '25%'], [0.5, '50%'], [0.75, '75%']];
   return '<div class="pd-q"><span class="pd-lbl">' + (mode === 'buy' ? 'Mua thêm bao nhiêu? <small>(% so với số đang có)</small>' : 'Bán bao nhiêu? <small>(% số đang có)</small>') + '</span>' +
     '<div class="pd-chips">' + pcts.map(function (p) { return '<button type="button" class="pd-chip" data-k="' + k + '" data-pct="' + p[0] + '">' + p[1] + '</button>'; }).join('') + '</div>' +
-    '<div class="pd-2"><label>Hoặc số cổ phiếu<input data-qk="' + k + '" data-m="q" inputmode="numeric" placeholder="VD: 1.000"></label>' +
-    '<label>Hoặc số tiền ' + (mode === 'buy' ? 'muốn bỏ ra' : 'muốn thu về') + ' (đ)<input data-qk="' + k + '" data-m="m" inputmode="numeric" placeholder="VD: 50.000.000"></label></div></div>';
+    '<div class="pd-2"><label>Hoặc số cổ phiếu<input data-qk="' + k + '" data-m="q" inputmode="numeric" placeholder="VD: 1,000"></label>' +
+    '<label>Hoặc số tiền ' + (mode === 'buy' ? 'muốn bỏ ra' : 'muốn thu về') + ' (đ)<input data-qk="' + k + '" data-m="m" inputmode="numeric" placeholder="VD: 50,000,000"></label></div></div>';
 }
 function renderOpts() {
   var st = PORT.st, r = curRow();
@@ -515,7 +529,7 @@ function renderOpts() {
       '<div class="pd-2"><label>Hoặc gõ mã khác<input id="pd-to-new" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="VD: FPT"></label></div></div>';
     if (k === 'buy') inner = qtyHTML(k, 'buy') + '<div class="pd-q"><span class="pd-lbl">Tiền lấy từ đâu?</span><div class="pd-chips"><button type="button" class="pd-chip" data-src="cash">Tiền mặt</button><button type="button" class="pd-chip" data-src="margin">Vay margin</button></div></div>';
     if (k === 'deposit') inner = '<div class="pd-q"><span class="pd-lbl">Nộp bao nhiêu?</span><div class="pd-chips"><button type="button" class="pd-chip" data-dep="0.5">Đủ đưa Rtt lên 50%</button><button type="button" class="pd-chip" data-dep="0.6">Đủ đưa Rtt lên 60%</button><button type="button" class="pd-chip" data-dep="all">Trả hết nợ</button></div>' +
-      '<div class="pd-2"><label>Hoặc số tiền nộp (đ)<input id="pd-dep-m" inputmode="numeric" placeholder="VD: 30.000.000"></label></div></div>';
+      '<div class="pd-2"><label>Hoặc số tiền nộp (đ)<input id="pd-dep-m" inputmode="numeric" placeholder="VD: 30,000,000"></label></div></div>';
     if (dis) PD.on[k] = false;
     return '<div class="pd-o' + (dis ? ' dis' : '') + (PD.on[k] ? ' on' : '') + '" data-k="' + k + '"><label class="pd-chk"><input type="checkbox" data-k="' + k + '"' + (PD.on[k] ? ' checked' : '') + (dis ? ' disabled' : '') + '><span><b>' + inf[0] + '</b><em>' + (dis || inf[1]) + '</em></span></label>' +
       (inner ? '<div class="pd-in"' + (PD.on[k] ? '' : ' hidden') + '>' + inner + '<p class="pd-res" id="res-' + k + '"></p></div>' : '') + '</div>';
