@@ -24,7 +24,10 @@ for tk, m in meta.items():
     c['points'] = [txt(x) for x in re.findall(r'<span class="rs">(.*?)</span>', sec)][:4]
     old[tk] = c
     c['title'] = m.get('title') or (tk + ': ' + c['line'].split('. ')[0].rstrip('.'))
+    art = f'tools/art/{tk}.svg'  # tranh riêng của bài (tools/make_art.py), hiện ở ô Giải mã trang chủ
+    c['art'] = open(art, encoding='utf-8').read().strip() if __import__('os').path.exists(art) else None
     out.append(dict(tk=tk, pub=m['pub'], upd=m.get('upd'), data=m.get('data'), history=m.get('history', []), changes=m.get('changes', []), **c))
+[o.pop('art', None) for o in old.values()]
 json.dump(old, open('tools/articles_cache.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 out.sort(key=lambda a: (a['upd'] or a['pub']), reverse=True)
 js = '/* Sinh tự động bởi tools/build_articles.py, đừng sửa tay. Sắp xếp: bài mới đăng hoặc mới cập nhật đứng đầu. */\nwindow.TB_ARTICLES = ' + json.dumps(out, ensure_ascii=False, indent=1) + ';\n'

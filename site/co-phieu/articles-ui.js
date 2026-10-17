@@ -43,7 +43,10 @@
     var vnDay = function (ms) { return Math.floor((ms + 7 * 3600 * 1000) / 86400000); };
     var newest = Date.parse(key(A[0]) + ':00+07:00'), today = vnDay(Date.now());
     var off = isFinite(newest) ? Math.max(0, today - vnDay(newest)) : 0;
-    var f = A[off % A.length], box = feat.querySelector('div') || feat, base = 'co-phieu/' + f.tk.toLowerCase() + '/index.html';
+    var f = A[off % A.length];
+    var oldArt = feat.querySelector('svg');  // tranh riêng của bài đang lên (tools/art/<MÃ>.svg)
+    if (f.art && oldArt) { var t = document.createElement('div'); t.innerHTML = f.art; if (t.firstChild) oldArt.parentNode.replaceChild(t.firstChild, oldArt); }
+    var box = feat.querySelector('div') || feat, base = 'co-phieu/' + f.tk.toLowerCase() + '/index.html';
     box.innerHTML = '<span class="tkr">' + badge(f) + esc(f.sector) + '</span>' +
       '<h3><a href="' + base + '">' + esc(f.title) + '</a></h3>' +
       '<div class="px">' + esc(f.price) + ' <span class="' + f.y1[0] + '">' + esc(f.y1[1]) + ' 1 năm</span></div>' +
