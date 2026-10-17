@@ -1,0 +1,14 @@
+Cập nhật phiên trưa 17/10/2026 · 12:30 (Thứ Bảy, sàn VN nghỉ: giữ số đóng cửa 16/10, bổ sung tin cuối tuần)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED -> 'Thứ Bảy, 17/10/2026 · 12:30'; TB.TICKER: BTC 81.413 (−0,62%, 17/10); thêm ô SHB LNTT 9T ~14.300 tỷ (+17%, 15/10).
+- site/index.html: giờ số liệu .bf -> 17/10/2026 · 12:30; câu bản tin 2 (NHNN + tiền gửi dân cư) và 3 (quốc tế + BTC); ô BTC ở .bn và dòng Hàng hóa & tiền số; 3 tin cần biết mới (SHB/ngân hàng LN 9T, tiền gửi dân cư & đề nghị hạ lãi cho vay, MSB chào bán 936 triệu cp). Lịch cần nhớ giữ nguyên (cả 7 sự kiện vẫn phía trước).
+- site/radar/index.html: giờ cập nhật 12:30; thêm 4 tin lên đầu (SHB và ngân hàng LN 9T; tiền gửi dân cư 11,43 triệu tỷ [NHNN]; MSB/BID phát hành; CTCK quý 3, VDS lỗ 105 tỷ); mã hot thêm SHB, MSB. Khối NHNN giữ nguyên (cuối tuần không có phiên OMO mới).
+
+SỐ LIỆU VÀ NGUỒN
+- BTC 81.412,82 USD (−0,62% 24h): Coinbase, trưa 17/10. ETH: không lấy được số mới, giữ 2.447 (16/10).
+- SHB ~14.300 tỷ LNTT 9T (+17%), Nam A Bank >4.700 tỷ (+25%), ABBank ~4.540 tỷ (+97%), Vietbank 1.297 tỷ (+50%): CafeF 17/10 09:28.
+- Tiền gửi dân cư >11,43 triệu tỷ cuối T8 (+10,6% YTD), tổng tiền gửi >17,77 triệu tỷ, tín dụng 30/9 ~20,75 triệu tỷ (+11,59%), lãi huy động mới BQ 6,38% (20/9), họp 16/10 yêu cầu giảm lãi cho vay 1,5–2%: Vietstock 17/10 09:57 (số liệu NHNN).
+- MSB 936 triệu cp 100:25 giá 10.000; BID trái phiếu riêng lẻ tối đa 8.000 tỷ: Tinnhanhchungkhoan 16/10.
+- CTCK quý 3: VDS lỗ >105 tỷ, EVS lỗ >52 tỷ, NHSV lãi 31,8 tỷ: CafeF 17/10.
+- Các số thị trường VN, Mỹ, Á–Âu, vàng, dầu, NHNN, tỷ giá: giữ nguyên từ bản 08:00 (đóng cửa 16/10, sàn nghỉ cuối tuần).
