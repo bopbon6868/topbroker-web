@@ -1,6 +1,6 @@
 // Giá cổ phiếu cho Bác sĩ danh mục.
 // /api/stock?s=HPG,VPB         → giá gần nhất (TRỄ 15 PHÚT) và giá tham chiếu phiên trước
-// /api/stock?s=HPG,VNINDEX&h=400 → thêm lịch sử giá đóng cửa ngày trong h ngày gần nhất
+// /api/stock?s=HPG,VNINDEX&h=400 → thêm lịch sử giá ngày (đóng cửa, cao, thấp) trong h ngày gần nhất
 // Nguồn: VNDirect dchart. Đơn vị giá cổ phiếu trả về: nghìn đồng (như bảng điện).
 
 const DELAY = 15 * 60;
@@ -38,7 +38,7 @@ async function history(sym, days) {
   const now = Math.floor(Date.now() / 1000);
   const j = await getJSON(`https://dchart-api.vndirect.com.vn/dchart/history?resolution=D&symbol=${sym}&from=${now - days * 86400}&to=${now}`);
   if (j?.s !== 'ok' || !j.t?.length) throw new Error('no data');
-  return { t: j.t.map(dayVN), c: j.c };
+  return { t: j.t.map(dayVN), c: j.c, h: j.h, l: j.l };
 }
 
 export default async (req) => {

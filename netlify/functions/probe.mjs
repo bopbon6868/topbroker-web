@@ -10,8 +10,8 @@ export default async (req) => {
       const j = await get(`financial_models?sort=displayOrder:asc&q=${q.get('cl')==='0'?'':'codeList:'+s+'~'}modelType:${t}&size=300`);
       lines = (j.data || []).map(d => `${d.itemCode} ${d.itemVnName} [${d.note || ''}]`);
     } else if (mode === 'fs') {
-      const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER~modelType:${t}&sort=fiscalDate:desc&size=400`);
-      const d = j.data || []; const dates = [...new Set(d.map(x => x.fiscalDate))].slice(0, 6);
+      const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER&sort=fiscalDate:desc&size=800`);
+      const d = (j.data || []).filter(x => String(x.modelType) === t); const dates = [...new Set(d.map(x => x.fiscalDate))].slice(0, 6);
       lines.push('dates ' + dates.join(','));
       const want = (q.get('items') || '').split(',').filter(Boolean);
       d.filter(x => x.fiscalDate === dates[0] && (!want.length || want.includes(String(x.itemCode)))).forEach(x => lines.push(`${x.fiscalDate} ${x.itemCode} ${x.numericValue}`));
