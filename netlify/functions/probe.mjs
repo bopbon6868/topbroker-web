@@ -12,9 +12,9 @@ export default async (req) => {
   const s = (new URL(req.url).searchParams.get('s') || 'HPG').toUpperCase();
   const out = {};
   await Promise.all(Object.entries(U(s)).map(async ([k, u]) => {
-    try { const r = await fetch(u, { headers: H, signal: AbortSignal.timeout(7000) }); const t = await r.text(); out[k] = r.status + ' ' + t.slice(0, 1500); }
+    try { const r = await fetch(u, { headers: H, signal: AbortSignal.timeout(4000) }); const t = await r.text(); out[k] = r.status + ' len' + t.length + ' ' + t.slice(0, +(new URL(req.url).searchParams.get('n')||250)); }
     catch (e) { out[k] = 'ERR ' + e.message; }
   }));
-  return new Response(JSON.stringify(out, null, 1), { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+  return new Response(Object.entries(out).map(([k,v])=>k+': '+v).join('\n\n'), { headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } });
 };
 export const config = { path: '/api/probe' };
