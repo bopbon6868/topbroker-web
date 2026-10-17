@@ -1079,10 +1079,10 @@ function renderPlan() {
     return '<tr><td><span class="tk">' + m + '</span>' + (PLAN[m] ? '<span class="sub">' + esc(PLAN[m].label) + '</span>' : hA && hA.ext ? '<span class="sub">mã mới</span>' : '') + '</td><td>' + pct(a, 1, false) + '</td><td><b>' + (b ? pct(b, 1, false) : 'Không còn') + '</b>' + (Math.abs(d) >= 0.001 ? '<span class="sub ' + (d > 0 ? 'up' : 'dn') + '">' + (d > 0 ? '+' : MINUS) + nf(Math.abs(d * 100), 1) + ' điểm</span>' : '') + '</td></tr>';
   }).join('') + '</tbody></table></div>';
   var shocks = [-0.3, -0.2, -0.1, 0, 0.1, 0.2];
-  h += '<h4 class="pl-h">Vốn chủ nếu cả danh mục đi tiếp</h4><div class="tw"><table class="bs-t bs-cmp"><thead><tr><th>Cả danh mục</th><th>Hiện tại</th><th>Sau phác đồ</th><th>Chênh lệch</th></tr></thead><tbody>' + shocks.map(function (sh) {
+  h += '<h4 class="pl-h">Vốn chủ nếu cả danh mục đi tiếp</h4><div class="tw"><table class="bs-t bs-cmp"><thead><tr><th>Cả danh mục</th><th>Hiện tại</th><th>Sau phác đồ</th></tr></thead><tbody>' + shocks.map(function (sh) {
     function v(S) { var mv = S.mv * (1 + sh), as = mv + S.cash, nv = as - S.debt, rt = as ? nv / as : 1; return { nav: nv, tag: S.debt && rt < st.force ? ' <span class="dn">· giải chấp</span>' : S.debt && rt < st.call ? ' <span class="dn">· gọi ký quỹ</span>' : '' }; }
     var a = v(B), b = v(A), d = b.nav - a.nav;
-    return '<tr><td>' + (sh ? pct(sh, 0) : 'Đứng giá') + '</td><td>' + money(a.nav) + a.tag + '</td><td>' + money(b.nav) + b.tag + '</td><td class="' + cls(d) + '">' + money(d, true) + '</td></tr>';
+    return '<tr><td>' + (sh ? pct(sh, 0) : 'Đứng giá') + '</td><td>' + money(a.nav) + a.tag + '</td><td><b>' + money(b.nav) + '</b>' + b.tag + '<span class="sub ' + cls(d) + '">' + money(d, true) + ' so với hiện tại</span></td></tr>';
   }).join('') + '</tbody></table></div><p class="note">Giả định mọi mã cùng tăng giảm một tỷ lệ; các mã đã quyết định tính theo giá giao dịch giả định của từng mã. Tiền thu về và nợ được bù trừ chung: tiền mặt âm tính thành vay thêm, trả nợ thừa tính thành tiền mặt. Chưa tính lãi vay margin theo thời gian.</p>';
   res.innerHTML = h;
 }
