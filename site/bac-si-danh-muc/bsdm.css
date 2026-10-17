@@ -200,3 +200,20 @@ table{border-collapse:collapse;width:100%}
 }
 .bs-paste label{display:block;line-height:1.6}
 @media (max-width:560px){#nhap .bs-grid3{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+/* Chặng 2 · hoàn cảnh */
+.bs-ctx{display:flex;flex-direction:column;gap:18px}
+.bs-ctx fieldset{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.bs-ctx legend{font-weight:700;font-size:16px;margin-bottom:10px;padding:0}
+.bs-ctx label{position:relative;display:inline-flex;cursor:pointer}
+.bs-ctx input{position:absolute;opacity:0;width:1px;height:1px}
+.bs-ctx label span{display:inline-block;padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:15px;font-weight:600;color:var(--tb-ink2);transition:background .15s,border-color .15s}
+.bs-ctx input:checked+span{background:var(--tb-ink);border-color:var(--tb-ink);color:#fff}
+.bs-ctx input:focus-visible+span{outline:2px solid var(--clay);outline-offset:2px}
+.bs-sh.in{margin:0 0 6px;padding:0}
+.bs-sh.in h3{margin:0}
+/* Chặng 4 · kế hoạch */
+.bs-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:4px 0 14px}
+.bs-plan>div{background:#fbf9f4;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.5}
+.bs-plan ul,.jr ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14.5px;line-height:1.5}
+@media (max-width:560px){.bs-ctx label span{padding:9px 13px;font-size:14.5px}}
+.bs [hidden]{display:none!important}

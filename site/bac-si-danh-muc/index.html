@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bác sĩ danh mục · Top Broker</title>
-<meta name="description" content="Khám sức khỏe danh mục, tìm nguyên nhân danh mục suy yếu, mô phỏng các phương án xử lý và theo dõi quyết định. Không trả lời bán hay giữ: giúp bạn thấy rõ lựa chọn và hệ quả.">
+<meta name="description" content="Khám danh mục, làm rõ hoàn cảnh, so sánh phương án và chốt kế hoạch. Không trả lời bán hay giữ: giúp bạn thấy rõ lựa chọn và hệ quả.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017b">
-<link rel="stylesheet" href="bsdm.css?v=20261017b">
+<link rel="stylesheet" href="bsdm.css?v=20261017d">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -21,21 +21,21 @@
     <h1>Bác sĩ danh mục</h1>
     <p class="dek">Không trả lời "nên bán hay nên giữ". Bác sĩ giúp bạn trả lời câu khó hơn: <b>với danh mục đang có, tình hình thực sự thế nào, mình có những lựa chọn nào, và mỗi lựa chọn dẫn đến đâu.</b></p>
     <ul class="bs-four">
-      <li><b>1 · Khám sức khỏe</b><span>Giá vốn, thị giá, lãi lỗ, tỷ trọng, mức tập trung, margin.</span></li>
-      <li><b>2 · Tìm nguyên nhân</b><span>Do thị trường, do ngành, do doanh nghiệp hay do đòn bẩy.</span></li>
-      <li><b>3 · Mô phỏng phương án</b><span>Giữ, bán bớt, bán hết, mua thêm: hệ quả của từng đường.</span></li>
-      <li><b>4 · Nhật ký quyết định</b><span>Ghi lại lựa chọn và giả định, xem lại điều gì đã xảy ra.</span></li>
+      <li><b>Chặng 1 · Khám danh mục</b><span>Giá trị, lãi/lỗ, tỷ trọng, tiền mặt, dư nợ, vốn chủ ước tính; vì sao danh mục biến động.</span></li>
+      <li><b>Chặng 2 · Làm rõ hoàn cảnh</b><span>Thời gian đầu tư, nhu cầu cần tiền và khả năng chịu rủi ro của bạn.</span></li>
+      <li><b>Chặng 3 · So sánh phương án</b><span>Giữ nguyên, giảm tỷ trọng, giảm dư nợ hoặc điều chỉnh cơ cấu. Không mặc định phương án nào tốt nhất.</span></li>
+      <li><b>Chặng 4 · Chốt kế hoạch</b><span>Lựa chọn, đánh đổi, điều kiện cần theo dõi và ngày đánh giá lại.</span></li>
     </ul>
     <p class="bs-princ"><b>Cách Bác sĩ làm việc:</b> công thức tính ra con số · dữ liệu doanh nghiệp làm cơ sở đánh giá · AI diễn giải và nêu câu hỏi cần kiểm tra · <b>bạn quyết định</b>.</p>
     <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá. Khi bạn bấm <b>"Nhờ AI diễn giải"</b>, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại.</p>
   </header>
 
-  <nav class="bs-steps" aria-label="Các bước">
-    <a href="#nhap" data-step="nhap">Nhập danh mục</a>
+  <nav class="bs-steps" aria-label="Các chặng">
+    <a href="#nhap" data-step="nhap">Nhập</a>
     <a href="#kham" data-step="kham">1 · Khám</a>
-    <a href="#nguyen-nhan" data-step="nguyen-nhan">2 · Nguyên nhân</a>
-    <a href="#mo-phong" data-step="mo-phong">3 · Mô phỏng</a>
-    <a href="#nhat-ky" data-step="nhat-ky">4 · Nhật ký</a>
+    <a href="#hoan-canh" data-step="hoan-canh">2 · Hoàn cảnh</a>
+    <a href="#mo-phong" data-step="mo-phong">3 · Phương án</a>
+    <a href="#ke-hoach" data-step="ke-hoach">4 · Kế hoạch</a>
   </nav>
 
   <!-- NHẬP -->
@@ -72,7 +72,7 @@
 
   <!-- 1 KHÁM -->
   <section id="kham" class="bs-sec" hidden>
-    <div class="bs-sh"><h2>1 · Khám sức khỏe danh mục</h2><span class="note" id="px-time"></span></div>
+    <div class="bs-sh"><h2>Chặng 1 · Khám danh mục</h2><span class="note" id="px-time"></span></div>
     <div class="bs-kpi" id="kpi"></div>
     <div class="card bs-pad"><div class="tw"><table class="bs-t" id="hold-tbl"></table></div></div>
     <div class="bs-two">
@@ -80,33 +80,57 @@
       <div class="card bs-pad"><h3>Những điểm cần nhìn kỹ</h3><ul class="bs-flags" id="flags"></ul>
         <p class="note">Các mốc 25% một mã, 40% một ngành là mốc tham khảo phổ biến về rủi ro tập trung, không phải quy tắc bắt buộc.</p></div>
     </div>
+    <div class="card bs-pad">
+      <div class="bs-sh in"><h3>Danh mục biến động vì đâu</h3>
+        <label class="bs-per">Xét trong<select id="period"><option value="21">1 tháng</option><option value="63" selected>3 tháng</option><option value="126">6 tháng</option><option value="252">1 năm</option></select></label></div>
+      <p class="note" id="cause-note"></p>
+      <div id="decomp"></div>
+      <details class="bs-auto"><summary>Chi tiết từng mã và cách tính</summary>
+        <div class="tw"><table class="bs-t" id="cause-tbl"></table></div>
+        <p class="note">Cách tách: <b>Thị trường chung</b> = biến động VN-Index. <b>Nhóm ngành</b> = ngành mạnh hay yếu hơn VN-Index (ngành tính bằng trung bình các mã cùng ngành). <b>Riêng doanh nghiệp</b> = mã mạnh hay yếu hơn ngành của nó. Ba phần cộng lại bằng biến động của mã.</p>
+      </details>
+    </div>
     <div class="card bs-pad ai" id="ai-kham" data-step="kham"></div>
-  </section>
-
-  <!-- 2 NGUYÊN NHÂN -->
-  <section id="nguyen-nhan" class="bs-sec" hidden>
-    <div class="bs-sh"><h2>2 · Vì sao danh mục suy yếu</h2>
-      <label class="bs-per">Xét trong<select id="period"><option value="21">1 tháng</option><option value="63" selected>3 tháng</option><option value="126">6 tháng</option><option value="252">1 năm</option></select></label></div>
-    <p class="note" id="cause-note"></p>
-    <div class="card bs-pad"><h3>Danh mục biến động vì đâu</h3><div id="decomp"></div></div>
-    <div class="card bs-pad"><div class="tw"><table class="bs-t" id="cause-tbl"></table></div>
-      <p class="note">Cách tách: <b>Thị trường chung</b> = biến động VN-Index. <b>Nhóm ngành</b> = ngành mạnh hay yếu hơn VN-Index (ngành tính bằng trung bình các mã cùng ngành). <b>Riêng doanh nghiệp</b> = mã mạnh hay yếu hơn ngành của nó. Ba phần cộng lại bằng biến động của mã.</p></div>
-    <div class="card bs-pad ai" id="ai-nguyen-nhan" data-step="nguyen-nhan"></div>
     <details class="bs-auto"><summary>Ghi chú tự động theo công thức (không dùng AI)</summary>
     <div class="bs-three">
       <div class="card bs-pad ev ok"><h3>Có số liệu chứng minh</h3><ul id="ev-ok"></ul></div>
       <div class="card bs-pad ev hy"><h3>Mới là giả thuyết</h3><ul id="ev-hy"></ul></div>
       <div class="card bs-pad ev miss"><h3>Còn thiếu thông tin</h3><ul id="ev-miss"></ul></div>
     </div></details>
+    <div class="bs-row end"><a class="btn" href="#hoan-canh">Sang chặng 2 →</a></div>
+  </section>
+
+  <!-- 2 HOÀN CẢNH -->
+  <section id="hoan-canh" class="bs-sec" hidden>
+    <div class="bs-sh"><h2>Chặng 2 · Làm rõ hoàn cảnh</h2><span class="note">Cùng một danh mục, mỗi người có lựa chọn khác nhau</span></div>
+    <div class="card bs-pad bs-ctx" id="ctx">
+      <fieldset><legend>1. Số tiền này bạn định để đầu tư trong bao lâu?</legend>
+        <label><input type="radio" name="hz" value="s"><span>Dưới 6 tháng</span></label>
+        <label><input type="radio" name="hz" value="m"><span>6 tháng – 2 năm</span></label>
+        <label><input type="radio" name="hz" value="l"><span>Trên 2 năm</span></label></fieldset>
+      <fieldset><legend>2. Khi nào bạn có thể cần rút tiền ra dùng?</legend>
+        <label><input type="radio" name="liq" value="3m"><span>Trong 3 tháng tới</span></label>
+        <label><input type="radio" name="liq" value="1y"><span>Trong vòng 1 năm</span></label>
+        <label><input type="radio" name="liq" value="no"><span>Chưa cần ít nhất 1 năm</span></label></fieldset>
+      <fieldset><legend>3. Tài sản ròng giảm thêm bao nhiêu thì bạn thấy không chịu nổi?</legend>
+        <label><input type="radio" name="tol" value="0.1"><span>10%</span></label>
+        <label><input type="radio" name="tol" value="0.2"><span>20%</span></label>
+        <label><input type="radio" name="tol" value="0.3"><span>30%</span></label>
+        <label><input type="radio" name="tol" value="0.5"><span>50% trở lên</span></label></fieldset>
+      <p class="note">Câu trả lời chỉ lưu trên máy này, dùng để đối chiếu với các con số ở chặng 1 và chặng 3.</p>
+    </div>
+    <div class="card bs-pad"><h3>Đối chiếu hoàn cảnh với danh mục</h3><ul class="bs-flags" id="ctx-notes"></ul></div>
+    <div class="bs-row end"><a class="btn" href="#mo-phong">Sang chặng 3 →</a></div>
   </section>
 
   <!-- 3 MÔ PHỎNG -->
   <section id="mo-phong" class="bs-sec" hidden>
-    <div class="bs-sh"><h2>3 · Mô phỏng các phương án</h2><span class="note">Không có phương án nào luôn tốt nhất</span></div>
+    <div class="bs-sh"><h2>Chặng 3 · So sánh phương án</h2><span class="note">Không mặc định phương án nào tốt nhất</span></div>
     <div class="card bs-pad">
       <div class="bs-grid3">
         <label>Mã cần xử lý<select id="sim-sym"></select></label>
         <label>Bán bớt (% số đang có)<input id="sim-sell" inputmode="decimal" value="30"></label>
+        <label>Điều chỉnh cơ cấu: chuyển tiền bán sang mã<select id="sim-to"></select></label>
         <label>Mua thêm (cổ phiếu)<input id="sim-buy" inputmode="numeric"></label>
         <label>Tiền mua thêm lấy từ<select id="sim-src"><option value="cash">Tiền mặt</option><option value="margin">Vay margin</option></select></label>
         <label>Giá giả định khi giao dịch<input id="sim-px" inputmode="numeric"></label>
@@ -116,25 +140,27 @@
     </div>
     <div class="card bs-pad"><h3>Ngay sau khi thực hiện</h3><div class="tw"><table class="bs-t bs-cmp" id="sim-tbl"></table></div></div>
     <div class="card bs-pad"><h3>Tài sản ròng nếu giá đi tiếp</h3><div class="tw"><table class="bs-t bs-cmp" id="sc-tbl"></table></div>
-      <p class="note">Ô in đậm là phương án có tài sản ròng cao nhất trong từng kịch bản. Thứ tự đổi theo kịch bản: đó chính là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div>
+      <p class="note">Ô in đậm chỉ đánh dấu phương án có tài sản ròng cao nhất <b>trong riêng kịch bản đó</b>. Thứ tự đổi theo kịch bản: đó chính là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div>
     <div class="card bs-pad ai" id="ai-mo-phong" data-step="mo-phong"></div>
     <details class="bs-auto"><summary>Ghi chú tự động theo công thức (không dùng AI)</summary>
     <div class="card bs-pad bs-trade"><h3>Mỗi phương án đổi lấy điều gì</h3><div id="trade"></div></div></details>
   </section>
 
-  <!-- 4 NHẬT KÝ -->
-  <section id="nhat-ky" class="bs-sec">
-    <div class="bs-sh"><h2>4 · Nhật ký quyết định</h2><span class="note">Đánh giá cách mình ra quyết định, không chỉ kết quả</span></div>
+  <!-- 4 KẾ HOẠCH -->
+  <section id="ke-hoach" class="bs-sec">
+    <div class="bs-sh"><h2>Chặng 4 · Chốt kế hoạch</h2><span class="note">Đánh giá cách mình ra quyết định, không chỉ kết quả</span></div>
     <form class="card bs-pad" id="jr-form" hidden>
-      <h3>Ghi quyết định: <span id="jr-title"></span></h3>
-      <label>Giả định ban đầu: vì sao chọn phương án này?<textarea id="jr-why" rows="3" placeholder="Ví dụ: Tin lợi nhuận quý 3 sẽ hồi phục; dòng tiền chưa quay lại nên giảm margin trước."></textarea></label>
-      <label>Điều kiện cần theo dõi (mỗi dòng một điều)<textarea id="jr-watch" rows="3" placeholder="VN-Index giữ trên 1.650 điểm&#10;KQKD quý 3 công bố trước 20/10&#10;Rtt không xuống dưới 50%"></textarea></label>
-      <label>Ngày xem lại<input type="date" id="jr-review"></label>
-      <div class="bs-row end"><button type="button" class="btn ghost" id="jr-cancel">Hủy</button><button type="submit" class="btn">Lưu vào nhật ký</button></div>
+      <h3>Kế hoạch: <span id="jr-title"></span></h3>
+      <div class="bs-plan" id="jr-auto"></div>
+      <label>Vì sao bạn chọn phương án này?<textarea id="jr-why" rows="3" placeholder="Ví dụ: Cần giảm áp lực margin trước kỳ báo cáo quý 3; vẫn tin doanh nghiệp hồi phục nên chưa bán hết."></textarea></label>
+      <label>Điều kiện cần theo dõi (mỗi dòng một điều, đã gợi ý sẵn theo số liệu, sửa tùy ý)<textarea id="jr-watch" rows="4"></textarea></label>
+      <label>Ngày đánh giá lại<input type="date" id="jr-review"></label>
+      <div class="bs-row end"><button type="button" class="btn ghost" id="jr-cancel">Hủy</button><button type="submit" class="btn">Lưu kế hoạch</button></div>
     </form>
+    <p class="note" id="jr-hint">Ở chặng 3, bấm "Chọn phương án này" dưới phương án bạn chọn để lập kế hoạch.</p>
     <div id="jr-list"></div>
     <div class="bs-row"><button type="button" class="btn ghost" id="jr-export">Tải bản sao lưu</button><label class="btn ghost" for="jr-import">Khôi phục từ bản sao lưu</label><input type="file" id="jr-import" accept="application/json" hidden></div>
-    <p class="note">Nhật ký lưu trên trình duyệt của máy này. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất, nên thỉnh thoảng tải bản sao lưu.</p>
+    <p class="note">Kế hoạch lưu trên trình duyệt của máy này. Đổi máy hoặc xóa dữ liệu trình duyệt sẽ mất, nên thỉnh thoảng tải bản sao lưu.</p>
   </section>
 
   <aside class="bs-cta card">
@@ -146,7 +172,7 @@
 
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017b"></script>
-<script src="sectors.js?v=20261017b"></script>
-<script src="bsdm.js?v=20261017c"></script>
+<script src="sectors.js?v=20261017d"></script>
+<script src="bsdm.js?v=20261017d"></script>
 </body>
 </html>

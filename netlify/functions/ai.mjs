@@ -23,9 +23,9 @@ CH|câu hỏi bạn nên tự kiểm tra (2–3 dòng CH)
 TH|thông tin còn thiếu (1–2 dòng TH)`;
 
 const STEP = {
-  'kham': 'Bước 1 – Khám sức khỏe danh mục. Diễn giải tình trạng tổng thể: lãi lỗ, mức tập trung theo mã và ngành, đòn bẩy margin, khoảng cách tới ngưỡng gọi ký quỹ.',
-  'nguyen-nhan': 'Bước 2 – Tìm nguyên nhân danh mục biến động trong kỳ. Dữ liệu đã tách biến động mỗi mã thành: thị trường chung (VN-Index), nhóm ngành so với thị trường, riêng doanh nghiệp so với ngành; kèm đóng góp bằng tiền, hiệu ứng đòn bẩy, phân bổ vốn. Diễn giải phần nào do thị trường, ngành, doanh nghiệp, đòn bẩy, phân bổ vốn.',
-  'mo-phong': 'Bước 3 – So sánh các phương án xử lý một mã. Dữ liệu có trạng thái ngay sau khi thực hiện từng phương án và tài sản ròng theo các kịch bản giá. Diễn giải hệ quả và đánh đổi của từng phương án (giá vốn, lãi lỗ đã chốt, tỷ trọng, tiền mặt, nợ, Rtt, kết quả theo kịch bản). Nhấn mạnh rằng thứ tự các phương án thay đổi theo kịch bản. Không nói phương án nào nên chọn.'
+  'kham': 'Chặng 1 – Khám danh mục. Diễn giải tình trạng: lãi lỗ, mức tập trung theo mã và ngành, đòn bẩy margin, khoảng cách tới ngưỡng gọi ký quỹ. Nếu có phần nguyen_nhan_bien_dong, nói ngắn phần biến động do thị trường chung, do ngành hay do riêng doanh nghiệp. Nếu có hoan_canh, đối chiếu tình trạng với thời gian đầu tư, nhu cầu tiền và mức chịu đựng của người dùng.',
+  'nguyen-nhan': 'Tìm nguyên nhân danh mục biến động: phần do thị trường chung, ngành, riêng doanh nghiệp, đòn bẩy.',
+  'mo-phong': 'Bước 3 – So sánh các phương án xử lý một mã. Dữ liệu có trạng thái ngay sau khi thực hiện từng phương án và tài sản ròng theo các kịch bản giá. Diễn giải hệ quả và đánh đổi của từng phương án (giá vốn, lãi lỗ đã chốt, tỷ trọng, tiền mặt, nợ, Rtt, kết quả theo kịch bản). Nếu có hoan_canh, nói phương án nào vượt mức chịu đựng của người dùng ở mức giảm giá nào (trường muc_giam_thi_vuot_muc_chiu_dung), và nhu cầu rút tiền ảnh hưởng thế nào. Nhấn mạnh rằng thứ tự các phương án thay đổi theo kịch bản. Không nói phương án nào nên chọn.'
 };
 
 const hits = new Map();
