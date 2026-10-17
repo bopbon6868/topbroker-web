@@ -1,0 +1,19 @@
+Cập nhật phiên sáng 17/10/2026 · 08:00 (Thứ Bảy, sàn VN nghỉ: bản tin dạng tổng kết tuần 12–16/10)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED = 'Thứ Bảy, 17/10/2026 · 08:00'; TB.TICKER cập nhật số đóng cửa 16/10 (VN, Mỹ, Á–Âu, hàng hóa, crypto), thêm UPCoM và dòng NHNN bơm ròng tuần.
+- site/index.html: giờ số liệu .bf -> 17/10/2026 · 08:00; 3 câu bản tin (tổng kết tuần, NHNN, quốc tế); 4 ô .bn; 5 dòng Thị trường; 3 tin cần biết. Lịch cần nhớ giữ nguyên (cả 7 sự kiện vẫn ở phía trước).
+- site/radar/index.html: giờ cập nhật; khối VN-Index (đóng cửa 16/10), độ rộng HOSE 16/10, khối ngoại 10 phiên (5/10–16/10, tổng −16.327 tỷ); khối NHNN (bơm nhẹ, bơm ròng 8.189 tỷ tuần 12–16/10, OMO 104.933 tỷ, tỷ giá 25.637); thêm 7 tin mới; bỏ tin trong phiên 09:53 16/10 và 6 tin cũ (03/10, 05/10, 09/10 OMO, 14/09, 08/10 mxh, ASP từ 13/08); cập nhật danh sách mã hot.
+
+SỐ LIỆU VÀ NGUỒN
+- VN-Index 1.705,91 (+0,45%), VN30 1.855,41 (+0,63%), HNX 259,13 (−0,06%), UPCoM 124,87 (+0,58%), HPG 20.900: TCBS (nến ngày 16/10). Tuần: VN-Index −29,18 điểm (−1,68%).
+- Độ rộng HOSE 16/10: 162 tăng / 66 đứng / 133 giảm (TCBS getMarketBreadth).
+- Khối ngoại HOSE 16/10: −515 tỷ; tuần 12–16/10 ≈ −2.830 tỷ (TCBS getMarketForeignVal). Vietstock ghi ~3.000 tỷ. Lưu ý: TCBS trả thêm một dòng "16/10/26" −483 tỷ ở cuối mảng, đã dùng dòng theo chuỗi thời gian (−515 tỷ).
+- Phiên 16/10 (thanh khoản ~11.874 tỷ, ngân hàng dẫn dắt, ngoại bán phiên thứ 11): Vietstock.
+- NHNN tuần 12–16/10 bơm ròng 8.188,63 tỷ; OMO 104.932,98 tỷ; qua đêm 3,1% (15/10); tỷ giá trung tâm 16/10 25.637 (−5): Thời báo Tài chính VN; VOV.
+- Mỹ 16/10: Dow 52.002,41 (−0,34%), S&P 500 7.659,44 (−1,09%), Nasdaq 26.140,03 (−2,14%): TheStreet. VIX ~20,22 (+~23%), số trong ngày, chưa chắc là giá đóng cửa: Financial News (fnnews).
+- Nikkei 65.324,29 (+1,39%), Hang Seng 24.186,83 (+0,52%): Armenpress 16/10. KOSPI 5.668,05 (+2,05%): Seoul Economic Daily. FTSE 100 10.881,90 (+0,38%): BBN Times.
+- Vàng giao ngay ~4.167,9 (−0,05%), Brent chốt 109,86 (so 105,92 ngày 15/10 => +3,72%), WTI ~101,41: Kitco 16/10; Qazinform (Brent 15/10).
+- BTC 82.189 (+1,67%, CoinDesk 16/10), ETH 2.447 (+4,19%, CoinDesk). Ô giá trên web tự cập nhật qua /api/quotes.
+- BCTC quý 3 (TMG, GSP, SBA, NTH): CafeF 17/10.
+- Không tìm được số mới: lãi qua đêm sau 15/10, TPCP 10 năm, lãi HĐ bình quân -> giữ số và mốc cũ.
