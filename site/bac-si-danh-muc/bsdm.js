@@ -58,7 +58,7 @@ function today() { var d = new Date(Date.now() + 7 * 3600 * 1000); return d.toIS
 function vnDate(iso) { var p = String(iso).slice(0, 10).split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso; }
 
 /* ---------- trạng thái ---------- */
-var S = load(KEY, { rows: [], cash: '', debt: '', call: '40', force: '30', fee: '0,15', tax: '0,1' });
+var S = load(KEY, { rows: [], cash: '', debt: '', call: '40', force: '30', fee: '0,15', tax: '0,1', apprtt: '' });
 var PX = {}, HIST = {}, PORT = null, LAST_SIM = null, LAST_CAUSE = null, LAST_SC = null;
 var SECTOR_NAMES = Object.keys(window.TB_SECTORS || {}).concat(['Khác']);
 
@@ -75,13 +75,13 @@ function renderInputs() {
   var tb = $('#in-tbl tbody');
   if (!S.rows.length) S.rows = [{ sym: '', qty: '', cost: '', sector: 'Khác' }];
   tb.innerHTML = S.rows.map(rowHTML).join('');
-  ['cash', 'debt', 'call', 'force', 'fee', 'tax'].forEach(function (k) { $('#' + k).value = S[k] == null ? '' : (k === 'cash' || k === 'debt' ? dispNum(S[k]) : S[k]); });
+  ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { $('#' + k).value = S[k] == null ? '' : (k === 'cash' || k === 'debt' ? dispNum(S[k]) : S[k]); });
 }
 function readInputs() {
   S.rows = $$('#in-tbl tbody tr').map(function (tr) {
     return { sym: $('.sym', tr).value.trim().toUpperCase(), qty: $('.qty', tr).value.trim(), cost: $('.cost', tr).value.trim(), sector: $('.sec', tr).value };
   });
-  ['cash', 'debt', 'call', 'force', 'fee', 'tax'].forEach(function (k) { S[k] = $('#' + k).value.trim(); });
+  ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { S[k] = $('#' + k).value.trim(); });
   store(KEY, S);
 }
 $('#in-tbl').addEventListener('input', function (e) {
@@ -96,7 +96,7 @@ $('#in-tbl').addEventListener('click', function (e) {
   if (!e.target.classList.contains('x')) return;
   e.target.closest('tr').remove(); readInputs(); if (!S.rows.length) renderInputs();
 });
-$$('#cash,#debt,#call,#force,#fee,#tax').forEach(function (el) { el.addEventListener('input', readInputs); });
+$$('#cash,#debt,#call,#force,#fee,#tax,#apprtt').forEach(function (el) { el.addEventListener('input', readInputs); });
 $('#add-row').addEventListener('click', function () {
   readInputs(); S.rows.push({ sym: '', qty: '', cost: '', sector: 'Khác' }); renderInputs();
   var ins = $$('#in-tbl .sym'); ins[ins.length - 1].focus();
@@ -129,8 +129,8 @@ $('#demo').addEventListener('click', function () {
   $('#in-msg').textContent = 'Đây là danh mục mẫu để xem thử, không phải danh mục thật của ai.';
 });
 $('#clear').addEventListener('click', function () {
-  S.rows = []; S.cash = ''; S.debt = ''; store(KEY, S); renderInputs();
-  lockStages(true);
+  S.rows = []; S.cash = ''; S.debt = ''; S.apprtt = ''; store(KEY, S); renderInputs();
+  lockStages(true); $('#ket-qua').hidden = true; $('#deep').hidden = true;
 });
 
 /* ---------- lấy giá ---------- */
@@ -245,7 +245,24 @@ function fundRead(F) {
 }
 
 /* Mốc MA gần nhất phía dưới / phía trên giá (đơn vị đồng) */
-function maLevels(sym) { var T = techOf(sym); if (!T) return []; return [20, 50, 200].filter(function (m) { return T['ma' + m]; }).map(function (m) { return { n: 'MA' + m, v: Math.round(T['ma' + m] * 100) * 10 }; }); }
+var MA_PLAIN = { 20: '1 tháng', 50: '2,5 tháng', 200: '10 tháng' };
+function maLevels(sym) { var T = techOf(sym); if (!T) return []; return [20, 50, 200].filter(function (m) { return T['ma' + m]; }).map(function (m) { return { n: 'giá trung bình ' + MA_PLAIN[m], code: 'MA' + m, v: Math.round(T['ma' + m] * 100) * 10 }; }); }
+/* Nói tiếng người: xu hướng giá không dùng thuật ngữ (thuật ngữ để trong mục "Xem chỉ báo") */
+function plainTech(T) {
+  if (!T) return null;
+  var p = T.p, R = [], mas = [20, 50, 200].filter(function (m) { return T['ma' + m]; });
+  var above = mas.filter(function (m) { return p >= T['ma' + m]; }), below = mas.filter(function (m) { return p < T['ma' + m]; });
+  var nm = function (a) { return a.map(function (m) { return MA_PLAIN[m]; }).join(', ').replace(/, ([^,]*)$/, ' và $1'); };
+  if (mas.length) R.push(!below.length ? 'Giá đang trên mức trung bình ' + nm(mas) + ': xu hướng tăng đang giữ.'
+    : !above.length ? 'Giá đang dưới mức trung bình ' + nm(mas) + ': xu hướng đang yếu' + (mas.length > 1 ? ' cả ngắn lẫn dài hạn.' : '.')
+    : 'Giá trên mức trung bình ' + nm(above) + ' nhưng dưới mức trung bình ' + nm(below) + ': ' + (above.indexOf(20) >= 0 ? 'ngắn hạn đang hồi, dài hạn chưa đổi chiều.' : 'nền dài hạn còn giữ, ngắn hạn đang yếu đi.'));
+  var lowShort = T.ma20 && p < T.ma20;
+  if (T.rsi != null && T.rsi <= 30) R.push('Giá đã giảm rất nhanh: có thể bật lại ngắn, nhưng chưa phải dấu hiệu đảo chiều.');
+  else if (T.rsi != null && T.rsi >= 70) R.push('Giá đã tăng nóng: dễ có nhịp nghỉ, phần lãi dễ bị rung lắc.');
+  else if (T.hist != null) R.push(T.hist < 0 ? (lowShort ? 'Đà giảm chưa dừng.' : 'Đà tăng đang chậm lại.') : (lowShort ? 'Đà giảm đang chậm lại.' : 'Đà tăng đang được giữ.'));
+  if (T.adx != null && T.adx < 20) R.push('Giá chủ yếu đi ngang, chưa có xu hướng rõ.');
+  return R;
+}
 function maBelow(sym, px) { return maLevels(sym).filter(function (l) { return l.v < px; }).sort(function (a, b) { return b.v - a.v; })[0] || null; }
 function maAbove(sym, px) { return maLevels(sym).filter(function (l) { return l.v > px; }).sort(function (a, b) { return a.v - b.v; })[0] || null; }
 function techWeak(T) { return !!T && ((T.ma20 && T.p < T.ma20 && T.hist < 0) || (T.ma50 && T.p < T.ma50)); }
@@ -257,13 +274,13 @@ function doctorRead(r) {
     t.push('Đang lãi ' + pct(r.plp, 0) + (T ? (techWeak(T) ? ' nhưng tín hiệu kỹ thuật đang yếu đi.' : tr.tag[0] === 'g' ? ', xu hướng còn giữ.' : ', xu hướng chưa rõ.') : '.'));
     var b = maBelow(r.sym, r.p);
     if (b) { var pl = b.v / r.cost - 1; t.push('Lùi về ' + b.n + ' (' + nf(b.v) + ' đ, ' + pct(b.v / r.p - 1, 1) + ') thì ' + (pl >= 0 ? 'lãi còn ' + pct(pl, 0) : 'chuyển sang lỗ ' + pct(pl, 0)) + '.'); }
-    else if (T) t.push('Giá đang dưới cả các đường MA: không còn mốc trung bình nào đỡ phía dưới.');
+    else if (T) t.push('Giá đang dưới mọi mức trung bình (1, 2,5 và 10 tháng): không còn mốc nào đỡ phía dưới.');
     if (T && T.rsi >= 70) t.push('RSI ' + Math.round(T.rsi) + ': giá đã chạy nhanh, phần lãi dễ bị rung lắc.');
   } else {
     t.push('Đang lỗ ' + pct(-r.plp, 0, false) + ', cần tăng ' + pct(r.cost / r.p - 1, 0, false) + ' để về giá vốn.');
     var a = maAbove(r.sym, r.p);
     if (a) t.push('Mốc gần nhất phía trên là ' + a.n + ' (' + nf(a.v) + ' đ, ' + pct(a.v / r.p - 1, 1) + '): giá vượt lại mốc này mới thoát xu hướng giảm của khung đó.');
-    else if (T) t.push('Giá đã nằm trên cả các đường MA: xu hướng đã cải thiện dù vẫn dưới giá vốn.');
+    else if (T) t.push('Giá đã nằm trên mọi mức trung bình (1, 2,5 và 10 tháng): xu hướng đã cải thiện dù vẫn dưới giá vốn.');
   }
   if (fr && FUND[r.sym].npY != null) t.push('Lợi nhuận ' + fr.q + ' ' + (FUND[r.sym].npY >= 0 ? 'tăng ' : 'giảm ') + pct(Math.abs(FUND[r.sym].npY), 0, false) + ' so với cùng kỳ' + (FUND[r.sym].npY <= -0.15 ? ': nền cơ bản đang đi lùi, đáng kiểm tra lại lý do nắm giữ.' : FUND[r.sym].npY >= 0.15 ? ': nền cơ bản đang đi lên.' : '.'));
   else if (fr && FUND[r.sym].np < 0) t.push('Doanh nghiệp đang lỗ ở ' + fr.q + '.');
@@ -272,10 +289,11 @@ function doctorRead(r) {
 function labCard(r) {
   var T = techOf(r.sym), tr = techRead(T), loaded = r.sym in FUND, F = FUND[r.sym], fr = fundRead(F);
   var h = '<div class="lb-h"><span class="tk">' + r.sym + '</span><span class="pl ' + cls(r.plp) + '">' + pct(r.plp) + ' so với giá vốn</span><span class="sub">' + pct(r.w, 0, false) + ' danh mục</span></div>';
-  h += '<div class="lb-tags">' + (fr ? '<span class="lb-tag ' + fr.tag[0] + '">Kinh doanh: ' + fr.tag[1] + '</span>' : '') + (tr ? '<span class="lb-tag ' + tr.tag[0] + '">Kỹ thuật: ' + tr.tag[1] + '</span>' : '') + '</div>';
+  h += '<div class="lb-tags">' + (fr ? '<span class="lb-tag ' + fr.tag[0] + '">Kinh doanh: ' + fr.tag[1] + '</span>' : '') + (tr ? '<span class="lb-tag ' + tr.tag[0] + '">Xu hướng: ' + tr.tag[1] + '</span>' : '') + '</div>';
   h += '<h5>Kết quả kinh doanh' + (fr ? ' ' + fr.q : '') + '</h5>' + (fr ? '<ul>' + fr.lines.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' : '<p class="na">' + (loaded ? 'Chưa lấy được báo cáo tài chính của mã này (có thể là chứng chỉ quỹ hoặc mã mới niêm yết).' : 'Đang tải…') + '</p>');
-  h += '<h5>Kỹ thuật' + (T ? ' · phiên ' + vnDate(T.d) : '') + '</h5>' + (tr ? '<ul>' + tr.lines.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' : '<p class="na">' + (HIST[r.sym] ? 'Chưa đủ lịch sử giá để tính chỉ báo.' : 'Đang tải…') + '</p>');
-  if (T) h += '<div class="lv"><span>Giá <b>' + nf(r.p) + '</b></span><span>Giá vốn của bạn <b>' + nf(r.cost) + '</b></span>' + maLevels(r.sym).map(function (l) { return '<span>' + l.n + ' <b>' + nf(l.v) + '</b></span>'; }).join('') + '</div>';
+  h += '<h5>Xu hướng giá' + (T ? ' · phiên ' + vnDate(T.d) : '') + '</h5>' + (tr ? '<ul>' + plainTech(T).map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' : '<p class="na">' + (HIST[r.sym] ? 'Chưa đủ lịch sử giá để đọc xu hướng.' : 'Đang tải…') + '</p>');
+  if (T) h += '<details class="ind"><summary>Xem chỉ báo (MA, RSI, MACD, ADX)</summary><ul>' + tr.lines.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+    '<div class="lv"><span>Giá <b>' + nf(r.p) + '</b></span><span>Giá vốn của bạn <b>' + nf(r.cost) + '</b></span>' + maLevels(r.sym).map(function (l) { return '<span>' + l.code + ' <b>' + nf(l.v) + '</b></span>'; }).join('') + '</div></details>';
   if (T || fr) h += '<p class="read"><b>Bác sĩ đọc:</b> ' + doctorRead(r) + '</p>';
   return '<article class="lb">' + h + '</article>';
 }
@@ -293,7 +311,7 @@ function loadLab() {
   if (!PORT) return;
   var syms = PORT.rows.map(function (r) { return r.sym; });
   renderLab();
-  Promise.all([fetchFund(syms), fetchHist(syms)]).then(function () { renderLab(); renderDiag(); if (PD.sym) sim(); });
+  Promise.all([fetchFund(syms), fetchHist(syms)]).then(function () { renderLab(); renderDiag(); renderQuick(); if (PD.sym) sim(); });
 }
 
 /* ---------- 1 · KHÁM ---------- */
@@ -301,7 +319,8 @@ function settings() {
   return {
     cash: Math.max(0, parseNum(S.cash) || 0), debt: Math.max(0, parseNum(S.debt) || 0),
     call: (parseNum(S.call) || 0) / 100, force: (parseNum(S.force) || 0) / 100,
-    fee: (parseNum(S.fee) || 0) / 100, tax: (parseNum(S.tax) || 0) / 100
+    fee: (parseNum(S.fee) || 0) / 100, tax: (parseNum(S.tax) || 0) / 100,
+    appRtt: (parseNum(S.apprtt) || 0) / 100
   };
 }
 function dropToCall(mvOther, qS, pS, cash, debt, call) {
@@ -357,7 +376,8 @@ function exam() {
     renderExam(); aiReset('tong-ket'); $('#ai-tong-ket').hidden = false;
     lockStages(false);
     renderCtx(); initSim(); runCause(); renderJournal(); loadLab();
-    openStage('kham', true);
+    renderQuick(); $('#ket-qua').hidden = false;
+    setTimeout(function () { $('#ket-qua').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
   }).catch(function () { msg.textContent = 'Chưa lấy được giá (mạng hoặc nguồn giá đang lỗi). Thử lại sau ít phút.'; });
 }
 $('#run').addEventListener('click', exam);
@@ -368,6 +388,12 @@ function calc(rows, st) {
   P.cv = P.rows.reduce(function (a, r) { return a + r.cv; }, 0);
   P.rows.forEach(function (r) { r.w = r.mv / P.mv; r.pl = r.mv - r.cv; r.plp = r.pl / r.cv; });
   P.assets = P.mv + st.cash; P.nav = P.assets - st.debt; P.rtt = P.assets ? P.nav / P.assets : 0; P.lev = P.nav > 0 ? P.assets / P.nav : Infinity;
+  // Chỉnh theo tỷ lệ ký quỹ khách thấy trên app: giả định tỷ lệ giữa số của app và cách tính này giữ nguyên khi giá đổi
+  if (st.debt && st.appRtt > 0 && st.appRtt < 1 && P.rtt > 0 && st.callApp == null) {
+    var f = st.appRtt / P.rtt;
+    st.callApp = st.call; st.forceApp = st.force; st.calF = f;
+    st.call = Math.min(0.95, st.call / f); st.force = Math.min(0.95, st.force / f);
+  }
   P.sectors = {};
   P.rows.forEach(function (r) { P.sectors[r.sector] = (P.sectors[r.sector] || 0) + r.w; });
   return P;
@@ -384,7 +410,7 @@ function renderExam() {
     ['Dư nợ margin', money(st.debt), st.debt ? 'Đòn bẩy ' + nf(P.lev, 2) + ' lần' : 'Không vay'],
     ['Vốn chủ ước tính', money(P.nav), 'Tài sản − nợ'],
     ['Lãi/lỗ chưa chốt', '<span class="' + cls(P.mv - P.cv) + '">' + money(P.mv - P.cv, true) + '</span>', '<span class="' + cls(P.mv - P.cv) + '">' + pct((P.mv - P.cv) / P.cv) + ' so với giá vốn</span>'],
-    ['Tỷ lệ ký quỹ Rtt', st.debt ? pct(P.rtt, 1, false) : '–', st.debt ? 'Gọi ký quỹ ' + pct(st.call, 0, false) + ' · giải chấp ' + pct(st.force, 0, false) : 'Không vay margin', rttCls],
+    ['Tỷ lệ ký quỹ Rtt', st.debt ? pct(st.calF ? st.appRtt : P.rtt, 1, false) : '–', st.debt ? (st.calF ? 'Theo app · gọi ký quỹ ' + pct(st.callApp, 0, false) + ' · giải chấp ' + pct(st.forceApp, 0, false) : 'Gọi ký quỹ ' + pct(st.call, 0, false) + ' · giải chấp ' + pct(st.force, 0, false)) : 'Không vay margin', rttCls],
     ['Cả danh mục giảm thêm', d.t === 'x' ? pct(d.x, 1, false) : '–', d.t === 'x' ? 'thì chạm ngưỡng gọi ký quỹ' : dtcText(d), d.t === 'below' ? 'bad' : d.t === 'x' && d.x < 0.15 ? 'warn' : ''],
     ['Biến động hôm nay', (function () { var ch = P.rows.reduce(function (a, r) { return a + (r.ref ? r.qty * (r.p - r.ref) : 0); }, 0); return '<span class="' + cls(ch) + '">' + money(ch, true) + '</span>'; })(), 'so với giá tham chiếu']
   ].map(function (k) { return '<div class="' + (k[3] || '') + '"><span>' + k[0] + '</span><b>' + k[1] + '</b><em>' + k[2] + '</em></div>'; }).join('');
@@ -500,6 +526,149 @@ function renderDiag() {
   var topList = (serious.length ? serious : D).slice(0, 3);
   $('#quick-top').innerHTML = topList.map(function (x) { return '<li class="' + x.lv + '"><b>' + x.title + ':</b> ' + x.fact + '</li>'; }).join('');
 }
+
+/* ---------- KẾT QUẢ 30 GIÂY: điểm sức khỏe, điều đáng lo nhất (bằng tiền), việc cần kiểm tra ---------- */
+var QUICK = null;
+function px10(v) { return Math.round(v / 10) * 10; }
+function weakInfo(r) {
+  var T = techOf(r.sym), F = FUND[r.sym], why = [];
+  if (techWeak(T)) why.push('xu hướng giá yếu');
+  if (F && F.np < 0) why.push('doanh nghiệp đang lỗ');
+  else if (F && F.npY != null && F.npY <= -0.15) why.push('lợi nhuận giảm ' + pct(-F.npY, 0, false) + ' so với cùng kỳ');
+  return why;
+}
+function health(P) {
+  var st = P.st, C = ctx(), d = dropAllToCall(P.mv, st.cash, st.debt, st.call), I = [];
+  var rows = P.rows.slice().sort(function (a, b) { return b.mv - a.mv; }), top = rows[0], nav = P.nav;
+  var cashW = nav > 0 ? st.cash / nav : 0;
+  // 1. đòn bẩy margin (tối đa −40)
+  var m = { k: 'Đòn bẩy margin', max: 40, pts: 0 };
+  if (!st.debt) m.txt = 'Không vay margin.';
+  else if (d.t === 'below') { m.pts = 40; m.txt = 'Đang dưới ngưỡng gọi ký quỹ.'; }
+  else if (d.t === 'safe') { m.pts = 3; m.txt = 'Có vay ' + money(st.debt) + ' nhưng còn rất xa ngưỡng gọi ký quỹ.'; }
+  else { m.pts = d.x < 0.1 ? 35 : d.x < 0.2 ? 25 : d.x < 0.3 ? 15 : 6; m.txt = 'Vay ' + money(st.debt) + '; cả danh mục giảm thêm ' + pct(d.x, 1, false) + ' (mất ' + money(d.x * P.mv) + ') là bị gọi ký quỹ.'; }
+  I.push(m);
+  // 2. mã lớn nhất (−20)
+  I.push({ k: 'Mã lớn nhất', max: 20, pts: top.w > 0.5 ? 20 : top.w > 0.35 ? 14 : top.w > 0.25 ? 8 : 0, txt: top.sym + ' chiếm ' + pct(top.w, 0, false) + ' giá trị cổ phiếu; giảm 20% là vốn chủ mất ' + money(0.2 * top.mv) + '.' });
+  // 3. một ngành (−10)
+  var secs = Object.keys(P.sectors).filter(function (s) { return s !== 'Khác'; }).sort(function (a, b) { return P.sectors[b] - P.sectors[a]; }), sw = secs.length ? P.sectors[secs[0]] : 0;
+  I.push({ k: 'Một ngành', max: 10, pts: sw > 0.6 ? 10 : sw > 0.4 ? 5 : 0, txt: secs.length ? 'Ngành ' + secs[0] + ' chiếm ' + pct(sw, 0, false) + ' giá trị cổ phiếu.' : 'Chưa rõ ngành của các mã.' });
+  // 4. tiền mặt so với nhu cầu (−15)
+  var c = { k: 'Tiền mặt', max: 15, pts: 0, txt: 'Tiền mặt ' + money(st.cash) + ' (' + pct(cashW, 0, false) + ' vốn chủ).' };
+  if (C.liq === '3m' && cashW < 0.2) { c.pts = 15; c.txt += ' Bạn có thể cần rút tiền trong 3 tháng.'; }
+  else if (C.liq === '1y' && cashW < 0.1) { c.pts = 8; c.txt += ' Bạn có thể cần rút tiền trong năm.'; }
+  else if (st.debt && P.assets && st.cash / P.assets < 0.05) { c.pts = 5; c.txt += ' Đang vay margin mà gần như không có tiền mặt làm đệm.'; }
+  if (!C.liq) c.txt += ' (Chưa trả lời câu nhu cầu tiền ở chặng 2.)';
+  I.push(c);
+  // 5. mã đang yếu về xu hướng giá hoặc kinh doanh (−15)
+  var loaded = rows.some(function (r) { return HIST[r.sym] || (r.sym in FUND); });
+  var weak = rows.filter(function (r) { return weakInfo(r).length; }), ww = weak.reduce(function (a, r) { return a + r.w; }, 0);
+  I.push({ k: 'Mã đang yếu', max: 15, pts: loaded ? Math.round(15 * Math.min(1, ww)) : 0,
+    txt: !loaded ? 'Đang tải xu hướng giá và kết quả kinh doanh từng mã…' : weak.length ? weak.map(function (r) { return r.sym + ' (' + weakInfo(r).join(', ') + ')'; }).join('; ') + ': chiếm ' + pct(ww, 0, false) + ' giá trị cổ phiếu.' : 'Chưa thấy mã nào yếu về xu hướng giá hay kinh doanh.' });
+  var score = Math.max(0, 100 - I.reduce(function (a, x) { return a + x.pts; }, 0));
+  return { score: score, lv: score >= 75 ? ['g', 'Khỏe'] : score >= 50 ? ['w', 'Cần để ý'] : ['b', 'Đáng lo'], items: I, d: d, loaded: loaded };
+}
+function worries(P) {
+  var st = P.st, C = ctx(), nav = P.nav, d = dropAllToCall(P.mv, st.cash, st.debt, st.call), W = [];
+  var rows = P.rows.slice().sort(function (a, b) { return b.mv - a.mv; }), top = rows[0], cashW = nav > 0 ? st.cash / nav : 0;
+  var callTxt = function () { return d.t === 'x' && top ? ' Mốc giá cần theo dõi: <b>' + top.sym + ' ' + nf(px10(top.p * (1 - d.x))) + ' đ</b> (nếu cả danh mục cùng giảm).' : ''; };
+  if (st.debt && d.t === 'below') {
+    var dep = Math.max(0, (st.call * P.assets - nav) / (1 - st.call));
+    W.push({ s: 100, w: 'Danh mục <b>đã dưới ngưỡng gọi ký quỹ</b>. Cần khoảng <b>' + money(dep) + '</b> nộp thêm để về lại ngưỡng.',
+      t: 'Mở app kiểm tra tỷ lệ ký quỹ thực tế và hạn bổ sung. Khoản <b>' + money(dep) + '</b> lấy từ đâu cần có câu trả lời trước khi công ty chứng khoán bán giải chấp.' });
+  } else if (st.debt && d.t === 'x') {
+    W.push({ s: d.x < 0.1 ? 90 : d.x < 0.2 ? 75 : d.x < 0.3 ? 55 : 35, w: 'Danh mục mất thêm <b>' + money(d.x * P.mv) + '</b> (cổ phiếu giảm thêm ' + pct(d.x, 1, false) + ') là <b>bị gọi ký quỹ</b>.',
+      t: 'Chuẩn bị trước nguồn tiền nếu bị gọi ký quỹ: mỗi <b>' + money(0.1 * P.mv) + '</b> nộp thêm giúp danh mục chịu thêm được 10% giảm giá.' + callTxt() });
+  }
+  if (C.liq === '3m' && cashW < 0.2) W.push({ s: 70, w: 'Bạn có thể cần rút tiền trong 3 tháng nhưng tiền mặt chỉ <b>' + money(st.cash) + '</b>: rút nhiều hơn thì phải bán cổ phiếu ở giá lúc đó, kể cả khi đang lỗ.',
+    t: 'Ghi ra số tiền cụ thể sẽ cần rút và ngày cần, rồi so với <b>' + money(st.cash) + '</b> tiền mặt đang có.' });
+  if (top) {
+    var i1 = 0.2 * top.mv;
+    W.push({ s: top.w > 0.25 && nav > 0 ? 40 + Math.min(35, i1 / nav * 150) : 20, w: 'Riêng <b>' + top.sym + '</b> (' + pct(top.w, 0, false) + ' danh mục) giảm 20% là vốn chủ mất <b>' + money(i1) + '</b>' + (nav > 0 ? ' (' + pct(i1 / nav, 0, false) + ')' : '') + '.',
+      t: 'Xem lại lý do nắm giữ <b>' + top.sym + '</b>: kết quả kinh doanh quý gần nhất và mức giá nào thì bạn sẽ xem lại (Xem sâu → chặng 2).' });
+  }
+  var bl = rows.filter(function (r) { var F = FUND[r.sym]; return r.pl < 0 && F && (F.np < 0 || (F.npY != null && F.npY <= -0.15)); }).sort(function (a, b) { return a.pl - b.pl; })[0];
+  if (bl) { var F = FUND[bl.sym];
+    W.push({ s: bl.w >= 0.15 ? 50 : 30, w: '<b>' + bl.sym + '</b> đang lỗ <b>' + money(-bl.pl) + '</b> (' + pct(bl.plp, 0) + ') và ' + (F.np < 0 ? 'doanh nghiệp đang lỗ' : 'lợi nhuận ' + F.q + ' giảm ' + pct(-F.npY, 0, false) + ' so với cùng kỳ') + '.',
+      t: 'Kiểm tra lại lý do nắm giữ <b>' + bl.sym + '</b>: doanh nghiệp giải thích kết quả kinh doanh thế nào, kế hoạch cải thiện ra sao.' }); }
+  W.sort(function (a, b) { return b.s - a.s; });
+  if (!W.length || W[0].s < 30) W.unshift({ s: 0, w: 'Chưa thấy rủi ro lớn theo các mốc tham khảo.' + (W[0] ? ' Đáng để ý nhất: ' + W[0].w : ''), t: 'Đặt ngày tái khám (Xem sâu → chặng 4) để xem lại khi giá hoặc kết quả kinh doanh thay đổi.' });
+  return W;
+}
+/* Giá từng mã chạm ngưỡng gọi ký quỹ (các mã khác đứng giá) */
+function callPrices(P) {
+  var st = P.st; if (!st.debt) return [];
+  return P.rows.slice().sort(function (a, b) { return b.mv - a.mv; }).slice(0, 3).map(function (r) {
+    var d = dropToCall(P.mv - r.mv, r.qty, r.p, st.cash, st.debt, st.call);
+    return { sym: r.sym, t: d.t, x: d.x, px: d.t === 'x' ? px10(r.p * (1 - d.x)) : null };
+  });
+}
+function ring(v, lv) {
+  var R = 44, C = 2 * Math.PI * R, off = C * (1 - v / 100);
+  return '<svg viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="' + R + '" fill="none" stroke="#eee9df" stroke-width="10"/><circle class="arc ' + lv + '" cx="55" cy="55" r="' + R + '" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 55 55)"/></svg>';
+}
+function renderQuick() {
+  var P = PORT; if (!P) return;
+  var st = P.st, H = health(P), W = worries(P), top = W[0];
+  QUICK = { diem: H.score, muc: H.lv[1], dang_lo: top.w.replace(/<[^>]+>/g, ''), viec_can_kiem_tra: top.t.replace(/<[^>]+>/g, '') };
+  var ts = Math.max.apply(null, P.rows.map(function (r) { return r.t || 0; }));
+  $('#kq-time').textContent = 'Giá lúc ' + hm(ts) + ' · trễ 15 phút';
+  $('#kq-score').innerHTML = '<div class="ring">' + ring(H.score, H.lv[0]) + '<b>' + H.score + '</b><span>/100</span></div><div class="kq-lv ' + H.lv[0] + '">' + H.lv[1] + '</div><small>Điểm sức khỏe danh mục</small>' + (H.loaded ? '' : '<small class="ld">Đang tải dữ liệu từng mã, điểm có thể đổi</small>');
+  $('#kq-worry').innerHTML = top.w;
+  $('#kq-todo').innerHTML = top.t;
+  $('#kq-break').innerHTML = H.items.map(function (x) { return '<li><span class="pt' + (x.pts ? ' m' : '') + '">' + (x.pts ? MINUS + x.pts : '0') + '<i>/' + x.max + '</i></span><span><b>' + x.k + ':</b> ' + esc(x.txt) + '</span></li>'; }).join('');
+  var mb = $('#kq-margin');
+  if (st.debt) {
+    var d = H.d, cp = callPrices(P);
+    mb.innerHTML = '<h3>Mốc gọi ký quỹ</h3><ul>' +
+      '<li>' + (d.t === 'x' ? 'Cả danh mục giảm thêm <b>' + pct(d.x, 1, false) + '</b> (mất <b>' + money(d.x * P.mv) + '</b>) là bị gọi ký quỹ. Tương ứng: ' + P.rows.slice().sort(function (a, b) { return b.mv - a.mv; }).slice(0, 3).map(function (r) { return '<b>' + r.sym + ' về ' + nf(px10(r.p * (1 - d.x))) + ' đ</b>'; }).join(', ') + ' nếu cùng giảm.' : d.t === 'below' ? '<b>Đang dưới ngưỡng gọi ký quỹ.</b>' : 'Cổ phiếu có giảm sâu, danh mục vẫn chưa chạm ngưỡng gọi ký quỹ.') + '</li>' +
+      (d.t !== 'x' ? '' : (function () { var near = cp.filter(function (c) { return c.t === 'x' && c.x <= 0.35; });
+        return near.length ? near.map(function (c) { var r = P.rows.filter(function (x) { return x.sym === c.sym; })[0]; return '<li>Riêng <b>' + c.sym + '</b> về <b>' + nf(c.px) + ' đ</b> (' + pct(-c.x, 1) + ' so với ' + nf(r.p) + ') là bị gọi, dù các mã khác đứng giá.</li>'; }).join('')
+          : '<li>Không mã nào đủ lớn để một mình kéo bạn tới ngưỡng gọi (mã lớn nhất phải giảm hơn 35%): rủi ro chính là cả danh mục cùng giảm.</li>'; })()) + '</ul>' +
+      '<p class="note">' + (st.calF ? 'Đã chỉnh theo tỷ lệ ký quỹ app đang hiện (' + pct(st.appRtt, 0, false) + ', ngưỡng gọi ' + pct(st.callApp, 0, false) + '). Giả định tỷ lệ giữa số của app và cách tính này giữ nguyên khi giá đổi; kiểm tra lại trên app.'
+        : 'Tính theo ngưỡng gọi ' + pct(st.call, 0, false) + ' bạn nhập, chung cho cả danh mục. Công ty chứng khoán tính theo tỷ lệ cho vay riêng từng mã nên mốc thật có thể khác: nhập <b>tỷ lệ ký quỹ app đang hiện</b> ở phần nhập để chỉnh, và kiểm tra lại trên app.') + '</p>';
+    mb.hidden = false;
+  } else mb.hidden = true;
+}
+$('#deep-go').addEventListener('click', function () { $('#deep').hidden = false; openStage('kham', true); });
+
+/* ---------- NHẬT KÝ QUYẾT ĐỊNH: lần trước bạn chọn gì, đến hôm nay ra sao (trung thực cả khi kết quả xấu) ---------- */
+function hb(n) { return n > 0 ? 'cao hơn' : 'thấp hơn'; }
+function jrBrief(e) {
+  var L = [];
+  if (e.multi) {
+    var val = function (S) { var ok = true, v = S.cash - S.debt; S.h.forEach(function (h) { var p = PX[h.sym] ? PX[h.sym].p : null; if (p == null) { ok = false; p = h.px; } v += h.q * p; }); return { v: v, ok: ok }; };
+    var vA = val(e.after), vB = val(e.before), dlt = vA.v - vB.v - (e.after.dep || 0), chg = e.sum && e.sum.navA != null ? vA.v - e.sum.navA : null;
+    L.push('Theo giá hôm nay, vốn chủ theo phác đồ khoảng <b>' + money(vA.v) + '</b>' + (chg != null ? ', <span class="' + cls(chg) + '">' + money(chg, true) + '</span> so với lúc quyết định' : '') + '.');
+    L.push('So với nếu giữ nguyên cả danh mục: <b class="' + cls(dlt) + '">' + money(dlt, true) + '</b>' + (Math.abs(dlt) < 1000 ? ' (gần như ngang nhau).' : ': phác đồ đang cho kết quả <b>' + (dlt > 0 ? 'tốt hơn' : 'kém hơn') + '</b>.'));
+    var qOfH = function (H, sym) { var x = H.filter(function (h) { return h.sym === sym; })[0]; return x ? x.q : 0; };
+    e.acts.forEach(function (a) {
+      var now = PX[a.sym] ? PX[a.sym].p : null; if (now == null) return;
+      var qB = qOfH(e.before.h, a.sym), qA = qOfH(e.after.h, a.sym), mv = '<b>' + a.sym + '</b> · ' + esc(a.choice) + ': giá ' + nf(a.px) + ' → ' + nf(now) + ' đ (<span class="' + cls(now - a.px) + '">' + pct(now / a.px - 1) + '</span>). ';
+      if (qA === qB) { var alt = qB * (a.px - now); L.push(mv + (Math.abs(alt) < 1000 ? 'Giữ hay bán hết lúc đó đến nay chưa khác biệt đáng kể.' : 'Nếu khi đó bán hết, vốn chủ hôm nay ' + hb(alt) + ' khoảng <b>' + money(Math.abs(alt)) + '</b> (chưa tính phí, thuế).')); }
+      else { var df = (qA - qB) * (now - a.px); L.push(mv + (Math.abs(df) < 1000 ? 'So với giữ nguyên mã này, đến nay chưa khác biệt đáng kể.' : 'Lựa chọn này làm vốn chủ hôm nay ' + hb(df) + ' khoảng <b>' + money(Math.abs(df)) + '</b> so với giữ nguyên mã này.')); }
+    });
+    if (!(vA.ok && vB.ok)) L.push('Một số mã chưa có giá mới, đang tính theo giá lúc quyết định.');
+  } else if (e.opts) {
+    var now1 = PX[e.sym] ? PX[e.sym].p : null;
+    if (now1) {
+      var vals = e.opts.map(function (o) { return o.q * now1 + o.cash - o.debt + (o.alt ? o.alt.q * (PX[o.alt.sym] ? PX[o.alt.sym].p : o.alt.px) : 0); }), ci = e.opts.map(function (o) { return o.label; }).indexOf(e.choice);
+      L.push('<b>' + e.sym + '</b> · ' + esc(e.choice) + ': giá ' + nf(e.px) + ' → ' + nf(now1) + ' đ (<span class="' + cls(now1 - e.px) + '">' + pct(now1 / e.px - 1) + '</span>).');
+      e.opts.forEach(function (o, i) { if (i === ci || ci < 0) return; var dd = vals[i] - vals[ci]; L.push('Nếu khi đó chọn ' + esc(o.label) + ': vốn chủ hôm nay ' + (Math.abs(dd) < 1000 ? 'gần như bằng lựa chọn của bạn.' : hb(dd) + ' khoảng <b>' + money(Math.abs(dd)) + '</b>.')); });
+    }
+  }
+  return L;
+}
+function renderBrief() {
+  var box = $('#jr-brief'); if (!box) return;
+  if (!J.length) { box.hidden = true; return; }
+  box.innerHTML = '<div class="jb-h"><div><span class="kick2">Nhật ký quyết định</span><h2 id="jb-t">Lần trước bạn đã chọn gì, đến hôm nay ra sao</h2></div><button type="button" class="btn sm ghost" id="jb-open">Mở nhật ký đầy đủ</button></div>' +
+    J.slice(0, 2).map(function (e) { var due = e.review && e.review <= today();
+      return '<article class="jb-e"><div class="jb-eh"><b>' + vnDate(e.date) + ' · ' + (e.multi ? 'Phác đồ ' + e.acts.length + ' mã (' + esc(e.sym) + ')' : esc(e.sym) + ' · ' + esc(e.choice)) + '</b>' + (due ? '<em class="due">Đến hạn tái khám</em>' : e.review ? '<span class="note">Tái khám ' + vnDate(e.review) + '</span>' : '') + '</div><ul>' + jrBrief(e).map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></article>'; }).join('') +
+    '<p class="note">Kết quả tính tới hôm nay theo giá trễ 15 phút, <b>chưa phải kết luận đúng hay sai</b>: quyết định hợp lý vẫn có thể ra kết quả xấu trong ngắn hạn, và ngược lại. Hãy xem các điều kiện theo dõi có còn đúng.</p>';
+  box.hidden = false;
+}
+document.addEventListener('click', function (e) { if (!e.target.closest('#jb-open')) return; $('#deep').hidden = false; openStage('tien-hanh', true); });
 
 /* ---------- 2 · NGUYÊN NHÂN ---------- */
 function ret(sym, n) {
@@ -668,7 +837,7 @@ function ctxPayload() { var c = ctx(), K = profile(); return { thoi_gian_dau_tu:
   khau_vi: { theo_khai_bao: K.decL ? K.decL.name + ' (' + K.dec + '/100)' : 'chưa đủ câu trả lời', theo_hanh_vi_danh_muc: K.behL ? K.behL.name + ' (' + K.beh + '/100)' : null, can_cu_hanh_vi: K.why, do_venh: K.gap } }; }
 $('#ctx').addEventListener('change', function (e) {
   if (e.target.type !== 'radio') return;
-  S.ctx = S.ctx || {}; S.ctx[e.target.name] = e.target.value; store(KEY, S); renderCtx(); if (PORT) { renderDiag(); sim(); renderPlan(); }
+  S.ctx = S.ctx || {}; S.ctx[e.target.name] = e.target.value; store(KEY, S); renderCtx(); if (PORT) { renderDiag(); sim(); renderPlan(); renderQuick(); }
 });
 function renderCtx() {
   var c = S.ctx || {};
@@ -1130,7 +1299,7 @@ function openPlanJournal() {
     if (mb) w.push('Giá ' + a.sym + ' giữ trên ' + mb.n + ' (≈ ' + nf(mb.v) + ' đ lúc lập kế hoạch)');
     if (a.o.be != null && a.o.be > 0 && a.o.be < a.o.basePx) w.push('Giá ' + a.sym + ' chưa về mức hòa vốn cả thương vụ ' + nf(Math.round(a.o.be / 10) * 10) + ' đ');
     w.push('Kết quả kinh doanh quý tới của ' + a.sym + (fr && F.npY != null ? ' so với ' + fr.q + ' (lợi nhuận ' + (F.npY >= 0 ? 'tăng ' : 'giảm ') + pct(Math.abs(F.npY), 0, false) + ' so với cùng kỳ)' : ''));
-    if (mb) chg.push('Giá ' + a.sym + ' thủng ' + mb.n + ' và MACD cắt xuống');
+    if (mb) chg.push('Giá ' + a.sym + ' thủng ' + mb.n + ' và đà giảm tăng tốc');
   });
   CB.acts.forEach(function (a) { if (a.o.alt) w.push('Kết quả kinh doanh của ' + a.o.alt.sym + ' (mã nhận thêm tiền)'); });
   if (C.liq === '3m' || C.liq === '1y') w.push('Tiền mặt đủ cho khoản có thể cần rút ' + (C.liq === '3m' ? 'trong 3 tháng' : 'trong năm') + ' (sau phác đồ: ' + money(A.cash) + ')');
@@ -1168,6 +1337,7 @@ $('#jr-form').addEventListener('submit', function (e) {
 });
 function renderJournal() {
   var box = $('#jr-list');
+  renderBrief();
   if (!J.length) { box.innerHTML = '<p class="empty">Chưa có kế hoạch nào.</p>'; return; }
   var syms = J.reduce(function (a, e) { return e.multi ? a.concat(e.before.h.concat(e.after.h).map(function (h) { return h.sym; })) : a.concat([e.sym]); }, []).concat(J.reduce(function (a, e) { return a.concat((e.opts || []).filter(function (o) { return o.alt; }).map(function (o) { return o.alt.sym; })); }, [])).concat(['VNINDEX']).filter(function (v, i, a) { return a.indexOf(v) === i; });
   var need = syms.filter(function (s) { return !PX[s]; });
@@ -1196,6 +1366,7 @@ function renderJournal() {
         '<label>Bài học rút ra (điền khi đánh giá lại)<textarea rows="2" class="lesson">' + esc(e.lesson || '') + '</textarea></label>' +
         '<div class="bs-row end" style="margin-top:0"><button type="button" class="btn sm ghost cp">Sao chép kế hoạch</button><button type="button" class="btn sm ghost danger del">Xóa kế hoạch này</button></div></article>';
     }).join('');
+    renderBrief();
   });
 }
 function watchHTML(e) {
@@ -1278,7 +1449,7 @@ function aiPayload(step) {
       truoc: { von_chu: Math.round(PC.B.nav), tien_mat: Math.round(PC.B.cash), du_no: Math.round(PC.B.debt), rtt: PC.B.debt ? r3(PC.B.rtt) : null, ma_lon_nhat: PC.B.top ? PC.B.top.sym + ' ' + r3(PC.B.top.w) : null, khau_vi_danh_muc: PC.B.beh },
       sau: { von_chu: Math.round(PC.A.nav), tien_mat: Math.round(PC.A.cash), du_no: Math.round(PC.A.debt), rtt: PC.A.debt ? r3(PC.A.rtt) : null, ma_lon_nhat: PC.A.top ? PC.A.top.sym + ' ' + r3(PC.A.top.w) : null, khau_vi_danh_muc: PC.A.beh, ca_danh_muc_giam_them_thi_cham_nguong_goi: PC.A.dtc.t === 'x' ? r3(PC.A.dtc.x) : PC.A.dtc.t, ty_trong: PC.A.rows.map(function (h) { return { ma: h.sym, ty_trong: r3(h.w) }; }) },
       lai_lo_chot: Math.round(PC.realized), phi_thue: Math.round(PC.fees), tien_nop_them: Math.round(PC.dep) } : 'Khách chưa đưa mã nào vào phác đồ';
-    return { khau_vi_va_hoan_canh: ctxPayload(), ket_luan_nhanh: $('#quick-lead').textContent, kham: k, phac_do_ca_danh_muc: phacdo, phuong_an_ma_dang_xem: m, ke_hoach_da_chon: plan || 'Khách chưa lưu kế hoạch' };
+    return { khau_vi_va_hoan_canh: ctxPayload(), the_ket_qua_30_giay: QUICK, ket_luan_nhanh: $('#quick-lead').textContent, kham: k, phac_do_ca_danh_muc: phacdo, phuong_an_ma_dang_xem: m, ke_hoach_da_chon: plan || 'Khách chưa lưu kế hoạch' };
   }
   if (step === 'kham') {
     var d = dropAllToCall(PORT.mv, st.cash, st.debt, st.call);
@@ -1346,5 +1517,5 @@ function updateSteps() {
 }
 
 renderInputs(); updateSteps(); renderJournal();
-if (S.rows.some(function (r) { return r.sym && r.qty && r.cost; })) $('#in-msg').textContent = 'Đã khôi phục danh mục lần trước trên máy này. Bấm "Khám danh mục" để cập nhật giá.';
+if (S.rows.some(function (r) { return r.sym && r.qty && r.cost; })) $('#in-msg').textContent = 'Đã khôi phục danh mục lần trước trên máy này. Bấm "Bắt đầu khám" để cập nhật giá.';
 })();
