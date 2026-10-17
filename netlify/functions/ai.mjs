@@ -14,28 +14,12 @@ NGUYÊN TẮC (bắt buộc, không ngoại lệ):
 
 VĂN PHONG: tiếng Việt bình dân, như anh môi giới giải thích cho khách quen ở quán trà đá. Xưng "bạn". Câu ngắn, mỗi ý 1 câu, tối đa khoảng 25 chữ. Không thuật ngữ khó; nếu buộc phải dùng (Rtt, margin, tỷ trọng) thì giải thích luôn bằng lời thường. Đi thẳng vào điểm quan trọng nhất, bỏ ý phụ. Có thể dí dỏm nhẹ kiểu miền Bắc nhưng không đùa cợt về khoản lỗ.
 
-ĐẦU RA: gọi công cụ "tra_loi" đúng một lần. Ngắn gọn là ưu tiên số một:
-- tom_tat: 1–2 câu, điều quan trọng nhất của danh mục.
-- dien_giai: 2–3 ý, mỗi ý dẫn 1 con số làm căn cứ.
-- gia_thuyet: 1–2 ý, ghi rõ vì sao mới là giả thuyết.
-- cau_hoi: 2–3 câu hỏi bạn nên tự kiểm tra.
-- thieu_du_lieu: 1–2 thông tin còn thiếu.`;
-
-const TOOL = {
-  name: 'tra_loi',
-  description: 'Trả kết quả diễn giải ngắn gọn cho người dùng.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      tom_tat: { type: 'string' },
-      dien_giai: { type: 'array', items: { type: 'string' } },
-      gia_thuyet: { type: 'array', items: { type: 'string' } },
-      cau_hoi: { type: 'array', items: { type: 'string' } },
-      thieu_du_lieu: { type: 'array', items: { type: 'string' } }
-    },
-    required: ['tom_tat', 'dien_giai', 'gia_thuyet', 'cau_hoi', 'thieu_du_lieu']
-  }
-};
+ĐẦU RA: chỉ viết các dòng theo đúng mẫu dưới, mỗi ý một dòng, mỗi dòng bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không dùng markdown. Ngắn gọn là ưu tiên số một.
+TT|1–2 câu: điều quan trọng nhất (chỉ 1 dòng TT)
+SL|ý số liệu nói gì, dẫn 1 con số làm căn cứ (2–3 dòng SL)
+GT|giả thuyết, ghi rõ vì sao mới là giả thuyết (1–2 dòng GT)
+CH|câu hỏi bạn nên tự kiểm tra (2–3 dòng CH)
+TH|thông tin còn thiếu (1–2 dòng TH)`;
 
 const STEP = {
   'kham': 'Bước 1 – Khám sức khỏe danh mục. Diễn giải tình trạng tổng thể: lãi lỗ, mức tập trung theo mã và ngành, đòn bẩy margin, khoảng cách tới ngưỡng gọi ký quỹ.',
@@ -79,20 +63,23 @@ export default async (req, context) => {
     const r = await fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 1500, system: SYSTEM, tools: [TOOL], tool_choice: { type: 'tool', name: 'tra_loi' }, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model: MODEL, max_tokens: 1200, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
-    const blocks = data.content || [];
-    let out = (blocks.find(c => c.type === 'tool_use') || {}).input;
-    if (!out || typeof out !== 'object') {
-      const text = blocks.filter(c => c.type === 'text').map(c => c.text).join('').trim();
-      const m = text.match(/\{[\s\S]*\}/);
-      try { out = JSON.parse(m ? m[0] : text); } catch { out = null; }
+    const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
+    const out = { tom_tat: '', dien_giai: [], gia_thuyet: [], cau_hoi: [], thieu_du_lieu: [] };
+    let last = null; const KEY = { SL: 'dien_giai', GT: 'gia_thuyet', CH: 'cau_hoi', TH: 'thieu_du_lieu' };
+    for (const line of text.split(/\r?\n/)) {
+      const m = line.trim().replace(/^[-*•\s]+/, '').match(/^(TT|SL|GT|CH|TH)\s*[|:]\s*(.+)$/);
+      if (!m) continue;
+      const v = m[2].replace(/\*\*/g, '').trim(); if (!v) continue;
+      if (m[1] === 'TT') out.tom_tat = out.tom_tat ? out.tom_tat + ' ' + v : v; else { out[KEY[m[1]]].push(v); last = KEY[m[1]]; }
     }
-    if (!out || !(out.tom_tat || (out.dien_giai || []).length)) {
-      console.log('AI sai khuôn', data.stop_reason, JSON.stringify(blocks).slice(0, 400));
-      return json({ error: 'AI trả lời bị ngắt giữa chừng. Bấm thử lại.', code: data.stop_reason || '' }, 502);
+    if (data.stop_reason === 'max_tokens' && last && out[last].length > 1) out[last].pop();
+    if (!out.tom_tat && !out.dien_giai.length) {
+      console.log('AI sai khuôn', data.stop_reason, text.slice(0, 400));
+      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '' }, 502);
     }
     const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 4);
     return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: MODEL });

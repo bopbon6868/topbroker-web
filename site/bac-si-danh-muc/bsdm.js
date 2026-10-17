@@ -587,7 +587,7 @@ function aiRun(step) {
   var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>AI đang đọc số liệu, mất khoảng 10–20 giây…'; box.appendChild(ld);
   var old = box.querySelector('.err'); if (old) old.remove();
   fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
-    .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Lỗi'); return j; }); })
+    .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
       box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Diễn giải lại</button></div>' +
         (j.tom_tat ? '<p class="tt">' + esc(j.tom_tat) + '</p>' : '') +
