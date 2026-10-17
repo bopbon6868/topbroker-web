@@ -23,6 +23,7 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 
 ## Bác sĩ danh mục (`site/bac-si-danh-muc/`)
 - Công cụ chạy trên trình duyệt: danh mục và nhật ký lưu localStorage của người dùng. Chỉ khi người dùng bấm "Nhờ AI diễn giải", bản tóm tắt số liệu mới được gửi tới `/api/ai` (`netlify/functions/ai.mjs`, Claude qua Netlify AI Gateway, tốn credit Netlify; không lưu dữ liệu). Giá lấy từ `/api/stock` (`netlify/functions/stock.mjs`, VNDirect, trễ 15 phút). Ngành và nhóm so sánh ở `sectors.js`.
+- `/api/ai`: phải giữ `thinking: {type:'disabled'}` (model mặc định suy nghĩ trước, ăn hết token, gây trả lời cụt). AI trả lời theo dòng có nhãn TT/SL/GT/CH/TH, không dùng JSON hay tool. Tự kiểm tra: WebFetch `https://topbroker-web.netlify.app/api/ai?test=1&z=<số ngẫu nhiên>` (giới hạn 8 lần/phút).
 - Định vị: không khuyến nghị bán/giữ; chỉ mô tả tình trạng, nguyên nhân (tách bằng chứng / giả thuyết / thiếu thông tin) và hệ quả từng phương án. Lịch tự động không sửa phần này.
 - **Nguyên tắc cho phần phân tích (anh Hải chốt ngày 17/10/2026, áp dụng cho Bác sĩ danh mục và mọi phần phân tích trên web):**
   1. **Công thức tính toán** tạo ra kết quả số học (giá vốn, lãi lỗ, tỷ trọng, Rtt, kịch bản). Số phải tính ra được, kiểm lại được.
