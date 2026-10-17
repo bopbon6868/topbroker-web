@@ -15,7 +15,7 @@ NGUYÊN TẮC (bắt buộc, không ngoại lệ):
 
 VĂN PHONG: bạn là một người môi giới lâu năm, ngồi tổng kết với khách quen sau buổi khám danh mục. Nói như người thật: chân thành, tử tế, nói thẳng nhưng không dọa. Tiếng Việt bình dân, xưng "bạn". Câu ngắn, mỗi ý 1 câu, tối đa khoảng 25 chữ. Không thuật ngữ khó; nếu buộc phải dùng (margin, tỷ lệ ký quỹ, tỷ trọng) thì nói luôn bằng lời thường. Có thể dùng một hình ảnh đời thường hoặc câu ví von quen thuộc để khách dễ nhớ, dễ ngẫm, nhưng không sáo rỗng và không đùa cợt về khoản lỗ.
 
-KHÁCH MUỐN NGHE ĐÚNG 4 ĐIỀU: (1) mình đang ổn hay không, (2) điều đáng lo nhất là gì, (3) mình đang chọn gì và đổi lấy gì, (4) từ giờ phải để ý cái gì. Chỉ nói những gì giúp khách trả lời 4 điều đó; bỏ hết ý phụ. Mỗi ý quan trọng dẫn đúng 1 con số có trong dữ liệu.
+TỔNG ĐỘ DÀI tối đa khoảng 150 chữ. KHÁCH MUỐN NGHE ĐÚNG 4 ĐIỀU: (1) mình đang ổn hay không, (2) điều đáng lo nhất là gì, (3) mình đang chọn gì và đổi lấy gì, (4) từ giờ phải để ý cái gì. Chỉ nói những gì giúp khách trả lời 4 điều đó; bỏ hết ý phụ. Mỗi ý quan trọng dẫn đúng 1 con số có trong dữ liệu.
 
 ĐẦU RA: chỉ viết các dòng theo đúng mẫu dưới, mỗi ý một dòng, bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown.
 TT|2–3 câu: danh mục đang thế nào (chỉ 1 dòng TT)
@@ -44,8 +44,8 @@ function json(obj, status = 200) {
 export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
-  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(800, +qs.get('max') || 60) : 800;
-  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b7' });
+  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(700, +qs.get('max') || 60) : 700;
+  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b8' });
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
@@ -65,18 +65,38 @@ export default async (req, context) => {
   if (!key) return json({ error: 'Máy chủ chưa bật AI.' }, 503);
 
   const userMsg = `${STEP[step]}\n\nSố liệu (JSON, tiền tính bằng đồng, tỷ lệ là số thập phân, ví dụ 0.25 = 25%):\n${JSON.stringify(body.so_lieu)}`;
-  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 25000);
+  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 9500);
   try {
     const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: /-4-|-3-/.test(model) ? 'disabled' : 'between_tools' }, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: /-4-|-3-/.test(model) ? 'disabled' : 'between_tools' }, system: SYSTEM, stream: true, messages: [{ role: 'user', content: userMsg }] }),
     });
-    let r = await call(MODEL), used = MODEL, firstErr = null;
-    let data = await r.json().catch(() => ({}));
+    let r = await call(MODEL), used = MODEL, firstErr = null, data = {};
+    if (!r.ok) data = await r.json().catch(() => ({}));
     if (!r.ok && (r.status === 400 || r.status === 404) && /model|thinking/i.test(JSON.stringify(data))) {
       firstErr = r.status + ' ' + JSON.stringify(data).slice(0, 300);
-      used = FALLBACK; r = await call(FALLBACK); data = await r.json().catch(() => ({}));
+      used = FALLBACK; r = await call(FALLBACK); data = {}; if (!r.ok) data = await r.json().catch(() => ({}));
+    }
+    // Đọc luồng trả lời; quá ~8,5 giây (giới hạn 10 giây của Netlify) thì dừng và dùng phần đã nhận.
+    let streamed = '';
+    if (r.ok) {
+      const reader = r.body.getReader(), dec = new TextDecoder(); let buf = '', stop = null;
+      const deadline = T0 + 8500;
+      while (true) {
+        const left = deadline - Date.now(); if (left <= 0) { stop = 'time'; break; }
+        const res = await Promise.race([reader.read(), new Promise(ok => setTimeout(() => ok({ timeout: true }), left))]);
+        if (res.timeout) { stop = 'time'; break; }
+        if (res.done) break;
+        buf += dec.decode(res.value, { stream: true });
+        let i; while ((i = buf.indexOf('\n')) >= 0) {
+          const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+          if (!line.startsWith('data:')) continue;
+          try { const ev = JSON.parse(line.slice(5)); if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) streamed += ev.delta.text; if (ev.type === 'message_delta' && ev.delta && ev.delta.stop_reason) stop = ev.delta.stop_reason; if (ev.type === 'message_delta' && ev.usage) data.usage = ev.usage; } catch {}
+        }
+      }
+      try { reader.cancel(); } catch {}
+      data = { ...data, content: [{ type: 'text', text: streamed }], stop_reason: stop === 'time' ? 'max_tokens' : stop };
     }
     if (TEST && !r.ok) return json({ test: true, status: r.status, url_host: new URL(url).host, model: used, detail: JSON.stringify(data).slice(0, 600) }, 200);
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
