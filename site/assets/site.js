@@ -20,7 +20,7 @@ TB.PRODUCTS = [
   {id:'radar',   name:'Radar tin nóng',            group:'Tin tức & vĩ mô', status:'live', href:'radar/index.html', icon:'radar', tint:['#FF6A5C','#D9302A'], short:'Radar',
    desc:'Tin chuẩn và tin mạng xã hội tách bạch, theo sát động thái bơm hút tiền của Ngân hàng Nhà nước.', nav:'Radar'},
   {id:'giai-ma', name:'Giải mã cổ phiếu',          group:'Phân tích',       status:'live', href:'co-phieu/index.html', icon:'chart', tint:['#5AA5FF','#1F6FD1'], short:'Cổ phiếu',
-   desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 11 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR.', nav:'Cổ phiếu'},
+   desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 16 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR, SSI, TCB, GEX, PDR, VCG.', nav:'Cổ phiếu'},
   {id:'giai-ngo',name:'Giải ngố chứng khoán',      group:'Học đầu tư',      status:'live', href:'giai-ngo/index.html', icon:'tea', tint:['#FFB24D','#F0760F'], short:'Giải ngố',
    desc:'Kiến thức đầu tư kiểu trà đá vỉa hè: dễ nghe, dễ hiểu, cầm tay chỉ việc. Kèm Từ điển chứng khoán vỉa hè.', nav:'Giải ngố'},
   {id:'tu-dien', name:'Từ điển chứng khoán vỉa hè', group:'Học đầu tư',   status:'live', href:'giai-ngo/tu-dien/index.html', icon:'book', tint:['#9480F5','#5A3FC8'], short:'Từ điển',

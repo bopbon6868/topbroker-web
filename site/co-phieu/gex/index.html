@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Giải mã GEX · Top Broker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Giải mã cổ phiếu GEX (Tập đoàn Gelex) bằng tiếng dễ hiểu và những gì ít người nói cho bạn.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css?v=20261017b">
+<style>
+/* Layout: phong cách iOS – thanh điều hướng mờ, tiêu đề lớn, danh sách bo góc kiểu "inset grouped", một cột rộng tối đa 720px */
+:root{ color-scheme:light;
+  --bg:#f6f4ef; --card:#fffdf9; --fill:#efece5; --label:#24232a; --label2:#55545c; --label3:#b9b6ae;
+  --sep:#e4e0d7; --blue:#1f6fd1; --green:#1e9e52; --red:#d93a2f; --orange:#c97a06; --indigo:#5a52c4; --teal:#1e93a8;
+  --green-t:rgba(52,199,89,.14); --red-t:rgba(255,59,48,.12); --orange-t:rgba(255,149,0,.15); --blue-t:rgba(0,122,255,.12);
+  --bar:rgba(246,244,239,.88);
+  --sf:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --sfd:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--label);font-family:var(--sf);font-size:17px;line-height:1.65;letter-spacing:0;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bar)}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--sfd);margin:0;text-wrap:balance}
+p{margin:0}
+.tn{font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .dn{color:var(--red)} .wn{color:var(--orange)} .mute{color:var(--label2)}
+
+/* nav bar */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));
+  background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+.navIn{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back{color:var(--blue);font-size:17px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.navT{font-weight:600;font-size:17px;opacity:0;transition:opacity .2s}
+.nav.scrolled .navT{opacity:1}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.seg button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* large title + price */
+.hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:.01em;line-height:1.15}
+.sub{color:var(--label2);font-size:15px}
+.priceLine{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:6px}
+.price{font-family:var(--sfd);font-size:40px;font-weight:700;letter-spacing:-.02em}
+.chip{font-size:13px;font-weight:600;padding:4px 9px;border-radius:7px}
+.chip.r{background:var(--red-t);color:var(--red)} .chip.g{background:var(--green-t);color:var(--green)} .chip.o{background:var(--orange-t);color:var(--orange)} .chip.b{background:var(--blue-t);color:var(--blue)}
+
+/* section header iOS */
+section{display:flex;flex-direction:column;gap:8px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-inline:4px}
+.sh h2{font-size:22px;font-weight:700;letter-spacing:.005em}
+.foot-note{font-size:14.5px;color:var(--label2);padding-inline:16px;line-height:1.6}
+.badge{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo);background:color-mix(in srgb,var(--indigo) 14%,transparent);padding:3px 7px;border-radius:5px;white-space:nowrap}
+
+/* grouped list */
+.group{background:var(--card);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;position:relative}
+.row + .row::before{content:"";position:absolute;top:0;right:0;left:56px;border-top:.5px solid var(--sep)}
+.group.flat .row + .row::before{left:16px}
+.ic{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:700}
+.ic.g{background:var(--green)} .ic.o{background:var(--orange)} .ic.r{background:var(--red)} .ic.b{background:var(--blue)} .ic.i{background:var(--indigo)} .ic.t{background:var(--teal)}
+.rc{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rt{font-size:17px;font-weight:600;line-height:1.3}
+.rs{font-size:16px;color:var(--label2);line-height:1.6}
+.rv{font-size:15px;color:var(--label2);white-space:nowrap;align-self:center}
+.verdict{padding:14px 16px;font-size:16px;line-height:1.65;border-top:.5px solid var(--sep);background:color-mix(in srgb,var(--blue) 5%,var(--card))}
+
+/* widgets grid */
+.widgets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.w{background:var(--card);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.w .k{font-size:13px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+.w .v{font-family:var(--sfd);font-size:28px;font-weight:700;letter-spacing:-.01em}
+.w .t{font-size:16px;line-height:1.6}
+
+/* chart card */
+.cc{background:var(--card);border-radius:16px;padding:14px 12px 10px;overflow-x:auto}
+.cc svg{display:block;width:100%;height:auto;min-width:500px}
+.cc.small svg{min-width:320px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--label2);padding:4px 6px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* table */
+.tw{background:var(--card);border-radius:12px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:.5px solid var(--sep)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td.wrap{white-space:normal;text-align:left;min-width:220px;color:var(--label2);font-size:15px}
+tr.hl td{background:color-mix(in srgb,var(--blue) 7%,transparent);font-weight:600}
+
+/* insight cards */
+.ins{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--card);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.ch h3{font-size:17px;font-weight:600;line-height:1.3}
+.card p{font-size:16px;line-height:1.65}
+.ev{font-size:15px;line-height:1.55;color:var(--label2);background:var(--fill);border-radius:9px;padding:9px 11px}
+
+/* news */
+.news .row{align-items:flex-start}
+.dt{font-size:13px;color:var(--label2)}
+
+/* levels */
+.lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lv .w .v{font-size:22px}
+.teaser{background:var(--card);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center}
+.teaser button{margin-left:auto;font:600 15px var(--sf);color:#fff;background:var(--blue);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+
+.x,.xs{display:none}
+body.pro .x{display:revert} body.pro .xs{display:flex} body.pro .p,body.pro .teaser{display:none}
+.legal{font-size:12px;color:var(--label2);line-height:1.5;padding-inline:4px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:560px){.widgets,.lv{grid-template-columns:1fr}.hero h1{font-size:30px}.price{font-size:34px}.navT{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}.nav{z-index:15}.back a{color:var(--blue);text-decoration:none}.back span{color:var(--label2)}@media (max-width:560px){.back span{display:none}}</style>
+</head>
+<body data-root="../../" data-page="giai-ma">
+<div id="tb-top"></div>
+<nav class="nav" id="nav"><div class="navIn">
+  <span class="back"><a href="../index.html">Cổ phiếu</a> <span>/ GEX</span></span>
+  <span class="navT">GEX · 22.500</span>
+  <div class="seg" role="group" aria-label="Chế độ đọc"><button id="mPlain" aria-pressed="true">Dễ hiểu</button><button id="mPro" aria-pressed="false">Chuyên gia</button></div>
+</div></nav>
+<div class="wrap">
+  <header class="hero">
+    <span class="sub">HOSE · Thiết bị điện, hạ tầng · Chốt phiên 16/10/2026</span>
+    <h1>GEX</h1>
+    <span class="sub" style="font-size:17px;color:var(--label)">Tập đoàn Gelex</span>
+    <div class="priceLine"><span class="price tn">22.500</span><span class="chip r tn">−47,0% · 1 năm</span><span class="chip r tn">−2,0% · 1 tháng</span><span class="chip r tn">−47% từ đỉnh 60 tuần</span></div>
+    <p class="sub p">Tập đoàn đa ngành: thiết bị điện, vật liệu xây dựng, hạ tầng, khu công nghiệp. Khoảng 9.600 nhân viên, nước ngoài nắm 6,4%.</p><p class="sub x tn">Vốn hóa 29.441 tỷ · EPS 1.049 · BVPS 15.133 · Doanh thu 4 quý 46.679 tỷ · Nợ vay/EBITDA 3,4× · Room NN 6,4%</p>
+  </header>
+  <section><div class="sh"><h2>Tóm tắt 30 giây</h2></div><div class="group"><div class="row"><span class="ic r">↓</span><div class="rc"><span class="rt">Giá 1 năm</span><span class="rs">Giảm khoảng 47% trong 12 tháng, từ đỉnh 42.400 về 22.500.</span></div></div><div class="row"><span class="ic r">!</span><div class="rc"><span class="rt">Ít người nói</span><span class="rs">Doanh thu quý 2 tăng 43%, nhưng phần lãi về tay cổ đông GEX lại giảm 18%: 60% lợi nhuận thuộc về cổ đông thiểu số ở các công ty con.</span></div></div><div class="row"><span class="ic o">$</span><div class="rc"><span class="rt">Định giá</span><span class="rs">P/E 21,4 tính trên lãi về cổ đông GEX. ROE chỉ 8%.</span></div></div><div class="row"><span class="ic o">~</span><div class="rc"><span class="rt">Xu hướng giá</span><span class="rs">Dưới đường 1 tháng, ADX 28: xu hướng giảm vẫn còn.</span></div></div><p class="verdict p"><b>Nói gọn:</b> Cả tập đoàn làm ăn lớn lên, nhưng phần lớn lãi nằm ở các công ty con mà GEX không sở hữu 100%. Cổ đông GEX chỉ được phần nhỏ hơn, trong khi tiền lãi vay đã tăng gấp đôi.</p><p class="verdict x"><b>Kết luận:</b> Q2/26 doanh thu 14.480 tỷ (+43,1% YoY), LNTT 1.809 tỷ (+17,1%), LNST 1.356 tỷ, LNST CĐ mẹ 540 tỷ (−17,8%). Cổ đông thiểu số chiếm 60% LNST (Q2/25: 45%). Lãi vay 582 tỷ (+113% YoY). ROE 8,0%, P/E 21,4×, P/B 1,5×, EV/EBITDA 9,1×. Kỹ thuật: dưới MA20, ADX 28, RSI 42.</p></div></section>
+  <section><div class="sh"><h2>Giá này đắt hay rẻ?</h2></div><div class="widgets"><div class="w"><span class="k">P/E</span><span class="v tn">21,4×</span><p class="t p">Bỏ 100 đồng mua GEX, phần lãi về tay cổ đông chỉ khoảng <b>5 đồng</b> mỗi năm.</p><p class="t x">Lợi suất lợi nhuận ≈ 4,7%. EPS 4 quý 1.049đ (có quý 4/2025 lỗ 35 tỷ).</p></div><div class="w"><span class="k">P/B</span><span class="v tn">1,5×</span><p class="t p">Trả 1,5 đồng cho 1 đồng vốn sổ sách. Đầu quý 3/2025 từng phải trả 3,1 đồng.</p><p class="t x">BVPS 15.133.</p></div><div class="w"><span class="k">ROE</span><span class="v tn">8,0%</span><p class="t p">Cứ 100 đồng vốn của chủ, chỉ đẻ ra 8 đồng lãi mỗi năm. Thấp hơn lãi gửi tiết kiệm dài hạn không nhiều.</p><p class="t x">Giảm từ 14,1% (Q3/25) xuống 8,0% (Q2/26).</p></div><div class="w"><span class="k">Lãi vay</span><span class="v tn">582 tỷ</span><p class="t p">Tiền lãi vay quý 2 gấp hơn 2 lần cùng kỳ.</p><p class="t x">Chi phí lãi vay: 273 tỷ (Q2/25) → 582 tỷ (Q2/26). EBIT/lãi vay 3,5×.</p></div></div></section>
+  <section><div class="sh"><h2>Làm ăn ra sao?</h2></div>
+    <div class="cc"><svg id="profitChart" viewBox="0 0 640 250" role="img" aria-label="Lợi nhuận theo quý"></svg><div class="legend"><span><i style="background:var(--blue)"></i>Lãi ròng về cổ đông GEX (tỷ đồng)</span><span><i style="background:var(--red)"></i>Quý lỗ</span></div></div>
+    <div class="tw"><table><thead><tr><th>Quý</th><th>Doanh thu</th><th>Lãi trước thuế</th><th>Lãi sau thuế</th><th>Phần của cổ đông GEX</th><th>YoY</th></tr></thead><tbody><tr><td>Q2/2026</td><td>14.480</td><td>1.809</td><td>1.356</td><td>540</td><td class="dn">−17,8%</td></tr><tr><td>Q1/2026</td><td>10.722</td><td>806</td><td>579</td><td>246</td><td class="up">+5,1%</td></tr><tr><td>Q4/2025</td><td>11.636</td><td>1.178</td><td>541</td><td class="dn">−35</td><td class="dn">Lỗ</td></tr><tr><td>Q3/2025</td><td>9.841</td><td>1.253</td><td>781</td><td>622</td><td class="up">+529%</td></tr></tbody></table></div><p class="foot-note">Đơn vị: tỷ đồng. Nguồn: BCTC hợp nhất qua TCBS.</p></section>
+  <section><div class="sh"><h2>Những gì ít người nói cho bạn</h2></div><p class="foot-note" style="padding-inline:4px">Phần lớn báo cáo chỉ kể điểm sáng. Đây là những chỗ nên soi kỹ trước khi xuống tiền.</p><div class="ins"><article class="card"><div class="ch"><h3>Lãi to, nhưng không phải lãi của mình</h3><span class="chip r">Cần soi kỹ</span></div><p class="p">Quý 2 cả tập đoàn lãi sau thuế 1.356 tỷ, nhưng chỉ 540 tỷ thuộc về cổ đông GEX. 816 tỷ còn lại (60%) là của cổ đông thiểu số ở các công ty con. Cùng kỳ năm ngoái tỷ lệ này là 45%. Doanh thu tăng không có nghĩa phần của anh chị tăng.</p><p class="x">LNST Q2/26 1.356 tỷ; CĐ mẹ 540 tỷ; CĐ thiểu số 816 tỷ (60,2%). Q2/25: 1.197 / 657 / 540 tỷ (45,1%).</p><div class="ev">Cần xem tỷ lệ sở hữu của GEX tại từng công ty con trong thuyết minh BCTC.</div></article><article class="card"><div class="ch"><h3>Tiền lãi vay tăng gấp đôi</h3><span class="chip r">Cần soi kỹ</span></div><p class="p">Lãi vay quý 2 là 582 tỷ, gấp 2,1 lần cùng kỳ và tăng 44% chỉ trong một quý. Lãi trước thuế cả năm 4 quý gần nhất chỉ gấp khoảng 3,5 lần tiền lãi vay.</p><p class="x">Chi phí lãi vay: 245 → 273 → 324 → 357 → 404 → 582 tỷ (Q1/25–Q2/26). EBIT/lãi vay 3,5×; nợ vay/EBITDA 3,4×; Tài sản/VCSH 4,3×.</p></article><article class="card"><div class="ch"><h3>Quý 4/2025 cổ đông GEX lỗ</h3><span class="chip o">Theo dõi</span></div><p class="p">Quý 4/2025 cả tập đoàn vẫn lãi 541 tỷ sau thuế, nhưng phần của cổ đông GEX lại âm 35 tỷ. Lãi của tập đoàn và lãi của cổ đông công ty mẹ có thể đi hai hướng khác nhau.</p><p class="x">Q4/25: LNTT 1.178 tỷ, LNST 541 tỷ, LNST CĐ mẹ −35 tỷ. EPS 4 quý 1.049đ đã bao gồm quý lỗ này.</p></article><article class="card"><div class="ch"><h3>Buôn bán vẫn lớn lên</h3><span class="chip g">Điểm sáng</span></div><p class="p">Doanh thu quý 2 tăng 43%, biên lãi gộp 20,5%, cao hơn quý 1. Lãi hoạt động tăng 34% so với cùng kỳ. Mảng kinh doanh chính vẫn chạy.</p><p class="x">Doanh thu Q2/26 14.480 tỷ (+43,1% YoY); lãi gộp 2.975 tỷ; lãi hoạt động 2.009 tỷ (+33,5%).</p></article><article class="card"><div class="ch"><h3>Làm rõ thông tin về một nhân sự</h3><span class="chip b">Bối cảnh</span></div><p class="p">Ngày 15/9 GEX công bố văn bản làm rõ thông tin. Theo báo ĐTCK cùng ngày, vụ việc liên quan ông Đặng Phan Tường phát sinh trước khi ông tham gia GELEX Electric. Hôm đó giá tăng 3,1%.</p><p class="x">Tin HOSE và ĐTCK ngày 15/9/2026. Chưa có thông tin về ảnh hưởng tài chính.</p></article></div></section>
+  <!--AX--><style>
+.ax .axk{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo)}
+.ax .card p{font-size:16px;line-height:1.7}
+.ax .axt{border-left:4px solid var(--indigo)}
+.ax ol.axd{list-style:none;margin:0;padding:0;counter-reset:d;display:flex;flex-direction:column}
+.ax ol.axd li{counter-increment:d;display:grid;grid-template-columns:28px minmax(0,1fr);gap:2px 10px;padding:12px 0;border-top:1px solid var(--sep)}
+.ax ol.axd li:first-child{border-top:0;padding-top:4px}
+.ax ol.axd li::before{content:counter(d);grid-row:span 3;width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ax ol.axd b{font-size:16px}
+.ax ol.axd span{font-size:15px;color:var(--label2);line-height:1.55}
+.ax ol.axd em{font-style:normal;font-size:14.5px;line-height:1.55;background:var(--fill);border-radius:8px;padding:7px 10px;margin-top:4px}
+.ax ul.axs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ax ul.axs li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 10px;padding:10px 0;border-top:1px solid var(--sep)}
+.ax ul.axs li:first-child{border-top:0;padding-top:2px}
+.ax ul.axs li i{grid-row:span 2;font-style:normal;font-weight:800;font-size:15px;line-height:1.4}
+.ax ul.axs li.g i{color:var(--green)} .ax ul.axs li.r i{color:var(--red)}
+.ax ul.axs b{font-size:15.5px} .ax ul.axs span{font-size:15px;color:var(--label2);line-height:1.5}
+.ax .axc{background:color-mix(in srgb,var(--indigo) 7%,var(--card))}
+.ax table td:first-child{font-weight:600}
+</style><section class="xs ax"><div class="sh"><h2>Góc nhìn nhà phân tích</h2><span class="badge">Chuyên gia</span></div><article class="card axt"><span class="axk">Luận điểm cốt lõi</span><p>GEX là công ty mẹ nắm cổ phần chi phối ở nhiều công ty con (thiết bị điện, vật liệu xây dựng, hạ tầng). Giá trị với cổ đông GEX không nằm ở doanh thu hợp nhất mà ở <b>phần lợi nhuận thực sự chảy về công ty mẹ, trừ đi chi phí nợ ở cấp mẹ</b>. Quý 2/2026 chỉ 40% lợi nhuận về tay cổ đông GEX, trong khi lãi vay hợp nhất đã tăng gấp đôi.</p></article><article class="card"><span class="axk">Giá hiện tại đang ngầm định gì?</span><p>Ở P/B 1,5×, với lợi suất đòi hỏi 14% và tăng trưởng 5%, thị trường ngầm định ROE khoảng <b>18,5%</b>, trong khi ROE thực tế chỉ 8%. Khoảng cách lớn này cho thấy giá không dựa trên lợi nhuận hiện tại, mà dựa trên <b>giá trị các công ty con</b> (tổng các phần) cao hơn sổ sách. Trang này không có đủ dữ liệu để định giá từng công ty con, nên đây là điểm anh chị cần tự kiểm tra.</p><div class="ev">ROE ngầm định = 1,5 × (14% − 5%) + 5% ≈ 18,5%. ROE 4 quý (TCBS) 8,0%. Thiếu dữ liệu: tỷ lệ sở hữu và giá trị thị trường của từng công ty con.</div></article><article class="card"><span class="axk">Các biến số quyết định và độ nhạy</span><ol class="axd"><li><b>Tỷ lệ lợi nhuận về công ty mẹ</b><span>Quý 2/2026: 40%; quý 2/2025: 55%; quý 4/2025: âm.</span><em>Mỗi 10 điểm % thay đổi tỷ lệ này trên LNST 4 quý (~3.257 tỷ) ≈ 326 tỷ ≈ 24% lãi CĐ mẹ 4 quý.</em></li><li><b>Chi phí lãi vay</b><span>582 tỷ quý 2, ≈ 1.670 tỷ 4 quý, tăng 113% so với cùng kỳ.</span><em>Nợ vay ≈ 1,0 × VCSH ≈ 34.500 tỷ; mỗi 1 điểm % lãi suất ≈ 345 tỷ/năm, tương đương ~25% lãi CĐ mẹ 4 quý (trước khi chia cho cổ đông thiểu số).</em></li><li><b>Biên gộp</b><span>Dao động 18,6–23,1% trong 6 quý.</span><em>Mỗi 1 điểm % biên gộp trên doanh thu 4 quý 46.679 tỷ ≈ 467 tỷ lãi gộp.</em></li><li><b>Vốn lưu động</b><span>Số ngày tồn kho 134, chu kỳ tiền 192 ngày.</span><em>Doanh thu tăng 43% kéo nhu cầu vốn lưu động tăng theo; đây là một lý do vay nợ tăng.</em></li></ol></article><span class="axk" style="padding:8px 4px 0">Ma trận kịch bản: P/E, P/B ở giá hiện tại</span><div class="tw"><table><thead><tr><th>Kịch bản</th><th>Giả định 12 tháng tới</th><th>LNST CĐ mẹ</th><th>EPS</th><th>P/E ở 22.500</th></tr></thead><tbody><tr><td>Tiêu cực</td><td>Lặp lại một quý lỗ ở công ty mẹ như Q4/25</td><td>~1.000 tỷ</td><td>~760</td><td>~29,4×</td></tr><tr><td>Cơ sở</td><td>Giữ mức 4 quý gần nhất</td><td>~1.373 tỷ</td><td>~1.050</td><td>~21,4×</td></tr><tr><td>Tích cực</td><td>Giữ nhịp Q2/26 cả năm</td><td>~2.160 tỷ</td><td>~1.650</td><td>~13,6×</td></tr></tbody></table></div><p class="foot-note">EPS tính trên 1.308,5 triệu cổ phiếu. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.</p><article class="card"><span class="axk">Tín hiệu xác nhận hoặc bác bỏ luận điểm</span><ul class="axs"><li class="g"><i>↑</i><b>Tỷ lệ lãi về cổ đông GEX quý 3 trên 50%</b><span>Công ty mẹ đang giữ được phần lớn hơn từ tăng trưởng.</span></li><li class="r"><i>↓</i><b>Lãi vay tiếp tục tăng hơn 20% so với quý trước</b><span>Tăng trưởng đang được tài trợ bằng nợ đắt; ROE khó hồi.</span></li><li class="g"><i>↑</i><b>Lãi CĐ mẹ quý 3/2026 vượt 622 tỷ (Q3/25)</b><span>Lãi về công ty mẹ tăng trưởng thật, không chỉ doanh thu.</span></li><li class="r"><i>↓</i><b>Tồn kho và phải thu tăng nhanh hơn doanh thu</b><span>Vốn bị "chôn" trong vận hành, áp lực vay tiếp.</span></li></ul></article><article class="card axc"><span class="axk">Điều thị trường có thể đang bỏ sót</span><p>Tin tức về GEX thường nhấn vào doanh thu hợp nhất (+43%), con số dễ nhớ nhất. Con số quan trọng hơn với cổ đông là 540 tỷ, phần lợi nhuận về công ty mẹ, giảm 18% so với cùng kỳ. Với công ty mẹ đa ngành, cần đọc báo cáo tài chính riêng của công ty mẹ và tỷ lệ sở hữu ở từng công ty con; hợp nhất có thể che đi việc tiền mặt và lợi nhuận thực sự nằm ở đâu.</p></article></section><!--/AX-->
+  <div class="teaser"><span class="ic i">+</span><div class="rc"><span class="rt">Bảng phân tích chuyên sâu</span><span class="rs">Chỉ số chi tiết, cấu trúc tài chính và ghi chú của chuyên viên.</span></div><button id="goPro">Xem</button></div>
+  <div id="pro" style="display:contents"><section class="xs"><div class="sh"><h2>Hiệu quả theo quý</h2><span class="badge">Chuyên gia</span></div><div class="tw"><table><thead><tr><th>Quý</th><th>Biên gộp</th><th>Biên hoạt động</th><th>ROE</th><th>Ngày tồn kho</th><th>Nợ vay/VCSH</th><th>EBIT/lãi vay</th></tr></thead><tbody><tr><td>Q2/26</td><td>20,5%</td><td>13,9%</td><td>8,0%</td><td>134</td><td>1,0×</td><td>3,5×</td></tr><tr><td>Q1/26</td><td>18,7%</td><td>11,3%</td><td>8,8%</td><td>157</td><td>1,0×</td><td>3,0×</td></tr><tr><td>Q4/25</td><td>22,8%</td><td>14,0%</td><td>9,3%</td><td>136</td><td>1,0×</td><td>4,6×</td></tr><tr><td>Q3/25</td><td>18,6%</td><td>8,9%</td><td>14,1%</td><td>118</td><td>0,8×</td><td>2,7×</td></tr><tr><td>Q2/25</td><td>23,1%</td><td>14,9%</td><td>11,2%</td><td>123</td><td>0,8×</td><td>5,5×</td></tr><tr><td>Q1/25</td><td>20,2%</td><td>11,5%</td><td>13,1%</td><td>117</td><td>0,8×</td><td>3,7×</td></tr></tbody></table></div><p class="foot-note">Biên hoạt động ổn định 11–15%, nhưng ROE giảm gần một nửa vì phần lãi chảy về cổ đông thiểu số tăng và chi phí vốn tăng. Đòn bẩy tăng từ 0,8× lên 1,0×.</p></section></div>
+  <section><div class="sh"><h2>Giá đang đi về đâu?</h2></div>
+    <div class="cc"><svg id="priceChart" viewBox="0 0 640 270" role="img" aria-label="Giá tuần 60 tuần gần nhất"></svg><div class="legend"><span><i style="background:var(--label)"></i>Giá đóng cửa tuần</span><span><i style="background:var(--orange)"></i>MA 10 tuần (~2,5 tháng)</span><span><i style="background:var(--red)"></i>MA 40 tuần (~10 tháng)</span></div></div>
+    <div class="group"><div class="row"><span class="ic b">MA</span><div class="rc"><span class="rt">Đường trung bình</span><span class="rs p">Giá nằm dưới đường 1 tháng (23.145).</span><span class="rs x">Giá 22.500 < MA20 ngày 23.145; MA5 22.200.</span></div></div><div class="row"><span class="ic t">R</span><div class="rc"><span class="rt">RSI 42</span><span class="rs p">Hơi lạnh, chưa phải vùng bán quá tay.</span><span class="rs x">RSI 42,4; thấp nhất 33,0 ngày 8/10.</span></div></div><div class="row"><span class="ic i">M</span><div class="rc"><span class="rt">MACD</span><span class="rs p">Đà giảm đang yếu đi.</span><span class="rs x">MACD −0,602 < signal −0,572; histogram thu hẹp từ −0,150 (8/10) xuống −0,030.</span></div></div><div class="row"><span class="ic o">A</span><div class="rc"><span class="rt">ADX 28</span><span class="rs p">Xu hướng giảm ở mức vừa.</span><span class="rs x">ADX 28,2, tăng từ 15 đầu tháng 10.</span></div></div><div class="row"><span class="ic g">W</span><div class="rc"><span class="rt">Đường tuần</span><span class="rs p">Đường trung bình 10 tuần ở 24.330, 40 tuần ở 26.585.</span><span class="rs x">MA10 tuần 24.330 · MA40 tuần 26.585 · Giá/MA40 −15,4%.</span></div></div></div></section>
+  <section><div class="sh"><h2>Tin chuẩn</h2></div><div class="group news"><div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">25/9 · HOSE</span><span class="rt">Nghị quyết HĐQT số 42 ngày 24/9/2026</span><span class="rs">Nội dung cụ thể cần xem văn bản gốc.</span></div></div><div class="row"><span class="ic o">!</span><div class="rc"><span class="dt">15/9 · HOSE, ĐTCK</span><span class="rt">GEX làm rõ thông tin; vụ việc liên quan ông Đặng Phan Tường phát sinh trước khi ông tham gia GELEX Electric</span><span class="rs">Doanh nghiệp lên tiếng sớm, giá tăng 3,1% trong phiên.</span></div></div><div class="row"><span class="ic b">i</span><div class="rc"><span class="dt">28/8 · HOSE</span><span class="rt">Các báo cáo định kỳ về trái phiếu doanh nghiệp</span><span class="rs">Có thể xem dư nợ trái phiếu và tình hình trả lãi.</span></div></div></div></section>
+  <section><div class="sh"><h2>Các mốc giá cần nhớ</h2></div><div class="lv"><div class="w"><span class="k dn">Cảnh giác</span><span class="v dn tn">< 21.800</span><p class="t">Thủng đáy tuần 20/7/2026. Đáy trong phiên khi đó là 19.700.</p></div><div class="w"><span class="k wn">Tích lũy</span><span class="v wn tn">21.800–24.400</span><p class="t">Giá đang dao động trong vùng này.</p></div><div class="w"><span class="k up">Tích cực</span><span class="v up tn">> 24.400</span><p class="t">Vượt đường 10 tuần (~24.330) và đỉnh giữa tháng 9. Mốc tiếp theo là 26.500.</p></div></div><p class="foot-note p">Thống nhất trước với nhau: giá về đâu thì làm gì. Khi thị trường biến động, mình làm theo kế hoạch chứ không theo cảm xúc.</p></section>
+  <footer class="legal"><p><b>Nguồn:</b> TCBS (BCTC, giá điều chỉnh, chỉ báo kỹ thuật, tin HOSE và báo chí). Dữ liệu chốt phiên 16/10/2026.</p><p>Công cụ tham khảo và giáo dục, không phải khuyến nghị mua hay bán. Các số "khoảng", "ước tính" được suy ra từ BCTC và cần đối chiếu thuyết minh gốc.</p></footer>
+</div>
+<div id="tb-foot"></div>
+<script src="../../assets/site.js?v=20261017b"></script>
+<script>
+var S={"weekly": [36599, 37006, 36599, 37934, 37934, 36554, 36209, 38554, 42417, 35589, 30381, 30312, 31105, 30347, 32106, 31037, 26898, 29174, 29485, 30071, 27071, 28140, 27036, 25312, 23622, 25933, 27278, 24553, 23277, 23829, 24795, 24346, 27657, 26898, 27450, 26967, 33500, 34900, 32800, 32100, 32000, 29500, 30000, 30150, 30550, 26600, 25000, 21800, 22500, 24550, 24650, 26250, 26450, 25950, 23950, 24400, 24000, 22900, 22250, 22500], "profit": {"labels": ["Q1/25", "Q2/25", "Q3/25", "Q4/25", "Q1/26", "Q2/26"], "vals": [234, 657, 622, -35, 246, 540], "unit": "Lãi ròng về cổ đông GEX (tỷ đồng)"}, "price": 22500};
+(function(){
+  var b=document.body,p=document.getElementById('mPlain'),x=document.getElementById('mPro');
+  function set(pro){b.classList.toggle('pro',pro);p.setAttribute('aria-pressed',String(!pro));x.setAttribute('aria-pressed',String(pro));try{localStorage.setItem('tbMode',pro?'pro':'plain')}catch(e){}}
+  p.onclick=function(){set(false)};x.onclick=function(){set(true)};
+  document.getElementById('goPro').onclick=function(){set(true);var f=document.querySelector('#pro .xs');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})};
+  try{if(localStorage.getItem('tbMode')==='pro')set(true)}catch(e){}
+  var nav=document.getElementById('nav');addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>90)},{passive:true});
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,par){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(par)par.appendChild(e);return e}
+  function tx(par,x,y,s,o){o=o||{};var e=el('text',{x:x,y:y,'font-size':o.fs||11,fill:o.fill||'var(--label2)','text-anchor':o.anchor||'middle','font-weight':o.fw||400,'font-family':'Be Vietnam Pro,-apple-system,sans-serif'},par);e.textContent=s;return e}
+  function f(n){return Math.round(n).toLocaleString('vi-VN')}
+  function nice(m){var p=Math.pow(10,Math.floor(Math.log10(m))),r=m/p;return (r<=1?1:r<=2?2:r<=2.5?2.5:r<=5?5:10)*p}
+  // lợi nhuận
+  (function(){var L=S.profit.labels,v=S.profit.vals,s=document.getElementById('profitChart'),W=640,H=250,l=56,r=8,T=20,B=30;
+    var mx=Math.max.apply(null,v.concat([0])),mn=Math.min.apply(null,v.concat([0])),st=nice((mx-mn)/4||1),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:y(g),y2:y(g),stroke:g===0?'var(--label3)':'var(--sep)'},s);tx(s,l-8,y(g)+4,f(g),{anchor:'end'})}
+    var bw=(W-l-r)/L.length;L.forEach(function(lb,i){var x0=l+i*bw+bw*.22,w=bw*.56,a=v[i],top=y(Math.max(a,0)),h=Math.abs(y(a)-y(0));
+      el('rect',{x:x0,y:top,width:w,height:Math.max(h,1.5),rx:5,fill:a<0?'var(--red)':'var(--blue)','fill-opacity':i===L.length-1?1:.6},s);
+      tx(s,x0+w/2,a<0?y(a)+14:y(a)-6,f(a),{fill:'var(--label)',fs:10.5,fw:600});tx(s,x0+w/2,H-10,lb)})})();
+  // giá tuần
+  (function(){var c=S.weekly,N=c.length,s=document.getElementById('priceChart'),W=640,H=270,l=58,r=60,T=14,B=26;
+    function ma(n){return c.map(function(_,i){if(i<n-1)return null;var t=0;for(var j=i-n+1;j<=i;j++)t+=c[j];return t/n})}
+    var m10=ma(10),m40=ma(40),mx=Math.max.apply(null,c),mn=Math.min.apply(null,c),st=nice((mx-mn)/4),hi=Math.ceil(mx/st)*st,lo=Math.floor(mn/st)*st;
+    var X=function(i){return l+(W-l-r)*i/(N-1)},Y=function(a){return T+(H-T-B)*(hi-a)/(hi-lo)};
+    for(var g=lo;g<=hi+1e-9;g+=st){el('line',{x1:l,x2:W-r,y1:Y(g),y2:Y(g),stroke:'var(--sep)'},s);tx(s,l-8,Y(g)+4,f(g),{anchor:'end'})}
+    [[0,'8/2025'],[20,'1/2026'],[39,'6/2026'],[N-1,'10/2026']].forEach(function(t){tx(s,X(t[0]),H-6,t[1])});
+    var up=c[N-1]>=c[0],col=up?'var(--green)':'var(--red)';
+    var g2=el('linearGradient',{id:'pg',x1:0,x2:0,y1:0,y2:1},el('defs',{},s));el('stop',{offset:'0','stop-color':col,'stop-opacity':.18},g2);el('stop',{offset:'1','stop-color':col,'stop-opacity':0},g2);
+    var d=c.map(function(a,i){return(i?'L':'M')+X(i).toFixed(1)+' '+Y(a).toFixed(1)}).join('');
+    el('path',{d:d+'L'+X(N-1)+' '+Y(lo)+'L'+X(0)+' '+Y(lo)+'Z',fill:'url(#pg)'},s);
+    function line(a,cl,w){var dd='';a.forEach(function(v,i){if(v==null)return;dd+=(dd?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});el('path',{d:dd,fill:'none',stroke:cl,'stroke-width':w,'stroke-linejoin':'round'},s)}
+    line(m40,'var(--red)',1.5);line(m10,'var(--orange)',1.5);line(c,'var(--label)',2);
+    el('circle',{cx:X(N-1),cy:Y(c[N-1]),r:4.5,fill:'var(--label)',stroke:'var(--card)','stroke-width':2},s);
+    tx(s,X(N-1)+8,Y(c[N-1])+4,f(S.price),{anchor:'start',fill:'var(--label)',fw:700,fs:11.5})})();
+})();
+</script>
+</body>
+</html>

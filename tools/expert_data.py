@@ -224,3 +224,104 @@ E['BSR'] = dict(
         ('r','Lịch bảo dưỡng tổng thể được công bố','Sản lượng một quý bị mất, lợi nhuận giảm mạnh.'),
         ('g','Cổ tức tiền mặt tăng mạnh từ lợi nhuận năm 2026','Doanh nghiệp chia lại "lãi được mùa" cho cổ đông thay vì giữ lại.')],
  blind='Nhiều người nhìn BSR như cổ phiếu Nhà nước ổn định, ít nợ, an toàn. Ít nợ là đúng, nhưng lợi nhuận lại thuộc loại biến động mạnh nhất sàn. P/E thấp lúc lãi đỉnh là cái bẫy kinh điển của cổ phiếu chu kỳ: lúc lợi nhuận cao nhất thì P/E trông rẻ nhất. Với BSR, cách định giá an toàn hơn là dùng lợi nhuận trung bình nhiều năm, ở mức đó P/E không còn thấp.')
+
+# ---- Đợt 3 (SSI, TCB, GEX, PDR, VCG): số liệu TCBS chốt phiên 16/10/2026 ----
+E['SSI'] = dict(
+ thesis='SSI là cổ phiếu chu kỳ của thanh khoản thị trường, và vừa chuyển sang một bảng cân đối "nhiều vốn, ít đòn bẩy" sau quý 1/2026. Câu hỏi đúng không phải là lãi quý tới cao hay thấp, mà là <b>số vốn mới được đưa vào cho vay ký quỹ và tự doanh nhanh đến đâu, với chi phí vốn bao nhiêu</b>. ROA đã tăng từ 3,4% lên 5,1%; ROE chỉ tăng theo nếu đòn bẩy quay lại.',
+ implied='Ở P/B 1,4×, nếu nhà đầu tư đòi lợi suất 14%/năm và lợi nhuận dài hạn tăng 5%/năm, thị trường đang ngầm định ROE bền vững khoảng <b>17,6%</b>. ROE 4 quý là 13,9%, năm hóa riêng quý 2 chỉ khoảng 12,1%. Với ROA hiện tại 5,1%, muốn đạt ROE 17,6% thì tài sản/vốn phải tăng từ 2,4 lên khoảng 3,5 lần. Nói cách khác, giá hiện tại đã trả trước cho việc <b>dùng hết số vốn mới</b>, chưa hẳn là rẻ.',
+ implied_ev='ROE ngầm định = P/B × (r − g) + g = 1,4 × (14% − 5%) + 5% ≈ 17,6%. Đòn bẩy cần = 17,6% / 5,1% ≈ 3,45×. ROE năm hóa Q2/26 = 1.231 × 4 / 40.724 ≈ 12,1%.',
+ drivers=[
+  ('Thanh khoản thị trường','Phí môi giới và nhu cầu vay ký quỹ đi theo giá trị giao dịch toàn thị trường.','Doanh thu dao động từ 2.159 tỷ (Q1/25) đến 4.177 tỷ (Q3/25), gần gấp đôi chỉ theo nhịp thị trường.'),
+  ('Dư nợ ký quỹ và đòn bẩy','Phải thu (chủ yếu cho vay ký quỹ) là tài sản lớn nhất. Đòn bẩy đã giảm từ 3,2× xuống 2,4×.','Mỗi 0,5 lần tài sản/VCSH tăng thêm với ROA giữ 5,1% ≈ +2,5 điểm % ROE.'),
+  ('Chi phí vốn','Lãi vay 4 quý ≈ 3.000 tỷ trên nợ vay ước tính ~52.900 tỷ (1,3 × VCSH).','Mỗi 1 điểm % lãi suất ≈ 530 tỷ chi phí/năm ≈ 11% LNST 4 quý (4.801 tỷ).'),
+  ('Tự doanh','Quý 4/2025 biên gộp tụt từ ~71% xuống 51%, nhiều khả năng do mảng tài sản tài chính.','Một quý tự doanh xấu có thể lấy đi 500–700 tỷ lãi so với nhịp bình thường (so Q4/25 với Q3/25).')],
+ scen=dict(head=['Kịch bản','Giả định 12 tháng tới','LNST CĐ mẹ','EPS','P/E ở 19.450','ROE'],
+  rows=[['Tiêu cực','Thanh khoản giảm, lãi về mức Q4/25 (~817 tỷ/quý)','~3.300 tỷ','~1.100','~17,7×','~8,1%'],
+        ['Cơ sở','Giữ nhịp Q2/26 (~1.230 tỷ/quý)','~4.900 tỷ','~1.630','~11,9×','~12,0%'],
+        ['Tích cực','Dùng hết vốn mới, đòn bẩy lên ~3×','~6.400 tỷ','~2.130','~9,1×','~15,7%']],
+  note='EPS tính trên 3.001,3 triệu cổ phiếu, ROE trên VCSH 40.724 tỷ. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.'),
+ signs=[('g','Dư nợ ký quỹ quý 3 tăng hơn 10% so với quý 2','Vốn mới đang được dùng; ROE có cơ sở đi lên.'),
+        ('r','Chi phí lãi vay tăng nhanh hơn doanh thu thêm một quý nữa','Biên lãi từ cho vay ký quỹ đang bị bào mòn.'),
+        ('g','Biên gộp giữ trên 70% trong quý 3','Mảng tự doanh không tạo cú sốc như quý 4/2025.'),
+        ('r','Giá trị giao dịch toàn thị trường giảm kéo dài','Kịch bản tiêu cực; P/E thực tế cao hơn con số 12 lần đang thấy.')],
+ blind='P/B giảm từ 2,7× xuống 1,4× trong một năm trông như cổ phiếu đã rẻ đi một nửa. Thực ra khoảng 40% mức giảm đó đến từ mẫu số: từ cuối quý 3/2025, vốn mỗi cổ phiếu tăng từ 10.369 lên 13.525 đồng (+30%), trong khi giá giảm khoảng 30%. Vốn tăng làm công ty an toàn hơn nhưng cũng kéo ROE xuống trong ngắn hạn. Người chỉ nhìn P/B sẽ thấy rẻ; người nhìn ROE năm hóa (~12%) sẽ thấy giá đang trả trước cho tăng trưởng.')
+
+E['TCB'] = dict(
+ thesis='TCB là ngân hàng có chất lượng tài sản tốt nhất nhóm tư nhân lớn (nợ xấu 1,1%, dự phòng phủ 126%) và chi phí thấp (CIR 31%). Lợi nhuận tăng đều 12–18%/năm. Câu hỏi đúng là <b>lãi tăng đến từ đâu</b>: quý 2/2026 tăng nhờ phí dịch vụ (+74%) và dự phòng thấp (−36%), trong khi lãi đầu tư gần như mất hẳn. Bền hay không phụ thuộc vào việc phí dịch vụ có phải là dòng tiền lặp lại.',
+ implied='Ở P/B 1,2×, với lợi suất đòi hỏi 14% và tăng trưởng dài hạn 6%, thị trường ngầm định ROE bền vững khoảng <b>15,6%</b>, sát mức ROE hiện tại 16,1%. Nghĩa là giá đang phản ánh khá đúng năng lực sinh lời hôm nay, <b>chưa trả thêm cho tăng trưởng</b>, nhưng cũng chưa trừ đi rủi ro nào đáng kể.',
+ implied_ev='ROE ngầm định = 1,2 × (14% − 6%) + 6% ≈ 15,6%. ROE 4 quý (TCBS) 16,1%.',
+ drivers=[
+  ('Biên lãi NIM','NIM ổn định 3,7–3,8% sau khi giảm từ 4,1% đầu 2025.','Tài sản sinh lãi ước tính ~1,18 triệu tỷ (dư nợ 835.813 / 0,708). Mỗi 0,1 điểm NIM ≈ 1.180 tỷ thu nhập/năm ≈ 4% LNST 4 quý.'),
+  ('Chi phí tín dụng','Dự phòng quý 2 chỉ 652 tỷ, năm hóa ≈ 0,3% dư nợ.','Nếu chi phí tín dụng về 0,6% dư nợ: +2.400 tỷ dự phòng/năm ≈ −1.900 tỷ LNST ≈ −7% lãi năm.'),
+  ('Phí dịch vụ','3.662 tỷ quý 2, chiếm ~25% tổng thu nhập, tăng 74% so với cùng kỳ.','Nếu phí về mức Q4/25 (2.571 tỷ): −1.090 tỷ/quý trước thuế ≈ −12% lãi quý.'),
+  ('Tăng trưởng tín dụng','19,3%/năm, LDR (TCBS) 128%.','Tăng trưởng nhanh hơn tiền gửi buộc phải dùng vốn vay đắt hơn; áp lực lên NIM nếu lãi suất huy động tăng.')],
+ scen=dict(head=['Kịch bản','Giả định 12 tháng tới','LNST CĐ mẹ','EPS','P/E ở 33.200'],
+  rows=[['Tiêu cực','Chi phí tín dụng về 0,6%, phí về mức Q4/25','~25.000 tỷ','~3.530','~9,4×'],
+        ['Cơ sở','Giữ nhịp Q2/26','~29.400 tỷ','~4.150','~8,0×'],
+        ['Tích cực','Tín dụng +20%, NIM giữ 3,7%, phí giữ','~33.000 tỷ','~4.660','~7,1×']],
+  note='EPS tính trên 7.086,2 triệu cổ phiếu. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.'),
+ signs=[('g','NIM quý 3 giữ từ 3,7% trở lên','Tăng trưởng tín dụng không phải đánh đổi bằng biên lãi.'),
+        ('r','Dự phòng quý 3 tăng vọt hoặc nợ xấu vượt 1,3%','Lãi quý 2 có phần nhờ "nới đệm"; kịch bản tiêu cực có cơ sở.'),
+        ('g','Phí dịch vụ giữ trên 3.000 tỷ/quý','Nguồn thu mới đủ bền để thay lãi đầu tư.'),
+        ('r','LDR (TCBS) vượt 130% trở lại','Áp lực vốn; ngân hàng có thể phải chậm tăng trưởng hoặc huy động đắt hơn.')],
+ blind='Thị trường thấy LLR 126% và yên tâm. Ít người để ý dự phòng quý 2 là thấp nhất 6 quý, và LLR đã giảm từ 129% xuống 126%: một phần lợi nhuận đến từ việc trích ít đi khi đệm còn dày. Đây không phải điều xấu, nhưng là nguồn lãi có giới hạn. Ngược lại, điều cũng ít được nhắc: lợi nhuận trước dự phòng vẫn tăng 16%, nên nếu bỏ hết các yếu tố "may mắn", lõi của TCB vẫn tăng trưởng hai chữ số. Lưu ý: số liệu lấy từ TCBS, công ty con của Techcombank.')
+
+E['GEX'] = dict(
+ thesis='GEX là công ty mẹ nắm cổ phần chi phối ở nhiều công ty con (thiết bị điện, vật liệu xây dựng, hạ tầng). Giá trị với cổ đông GEX không nằm ở doanh thu hợp nhất mà ở <b>phần lợi nhuận thực sự chảy về công ty mẹ, trừ đi chi phí nợ ở cấp mẹ</b>. Quý 2/2026 chỉ 40% lợi nhuận về tay cổ đông GEX, trong khi lãi vay hợp nhất đã tăng gấp đôi.',
+ implied='Ở P/B 1,5×, với lợi suất đòi hỏi 14% và tăng trưởng 5%, thị trường ngầm định ROE khoảng <b>18,5%</b>, trong khi ROE thực tế chỉ 8%. Khoảng cách lớn này cho thấy giá không dựa trên lợi nhuận hiện tại, mà dựa trên <b>giá trị các công ty con</b> (tổng các phần) cao hơn sổ sách. Trang này không có đủ dữ liệu để định giá từng công ty con, nên đây là điểm anh chị cần tự kiểm tra.',
+ implied_ev='ROE ngầm định = 1,5 × (14% − 5%) + 5% ≈ 18,5%. ROE 4 quý (TCBS) 8,0%. Thiếu dữ liệu: tỷ lệ sở hữu và giá trị thị trường của từng công ty con.',
+ drivers=[
+  ('Tỷ lệ lợi nhuận về công ty mẹ','Quý 2/2026: 40%; quý 2/2025: 55%; quý 4/2025: âm.','Mỗi 10 điểm % thay đổi tỷ lệ này trên LNST 4 quý (~3.257 tỷ) ≈ 326 tỷ ≈ 24% lãi CĐ mẹ 4 quý.'),
+  ('Chi phí lãi vay','582 tỷ quý 2, ≈ 1.670 tỷ 4 quý, tăng 113% so với cùng kỳ.','Nợ vay ≈ 1,0 × VCSH ≈ 34.500 tỷ; mỗi 1 điểm % lãi suất ≈ 345 tỷ/năm, tương đương ~25% lãi CĐ mẹ 4 quý (trước khi chia cho cổ đông thiểu số).'),
+  ('Biên gộp','Dao động 18,6–23,1% trong 6 quý.','Mỗi 1 điểm % biên gộp trên doanh thu 4 quý 46.679 tỷ ≈ 467 tỷ lãi gộp.'),
+  ('Vốn lưu động','Số ngày tồn kho 134, chu kỳ tiền 192 ngày.','Doanh thu tăng 43% kéo nhu cầu vốn lưu động tăng theo; đây là một lý do vay nợ tăng.')],
+ scen=dict(head=['Kịch bản','Giả định 12 tháng tới','LNST CĐ mẹ','EPS','P/E ở 22.500'],
+  rows=[['Tiêu cực','Lặp lại một quý lỗ ở công ty mẹ như Q4/25','~1.000 tỷ','~760','~29,4×'],
+        ['Cơ sở','Giữ mức 4 quý gần nhất','~1.373 tỷ','~1.050','~21,4×'],
+        ['Tích cực','Giữ nhịp Q2/26 cả năm','~2.160 tỷ','~1.650','~13,6×']],
+  note='EPS tính trên 1.308,5 triệu cổ phiếu. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.'),
+ signs=[('g','Tỷ lệ lãi về cổ đông GEX quý 3 trên 50%','Công ty mẹ đang giữ được phần lớn hơn từ tăng trưởng.'),
+        ('r','Lãi vay tiếp tục tăng hơn 20% so với quý trước','Tăng trưởng đang được tài trợ bằng nợ đắt; ROE khó hồi.'),
+        ('g','Lãi CĐ mẹ quý 3/2026 vượt 622 tỷ (Q3/25)','Lãi về công ty mẹ tăng trưởng thật, không chỉ doanh thu.'),
+        ('r','Tồn kho và phải thu tăng nhanh hơn doanh thu','Vốn bị "chôn" trong vận hành, áp lực vay tiếp.')],
+ blind='Tin tức về GEX thường nhấn vào doanh thu hợp nhất (+43%), con số dễ nhớ nhất. Con số quan trọng hơn với cổ đông là 540 tỷ, phần lợi nhuận về công ty mẹ, giảm 18% so với cùng kỳ. Với công ty mẹ đa ngành, cần đọc báo cáo tài chính riêng của công ty mẹ và tỷ lệ sở hữu ở từng công ty con; hợp nhất có thể che đi việc tiền mặt và lợi nhuận thực sự nằm ở đâu.')
+
+E['PDR'] = dict(
+ thesis='PDR lúc này không phải câu chuyện lợi nhuận, mà là câu chuyện <b>thời gian và pháp lý của dự án</b>. Doanh thu gần bằng 0 hai quý liền, lãi báo cáo đến từ khoản ngoài kinh doanh. Giá trị công ty nằm gần như toàn bộ trong tồn kho và phải thu. Định giá phải trả lời: các dự án này mở bán khi nào, bán được giá bao nhiêu, và mỗi năm chờ đợi tốn bao nhiêu.',
+ implied='Vốn hóa 11.175 tỷ so với vốn chủ sổ sách 12.610 tỷ: thị trường đang trừ khoảng <b>1.435 tỷ</b>, tương đương khoảng <b>10% giá trị tồn kho ước tính</b>. Mức chiết khấu này không quá sâu so với một doanh nghiệp đang lỗ hoạt động. Lãi vay cộng chi phí vận hành 4 quý gần nhất khoảng 920 tỷ. Nếu không có lãi gộp bù lại, khoản chiết khấu đó chỉ tương đương khoảng <b>1,5 năm chờ đợi</b>.',
+ implied_ev='Chiết khấu = 12.610 − 11.175 ≈ 1.435 tỷ. Tồn kho ước tính ≈ 379 × 13.268 / 365 ≈ 13.800 tỷ. Chi phí chờ ≈ lãi vay 4 quý ~405 tỷ + chi phí hoạt động 4 quý ~518 tỷ ≈ 923 tỷ; 1.435 / 923 ≈ 1,55 năm. Lãi gộp 4 quý ~644 tỷ nếu duy trì sẽ kéo dài thời gian này. Ước tính thô, chưa tính lãi vay đã vốn hóa vào dự án.',
+ drivers=[
+  ('Tiến độ pháp lý và mở bán','Doanh thu theo lịch bàn giao: 438 → 20 → 507 → 361 → 104 → 54 tỷ.','Thiếu dữ liệu: danh sách dự án, tiến độ pháp lý, giá trị hợp đồng đã ký. Đây là biến số lớn nhất mà trang này không đo được.'),
+  ('Thu nhập ngoài kinh doanh','Q1/26 và Q2/26 lãi trước thuế dương nhờ khoảng 350–400 tỷ/quý ngoài kinh doanh chính.','Nếu nguồn này không lặp lại, lỗ hoạt động quý 2 (−233 tỷ) là "nhịp nền"; năm hóa ≈ −900 tỷ.'),
+  ('Chi phí vốn','Lãi vay quý 2 101 tỷ (+63% YoY), nợ ngắn hạn tăng.','Mỗi 1 điểm % lãi suất trên nợ vay ước tính ~5.000 tỷ (0,4 × VCSH) ≈ 50 tỷ/năm.'),
+  ('Thu hồi phải thu','Số ngày phải thu ~4.200, tiền mặt quý 2 tăng mạnh.','Thu được tiền từ phải thu là cách nhanh nhất để giảm nợ mà không cần bán dự án mới.')],
+ scen=dict(head=['Kịch bản','Giả định 12 tháng tới','LNST CĐ mẹ','EPS','P/E ở 11.200','BVPS cuối kỳ'],
+  rows=[['Tiêu cực','Không mở bán, không có thu nhập khác, lỗ như Q2/26','~−900 tỷ','~−900','Không xác định','~11.700'],
+        ['Cơ sở','Giữ mức 4 quý gần nhất','~613 tỷ','~614','~18,2×','~13.200'],
+        ['Tích cực','Bàn giao dự án lớn, doanh thu quý vượt 1.000 tỷ','~1.500 tỷ','~1.500','~7,5×','~14.100']],
+  note='EPS tính trên 997,8 triệu cổ phiếu; BVPS cuối kỳ = 12.618 + EPS, chưa tính cổ tức hay phát hành. Kịch bản tích cực là giả định minh họa, không dựa trên kế hoạch công bố.'),
+ signs=[('g','Doanh thu một quý vượt 500 tỷ từ bán, bàn giao','Dự án bắt đầu chuyển thành tiền; lãi lõi quay lại.'),
+        ('r','Thêm một quý lỗ hoạt động trên 200 tỷ','Chi phí chờ đang ăn dần vào vốn chủ.'),
+        ('g','Lưu chuyển tiền kinh doanh dương và người mua trả trước tăng','Có dòng tiền thật, không chỉ lãi kế toán.'),
+        ('r','Nợ vay ngắn hạn tiếp tục tăng','Rủi ro đáo hạn tăng khi chưa có doanh thu.')],
+ blind='Nhiều bảng lọc hiển thị P/E 18 và ROE 5% cho PDR, trông như một doanh nghiệp bình thường có lãi. Thực tế, kinh doanh chính đã lỗ hai quý liền và lợi nhuận báo cáo phụ thuộc vào khoản ngoài kinh doanh. Điều ít người để ý ở chiều ngược lại: tiền mặt quý 2 tăng gần 9 lần và nợ vay so với vốn chỉ 0,4 lần, thấp hơn nhiều doanh nghiệp cùng ngành. Biết tiền quý 2 đến từ đâu (vay, thu nợ hay chuyển nhượng) là chìa khóa để đọc đúng PDR.')
+
+E['VCG'] = dict(
+ thesis='VCG là tổng thầu hạ tầng có biên lãi mỏng (9–14% gộp) cộng với một danh mục đầu tư và bất động sản. Lợi nhuận 4 quý gần nhất bị chi phối bởi một khoản bất thường ~3.000 tỷ ở quý 3/2025, nên mọi chỉ số "rẻ" (P/E 2,6, ROE 42%) đều <b>không phản ánh năng lực lõi</b>. Câu hỏi đúng: lãi lõi bền vững bao nhiêu, và các vấn đề pháp lý kiểm toán viên nhấn mạnh có ảnh hưởng tài chính hay không.',
+ implied='Ở P/B 0,9×, với lợi suất đòi hỏi 14% và tăng trưởng 4%, thị trường ngầm định ROE khoảng <b>13%</b>. ROE lõi (bỏ khoản bất thường) ước tính chỉ khoảng 8,7%. Nghĩa là <b>tính trên lãi lõi, VCG không rẻ</b> như P/E 2,6 gợi ý; giá đang được đỡ bởi giá trị tài sản trên sổ sách hơn là bởi lợi nhuận xây lắp.',
+ implied_ev='ROE ngầm định = 0,9 × (14% − 4%) + 4% ≈ 13%. Lãi lõi ước tính = (244 + 353 + 219) / 3 × 4 ≈ 1.090 tỷ/năm; ROE lõi ≈ 1.090 / 12.469 ≈ 8,7%. P/E lõi ≈ 10.577 / 1.090 ≈ 9,7×.',
+ drivers=[
+  ('Biên gộp xây lắp','Giảm từ 13,8% (Q3/25) xuống 9,2% (Q2/26).','Mỗi 1 điểm % biên gộp trên doanh thu 4 quý 16.321 tỷ ≈ 163 tỷ lãi gộp ≈ 15% lãi lõi năm.'),
+  ('Doanh thu tài chính, bất thường','Lãi 6 tháng 2026 tăng 35% chủ yếu nhờ doanh thu tài chính (theo giải trình).','Không thể dự báo; nên tách riêng khi tính P/E.'),
+  ('Rủi ro pháp lý','Kiểm toán viên nhấn mạnh việc tạm giam hai lãnh đạo và kết luận thanh tra tại gói thầu Long Thành.','Thiếu dữ liệu về ảnh hưởng tài chính. Rủi ro chủ yếu là khả năng trúng thầu mới và thanh quyết toán công trình.'),
+  ('Lãi vay và vốn lưu động','Lãi vay 112 tỷ quý 2, nợ chủ yếu ngắn hạn, EBIT/lãi vay 1,4×.','Lãi hoạt động quý 2 (158 tỷ) chỉ hơn lãi vay 46 tỷ: biên an toàn rất mỏng nếu biên gộp giảm tiếp.')],
+ scen=dict(head=['Kịch bản','Giả định 12 tháng tới','LNST CĐ mẹ','EPS','P/E ở 15.150','ROE'],
+  rows=[['Tiêu cực','Biên gộp về ~8%, không có thu nhập bất thường','~700 tỷ','~1.000','~15,1×','~5,6%'],
+        ['Cơ sở','Giữ nhịp 3 quý gần nhất','~1.090 tỷ','~1.560','~9,7×','~8,7%'],
+        ['Tích cực','Biên gộp về 12–13% như 2025','~1.600 tỷ','~2.290','~6,6×','~12,8%']],
+  note='EPS tính trên 698,2 triệu cổ phiếu, ROE trên VCSH 12.469 tỷ. Phép thử độ nhạy, không phải dự báo hay giá mục tiêu.'),
+ signs=[('g','Biên gộp quý 3/2026 trở lại trên 11%','Quý 2 chỉ là quý xấu; lãi lõi có thể về kịch bản tích cực.'),
+        ('r','EPS 4 quý giảm mạnh sau BCTC quý 3 mà giá không điều chỉnh','Thị trường đang dựa vào con số P/E cũ; rủi ro định giá lại.'),
+        ('r','Thêm thông tin pháp lý ảnh hưởng đến hợp đồng hoặc thanh toán','Rủi ro chuyển từ "lưu ý" sang ảnh hưởng tài chính thật.'),
+        ('g','Khoản cho vay HPX được thu hồi đúng hạn','Giảm lo ngại về chất lượng tài sản ngoài xây lắp.')],
+ blind='Nhiều người lọc cổ phiếu theo P/E sẽ thấy VCG ở top rẻ nhất sàn. Nhưng khi quý 3/2026 công bố (thường cuối tháng 10), quý 3/2025 rơi khỏi phép tính 4 quý, và P/E trên các bảng lọc có thể nhảy từ 2,6 lên khoảng 10 lần dù giá không đổi. Nhịp bật 11% của tuần qua diễn ra ngay trước mốc này. Chiều ngược lại cũng đúng: nếu quý 3/2026 lại có khoản bất thường lớn, P/E sẽ tiếp tục thấp; nên đọc kỹ cơ cấu lợi nhuận thay vì chỉ nhìn con số tổng.')

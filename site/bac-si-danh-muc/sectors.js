@@ -22,4 +22,4 @@ window.TB_SECTORS = {
   'Quỹ ETF': ['E1VFVN30','FUEVFVND','FUESSVFL','FUEVN100']
 };
 /* Các mã Top Broker đã có bài Giải mã */
-window.TB_DECODED = ['HPG','VPB','VIC','FPT','PNJ','VIX','SHB','MSB','NVL','MWG','BSR'];
+window.TB_DECODED = ['HPG','VPB','VIC','FPT','PNJ','VIX','SHB','MSB','NVL','MWG','BSR','SSI','TCB','GEX','PDR','VCG'];
