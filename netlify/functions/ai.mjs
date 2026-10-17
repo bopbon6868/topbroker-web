@@ -35,12 +35,15 @@ function limited(ip) {
   return arr.length > 6;
 }
 
+let T0 = 0, TESTMODE = false;
 function json(obj, status = 200) {
+  if (TESTMODE) { obj = { ...obj, http: status, ms: Date.now() - T0 }; status = 200; }
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
 }
 
 export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
+  T0 = Date.now(); TESTMODE = TEST;
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
