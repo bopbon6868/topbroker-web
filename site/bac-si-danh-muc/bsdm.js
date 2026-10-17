@@ -472,7 +472,7 @@ function renderDiag() {
   var gaps = [];
   var unk = rows.filter(function (r) { return r.sector === 'Khác'; });
   if (unk.length) gaps.push('chưa rõ ngành của ' + unk.map(function (r) { return r.sym; }).join(', '));
-  if (!C.hz || !C.liq || !C.tol) gaps.push('chưa trả lời đủ 3 câu ở chặng 2 (thời gian, nhu cầu tiền, mức chịu đựng)');
+  if (!C.hz || !C.liq || !C.tol || !C.goal || !C.react) gaps.push('chưa trả lời đủ 5 câu hoàn cảnh ở chặng 2 (để đọc khẩu vị đầu tư)');
   var noF = rows.filter(function (r) { return (r.sym in FUND) && !FUND[r.sym]; });
   if (noF.length) gaps.push('chưa lấy được kết quả kinh doanh của ' + noF.map(function (r) { return r.sym; }).join(', '));
   if (rows.some(function (r) { return r.sector !== 'Khác'; })) gaps.push('triển vọng ngành và kế hoạch kinh doanh cả năm của doanh nghiệp (xem bài Giải mã nếu có)');
@@ -601,25 +601,78 @@ function renderCause(n) {
 
 /* ---------- 2 · HOÀN CẢNH ---------- */
 var HZ = { s: 'dưới 6 tháng', m: '6 tháng – 2 năm', l: 'trên 2 năm' }, LIQ = { '3m': 'có thể cần rút tiền trong 3 tháng tới', '1y': 'có thể cần rút tiền trong vòng 1 năm', 'no': 'chưa cần rút tiền ít nhất 1 năm' };
-function ctx() { var c = S.ctx || {}; return { hz: c.hz || null, liq: c.liq || null, tol: c.tol ? +c.tol : null }; }
+var GOAL = { keep: 'giữ tiền, hơn gửi tiết kiệm là được', grow: 'tài sản lớn dần đều đặn', max: 'lãi càng nhiều càng tốt, chấp nhận sóng gió' }, REACT = { all: 'bán hết cho nhẹ đầu', sell: 'bán bớt một phần', hold: 'ngồi im chờ hồi', buy: 'mua thêm vì giá rẻ' };
+function ctx() { var c = S.ctx || {}; return { hz: c.hz || null, liq: c.liq || null, tol: c.tol ? +c.tol : null, goal: c.goal || null, react: c.react || null }; }
+
+/* ---------- Khẩu vị đầu tư: điểm khai báo (5 câu) và điểm hành vi (cách danh mục đang được xây) ---------- */
+var KV_LV = [[30, 'Thận trọng', 'Ưu tiên giữ vốn, ngại sụt giảm hơn là tiếc cơ hội.'], [55, 'Cân bằng', 'Chấp nhận biến động vừa phải để đổi lấy tăng trưởng.'], [75, 'Tăng trưởng', 'Sẵn sàng chịu sóng lớn để tìm lợi nhuận cao hơn.'], [101, 'Mạo hiểm', 'Chấp nhận rủi ro cao, kể cả mất một phần lớn vốn.']];
+function kvLevel(x) { for (var i = 0; i < KV_LV.length; i++) if (x < KV_LV[i][0]) return { i: i, name: KV_LV[i][1], desc: KV_LV[i][2] }; }
+function profile() {
+  var C = ctx(), d = [], b = [];
+  if (C.hz) d.push({ s: 0, m: 0.5, l: 1 }[C.hz]);
+  if (C.liq) d.push({ '3m': 0, '1y': 0.5, no: 1 }[C.liq]);
+  if (C.tol) d.push({ 0.1: 0, 0.2: 1 / 3, 0.3: 2 / 3, 0.5: 1 }[C.tol]);
+  if (C.goal) d.push({ keep: 0, grow: 0.5, max: 1 }[C.goal]);
+  if (C.react) d.push({ all: 0, sell: 1 / 3, hold: 2 / 3, buy: 1 }[C.react]);
+  var dec = d.length >= 3 ? Math.round(100 * d.reduce(function (a, x) { return a + x; }, 0) / d.length) : null;
+  var beh = null, why = [];
+  if (PORT) {
+    var P = PORT, top = P.rows.slice().sort(function (a, c) { return c.w - a.w; })[0], st = P.st;
+    var lev = st.debt ? P.lev : 1, sL = lev >= 1.7 ? 1 : lev >= 1.3 ? 0.67 : lev > 1 ? 0.33 : 0;
+    var sC = top.w >= 0.4 ? 1 : top.w >= 0.25 ? 0.6 : 0.2, sN = P.rows.length <= 2 ? 1 : P.rows.length <= 4 ? 0.6 : P.rows.length <= 7 ? 0.3 : 0;
+    var cashW = P.nav > 0 ? st.cash / P.nav : 0, sK = cashW < 0.05 ? 1 : cashW < 0.2 ? 0.5 : 0;
+    beh = Math.round(100 * (sL * 0.4 + sC * 0.25 + sN * 0.15 + sK * 0.2));
+    why.push(st.debt ? 'vay margin, đòn bẩy ' + nf(P.lev, 2) + ' lần' : 'không vay margin');
+    why.push('mã lớn nhất ' + top.sym + ' chiếm ' + pct(top.w, 0, false));
+    why.push(P.rows.length + ' mã');
+    why.push('tiền mặt ' + pct(cashW, 0, false) + ' vốn chủ');
+  }
+  var o = { dec: dec, beh: beh, why: why, n: d.length };
+  o.decL = dec == null ? null : kvLevel(dec); o.behL = beh == null ? null : kvLevel(beh);
+  o.gap = dec != null && beh != null ? beh - dec : null;
+  return o;
+}
+function renderProfile() {
+  var el = $('#profile'); if (!el) return;
+  var K = profile();
+  function bar(v, lbl) { return '<div class="kv-bar"><span>' + lbl + '</span><span class="kv-t"><i style="left:' + v + '%"></i></span><b>' + kvLevel(v).name + ' · ' + v + '/100</b></div>'; }
+  var h = '<span class="kick2">Khẩu vị đầu tư</span><h3>' + (K.decL ? 'Bạn thuộc nhóm <em class="kv-n kv' + K.decL.i + '">' + K.decL.name + '</em>' : 'Khẩu vị đầu tư của bạn') + '</h3>';
+  if (!K.decL) h += '<p class="note">Trả lời ít nhất 3 trong 5 câu ở trên để Bác sĩ đọc khẩu vị của bạn.</p>';
+  else h += '<p>' + K.decL.desc + '</p>';
+  h += '<div class="kv-scale"><span>Thận trọng</span><span>Cân bằng</span><span>Tăng trưởng</span><span>Mạo hiểm</span></div>';
+  if (K.decL) h += bar(K.dec, 'Bạn nói');
+  if (K.behL) h += bar(K.beh, 'Danh mục cho thấy');
+  if (K.behL) h += '<p class="note">"Danh mục cho thấy" chấm theo cách danh mục đang được xây: ' + K.why.join(', ') + '.</p>';
+  if (K.gap != null) {
+    if (K.gap >= 20) h += '<p class="kv-gap w"><b>Lời nói và hành động đang vênh nhau.</b> Bạn tự nhận là ' + K.decL.name.toLowerCase() + ', nhưng danh mục đang được xây theo kiểu ' + K.behL.name.toLowerCase() + '. Khi thị trường xấu, người ở thế này thường bị bất ngờ vì mức sụt giảm lớn hơn mình tưởng.</p>';
+    else if (K.gap <= -20) h += '<p class="kv-gap">Danh mục đang an toàn hơn khẩu vị bạn khai: bạn còn dư địa chịu rủi ro, nhưng không bắt buộc phải dùng.</p>';
+    else h += '<p class="kv-gap g">Khẩu vị bạn khai và cách danh mục đang được xây khá khớp nhau.</p>';
+  }
+  el.innerHTML = h;
+}
 function ctxText(c) {
   c = c || ctx(); var t = [];
   if (c.hz) t.push('Thời gian đầu tư: ' + HZ[c.hz]);
   if (c.liq) t.push('Nhu cầu tiền: ' + LIQ[c.liq]);
   if (c.tol) t.push('Chịu được vốn chủ giảm thêm tối đa ' + pct(c.tol, 0, false) + (c.tol >= 0.5 ? ' trở lên' : ''));
+  if (c.goal) t.push('Mục tiêu: ' + GOAL[c.goal]);
+  if (c.react) t.push('Khi danh mục giảm 20%: ' + REACT[c.react]);
+  var K = profile(); if (K.decL) t.push('Khẩu vị: ' + K.decL.name + (K.behL && Math.abs(K.gap) >= 20 ? ' (danh mục thực tế: ' + K.behL.name + ')' : ''));
   return t;
 }
-function ctxPayload() { var c = ctx(); return { thoi_gian_dau_tu: c.hz ? HZ[c.hz] : 'chưa trả lời', nhu_cau_tien: c.liq ? LIQ[c.liq] : 'chưa trả lời', muc_chiu_dung_tai_san_rong_giam: c.tol }; }
+function ctxPayload() { var c = ctx(), K = profile(); return { thoi_gian_dau_tu: c.hz ? HZ[c.hz] : 'chưa trả lời', nhu_cau_tien: c.liq ? LIQ[c.liq] : 'chưa trả lời', muc_chiu_dung_von_chu_giam: c.tol, muc_tieu: c.goal ? GOAL[c.goal] : 'chưa trả lời', phan_ung_khi_giam_20pct: c.react ? REACT[c.react] : 'chưa trả lời',
+  khau_vi: { theo_khai_bao: K.decL ? K.decL.name + ' (' + K.dec + '/100)' : 'chưa đủ câu trả lời', theo_hanh_vi_danh_muc: K.behL ? K.behL.name + ' (' + K.beh + '/100)' : null, can_cu_hanh_vi: K.why, do_venh: K.gap } }; }
 $('#ctx').addEventListener('change', function (e) {
   if (e.target.type !== 'radio') return;
   S.ctx = S.ctx || {}; S.ctx[e.target.name] = e.target.value; store(KEY, S); renderCtx(); if (PORT) { renderDiag(); sim(); }
 });
 function renderCtx() {
   var c = S.ctx || {};
-  ['hz', 'liq', 'tol'].forEach(function (k) { $$('#ctx input[name="' + k + '"]').forEach(function (i) { i.checked = i.value === c[k]; }); });
+  renderProfile();
+  ['hz', 'liq', 'tol', 'goal', 'react'].forEach(function (k) { $$('#ctx input[name="' + k + '"]').forEach(function (i) { i.checked = i.value === c[k]; }); });
   if (!PORT) return;
   var P = PORT, st = P.st, C = ctx(), out = [];
-  if (!C.hz && !C.liq && !C.tol) out.push(['', 'Chọn 3 câu trả lời ở trên để xem hoàn cảnh của bạn khớp hay vênh với danh mục ở chỗ nào.']);
+  if (!C.hz && !C.liq && !C.tol) out.push(['', 'Trả lời các câu ở trên để xem hoàn cảnh của bạn khớp hay vênh với danh mục ở chỗ nào.']);
   if (C.tol) {
     var lossAmt = C.tol * P.nav, sDrop = P.mv ? lossAmt / P.mv : 0, d = dropAllToCall(P.mv, st.cash, st.debt, st.call);
     out.push([sDrop < 0.15 ? 'w' : '', 'Mức chịu đựng ' + pct(C.tol, 0, false) + ' vốn chủ ≈ <b>' + money(lossAmt) + '</b>. ' + (st.debt ? 'Vì đang vay margin (đòn bẩy ' + nf(P.lev, 2) + ' lần), ' : '') + (sDrop >= 1 ? 'cổ phiếu có mất trắng cũng chưa tới mức này.' : 'cả danh mục cổ phiếu chỉ cần giảm thêm khoảng <b>' + pct(sDrop, 1, false) + '</b> là chạm mức này.')]);
@@ -1073,7 +1126,7 @@ $('#jr-import').addEventListener('change', function (e) {
 /* ---------- AI diễn giải ---------- */
 var AI_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/ai';
 var AI_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z" fill="currentColor"/></svg>';
-var AI_TITLE = { 'tong-ket': 'AI tổng kết buổi khám' };
+var AI_TITLE = { 'tong-ket': 'Chuyên gia nói gì với bạn' };
 function r3(x) { return typeof x === 'number' ? Math.round(x * 1000) / 1000 : x; }
 function aiPayload(step) {
   if (!PORT) return null;
@@ -1081,7 +1134,7 @@ function aiPayload(step) {
   if (step === 'tong-ket') {
     var k = aiPayload('kham'), m = aiPayload('mo-phong'), plan = PENDING ? { lua_chon: PENDING.choice, ma: PENDING.sym, danh_doi: PENDING.trade, ly_do: $('#jr-why').value.trim(), dieu_kien_theo_doi: $('#jr-watch').value.split('\n').filter(Boolean), ngay_danh_gia_lai: $('#jr-review').value, dieu_co_the_lam_thay_doi: PENDING.chg, du_lieu_con_thieu: PENDING.miss }
       : J[0] && J[0].date === today() ? { lua_chon: J[0].choice, ma: J[0].sym, danh_doi: J[0].trade, ly_do: J[0].why, dieu_kien_theo_doi: (J[0].watch || []).map(function (w) { return w.t; }), ngay_danh_gia_lai: J[0].review, dieu_co_the_lam_thay_doi: J[0].chg, du_lieu_con_thieu: J[0].miss } : null;
-    return { ket_luan_nhanh: $('#quick-lead').textContent, kham: k, phuong_an_va_he_qua: m, ke_hoach_da_chon: plan || 'Khách chưa chọn phương án nào' };
+    return { khau_vi_va_hoan_canh: ctxPayload(), ket_luan_nhanh: $('#quick-lead').textContent, kham: k, phuong_an_va_he_qua: m, ke_hoach_da_chon: plan || 'Khách chưa chọn phương án nào' };
   }
   if (step === 'kham') {
     var d = dropAllToCall(PORT.mv, st.cash, st.debt, st.call);
@@ -1113,26 +1166,28 @@ function aiPayload(step) {
 }
 function aiReset(step) {
   var box = $('#ai-' + step); if (!box) return;
-  box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn ai-go">Nhờ AI tổng kết</button></div>' +
-    '<p class="consent">Đi hết các chặng rồi bấm: AI đọc lại toàn bộ (kết quả khám, chẩn đoán, hoàn cảnh của bạn, các phương án và kế hoạch nếu bạn đã chọn) rồi nói gọn: bạn đang thế nào, điều đáng lo nhất, bạn chọn gì đổi lấy gì, và từ giờ để ý gì. AI không khuyên mua, bán hay giữ. Bấm nút là đồng ý gửi bản tóm tắt số liệu (không có tên, số tài khoản); dữ liệu không được lưu lại.</p>';
+  var K = profile();
+  box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn ai-go">Hỏi chuyên gia: tôi nên làm gì tiếp?</button></div>' +
+    '<p class="consent">Chuyên gia AI đọc lại toàn bộ buổi khám: số liệu danh mục, kết quả kinh doanh và tín hiệu kỹ thuật từng mã, khẩu vị đầu tư' + (K.decL ? ' (' + K.decL.name.toLowerCase() + ')' : '') + ', các phương án bạn đã so sánh, rồi đưa lời khuyên bước tiếp theo hợp với danh mục và tính cách của bạn. ' + (K.n < 5 ? '<b>Trả lời đủ 5 câu ở chặng 2 để lời khuyên sát với bạn hơn.</b> ' : '') + 'Đây là ý kiến tham khảo, quyết định cuối cùng là của bạn. Bấm nút là đồng ý gửi bản tóm tắt số liệu (không có tên, số tài khoản); dữ liệu không được lưu lại.</p>';
 }
 function li(a) { return a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join(''); }
 function aiRun(step) {
   var box = $('#ai-' + step), data = aiPayload(step);
   if (!data) { box.querySelector('.consent').textContent = 'Chưa có số liệu cho bước này. Hãy khám danh mục trước.'; return; }
   var btn = box.querySelector('.ai-go'); btn.disabled = true;
-  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>AI đang đọc lại cả buổi khám, mất khoảng 10–20 giây…'; box.appendChild(ld);
+  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>Chuyên gia đang đọc lại cả buổi khám, mất khoảng 10–25 giây…'; box.appendChild(ld);
   var old = box.querySelector('.err'); if (old) old.remove();
   fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
     .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
-      box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Tổng kết lại</button></div>' +
+      box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Hỏi lại</button></div>' +
+        (j.khau_vi ? '<p class="kvline"><b>Khẩu vị của bạn:</b> ' + esc(j.khau_vi) + '</p>' : '') +
         (j.tom_tat ? '<p class="tt">' + esc(j.tom_tat) + '</p>' : '') +
+        (j.loi_khuyen ? '<div class="lk"><small>Việc nên làm tiếp theo</small>' + esc(j.loi_khuyen) + '</div>' : '') +
         '<div class="ai-grid">' +
-        ((j.dang_lo || []).length ? '<div class="a"><h4>Điều đáng lo nhất</h4><ul>' + li(j.dang_lo) + '</ul></div>' : '') +
-        ((j.lua_chon || []).length ? '<div class="b"><h4>Bạn chọn gì, đổi lấy gì</h4><ul>' + li(j.lua_chon) + '</ul></div>' : '') +
-        ((j.theo_doi || []).length ? '<div class="c"><h4>Từ giờ để ý</h4><ul>' + li(j.theo_doi) + '</ul></div>' : '') +
-        '</div>' + ((j.ngam || []).length ? '<p class="ngam">' + esc(j.ngam[0]) + '</p>' : '') + '<p class="meta">Tổng kết bởi AI (' + esc(j.model || 'Claude') + ') dựa trên số liệu đã tính. AI có thể sai; quyết định cuối cùng là của bạn.</p>';
+        ((j.buoc || []).length ? '<div class="b"><h4>Làm thế nào</h4><ol class="steps">' + li(j.buoc) + '</ol></div>' : '') +
+        ((j.theo_doi || []).length ? '<div class="a"><h4>Khi nào xem lại</h4><ul>' + li(j.theo_doi) + '</ul></div>' : '') +
+        '</div>' + ((j.ngam || []).length ? '<p class="ngam">' + esc(j.ngam[0]) + '</p>' : '') + '<p class="meta">Ý kiến tham khảo của chuyên gia AI (' + esc(j.model || 'Claude') + '), dựa trên số liệu bạn nhập và dữ liệu thị trường trễ 15 phút; không phải khuyến nghị chính thức của công ty chứng khoán. AI có thể sai; quyết định và trách nhiệm cuối cùng là của bạn.</p>';
     })
     .catch(function (e) {
       ld.remove(); btn.disabled = false;

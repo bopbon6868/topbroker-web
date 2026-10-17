@@ -317,3 +317,22 @@ td.empty{color:var(--tb-ink3);font-size:14.5px;padding:14px 4px}
 .lb .na{font-size:13.5px;color:var(--tb-ink2)}
 .lab-help li{margin:4px 0}
 .bs-cmp tr.lvl td:first-child{color:#6b4fb8}
+/* Khẩu vị đầu tư */
+.kv h3 .kv-n{font-style:normal;padding:1px 10px;border-radius:999px;color:#fff}
+.kv-n.kv0{background:#2f7d5b}.kv-n.kv1{background:#3b5b8a}.kv-n.kv2{background:#c0761a}.kv-n.kv3{background:#c0392b}
+.kv p{font-size:15px;line-height:1.55}
+.kv-scale{display:grid;grid-template-columns:repeat(4,1fr);font-size:11.5px;font-weight:700;color:var(--tb-ink3);text-transform:uppercase;letter-spacing:.03em;margin:12px 0 2px 112px}
+.kv-scale span{text-align:center}
+.kv-bar{display:grid;grid-template-columns:104px minmax(0,1fr);gap:4px 8px;align-items:center;margin:8px 0;font-size:14px}
+.kv-bar b{grid-column:2;font-size:13px}
+.kv-t{position:relative;height:12px;border-radius:999px;background:linear-gradient(90deg,#2f7d5b 0,#3b5b8a 38%,#c0761a 66%,#c0392b 100%);opacity:.85}
+.kv-t i{position:absolute;top:-4px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#fff;border:3px solid #2c2a30}
+.kv-gap{padding:10px 12px;border-radius:12px;background:#f3f1ec;margin-top:10px}
+.kv-gap.w{background:#fdf3e4;border-left:4px solid #e8a33a}.kv-gap.g{background:#eef7f1}
+@media (max-width:520px){.kv-scale{margin-left:0;font-size:10.5px}.kv-bar{grid-template-columns:1fr}.kv-bar b{grid-column:1}}
+/* Chuyên gia AI */
+.ai .lk{margin:14px 0 4px;padding:14px 16px;border-radius:14px;background:#5b3fd6;color:#fff;font-size:17px;line-height:1.5;font-weight:600}
+.ai .lk small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+.ai .kvline{font-size:14.5px;color:#45444b;margin:10px 0 0}
+.ai ol.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px;line-height:1.55}
+.ai .ngam{font-style:italic}

@@ -1,37 +1,31 @@
 // AI diễn giải cho Bác sĩ danh mục – POST /api/ai
 // Gọi Claude qua Netlify AI Gateway (biến môi trường tự có: NETLIFY_AI_GATEWAY_KEY/URL hoặc ANTHROPIC_API_KEY/BASE_URL).
-// Không lưu dữ liệu người dùng. AI chỉ diễn giải số liệu đã tính sẵn và nêu câu hỏi; không khuyến nghị.
+// Không lưu dữ liệu người dùng. AI đóng vai chuyên gia tư vấn: đọc khẩu vị khách và đưa lời khuyên bước tiếp theo (anh Hải yêu cầu 17/10/2026).
 
 const MODEL = process.env.TB_AI_MODEL || 'claude-opus-5-5';
 const FALLBACK = 'claude-sonnet-5-5';
 
-const SYSTEM = `Bạn là "Bác sĩ danh mục" của Top Broker (topbroker.fun), một công cụ giúp nhà đầu tư chứng khoán Việt Nam hiểu danh mục của chính họ.
+const SYSTEM = `Bạn là chuyên gia tư vấn tài chính thuộc nhóm 1% giỏi nhất: hơn 20 năm quản lý tài sản cho nhà đầu tư cá nhân Việt Nam, vừa giỏi phân tích danh mục vừa hiểu sâu tâm lý khách hàng (tài chính hành vi: sợ lỗ, tiếc lãi, neo giá vốn, tự tin thái quá). Khách vừa đi hết buổi khám "Bác sĩ danh mục" của Top Broker (topbroker.fun). Họ đã bỏ thời gian khảo sát, nên họ xứng đáng nhận một câu trả lời rõ ràng: BƯỚC TIẾP THEO NÊN LÀM GÌ.
 
-NGUYÊN TẮC (bắt buộc, không ngoại lệ):
-1. Công thức tính toán tạo ra kết quả số học: mọi con số đã được tính sẵn trong dữ liệu gửi kèm. KHÔNG tự tính lại, KHÔNG bịa thêm số. Chỉ dùng số có trong dữ liệu; khi nhắc số, ghi đúng như dữ liệu.
-2. Dữ liệu doanh nghiệp tạo cơ sở để đánh giá luận điểm đầu tư: dữ liệu chỉ có kết quả kinh doanh quý gần nhất so với cùng kỳ, P/E, P/B, ROE và các chỉ báo kỹ thuật (MA20/50/200, RSI, MACD, ADX) trong mục xet_nghiem_tung_ma. Chỉ dùng đúng các số đó, nói rõ là của quý nào, phiên nào. Không có tin tức, kế hoạch kinh doanh hay triển vọng ngành: không suy đoán, hãy biến thành câu hỏi cần kiểm tra. Chỉ báo kỹ thuật là tín hiệu để kiểm tra, không phải dự báo giá.
-3. AI diễn giải và nêu các câu hỏi cần kiểm tra: giải thích con số nghĩa là gì trong đời thực, nối các con số với nhau, tách rõ đâu là điều số liệu đã chứng minh, đâu chỉ là giả thuyết.
-4. Người dùng quyết định phương án cuối cùng: TUYỆT ĐỐI không khuyên mua, bán, giữ, cắt lỗ, bình quân giá; không nói phương án nào "nên", "tốt hơn", "hợp lý hơn"; không xếp hạng phương án; không đưa giá mục tiêu hay dự báo giá. Được phép mô tả đánh đổi và hệ quả của từng phương án theo số liệu.
+CÁCH LÀM VIỆC:
+1. Đọc khẩu vị: dựa vào khau_vi_va_hoan_canh (5 câu khai báo, điểm theo khai báo và theo hành vi danh mục, độ vênh). Nếu lời nói và hành động vênh nhau (do_venh ≥ 20: danh mục rủi ro hơn khẩu vị khai), nói thẳng nhưng tế nhị; lời khuyên phải theo khẩu vị THẬT mà khách chịu được (khai báo, mức chịu đựng, nhu cầu tiền), không theo hành vi đang quá tay.
+2. Ưu tiên an toàn trước: nguy cơ gọi ký quỹ, tiền mặt không đủ cho khoản sắp cần rút, một mã chiếm quá lớn — xử lý điều này trước mọi cơ hội lợi nhuận.
+3. Dựa trên số liệu: chỉ dùng số có trong dữ liệu (tỷ trọng, lãi/lỗ, Rtt, kết quả kinh doanh quý gần nhất, MA20/50/200, RSI, MACD, ADX, các phương án và hệ quả). Không bịa số, không đưa giá mục tiêu, không dự báo giá, không gợi ý mã mới ngoài các mã có trong dữ liệu.
+4. Đưa lời khuyên dứt khoát: chọn MỘT hướng đi hợp nhất với danh mục, lựa chọn và tính cách của khách, nói rõ làm gì, với mã nào, khoảng bao nhiêu (dùng các phương án/lượng đã có trong dữ liệu nếu có), và vì sao hợp với họ. Nếu khách đã chọn phương án: nói phương án đó có hợp khẩu vị không; hợp thì củng cố cách làm, chưa hợp thì nói cần chỉnh gì. Với mã đang lãi: cân nhắc chốt lời một phần/chốt hết/giữ/gia tăng theo khẩu vị và tín hiệu. Với mã đang lỗ: không neo vào giá vốn; nhìn kinh doanh và xu hướng. Nếu dữ liệu thiếu đến mức không thể khuyên, bước tiếp theo là bổ sung đúng dữ liệu đó.
+5. Hiểu tâm lý: nói như người cố vấn tin cậy ngồi đối diện, chạm đúng nỗi lo thật của khách (sợ mất thêm, tiếc nếu bán rồi giá lên, áp lực margin), giúp họ hành động được chứ không chỉ hiểu.
 
-VĂN PHONG: bạn là một người môi giới lâu năm, ngồi tổng kết với khách quen sau buổi khám danh mục. Nói như người thật: chân thành, tử tế, nói thẳng nhưng không dọa. Tiếng Việt bình dân, xưng "bạn". Câu ngắn, mỗi ý 1 câu, tối đa khoảng 25 chữ. Không thuật ngữ khó; nếu buộc phải dùng (margin, tỷ lệ ký quỹ, tỷ trọng) thì nói luôn bằng lời thường. Có thể dùng một hình ảnh đời thường hoặc câu ví von quen thuộc để khách dễ nhớ, dễ ngẫm, nhưng không sáo rỗng và không đùa cợt về khoản lỗ.
+VĂN PHONG: tiếng Việt bình dân, xưng "bạn", chân thành, quyết đoán mà không dọa, không sáo rỗng. Câu ngắn, mỗi dòng tối đa khoảng 30 chữ. Thuật ngữ khó thì nói luôn bằng lời thường. Tỷ lệ ký quỹ (Rtt) = vốn chủ ÷ tổng tài sản; vốn chủ = tổng tài sản − nợ margin.
 
-DANH MỤC ĐANG LÃI: khách không cần chữa bệnh mà cần biết giữ phần lãi thế nào. Nói rõ lãi chưa chốt bao nhiêu, mốc giá nào thì lãi mỏng đi hoặc hết (MA gần nhất, giá vốn, giá hòa vốn cả thương vụ), và mỗi lựa chọn (chốt một phần, chốt hết, giữ nguyên, gia tăng) đổi lấy gì.
-
-ĐỊNH NGHĨA để giải thích đúng: tỷ lệ ký quỹ (Rtt) = vốn chủ ÷ tổng tài sản (tiền mặt + cổ phiếu); vốn chủ = tổng tài sản − nợ margin.
-
-TỔNG ĐỘ DÀI tối đa khoảng 130 chữ. KHÁCH MUỐN NGHE ĐÚNG 4 ĐIỀU: (1) mình đang ổn hay không, (2) điều đáng lo nhất là gì, (3) mình đang chọn gì và đổi lấy gì, (4) từ giờ phải để ý cái gì. Chỉ nói những gì giúp khách trả lời 4 điều đó; bỏ hết ý phụ. Mỗi ý quan trọng dẫn đúng 1 con số có trong dữ liệu.
-
-ĐẦU RA: chỉ viết các dòng theo đúng mẫu dưới, mỗi ý một dòng, bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown.
-Viết theo đúng thứ tự này (dòng NG viết thứ hai để không bị thiếu):
-TT|1–2 câu: danh mục đang thế nào (chỉ 1 dòng TT)
-NG|một câu để bạn tự ngẫm trước khi quyết, dễ nhớ, tối đa 20 chữ (1 dòng NG)
-LO|điều đáng lo nhất, kèm 1 con số (1–2 dòng LO)
-CH|bạn đang chọn gì và đổi lấy gì; nếu chưa chọn phương án thì nói các lựa chọn khác nhau ở điểm nào, không nói cái nào nên chọn (1–2 dòng CH)
-TD|điều cần theo dõi, có mốc cụ thể (2–3 dòng TD)
-Mỗi dòng tối đa khoảng 25 chữ.`;
+ĐẦU RA: chỉ viết các dòng theo đúng mẫu, mỗi dòng bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown. Thứ tự:
+KV|1 câu: khẩu vị thật của khách là gì, có vênh với danh mục không (1 dòng)
+LK|VIỆC NÊN LÀM TIẾP THEO: 1–2 câu dứt khoát, cụ thể mã và mức độ, kèm lý do hợp với khách (1 dòng)
+NG|một câu để khách ngẫm, dễ nhớ, tối đa 20 chữ (1 dòng)
+TT|1 câu: danh mục đang ở đâu, kèm 1 con số (1 dòng)
+BC|các bước làm cụ thể, theo thứ tự, có con số (2–3 dòng BC)
+TD|khi nào xem lại hoặc đổi kế hoạch: mốc giá, mốc chỉ báo, mốc thời gian cụ thể (1–2 dòng TD)`;
 
 const STEP = {
-  'tong-ket': 'Tổng kết toàn bộ quá trình khám danh mục: kết luận nhanh, chẩn đoán, nguyên nhân biến động, hoàn cảnh của khách, các phương án và hệ quả, kế hoạch (nếu khách đã chọn). Dựa vào hoàn cảnh khách đã trả lời để nói đúng điều khách quan tâm.'
+  'tong-ket': 'Khách đã đi hết buổi khám. Hãy đọc khẩu vị đầu tư của khách, xem toàn bộ số liệu (khám, chẩn đoán, xét nghiệm từng mã, phương án và hệ quả, kế hoạch nếu đã chọn) rồi đưa lời khuyên bước tiếp theo phù hợp nhất với danh mục, lựa chọn và tính cách của khách.'
 };
 
 const hits = new Map();
@@ -58,7 +52,7 @@ export default async (req, context) => {
   if (limited(ip)) return json({ error: 'Bạn bấm hơi nhanh. Đợi một phút rồi thử lại nhé.' }, 429);
 
   const raw = TEST ? JSON.stringify({ buoc: 'tong-ket', so_lieu: { tai_san_rong: 400000000, no_margin: 100000000, rtt: 0.8, nguong_goi_ky_quy: 0.4, lai_lo_pct: -0.12, ma: [{ ma: 'VCG', ty_trong: 0.6, lai_lo_pct: -0.2 }, { ma: 'SSI', ty_trong: 0.4, lai_lo_pct: 0.05 }] } }) : await req.text();
-  if (raw.length > 30000) return json({ error: 'Dữ liệu quá lớn.' }, 413);
+  if (raw.length > 60000) return json({ error: 'Dữ liệu quá lớn.' }, 413);
   let body; try { body = JSON.parse(raw); } catch { return json({ error: 'Dữ liệu không hợp lệ.' }, 400); }
   const step = STEP[body.buoc] ? body.buoc : null;
   if (!step || typeof body.so_lieu !== 'object') return json({ error: 'Thiếu bước hoặc số liệu.' }, 400);
@@ -107,21 +101,21 @@ export default async (req, context) => {
     if (TEST && !r.ok) return json({ test: true, status: r.status, url_host: new URL(url).host, model: used, detail: JSON.stringify(data).slice(0, 600) }, 200);
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
     const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
-    const out = { tom_tat: '', dang_lo: [], lua_chon: [], theo_doi: [], ngam: [] };
-    let last = null; const KEY = { LO: 'dang_lo', CH: 'lua_chon', TD: 'theo_doi', NG: 'ngam' };
+    const out = { khau_vi: '', loi_khuyen: '', tom_tat: '', buoc: [], theo_doi: [], ngam: [] };
+    let last = null; const LIST = { BC: 'buoc', TD: 'theo_doi', NG: 'ngam' }, ONE = { KV: 'khau_vi', LK: 'loi_khuyen', TT: 'tom_tat' };
     for (const line of text.split(/\r?\n/)) {
-      const m = line.trim().replace(/^[-*•\s]+/, '').match(/^(TT|LO|CH|TD|NG)\s*[|:]\s*(.+)$/);
+      const m = line.trim().replace(/^[-*•\s]+/, '').match(/^(KV|LK|TT|BC|TD|NG)\s*[|:]\s*(.+)$/);
       if (!m) continue;
       const v = m[2].replace(/\*\*/g, '').trim(); if (!v) continue;
-      if (m[1] === 'TT') out.tom_tat = out.tom_tat ? out.tom_tat + ' ' + v : v; else { out[KEY[m[1]]].push(v); last = KEY[m[1]]; }
+      if (ONE[m[1]]) out[ONE[m[1]]] = out[ONE[m[1]]] ? out[ONE[m[1]]] + ' ' + v : v; else { out[LIST[m[1]]].push(v); last = LIST[m[1]]; }
     }
     if (data.stop_reason === 'max_tokens' && last && out[last].length > 1) out[last].pop();
-    if (!out.tom_tat && !out.dang_lo.length) {
+    if (!out.loi_khuyen) {
       console.log('AI sai khuôn', data.stop_reason, text.slice(0, 400));
       return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800) } : {}) }, 502);
     }
     const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 3);
-    return json({ tom_tat: String(out.tom_tat || ''), dang_lo: arr(out.dang_lo), lua_chon: arr(out.lua_chon), theo_doi: arr(out.theo_doi), ngam: arr(out.ngam).slice(0, 1), model: used, ...(TEST ? { raw: text.slice(0, 800), usage: data.usage, firstErr } : {}) });
+    return json({ khau_vi: out.khau_vi, loi_khuyen: out.loi_khuyen, tom_tat: out.tom_tat, buoc: arr(out.buoc), theo_doi: arr(out.theo_doi).slice(0, 2), ngam: arr(out.ngam).slice(0, 1), model: used, ...(TEST ? { raw: text.slice(0, 800), usage: data.usage, firstErr } : {}) });
   } catch (e) {
     return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
