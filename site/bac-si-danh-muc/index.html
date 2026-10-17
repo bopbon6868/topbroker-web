@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bác sĩ danh mục · Top Broker</title>
-<meta name="description" content="Khám danh mục trong 30 giây: điểm sức khỏe, điều đáng lo nhất tính bằng tiền, mốc giá bị gọi ký quỹ và việc cần kiểm tra. Xem sâu 4 chặng khi cần.">
+<meta name="description" content="Khám danh mục trong 30 giây: điểm sức khỏe, điều đáng lo nhất tính bằng tiền, mốc giá bị call margin và việc cần kiểm tra. Xem sâu 4 chặng khi cần.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
@@ -89,13 +89,13 @@
       <div class="bs-grid3">
         <label>Tiền mặt trong tài khoản<input id="cash" inputmode="numeric" placeholder="0"></label>
         <label>Dư nợ margin<input id="debt" inputmode="numeric" placeholder="0"></label>
-        <label>Ngưỡng gọi ký quỹ (Rtt, %)<input id="call" inputmode="decimal" value="40"></label>
+        <label>Ngưỡng call margin (Rtt, %)<input id="call" inputmode="decimal" value="40"></label>
         <label>Ngưỡng bán giải chấp (%)<input id="force" inputmode="decimal" value="30"></label>
         <label>Tỷ lệ ký quỹ app đang hiện (%, nếu có)<input id="apprtt" inputmode="decimal" placeholder="VD: 52"></label>
         <label>Phí giao dịch (%)<input id="fee" inputmode="decimal" value="0,15"></label>
         <label>Thuế bán (%)<input id="tax" inputmode="decimal" value="0,1"></label>
       </div>
-      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản − Nợ) ÷ Tài sản. Công ty chứng khoán tính theo tỷ lệ cho vay riêng từng mã nên số trên app có thể khác; nhập <b>tỷ lệ ký quỹ app đang hiện</b> để Bác sĩ chỉnh các mốc gọi ký quỹ cho khớp.</p>
+      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản − Nợ) ÷ Tài sản. Công ty chứng khoán tính theo tỷ lệ cho vay riêng từng mã nên số trên app có thể khác; nhập <b>tỷ lệ ký quỹ app đang hiện</b> để Bác sĩ chỉnh các mốc call margin cho khớp.</p>
       <div class="bs-row end"><span id="in-msg" class="note" aria-live="polite"></span><button type="button" class="btn big" id="run">Bắt đầu khám →</button></div>
     </div>
   </section>
@@ -128,7 +128,7 @@
     <a href="#tien-hanh" data-step="tien-hanh">4 · Tiến hành</a>
   </nav>
   <ul class="bs-four">
-      <li><b>Chặng 1 · Khám tổng quát</b><span>Danh mục đang thế nào: giá trị, lãi/lỗ, tiền mặt, dư nợ, vốn chủ.</span></li>
+      <li><b>Chặng 1 · Khám tổng quát</b><span>Danh mục đang thế nào: giá trị, lãi/lỗ, tiền mặt, dư nợ, tài sản ròng.</span></li>
       <li><b>Chặng 2 · Bắt bệnh</b><span>Hoàn cảnh của bạn, điều gì đáng lo nhất, soi kết quả kinh doanh và tín hiệu kỹ thuật từng mã.</span></li>
       <li><b>Chặng 3 · Lên phác đồ</b><span>Mã đang lỗ hay đang lãi đều có phương án: cắt bớt, trả nợ, chốt lời một phần, chốt hết, giữ nguyên, gia tăng. Xem hệ quả bằng con số, không mặc định phương án nào tốt nhất.</span></li>
       <li><b>Chặng 4 · Tiến hành</b><span>Chốt kế hoạch, điều cần theo dõi, ngày tái khám, và chuyên gia AI nói rõ bạn nên làm gì tiếp theo.</span></li>
@@ -178,7 +178,7 @@
         <label><input type="radio" name="liq" value="3m"><span>Trong 3 tháng tới</span></label>
         <label><input type="radio" name="liq" value="1y"><span>Trong vòng 1 năm</span></label>
         <label><input type="radio" name="liq" value="no"><span>Chưa cần ít nhất 1 năm</span></label></fieldset>
-      <fieldset><legend>3. Vốn chủ (tài sản trừ nợ) giảm thêm bao nhiêu thì bạn thấy không chịu nổi?</legend>
+      <fieldset><legend>3. Tài sản ròng (tài sản trừ nợ) giảm thêm bao nhiêu thì bạn thấy không chịu nổi?</legend>
         <label><input type="radio" name="tol" value="0.1"><span>10%</span></label>
         <label><input type="radio" name="tol" value="0.2"><span>20%</span></label>
         <label><input type="radio" name="tol" value="0.3"><span>30%</span></label>
@@ -198,7 +198,7 @@
     <div class="card bs-pad"><h3>Đối chiếu hoàn cảnh với danh mục</h3><ul class="bs-flags" id="ctx-notes"></ul></div>
     <div class="card bs-pad"><span class="kick2">Chẩn đoán</span><h3>Điều gì đáng lo nhất?</h3>
       <div class="bs-diag" id="diag"></div>
-      <p class="note">Mỗi điểm đều kèm số liệu và hệ quả tính theo vốn chủ của bạn. Mức "Đáng lo" chỉ gắn khi hệ quả đủ lớn (ví dụ một mã giảm 20% làm vốn chủ giảm từ 10% trở lên), không chỉ vì một tỷ lệ riêng lẻ. Các mốc 25% một mã, 40% một ngành là mốc tham khảo, không phải quy tắc bắt buộc.</p>
+      <p class="note">Mỗi điểm đều kèm số liệu và hệ quả tính theo tài sản ròng của bạn. Mức "Đáng lo" chỉ gắn khi hệ quả đủ lớn (ví dụ một mã giảm 20% làm tài sản ròng giảm từ 10% trở lên), không chỉ vì một tỷ lệ riêng lẻ. Các mốc 25% một mã, 40% một ngành là mốc tham khảo, không phải quy tắc bắt buộc.</p>
     </div>
     <div class="card bs-pad"><span class="kick2">Xét nghiệm</span><h3>Soi nhanh từng mã: kinh doanh và kỹ thuật</h3>
       <p class="note" id="lab-note">Đang lấy kết quả kinh doanh và lịch sử giá…</p>
@@ -261,11 +261,11 @@
     </div>
     <div class="card bs-pad"><span class="kick2">Bước 3 · Hệ quả</span><h3>Ngay sau khi thực hiện</h3>
       <div class="tw"><table class="bs-t bs-cmp" id="sim-tbl"></table></div></div>
-    <details class="bs-auto"><summary>Bảng kịch bản: vốn chủ nếu giá đi tiếp −30% … +20%</summary>
-    <div class="card bs-pad"><h3>Vốn chủ ước tính nếu giá đi tiếp</h3>
+    <details class="bs-auto"><summary>Bảng kịch bản: tài sản ròng nếu giá đi tiếp −30% … +20%</summary>
+    <div class="card bs-pad"><h3>Tài sản ròng nếu giá đi tiếp</h3>
       <label class="pd-guess">Giá bạn tự đoán cho <b class="pd-sym"></b> (không bắt buộc)<input id="pd-guess" inputmode="numeric" placeholder="VD: 12,500"></label>
       <div class="tw"><table class="bs-t bs-cmp" id="sc-tbl"></table></div>
-      <p class="note">Ô in đậm chỉ đánh dấu phương án có vốn chủ cao nhất <b>trong riêng dòng đó</b>. Thứ tự đổi theo kịch bản: đó là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div></details>
+      <p class="note">Ô in đậm chỉ đánh dấu phương án có tài sản ròng cao nhất <b>trong riêng dòng đó</b>. Thứ tự đổi theo kịch bản: đó là lý do không có phương án luôn đúng. Đã trừ phí và thuế bán; chưa tính lãi vay margin theo thời gian.</p></div></details>
     <div class="card bs-pad"><h3>Tỷ trọng từng mã sau khi thực hiện</h3><div class="tw"><table class="bs-t bs-cmp" id="w-tbl"></table></div></div>
     <details class="bs-auto"><summary>Mỗi phương án đổi lấy điều gì (ghi chú theo công thức)</summary>
     <div class="card bs-pad bs-trade"><div id="trade"></div></div></details>
