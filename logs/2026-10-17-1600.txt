@@ -1,0 +1,14 @@
+Cập nhật phiên chiều 17/10/2026 · 16:00 (Thứ Bảy, sàn VN nghỉ: giữ số đóng cửa 16/10, bản tin dạng tổng kết tuần + tin cuối tuần)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED -> 'Thứ Bảy, 17/10/2026 · 16:00'; TB.TICKER thêm ABBank LNTT 9T ~4.540 tỷ (+97%), thanh khoản HOSE bình quân tuần 11.212 tỷ (−13,3%), xác suất Fed tăng lãi T10 15% (từ 27%).
+- site/index.html: giờ số liệu .bf -> 17/10/2026 · 16:00; bản tin 5 tin mới (1 Hormuz thủy lôi; 2 VN-Index giảm 5 tuần + thanh khoản; 3 ngân hàng lãi 9T; 4 NHNN + tiền gửi dân cư; 5 Fed Warsh/Nasdaq/BTC); tranh mới "Thủy lôi ở eo Hormuz" (thủy lôi gai + tàu dầu cháy); 3 tin cần biết mới; Lịch: thêm 29/10 NT2, GHC không hưởng cổ tức, bỏ 19/11 (giữ 7 mục). Ô .bn và 5 dòng Thị trường giữ nguyên (sàn nghỉ, không có số mới).
+- site/radar/index.html: giờ 16:00; sửa tin Hormuz (diễn biến mới 17/10: thủy lôi + UKMTO Al Jubail); sửa tin Fed/Kitco thành tin Warsh 17/10; thêm 2 tin VN (5 tuần giảm/thanh khoản; AGG, MDG, GDT, NT2, GHC, TNG); bỏ tin Nga–Ukraine (giữ 4 tin thế giới) và tin lãi huy động 09/10 (quá 7 ngày). Khối NHNN giữ nguyên (cuối tuần không có phiên OMO).
+
+SỐ LIỆU VÀ NGUỒN
+- Hormuz: IRGC nói siêu tàu chở >2 triệu thùng trúng thủy lôi, cháy, 17/10 (Asharq Al-Awsat dẫn Reuters, sửa 06:37 giờ UK); UKMTO: tàu dầu trúng vật thể lạ cách Al Jubail ~68 hải lý, thủy thủ an toàn; 135 sự cố ở Hormuz (ANI 17/10). Trump nói phong tỏa đã chặn tàu Iran (Al Jazeera liveblog 17/10).
+- VN-Index tuần −1,68%, giảm 5 tuần; thanh khoản HOSE BQ 11.212 tỷ/phiên (−13,3% tuần, −14,5% so TB 5 tuần); 12/18 ngành giảm: Người Quan Sát 17/10 11:51 (TVS Research).
+- SHB ~14.300 tỷ (+17%), ABBank ~4.540 tỷ (+97%): CafeF 17/10 09:28.
+- Fed Warsh, FedWatch tăng lãi T10 27% -> 15%, UST10Y ~5,1%, BTC ~81.677 sáng: 1thegioi 17/10 07:48. BTC trên web giữ 81.413 (Coinbase trưa 17/10).
+- AGG, MDG, GDT, NT2, GHC, TNG: Tinnhanhchungkhoan "Sự kiện chứng khoán đáng chú ý ngày 17/10".
+- Các số thị trường VN, Mỹ, Á–Âu, vàng, dầu, NHNN, tỷ giá: giữ nguyên từ bản 08:00 (đóng cửa 16/10).
