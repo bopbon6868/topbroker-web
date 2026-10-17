@@ -336,3 +336,23 @@ td.empty{color:var(--tb-ink3);font-size:14.5px;padding:14px 4px}
 .ai .kvline{font-size:14.5px;color:#45444b;margin:10px 0 0}
 .ai ol.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px;line-height:1.55}
 .ai .ngam{font-style:italic}
+/* Phác đồ cả danh mục */
+.pd-chip.sym.done{border-color:#2fa866;background:#f1f8f3}
+.pd-chip.sym.done em{color:#1d7a47;font-weight:600}
+.pl-msg{padding:10px 12px;border-radius:12px;background:#eef7f1;font-size:14.5px;line-height:1.6;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pl-msg[hidden]{display:none!important}
+.pl-box{box-shadow:inset 0 0 0 1.5px #b9e2c8,var(--sh)}
+.pl-acts{margin:6px 0 4px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.pl-acts li{padding:8px 0;border-bottom:1px solid #eee8db}
+.pl-acts li{display:list-item}
+.pl-acts li>div{display:inline;font-size:15px}
+.pl-acts .sub{display:block;font-size:13px;color:var(--tb-ink2);margin-top:2px}
+.pl-btn{display:flex;gap:6px;margin-top:6px}
+.pl-h{margin:18px 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--tb-ink2)}
+.lnk{background:none;border:0;padding:0;color:#3b5b8a;font:inherit;text-decoration:underline;cursor:pointer}
+@media (max-width:560px){
+  .pl-box .bs-cmp{font-size:13px}
+  .pl-box .bs-cmp td:first-child{min-width:0;max-width:none;width:34%;font-size:12.5px}
+  .pl-box .bs-cmp th,.pl-box .bs-cmp td{padding-left:6px;padding-right:6px}
+  .pl-box .bs-cmp td:not(:first-child){white-space:normal}
+}

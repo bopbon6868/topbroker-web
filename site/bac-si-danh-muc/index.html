@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261017k">
+<link rel="stylesheet" href="bsdm.css?v=20261017m">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -189,13 +189,13 @@
 <g transform="rotate(-30 94 50)"><rect x="80" y="42" width="28" height="14" rx="7" fill="#F2A13B" stroke="#2C2A30" stroke-width="3"/><path d="M94 42 v14" stroke="#2C2A30" stroke-width="3"/></g>
 <circle cx="96" cy="72" r="9" fill="#FFD866" stroke="#2C2A30" stroke-width="3"/><text x="92" y="76" font-size="10" font-weight="700" fill="#2C2A30">đ</text></svg><span class="t"><span class="n">Chặng 3</span><b>Lên phác đồ</b><em>Tôi có thể làm gì, và mỗi đường dẫn đến đâu?</em></span><i class="chev" aria-hidden="true"></i></button>
     <div class="bs-stage-b" id="phac-do-b" hidden>
-    <div class="card bs-pad"><span class="kick2">Bước 1</span><h3>Chọn mã cần xử lý</h3>
+    <div class="card bs-pad"><span class="kick2">Bước 1</span><h3>Chọn mã cần xử lý</h3><p class="note">Xử lý lần lượt từng mã. Mã đã có quyết định trong phác đồ được đánh dấu ✓.</p><p class="pl-msg" id="plan-msg" hidden></p>
       <div class="pd-syms" id="pd-syms" role="radiogroup" aria-label="Mã cần xử lý"></div>
       <p class="note" id="sim-now"></p>
       <div class="lab one" id="pd-lab"></div>
     </div>
     <div class="card bs-pad"><span class="kick2">Bước 2</span><h3>Tích các phương án muốn so sánh</h3>
-      <p class="note">Tích 2–3 phương án. Phương án nào cần con số thì ô nhập hiện ngay bên dưới. Thứ tự cố định, không xếp hạng.</p>
+      <p class="note">Tích 2–3 phương án. Phương án nào cần con số thì ô nhập hiện ngay bên dưới. Thứ tự cố định, không xếp hạng. Xem hệ quả ở Bước 3, bấm "Đưa vào phác đồ" ở đầu cột bạn chọn, rồi chuyển sang mã tiếp theo: mỗi mã một quyết định, Bước 4 gộp lại cho cả danh mục.</p>
       <div class="pd-opts" id="pd-opts"></div>
       <details class="bs-auto pd-adv"><summary>Tùy chỉnh nâng cao</summary>
         <div class="bs-grid3">
@@ -214,7 +214,11 @@
     <div class="card bs-pad"><h3>Tỷ trọng từng mã sau khi thực hiện</h3><div class="tw"><table class="bs-t bs-cmp" id="w-tbl"></table></div></div>
     <details class="bs-auto"><summary>Mỗi phương án đổi lấy điều gì (ghi chú theo công thức)</summary>
     <div class="card bs-pad bs-trade"><div id="trade"></div></div></details>
-    <div class="bs-row end"><button type="button" class="btn" data-open="tien-hanh">Sang chặng 4 · Tiến hành →</button></div>
+    <div class="card bs-pad pl-box" id="plan-box"><span class="kick2">Bước 4 · Phác đồ cả danh mục</span><h3>Gộp quyết định của nhiều mã</h3>
+      <div id="plan-list"></div>
+      <div id="plan-res"></div>
+    </div>
+    <div class="bs-row end"><button type="button" class="btn" id="plan-go">Lập kế hoạch cho cả phác đồ →</button></div>
     </div>
   </section>
   <section id="tien-hanh" class="bs-stage">
@@ -234,7 +238,7 @@
       <label>Ngày tái khám (đánh giá lại)<input type="date" id="jr-review"></label>
       <div class="bs-row end"><button type="button" class="btn ghost" id="jr-cancel">Hủy</button><button type="submit" class="btn">Lưu kế hoạch</button></div>
     </form>
-    <p class="note" id="jr-hint">Ở chặng 3, bấm "Chọn phương án này" ở đầu cột phương án bạn chọn để lập kế hoạch.</p>
+    <p class="note" id="jr-hint">Ở chặng 3, đưa phương án của từng mã vào phác đồ (nút "Đưa vào phác đồ"), rồi bấm "Lập kế hoạch cho cả phác đồ".</p>
     <div class="card bs-pad ai" id="ai-tong-ket" data-step="tong-ket" hidden></div>
     <div id="jr-list"></div>
     <div class="bs-row"><button type="button" class="btn ghost" id="jr-export">Tải bản sao lưu</button><label class="btn ghost" for="jr-import">Khôi phục từ bản sao lưu</label><input type="file" id="jr-import" accept="application/json" hidden></div>
@@ -252,6 +256,6 @@
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
-<script src="bsdm.js?v=20261017l"></script>
+<script src="bsdm.js?v=20261017m"></script>
 </body>
 </html>
