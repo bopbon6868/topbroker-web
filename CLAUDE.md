@@ -1,6 +1,6 @@
 # Top Broker – topbroker.fun
 
-Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Zalo 0939 660 996). Website tĩnh. Các mục Tin nhanh, Bài viết và trang quản trị /admin đã bỏ theo yêu cầu ngày 16/10/2026: không tạo lại nếu anh không yêu cầu.
+Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Zalo 0939 660 996). Website tĩnh. Các mục Tin nhanh, Bài viết và trang quản trị /admin đã bỏ theo yêu cầu ngày 16/10/2026: không tạo lại nếu anh không yêu cầu. Mục "Sổ danh mục khách hàng" (menu Danh mục) đã bỏ ngày 17/10/2026, anh không phát triển nữa: không tạo lại.
 
 ## Nơi sửa và cách đưa lên
 - Kho GitHub: **bopbon6868/topbroker-web** (công khai, nhánh `main`). Gắn kho bằng công cụ `add_repo` (owner `bopbon6868`, repo `topbroker-web`, access `push`), rồi clone.
