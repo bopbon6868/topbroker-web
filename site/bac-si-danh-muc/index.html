@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261017h">
+<link rel="stylesheet" href="bsdm.css?v=20261017j">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -19,7 +19,7 @@
   <header class="bs-hd">
     <span class="kick">Quản lý tài sản · Công cụ</span>
     <div class="bs-hero"><div><h1>Bác sĩ danh mục</h1>
-    <p class="dek">Không trả lời "nên bán hay nên giữ". Bác sĩ giúp bạn trả lời câu khó hơn: <b>với danh mục đang có, tình hình thực sự thế nào, mình có những lựa chọn nào, và mỗi lựa chọn dẫn đến đâu.</b></p></div>
+    <p class="dek">Không trả lời "nên bán hay nên giữ". Dù danh mục đang lỗ cần chữa hay đang lãi cần giữ, Bác sĩ giúp bạn trả lời câu khó hơn: <b>với danh mục đang có, tình hình thực sự thế nào, mình có những lựa chọn nào, và mỗi lựa chọn dẫn đến đâu.</b></p></div>
     <svg class="bs-hero-art" viewBox="0 0 320 220" role="img" aria-label="Tranh minh họa: túi bác sĩ đựng biểu đồ đầu tư và ống nghe">
 <rect width="320" height="220" rx="24" fill="#E8F5EF"/>
 <circle cx="268" cy="44" r="18" fill="#FFE9A8"/>
@@ -34,12 +34,12 @@
 </svg></div>
     <ul class="bs-four">
       <li><b>Chặng 1 · Khám tổng quát</b><span>Danh mục đang thế nào: giá trị, lãi/lỗ, tiền mặt, dư nợ, vốn chủ.</span></li>
-      <li><b>Chặng 2 · Bắt bệnh</b><span>Hoàn cảnh của bạn, điều gì đáng lo nhất và vì sao danh mục biến động.</span></li>
-      <li><b>Chặng 3 · Lên phác đồ</b><span>Tích các phương án muốn so sánh, xem hệ quả bằng con số. Không mặc định phương án nào tốt nhất.</span></li>
+      <li><b>Chặng 2 · Bắt bệnh</b><span>Hoàn cảnh của bạn, điều gì đáng lo nhất, soi kết quả kinh doanh và tín hiệu kỹ thuật từng mã.</span></li>
+      <li><b>Chặng 3 · Lên phác đồ</b><span>Mã đang lỗ hay đang lãi đều có phương án: cắt bớt, trả nợ, chốt lời một phần, chốt hết, giữ nguyên, gia tăng. Xem hệ quả bằng con số, không mặc định phương án nào tốt nhất.</span></li>
       <li><b>Chặng 4 · Tiến hành</b><span>Chốt kế hoạch, điều cần theo dõi, ngày tái khám và AI tổng kết.</span></li>
     </ul>
     <p class="bs-princ"><b>Cách Bác sĩ làm việc:</b> công thức tính ra con số · dữ liệu doanh nghiệp làm cơ sở đánh giá · AI diễn giải và nêu câu hỏi cần kiểm tra · <b>bạn quyết định</b>.</p>
-    <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá. Khi bạn bấm <b>"Nhờ AI tổng kết"</b> ở cuối, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại.</span></p>
+    <p class="bs-priv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 0 1 12 0v2M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Danh mục của bạn <b>chỉ lưu trên trình duyệt của máy này</b>, không gửi về Top Broker. Trang chỉ gửi đi mã cổ phiếu để lấy giá và số liệu doanh nghiệp. Khi bạn bấm <b>"Nhờ AI tổng kết"</b> ở cuối, bản tóm tắt số liệu (không có tên hay số tài khoản) mới được gửi tới AI để đọc, và không được lưu lại.</span></p>
   </header>
 
   <nav class="bs-steps" aria-label="Các chặng">
@@ -137,6 +137,19 @@
       <div class="bs-diag" id="diag"></div>
       <p class="note">Mỗi điểm đều kèm số liệu và hệ quả tính theo vốn chủ của bạn. Mức "Đáng lo" chỉ gắn khi hệ quả đủ lớn (ví dụ một mã giảm 20% làm vốn chủ giảm từ 10% trở lên), không chỉ vì một tỷ lệ riêng lẻ. Các mốc 25% một mã, 40% một ngành là mốc tham khảo, không phải quy tắc bắt buộc.</p>
     </div>
+    <div class="card bs-pad"><span class="kick2">Xét nghiệm</span><h3>Soi nhanh từng mã: kinh doanh và kỹ thuật</h3>
+      <p class="note" id="lab-note">Đang lấy kết quả kinh doanh và lịch sử giá…</p>
+      <div class="lab" id="lab"></div>
+      <details class="bs-auto"><summary>Các chỉ báo này nghĩa là gì?</summary>
+        <ul class="plain lab-help">
+          <li><b>MA20, MA50, MA200</b>: giá trung bình 20, 50, 200 phiên gần nhất, đại diện cho xu hướng ngắn, trung và dài hạn. Giá nằm trên đường nào thì xu hướng khung đó đang giữ.</li>
+          <li><b>RSI (14 phiên)</b>: đo tốc độ tăng giảm, từ 0 đến 100. Trên 70 là quá mua, dưới 30 là quá bán theo quy ước.</li>
+          <li><b>MACD (12, 26, 9)</b>: so hai đường trung bình nhanh và chậm. MACD trên đường tín hiệu là động lượng đang mạnh lên.</li>
+          <li><b>ADX (14 phiên)</b>: đo độ mạnh của xu hướng, không chỉ hướng. Dưới 20 là đi ngang, trên 25 là có xu hướng rõ.</li>
+          <li>Kết quả kinh doanh lấy quý gần nhất đã công bố, so với cùng kỳ năm trước; P/E, P/B, ROE theo VNDirect. Chỉ báo kỹ thuật tính từ giá đóng cửa ngày, nguồn VNDirect.</li>
+          <li>Đây là tín hiệu để bạn tự kiểm tra, không phải khuyến nghị mua hay bán. Tín hiệu kỹ thuật có thể sai, nhất là khi thị trường đổi chiều đột ngột.</li>
+        </ul></details>
+    </div>
     <div class="card bs-pad">
       <div class="bs-sh in"><h3>Vì sao danh mục biến động</h3>
         <label class="bs-per">Xét trong<select id="period"><option value="21">1 tháng</option><option value="63" selected>3 tháng</option><option value="126">6 tháng</option><option value="252">1 năm</option></select></label></div>
@@ -169,6 +182,7 @@
     <div class="card bs-pad"><span class="kick2">Bước 1</span><h3>Chọn mã cần xử lý</h3>
       <div class="pd-syms" id="pd-syms" role="radiogroup" aria-label="Mã cần xử lý"></div>
       <p class="note" id="sim-now"></p>
+      <div class="lab one" id="pd-lab"></div>
     </div>
     <div class="card bs-pad"><span class="kick2">Bước 2</span><h3>Tích các phương án muốn so sánh</h3>
       <p class="note">Tích 2–3 phương án. Phương án nào cần con số thì ô nhập hiện ngay bên dưới. Thứ tự cố định, không xếp hạng.</p>
@@ -228,6 +242,6 @@
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
-<script src="bsdm.js?v=20261017i"></script>
+<script src="bsdm.js?v=20261017j"></script>
 </body>
 </html>
