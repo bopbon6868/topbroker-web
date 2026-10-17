@@ -3,6 +3,7 @@
 // Không lưu dữ liệu người dùng. AI chỉ diễn giải số liệu đã tính sẵn và nêu câu hỏi; không khuyến nghị.
 
 const MODEL = process.env.TB_AI_MODEL || 'claude-sonnet-5-5';
+const FALLBACK = 'claude-sonnet-4-5';
 
 const SYSTEM = `Bạn là "Bác sĩ danh mục" của Top Broker (topbroker.fun), một công cụ giúp nhà đầu tư chứng khoán Việt Nam hiểu danh mục của chính họ.
 
@@ -39,12 +40,13 @@ function json(obj, status = 200) {
 }
 
 export default async (req, context) => {
-  if (req.method === 'GET') return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL });
-  if (req.method !== 'POST') return json({ error: 'Chỉ nhận POST' }, 405);
+  const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
+  if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
+  if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
   if (limited(ip)) return json({ error: 'Bạn bấm hơi nhanh. Đợi một phút rồi thử lại nhé.' }, 429);
 
-  const raw = await req.text();
+  const raw = TEST ? JSON.stringify({ buoc: 'kham', so_lieu: { tai_san_rong: 400000000, no_margin: 100000000, rtt: 0.8, nguong_goi_ky_quy: 0.4, lai_lo_pct: -0.12, ma: [{ ma: 'VCG', ty_trong: 0.6, lai_lo_pct: -0.2 }, { ma: 'SSI', ty_trong: 0.4, lai_lo_pct: 0.05 }] } }) : await req.text();
   if (raw.length > 30000) return json({ error: 'Dữ liệu quá lớn.' }, 413);
   let body; try { body = JSON.parse(raw); } catch { return json({ error: 'Dữ liệu không hợp lệ.' }, 400); }
   const step = STEP[body.buoc] ? body.buoc : null;
@@ -60,12 +62,17 @@ export default async (req, context) => {
   const userMsg = `${STEP[step]}\n\nSố liệu (JSON, tiền tính bằng đồng, tỷ lệ là số thập phân, ví dụ 0.25 = 25%):\n${JSON.stringify(body.so_lieu)}`;
   const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 25000);
   try {
-    const r = await fetch(url, {
+    const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 1200, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model, max_tokens: 1200, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
-    const data = await r.json().catch(() => ({}));
+    let r = await call(MODEL), used = MODEL;
+    let data = await r.json().catch(() => ({}));
+    if (!r.ok && (r.status === 400 || r.status === 404) && /model/i.test(JSON.stringify(data))) {
+      used = FALLBACK; r = await call(FALLBACK); data = await r.json().catch(() => ({}));
+    }
+    if (TEST && !r.ok) return json({ test: true, status: r.status, url_host: new URL(url).host, model: used, detail: JSON.stringify(data).slice(0, 600) }, 200);
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
     const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
     const out = { tom_tat: '', dien_giai: [], gia_thuyet: [], cau_hoi: [], thieu_du_lieu: [] };
@@ -79,12 +86,12 @@ export default async (req, context) => {
     if (data.stop_reason === 'max_tokens' && last && out[last].length > 1) out[last].pop();
     if (!out.tom_tat && !out.dien_giai.length) {
       console.log('AI sai khuôn', data.stop_reason, text.slice(0, 400));
-      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '' }, 502);
+      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800) } : {}) }, 502);
     }
     const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 4);
-    return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: MODEL });
+    return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: used, ...(TEST ? { raw: text.slice(0, 800) } : {}) });
   } catch (e) {
-    return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.' }, 504);
+    return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
 };
 
