@@ -18,7 +18,7 @@ CÁCH LÀM VIỆC:
 
 VĂN PHONG: tiếng Việt bình dân, xưng "bạn", chân thành, quyết đoán mà không dọa, không sáo rỗng. Câu ngắn, mỗi dòng tối đa khoảng 30 chữ. Thuật ngữ khó thì nói luôn bằng lời thường. Tỷ lệ ký quỹ (Rtt) = vốn chủ ÷ tổng tài sản; vốn chủ = tổng tài sản − nợ margin.
 
-ĐẦU RA: chỉ viết các dòng theo đúng mẫu, mỗi dòng bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown. Thứ tự:
+Suy nghĩ ngắn gọn rồi viết ngay. ĐẦU RA: chỉ viết các dòng theo đúng mẫu, mỗi dòng bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown. Thứ tự:
 KV|1 câu: khẩu vị thật của khách là gì, có vênh với danh mục không (1 dòng)
 LK|VIỆC NÊN LÀM TIẾP THEO: 1–2 câu dứt khoát, cụ thể mã và mức độ, kèm lý do hợp với khách (1 dòng)
 NG|một câu để khách ngẫm, dễ nhớ, tối đa 20 chữ (1 dòng)
@@ -43,7 +43,7 @@ function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
 }
 
-export default async (req, context) => {
+async function handle(req, context) {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
   const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(2500, +qs.get('max') || 60) : 2500;
@@ -67,7 +67,7 @@ export default async (req, context) => {
   if (!key) return json({ error: 'Máy chủ chưa bật AI.' }, 503);
 
   const userMsg = `${STEP[step]}\n\nSố liệu (JSON, tiền tính bằng đồng, tỷ lệ là số thập phân, ví dụ 0.25 = 25%):\n${JSON.stringify(body.so_lieu)}`;
-  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 30000);
+  const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 55000);
   try {
     const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
@@ -102,6 +102,24 @@ export default async (req, context) => {
   } catch (e) {
     return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
+}
+
+// Trả lời dạng luồng: gửi khoảng trắng mỗi 4 giây để Netlify không cắt kết nối khi Opus nghĩ lâu,
+// cuối cùng gửi JSON (JSON.parse bỏ qua khoảng trắng đầu). Lỗi nằm trong trường "error" của JSON.
+export default async (req, context) => {
+  const qs = new URL(req.url).searchParams;
+  if (req.method === 'GET' && (qs.get('test') !== '1' || qs.get('ping'))) return handle(req, context);
+  const enc = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(c) {
+      c.enqueue(enc.encode(' '));
+      const hb = setInterval(() => { try { c.enqueue(enc.encode(' ')); } catch {} }, 4000);
+      try { const r = await handle(req, context); const t = await r.text(); const j = JSON.parse(t); if (r.status >= 400 && !j.http) j.http = r.status; c.enqueue(enc.encode(JSON.stringify(j))); }
+      catch (e) { c.enqueue(enc.encode(JSON.stringify({ error: 'Không gọi được AI.', detail: String(e && e.message || e).slice(0, 160) }))); }
+      finally { clearInterval(hb); c.close(); }
+    }
+  });
+  return new Response(stream, { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no' } });
 };
 
 export const config = { path: '/api/ai', rateLimit: { windowLimit: 8, windowSize: 60, aggregateBy: ['ip', 'domain'] } };

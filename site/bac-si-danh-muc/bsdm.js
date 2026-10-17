@@ -1175,10 +1175,10 @@ function aiRun(step) {
   var box = $('#ai-' + step), data = aiPayload(step);
   if (!data) { box.querySelector('.consent').textContent = 'Chưa có số liệu cho bước này. Hãy khám danh mục trước.'; return; }
   var btn = box.querySelector('.ai-go'); btn.disabled = true;
-  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>Chuyên gia đang đọc lại cả buổi khám, mất khoảng 10–25 giây…'; box.appendChild(ld);
+  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>Chuyên gia đang đọc lại cả buổi khám, mất khoảng 15–40 giây…'; box.appendChild(ld);
   var old = box.querySelector('.err'); if (old) old.remove();
   fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
-    .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
+    .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.error) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
       box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Hỏi lại</button></div>' +
         (j.khau_vi ? '<p class="kvline"><b>Khẩu vị của bạn:</b> ' + esc(j.khau_vi) + '</p>' : '') +
