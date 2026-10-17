@@ -64,7 +64,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
 .tk[aria-pressed="true"]{background:var(--blue);color:#fff}
 
 /* segmented */
-.seg{display:grid;grid-template-columns:repeat(4,1fr);background:var(--fill);border-radius:9px;padding:2px;gap:2px}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);background:var(--fill);border-radius:9px;padding:2px;gap:2px}
 .seg button{font:500 13px var(--sf);border:0;background:transparent;color:var(--label);padding:7px 6px;border-radius:7px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
 .count{font-size:13px;color:var(--label2);padding-inline:4px}
@@ -79,6 +79,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
 .src b{color:var(--label);font-weight:600}
 .item h3{font-size:18px;font-weight:600;line-height:1.3}
 .mean{font-size:16px;line-height:1.65;color:var(--label)}
+.vnimp{font-size:15px;line-height:1.6;color:var(--label);border-left:3px solid var(--red);background:#fdf3f1;border-radius:0 10px 10px 0;padding:8px 12px}
+.wtag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:#2c2a30;border-radius:6px;padding:2px 7px;margin-right:6px}
+.wtag.cs{background:#b3261e}.wtag.ct{background:#5a52c4}.wtag.kt{background:#1e93a8}
+.world{display:flex;flex-direction:column;gap:10px}
+.world h2{font-size:20px;margin:0 4px}
+.world .wl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.world .wc{background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;border:0;font:inherit;color:inherit}
+.world .wc b{font-size:15.5px;line-height:1.4}.world .wc span{font-size:14px;line-height:1.5;color:var(--label2)}.world .wc em{font-style:normal;font-size:12px;color:var(--label3)}
+@media (max-width:560px){.seg button{font-size:12px;padding:7px 2px}}
 .ctx{font-size:15px;color:var(--label2);background:var(--fill);border-radius:10px;padding:10px 12px;line-height:1.6}
 .meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;opacity:.92}
 .rel{display:flex;flex-direction:column;gap:6px;border-top:.5px solid var(--sep);padding-top:10px;font-size:15px;line-height:1.55}
@@ -184,6 +193,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
     <p class="srcline">Thêm: dư nợ tín dụng 30/9 đạt 20,75 triệu tỷ, tăng 11,59% từ đầu năm. Lợi suất trái phiếu Chính phủ 10 năm 4,46% (15/10). Nguồn: <a href="https://thoibaotaichinhvietnam.vn/thi-truong-tien-te-tuan-12-16-10-bom-rong-tro-lai-sau-dot-hut-manh-90-000-ty-dong-usd-tu-do-rot-gia-205517.html" target="_blank" rel="noopener">Thời báo Tài chính (tuần 12–16/10)</a> · <a href="https://thoibaonganhang.vn/diem-lai-thong-tin-kinh-te-ngay-1510-189099-189099.html" target="_blank" rel="noopener">Thời báo Ngân hàng</a> · <a href="https://thoibaotaichinhvietnam.vn/thi-truong-tien-te-tuan-5-9-10-lai-suat-qua-dem-xuong-duoi-1-vnd-thuoc-nhom-hiem-hoi-tang-gia-truoc-usd-205168.html" target="_blank" rel="noopener">Thời báo Tài chính</a> · <a href="https://tapchikinhtetaichinh.vn/du-no-tin-dung-dat-20-75-trieu-ty-dong-tiep-tuc-huong-von-vao-cac-dong-luc-tang-truong-168608.html" target="_blank" rel="noopener">Tạp chí KT-TC</a></p>
   </section>
 
+  <section class="world" aria-labelledby="wT">
+    <h2 id="wT">Điểm nóng thế giới</h2>
+    <p class="k" style="font-size:13px;color:var(--label2);margin:0 4px">Chiến sự, chính trị, kinh tế ngoài nước có thể tác động trực tiếp tới thị trường Việt Nam. Bấm để xem chi tiết.</p>
+    <div class="wl" id="world"></div>
+  </section>
+
   <div>
     <div class="k" style="font-size:13px;color:var(--label2);font-weight:600;margin:0 4px 8px">Mã đang được nhắc nhiều</div>
     <div class="hot" id="hot"></div>
@@ -191,6 +206,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
 
   <div class="seg" role="group" aria-label="Lọc nguồn tin">
     <button data-f="all" aria-pressed="true">Tất cả</button>
+    <button data-f="tg" aria-pressed="false">Thế giới</button>
     <button data-f="cs" aria-pressed="false">Tin chuẩn</button>
     <button data-f="nhnn" aria-pressed="false">NHNN</button>
     <button data-f="mxh" aria-pressed="false">Mạng xã hội</button>
@@ -209,7 +225,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
   </div>
 
   <footer class="legal">
-    <p><b>Dữ liệu thị trường:</b> TCBS. <b>Tin:</b> các nguồn được ghi trên từng thẻ, truy cập trưa 17/10/2026.</p>
+    <p><b>Dữ liệu thị trường:</b> TCBS. <b>Tin:</b> các nguồn được ghi trên từng thẻ, truy cập trưa 17/10/2026. Phần "Tác động tới Việt Nam" là phân tích kênh truyền dẫn của Top Broker.</p>
     <p>Công cụ tham khảo, không phải khuyến nghị mua bán. Phần "Nghĩa là gì" là diễn giải của Top Broker.</p>
   </footer>
 </div>
@@ -250,6 +266,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
   var lt=el('text',{x:4*bw+bw/2,y:BH-2,'text-anchor':'middle','font-size':10,fill:'var(--red)','font-weight':600,'font-family':'-apple-system,Be Vietnam Pro,sans-serif'},b);lt.textContent='−9.264';
 
   var N=[
+   {f:'cs',tg:'Chiến sự',t:'16/10',src:'OilPrice (số liệu Kpler)',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế','BSR','Dầu khí'],
+    h:'Iran liên tục tấn công tàu chở dầu ở eo Hormuz: lượng dầu qua eo tụt còn 11,62 triệu thùng/ngày',
+    m:'Eo Hormuz là "cổ họng" của dầu thế giới. Tàu bị đánh, dầu đi qua ít hẳn so với mức thường 17,15 triệu thùng/ngày, nên giá dầu được đẩy lên và khó hạ chừng nào chưa có thỏa thuận Mỹ – Iran.',
+    vn:'Dầu đắt → xăng, cước vận tải và lạm phát trong nước tăng → ngân hàng khó hạ lãi suất. Nhóm lọc hóa dầu, khai thác (BSR, PVS, GAS) có lợi về giá bán; hàng không, vận tải, nhựa, phân bón chịu chi phí đầu vào cao.',
+    x:'Số liệu Kpler tuần tới 13/10. Ngày 16/10 lúc viết bài: Brent 105,48 USD, WTI 97,40 USD; Brent đóng cửa 16/10 ở 109,86 USD (Kitco). IEA đang giải phóng 100 triệu thùng còn lại trong đợt dự trữ khẩn cấp 400 triệu thùng thống nhất từ tháng 3/2026. ING: muốn bỏ hẳn phần "phí rủi ro" trong giá dầu cần một thỏa thuận Mỹ – Iran.',
+    l:[['OilPrice','https://oilprice.com/Latest-Energy-News/World-News/Oil-Prices-Head-for-Weekly-Gain-as-Hormuz-Attacks-Rattle-Markets.html']]},
+   {f:'cs',tg:'Chiến sự',t:'17/10',src:'Báo Tin tức (TTXVN)',av:'TT',c:'var(--indigo)',imp:'0',tk:['Quốc tế'],
+    h:'Nga tuyên bố bao vây khoảng 2.000 lính Ukraine ở Kharkiv; Mỹ bác tin hạn chế dịch vụ vệ tinh Starshield cho Ukraine',
+    m:'Chiến sự Nga – Ukraine chưa có dấu hiệu hạ nhiệt, nhưng tin này chưa phải một bước leo thang mới về quy mô.',
+    vn:'Tác động tới Việt Nam chủ yếu gián tiếp: tâm lý ngại rủi ro toàn cầu, giá năng lượng, lúa mì và phân bón (DPM, DCM bị ảnh hưởng qua giá phân bón thế giới). Chưa thấy kênh tác động trực tiếp mới.',
+    l:[['Báo Tin tức','https://baotintuc.vn/tin-nong-the-gioi-sang-17102026-post1394977.html']]},
+   {f:'cs',tg:'Chiến sự',t:'17/10',src:'Báo Tin tức (TTXVN)',av:'TT',c:'var(--indigo)',imp:'-',tk:['Quốc tế','Vận tải biển'],
+    h:'Houthi bị cáo buộc phóng tên lửa vào sân bay Aden (Yemen); Iran tái khẳng định không theo đuổi vũ khí hạt nhân',
+    m:'Biển Đỏ và vịnh Aden vẫn nóng, tàu hàng tiếp tục phải tránh hoặc mua bảo hiểm đắt. Tuyên bố của Iran là tín hiệu hạ nhiệt bằng lời, chưa đi kèm hành động.',
+    vn:'Kênh tác động: cước vận tải container và bảo hiểm hàng hải. Cước cao làm hàng xuất khẩu Việt Nam (dệt may, đồ gỗ, thủy sản) tốn thêm chi phí sang châu Âu; ngược lại hãng tàu container như HAH thường hưởng lợi khi giá cước tăng.',
+    l:[['Báo Tin tức','https://baotintuc.vn/tin-nong-the-gioi-sang-17102026-post1394977.html']]},
    {f:'cs',t:'17/10',src:'CafeF',av:'CF',c:'var(--blue)',imp:'+',tk:['SHB','Ngân hàng'],
     h:'Ngân hàng hé lộ lãi 9 tháng: SHB khoảng 14.300 tỷ trước thuế, tăng 17%',
     m:'Mấy ngân hàng công bố sớm đều tăng lãi hai con số, có nơi gấp đôi. Đây mới là số sơ bộ, chờ BCTC chính thức trước hạn 20/10 để đối chiếu.',
@@ -290,12 +322,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
     m:'Nước ngoài vẫn đều tay rút. Phiên 16/10 bán ròng 515 tỷ, bán mạnh HDB, VIC, FRT; ngược lại mua ròng nhiều nhất FPT.',
     x:'Theo TCBS: 12/10 −526 tỷ, 13/10 −435 tỷ, 14/10 −693 tỷ, 15/10 −662 tỷ, 16/10 −515 tỷ. Vietstock ghi nhận khoảng 3.000 tỷ cả tuần trên HOSE.',
     l:[['Thời báo Tài chính','https://thoibaotaichinhvietnam.vn/khoi-ngoai-tiep-tuc-ban-rong-hdb-chiu-ap-luc-lon-nhat-phien-cuoi-tuan-205513.html']]},
-   {f:'cs',t:'16/10 (giờ Mỹ)',src:'TheStreet · Financial News · Kitco',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế'],
+   {f:'cs',tg:'Kinh tế',vn:'Phố Wall sợ thì vốn ngoại thường rút khỏi thị trường mới nổi trước. Lợi suất trái phiếu Mỹ 10 năm 5,12% làm USD mạnh, gây sức ép lên tỷ giá và khiến khối ngoại càng có lý do bán ròng ở Việt Nam.',t:'16/10 (giờ Mỹ)',src:'TheStreet · Financial News · Kitco',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế'],
     h:'Nasdaq rơi 2,14% vì lo nợ của các công ty AI, chỉ số sợ hãi VIX tăng khoảng 23%',
     m:'Nhà đầu tư Mỹ nghi ngờ chi tiêu khủng cho AI có thu hồi được vốn không. Khi Phố Wall sợ, các thị trường mới nổi như Việt Nam thường bị ảnh hưởng tâm lý đầu tuần.',
     x:'Đóng cửa 16/10: Dow 52.002,41 (−0,34%), S&P 500 7.659,44 (−1,09%), Nasdaq 26.140,03 (−2,14%). VIX khoảng 20,22, có lúc 22,31. Lợi suất trái phiếu Mỹ 10 năm quanh 5,12%.',
     l:[['TheStreet','https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-16-2026'],['Financial News','https://en.fnnews.com/news/202610170442299507']]},
-   {f:'cs',t:'16/10 (giờ Mỹ)',src:'Kitco',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế','BSR'],
+   {f:'cs',tg:'Kinh tế',vn:'Fed giữ lãi suất cao lâu hơn thì USD còn mạnh, NHNN khó hạ lãi suất trong nước. Dầu trên 100 USD đẩy lạm phát Việt Nam (CPI 9 tháng đã tăng 4,52%).',t:'16/10 (giờ Mỹ)',src:'Kitco',av:'QT',c:'var(--teal)',imp:'-',tk:['Quốc tế','BSR'],
     h:'Dầu Brent chốt 109,86 USD sau các vụ tấn công tàu gần eo Hormuz; Fed được dự báo giữ lãi suất ngày 27–28/10',
     m:'Dầu đắt là tin vui cho nhóm lọc hóa dầu, nhưng làm lạm phát khó hạ. Thị trường gần như chắc Fed không đổi lãi suất cuối tháng, song vẫn đặt cược khả năng tăng vào tháng 12.',
     x:'WTI quanh 101,41 USD, lần đầu trên 100 USD từ tháng 9. Vàng giao ngay khoảng 4.167,9 USD/oz (−0,05%). Hợp đồng tương lai đặt khoảng 83% khả năng Fed giữ nguyên lãi suất tháng 10.',
@@ -359,14 +391,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
   var IMP={'+':['g','Tích cực'],'-':['r','Tiêu cực'],'0':['n','Trung tính']};
   var feed=document.getElementById('feed'),count=document.getElementById('count'),filter='all',tick=null;
   function render(){
-    var list=N.filter(function(n){return(filter==='all'||n.f===filter||(filter==='nhnn'&&n.nh))&&(!tick||n.tk.indexOf(tick)>=0)});
-    count.textContent=list.length+' tin'+(tick?' về '+tick:'')+' · '+(filter==='mxh'?'mạng xã hội':filter==='cs'?'tin chuẩn':filter==='nhnn'?'Ngân hàng Nhà nước':'tất cả nguồn');
+    var list=N.filter(function(n){return(filter==='all'||(filter==='tg'?!!n.tg:n.f===filter)||(filter==='nhnn'&&n.nh))&&(!tick||n.tk.indexOf(tick)>=0)});
+    count.textContent=list.length+' tin'+(tick?' về '+tick:'')+' · '+(filter==='mxh'?'mạng xã hội':filter==='cs'?'tin chuẩn':filter==='nhnn'?'Ngân hàng Nhà nước':filter==='tg'?'thế giới':'tất cả nguồn');
     if(!list.length){feed.innerHTML='<div class="empty">Chưa có tin nào khớp bộ lọc này.</div>';return}
     feed.innerHTML=list.map(function(n){
       var im=IMP[n.imp],h='<article class="item">';
       if(n.f==='mxh')h+='<div class="warn">⚠︎ Mạng xã hội · Chưa xác minh</div>';
       h+='<div class="ib"><div class="src"><span class="av" style="background:'+n.c+'">'+esc(n.av)+'</span><b>'+esc(n.src)+'</b><span>· '+esc(n.t)+'</span></div>';
-      h+='<h3>'+esc(n.h)+'</h3><p class="mean"><b>Nghĩa là gì:</b> '+esc(n.m)+'</p>';
+      h+='<h3>'+(n.tg?'<span class="wtag '+({'Chiến sự':'cs','Chính trị':'ct','Kinh tế':'kt'}[n.tg]||'')+'">'+esc(n.tg)+'</span>':'')+esc(n.h)+'</h3><p class="mean"><b>Nghĩa là gì:</b> '+esc(n.m)+'</p>';
+      if(n.vn)h+='<p class="vnimp"><b>Tác động tới Việt Nam:</b> '+esc(n.vn)+'</p>';
       if(n.x)h+='<p class="ctx">'+esc(n.x)+'</p>';
       h+='<div class="meta"><span class="chip '+(n.f==='cs'?'b':'o')+'">'+(n.f==='cs'?'Tin chuẩn':'Chưa xác minh')+'</span><span class="chip '+im[0]+'">'+im[1]+'</span>'+n.tk.map(function(t){return'<span class="chip n">'+esc(t)+'</span>'}).join('')+'</div>';
       if(n.f==='mxh'){var dots='';for(var i=1;i<=5;i++)dots+='<i class="'+(i<=n.r?'on':'')+'"></i>';
@@ -378,6 +411,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
   var hotT=['NHNN','SHB','MSB','VHM','VIC','FPT','HPG','HDB','MCH','BSR'],hot=document.getElementById('hot');
   hotT.forEach(function(t){var bt=document.createElement('button');bt.className='tk';bt.textContent=t;bt.setAttribute('aria-pressed','false');
     bt.onclick=function(){tick=tick===t?null:t;hot.querySelectorAll('.tk').forEach(function(o){o.setAttribute('aria-pressed',String(o.textContent===tick))});render()};hot.appendChild(bt)});
+  var W=N.filter(function(n){return n.tg}).slice(0,4),wl=document.getElementById('world');
+  wl.innerHTML=W.map(function(n,i){return '<button type="button" class="wc" data-i="'+i+'"><em><span class="wtag '+({'Chiến sự':'cs','Chính trị':'ct','Kinh tế':'kt'}[n.tg]||'')+'">'+esc(n.tg)+'</span>'+esc(n.t)+' · '+esc(n.src)+'</em><b>'+esc(n.h)+'</b>'+(n.vn?'<span>→ '+esc(n.vn.split('. ')[0].replace(/\.$/,''))+'.</span>':'')+'</button>'}).join('');
+  wl.onclick=function(e){var b=e.target.closest('.wc');if(!b)return;filter='tg';tick=null;document.querySelectorAll('.seg button').forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.f==='tg'))});hot.querySelectorAll('.tk').forEach(function(o){o.setAttribute('aria-pressed','false')});render();feed.scrollIntoView({behavior:'smooth',block:'start'})};
   render();
 })();
 </script>
