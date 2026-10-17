@@ -445,3 +445,6 @@ details.ind ul{font-size:13.5px}
 .dgate h2{font-family:var(--serif);font-size:24px;font-weight:700}
 .dgate-l{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:15px}
 .kq-act .mb-chip{margin-right:4px}
+.kq-next{font-size:14.5px;color:var(--tb-ink2);padding:0 4px}
+.kq-next small{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--tb-ink3);margin-bottom:2px}
+.kq-next ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
