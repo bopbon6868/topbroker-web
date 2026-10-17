@@ -195,7 +195,7 @@ function exam() {
     if (!b.rows.length) { msg.textContent = 'Không lấy được giá cho: ' + miss.join(', ') + '. Kiểm tra lại mã.'; return; }
     msg.textContent = (b.errs.length ? b.errs.join(' · ') + ' · ' : '') + (miss.length ? 'Không lấy được giá: ' + miss.join(', ') + ' (đã bỏ qua).' : '');
     PORT = calc(b.rows, b.st);
-    renderExam(); aiReset('kham');
+    renderExam(); aiReset('tong-ket'); $('#ai-tong-ket').hidden = false;
     $('#kham').hidden = false; $('#hoan-canh').hidden = false; $('#mo-phong').hidden = false; updateSteps();
     renderCtx(); initSim(); runCause(); renderJournal();
     $('#kham').scrollIntoView({ behavior: 'smooth' });
@@ -366,7 +366,7 @@ function renderCause(n) {
     tung_ma: lines.map(function (l) { return { ma: l.r.sym, nganh: l.r.sector, bien_dong_ma: l.R, thi_truong_chung: M.r, nganh_so_thi_truong: l.S - M.r, rieng_doanh_nghiep: l.R - l.S, co_du_lieu_nganh: l.hasS, dong_gop_dong: l.dv, ty_trong_dau_ky: V0 ? l.v0 / V0 : 0 }; }),
     ma_da_co_bai_giai_ma: (window.TB_DECODED || []).filter(function (m) { return P.rows.some(function (r) { return r.sym === m; }); }),
     gia_dinh: 'Giữ đúng khối lượng hiện tại suốt kỳ; tiền mặt và dư nợ không đổi; nhóm ngành = trung bình các mã cùng ngành' };
-  aiReset('kham');
+  aiReset('tong-ket');
   $('#cause-note').textContent = 'Từ ' + vnDate(M.d0) + ' đến ' + vnDate(M.d1) + ' (' + n + ' phiên). Giả định bạn giữ đúng khối lượng hiện tại suốt kỳ; tiền mặt và dư nợ không đổi.' + (short ? ' Một số mã chưa đủ lịch sử cho cả kỳ.' : '');
 
   var parts = [['Thị trường chung', cM, '#3b5b8a'], ['Nhóm ngành', cS, '#b4470a'], ['Riêng doanh nghiệp', cO, '#6b4fb8']];
@@ -575,7 +575,7 @@ function sim() {
         return '<td>' + pct(w, 1, false) + (Math.abs(dw) >= 0.001 ? '<span class="sub ' + (dw > 0 ? 'up' : 'dn') + '">' + (dw > 0 ? '+' : MINUS) + nf(Math.abs(dw * 100), 1) + ' điểm</span>' : '') + '</td>';
       }).join('') + '</tr>';
     }).join('') + '<tr><td>Tiền mặt / vốn chủ</td>' + opts.map(function (x) { return '<td>' + (x.o.nav > 0 ? pct(x.o.cash / x.o.nav, 1, false) : '–') + '</td>'; }).join('') + '</tr></tbody>';
-  aiReset('mo-phong');
+  aiReset('tong-ket');
   var hold = opts[0], d20 = shocks.indexOf(-0.2), u20 = shocks.indexOf(0.2);
   $('#trade').innerHTML = opts.map(function (x, i) {
     var o = x.o, dn = sc[d20][i].nav - sc[d20][0].nav, up = sc[u20][i].nav - sc[u20][0].nav, t = [];
@@ -637,7 +637,7 @@ function openJournal(i) {
   var days = C.hz === 's' ? 14 : C.hz === 'l' ? 90 : 30;
   var d = new Date(Date.now() + 7 * 3600 * 1000 + days * 86400000); $('#jr-review').value = d.toISOString().slice(0, 10);
   $('#jr-why').value = ''; $('#jr-watch').value = w.join('\n');
-  $('#jr-form').hidden = false; $('#jr-hint').hidden = true; $('#ke-hoach').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { $('#jr-why').focus(); }, 400);
+  aiReset('tong-ket'); $('#jr-form').hidden = false; $('#jr-hint').hidden = true; $('#ke-hoach').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { $('#jr-why').focus(); }, 400);
 }
 $('#jr-cancel').addEventListener('click', function () { $('#jr-form').hidden = true; $('#jr-hint').hidden = false; PENDING = null; });
 $('#jr-form').addEventListener('submit', function (e) {
@@ -723,11 +723,16 @@ $('#jr-import').addEventListener('change', function (e) {
 /* ---------- AI diễn giải ---------- */
 var AI_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/ai';
 var AI_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z" fill="currentColor"/></svg>';
-var AI_TITLE = { 'kham': 'AI đọc kết quả khám', 'mo-phong': 'AI đọc các phương án' };
+var AI_TITLE = { 'tong-ket': 'AI tổng kết buổi khám' };
 function r3(x) { return typeof x === 'number' ? Math.round(x * 1000) / 1000 : x; }
 function aiPayload(step) {
   if (!PORT) return null;
   var st = PORT.st;
+  if (step === 'tong-ket') {
+    var k = aiPayload('kham'), m = aiPayload('mo-phong'), plan = PENDING ? { lua_chon: PENDING.choice, ma: PENDING.sym, danh_doi: PENDING.trade, ly_do: $('#jr-why').value.trim(), dieu_kien_theo_doi: $('#jr-watch').value.split('\n').filter(Boolean), ngay_danh_gia_lai: $('#jr-review').value, dieu_co_the_lam_thay_doi: PENDING.chg, du_lieu_con_thieu: PENDING.miss }
+      : J[0] && J[0].date === today() ? { lua_chon: J[0].choice, ma: J[0].sym, danh_doi: J[0].trade, ly_do: J[0].why, dieu_kien_theo_doi: (J[0].watch || []).map(function (w) { return w.t; }), ngay_danh_gia_lai: J[0].review, dieu_co_the_lam_thay_doi: J[0].chg, du_lieu_con_thieu: J[0].miss } : null;
+    return { ket_luan_nhanh: $('#quick-lead').textContent, kham: k, phuong_an_va_he_qua: m, ke_hoach_da_chon: plan || 'Khách chưa chọn phương án nào' };
+  }
   if (step === 'kham') {
     var d = dropAllToCall(PORT.mv, st.cash, st.debt, st.call);
     return { tong: { gia_tri_co_phieu: Math.round(PORT.mv), gia_von: Math.round(PORT.cv), lai_lo_chua_chot: Math.round(PORT.mv - PORT.cv), lai_lo_pct: r3((PORT.mv - PORT.cv) / PORT.cv),
@@ -751,31 +756,30 @@ function aiPayload(step) {
 }
 function aiReset(step) {
   var box = $('#ai-' + step); if (!box) return;
-  box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn ai-go">Nhờ AI diễn giải</button></div>' +
-    '<p class="consent">AI chỉ đọc các con số đã tính ở trên, giải thích chúng nghĩa là gì và nêu những câu hỏi bạn nên tự kiểm tra. AI không khuyên mua, bán hay giữ. Bấm nút là đồng ý gửi bản tóm tắt số liệu (không có tên, số tài khoản) để AI đọc; dữ liệu không được lưu lại.</p>';
+  box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn ai-go">Nhờ AI tổng kết</button></div>' +
+    '<p class="consent">Đi hết các chặng rồi bấm: AI đọc lại toàn bộ (kết quả khám, chẩn đoán, hoàn cảnh của bạn, các phương án và kế hoạch nếu bạn đã chọn) rồi nói gọn: bạn đang thế nào, điều đáng lo nhất, bạn chọn gì đổi lấy gì, và từ giờ để ý gì. AI không khuyên mua, bán hay giữ. Bấm nút là đồng ý gửi bản tóm tắt số liệu (không có tên, số tài khoản); dữ liệu không được lưu lại.</p>';
 }
 function li(a) { return a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join(''); }
 function aiRun(step) {
   var box = $('#ai-' + step), data = aiPayload(step);
   if (!data) { box.querySelector('.consent').textContent = 'Chưa có số liệu cho bước này. Hãy khám danh mục trước.'; return; }
   var btn = box.querySelector('.ai-go'); btn.disabled = true;
-  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>AI đang đọc số liệu, mất khoảng 10–20 giây…'; box.appendChild(ld);
+  var ld = document.createElement('div'); ld.className = 'load'; ld.innerHTML = '<i></i>AI đang đọc lại cả buổi khám, mất khoảng 10–20 giây…'; box.appendChild(ld);
   var old = box.querySelector('.err'); if (old) old.remove();
   fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data }) })
     .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
-      box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Diễn giải lại</button></div>' +
+      box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Tổng kết lại</button></div>' +
         (j.tom_tat ? '<p class="tt">' + esc(j.tom_tat) + '</p>' : '') +
         '<div class="ai-grid">' +
-        (j.dien_giai.length ? '<div class="a"><h4>Số liệu nói gì</h4><ul>' + li(j.dien_giai) + '</ul></div>' : '') +
-        (j.gia_thuyet.length ? '<div class="b"><h4>Mới là giả thuyết</h4><ul>' + li(j.gia_thuyet) + '</ul></div>' : '') +
-        (j.cau_hoi.length ? '<div class="c"><h4>Câu hỏi bạn nên tự kiểm tra</h4><ul>' + li(j.cau_hoi) + '</ul></div>' : '') +
-        (j.thieu_du_lieu.length ? '<div class="d"><h4>Còn thiếu dữ liệu</h4><ul>' + li(j.thieu_du_lieu) + '</ul></div>' : '') +
-        '</div><p class="meta">Diễn giải bởi AI (' + esc(j.model || 'Claude') + ') dựa trên số liệu đã tính. AI có thể sai; quyết định cuối cùng là của bạn.</p>';
+        ((j.dang_lo || []).length ? '<div class="a"><h4>Điều đáng lo nhất</h4><ul>' + li(j.dang_lo) + '</ul></div>' : '') +
+        ((j.lua_chon || []).length ? '<div class="b"><h4>Bạn chọn gì, đổi lấy gì</h4><ul>' + li(j.lua_chon) + '</ul></div>' : '') +
+        ((j.theo_doi || []).length ? '<div class="c"><h4>Từ giờ để ý</h4><ul>' + li(j.theo_doi) + '</ul></div>' : '') +
+        '</div>' + ((j.ngam || []).length ? '<p class="ngam">' + esc(j.ngam[0]) + '</p>' : '') + '<p class="meta">Tổng kết bởi AI (' + esc(j.model || 'Claude') + ') dựa trên số liệu đã tính. AI có thể sai; quyết định cuối cùng là của bạn.</p>';
     })
     .catch(function (e) {
       ld.remove(); btn.disabled = false;
-      var er = document.createElement('p'); er.className = 'err'; er.textContent = (e.message || 'Chưa gọi được AI.') + ' Trong lúc chờ, bạn xem phần ghi chú tự động bên dưới.'; box.appendChild(er);
+      var er = document.createElement('p'); er.className = 'err'; er.textContent = (e.message || 'Chưa gọi được AI.') + ' Các con số và kế hoạch ở trên vẫn dùng được bình thường.'; box.appendChild(er);
     });
 }
 document.addEventListener('click', function (e) { var b = e.target.closest('.ai-go'); if (!b) return; aiRun(b.closest('.ai').getAttribute('data-step')); });

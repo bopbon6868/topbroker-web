@@ -13,19 +13,19 @@ NGUYÊN TẮC (bắt buộc, không ngoại lệ):
 3. AI diễn giải và nêu các câu hỏi cần kiểm tra: giải thích con số nghĩa là gì trong đời thực, nối các con số với nhau, tách rõ đâu là điều số liệu đã chứng minh, đâu chỉ là giả thuyết.
 4. Người dùng quyết định phương án cuối cùng: TUYỆT ĐỐI không khuyên mua, bán, giữ, cắt lỗ, bình quân giá; không nói phương án nào "nên", "tốt hơn", "hợp lý hơn"; không xếp hạng phương án; không đưa giá mục tiêu hay dự báo giá. Được phép mô tả đánh đổi và hệ quả của từng phương án theo số liệu.
 
-VĂN PHONG: tiếng Việt bình dân, như anh môi giới giải thích cho khách quen ở quán trà đá. Xưng "bạn". Câu ngắn, mỗi ý 1 câu, tối đa khoảng 25 chữ. Không thuật ngữ khó; nếu buộc phải dùng (Rtt, margin, tỷ trọng) thì giải thích luôn bằng lời thường. Đi thẳng vào điểm quan trọng nhất, bỏ ý phụ. Có thể dí dỏm nhẹ kiểu miền Bắc nhưng không đùa cợt về khoản lỗ.
+VĂN PHONG: bạn là một người môi giới lâu năm, ngồi tổng kết với khách quen sau buổi khám danh mục. Nói như người thật: chân thành, tử tế, nói thẳng nhưng không dọa. Tiếng Việt bình dân, xưng "bạn". Câu ngắn, mỗi ý 1 câu, tối đa khoảng 25 chữ. Không thuật ngữ khó; nếu buộc phải dùng (margin, tỷ lệ ký quỹ, tỷ trọng) thì nói luôn bằng lời thường. Có thể dùng một hình ảnh đời thường hoặc câu ví von quen thuộc để khách dễ nhớ, dễ ngẫm, nhưng không sáo rỗng và không đùa cợt về khoản lỗ.
 
-ĐẦU RA: chỉ viết các dòng theo đúng mẫu dưới, mỗi ý một dòng, mỗi dòng bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không dùng markdown. Ngắn gọn là ưu tiên số một.
-TT|1–2 câu: điều quan trọng nhất (chỉ 1 dòng TT)
-SL|ý số liệu nói gì, dẫn 1 con số làm căn cứ (2–3 dòng SL)
-GT|giả thuyết, ghi rõ vì sao mới là giả thuyết (1–2 dòng GT)
-CH|câu hỏi bạn nên tự kiểm tra (2–3 dòng CH)
-TH|thông tin còn thiếu (1–2 dòng TH)`;
+KHÁCH MUỐN NGHE ĐÚNG 4 ĐIỀU: (1) mình đang ổn hay không, (2) điều đáng lo nhất là gì, (3) mình đang chọn gì và đổi lấy gì, (4) từ giờ phải để ý cái gì. Chỉ nói những gì giúp khách trả lời 4 điều đó; bỏ hết ý phụ. Mỗi ý quan trọng dẫn đúng 1 con số có trong dữ liệu.
+
+ĐẦU RA: chỉ viết các dòng theo đúng mẫu dưới, mỗi ý một dòng, bắt đầu bằng mã nhãn và dấu "|". Không viết gì khác, không markdown.
+TT|2–3 câu: danh mục đang thế nào (chỉ 1 dòng TT)
+LO|điều đáng lo nhất, kèm 1 con số (1–2 dòng LO)
+CH|bạn đang chọn gì và đổi lấy gì; nếu chưa chọn phương án thì nói các lựa chọn khác nhau ở điểm nào, không nói cái nào nên chọn (1–2 dòng CH)
+TD|điều cần theo dõi, có mốc cụ thể (2–3 dòng TD)
+NG|một câu để bạn tự ngẫm trước khi quyết, dễ nhớ (1 dòng NG)`;
 
 const STEP = {
-  'kham': 'Chặng 1 – Khám danh mục. Diễn giải tình trạng: lãi lỗ, mức tập trung theo mã và ngành, đòn bẩy margin, khoảng cách tới ngưỡng gọi ký quỹ. Nếu có phần nguyen_nhan_bien_dong, nói ngắn phần biến động do thị trường chung, do ngành hay do riêng doanh nghiệp. Nếu có hoan_canh, đối chiếu tình trạng với thời gian đầu tư, nhu cầu tiền và mức chịu đựng của người dùng.',
-  'nguyen-nhan': 'Tìm nguyên nhân danh mục biến động: phần do thị trường chung, ngành, riêng doanh nghiệp, đòn bẩy.',
-  'mo-phong': 'Bước 3 – So sánh các phương án xử lý một mã. Dữ liệu có trạng thái ngay sau khi thực hiện từng phương án và tài sản ròng theo các kịch bản giá. Diễn giải hệ quả và đánh đổi của từng phương án (giá vốn, lãi lỗ đã chốt, tỷ trọng, tiền mặt, nợ, Rtt, kết quả theo kịch bản). Nếu có hoan_canh, nói phương án nào vượt mức chịu đựng của người dùng ở mức giảm giá nào (trường muc_giam_thi_vuot_muc_chiu_dung), và nhu cầu rút tiền ảnh hưởng thế nào. Nhấn mạnh rằng thứ tự các phương án thay đổi theo kịch bản. Không nói phương án nào nên chọn.'
+  'tong-ket': 'Tổng kết toàn bộ quá trình khám danh mục: kết luận nhanh, chẩn đoán, nguyên nhân biến động, hoàn cảnh của khách, các phương án và hệ quả, kế hoạch (nếu khách đã chọn). Dựa vào hoàn cảnh khách đã trả lời để nói đúng điều khách quan tâm.'
 };
 
 const hits = new Map();
@@ -44,14 +44,14 @@ function json(obj, status = 200) {
 export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
-  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(1200, +qs.get('max') || 60) : 1200;
+  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(1000, +qs.get('max') || 60) : 1000;
   if (TEST && qs.get('ping')) return json({ pong: true, build: 'b5' });
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
   if (limited(ip)) return json({ error: 'Bạn bấm hơi nhanh. Đợi một phút rồi thử lại nhé.' }, 429);
 
-  const raw = TEST ? JSON.stringify({ buoc: 'kham', so_lieu: { tai_san_rong: 400000000, no_margin: 100000000, rtt: 0.8, nguong_goi_ky_quy: 0.4, lai_lo_pct: -0.12, ma: [{ ma: 'VCG', ty_trong: 0.6, lai_lo_pct: -0.2 }, { ma: 'SSI', ty_trong: 0.4, lai_lo_pct: 0.05 }] } }) : await req.text();
+  const raw = TEST ? JSON.stringify({ buoc: 'tong-ket', so_lieu: { tai_san_rong: 400000000, no_margin: 100000000, rtt: 0.8, nguong_goi_ky_quy: 0.4, lai_lo_pct: -0.12, ma: [{ ma: 'VCG', ty_trong: 0.6, lai_lo_pct: -0.2 }, { ma: 'SSI', ty_trong: 0.4, lai_lo_pct: 0.05 }] } }) : await req.text();
   if (raw.length > 30000) return json({ error: 'Dữ liệu quá lớn.' }, 413);
   let body; try { body = JSON.parse(raw); } catch { return json({ error: 'Dữ liệu không hợp lệ.' }, 400); }
   const step = STEP[body.buoc] ? body.buoc : null;
@@ -80,21 +80,21 @@ export default async (req, context) => {
     if (TEST && !r.ok) return json({ test: true, status: r.status, url_host: new URL(url).host, model: used, detail: JSON.stringify(data).slice(0, 600) }, 200);
     if (!r.ok) { console.log('AI lỗi', r.status, JSON.stringify(data).slice(0, 400)); return json({ error: 'AI đang bận hoặc hết hạn mức. Thử lại sau.', code: r.status, detail: String(data?.error?.message || data?.message || '').slice(0, 160) }, 502); }
     const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
-    const out = { tom_tat: '', dien_giai: [], gia_thuyet: [], cau_hoi: [], thieu_du_lieu: [] };
-    let last = null; const KEY = { SL: 'dien_giai', GT: 'gia_thuyet', CH: 'cau_hoi', TH: 'thieu_du_lieu' };
+    const out = { tom_tat: '', dang_lo: [], lua_chon: [], theo_doi: [], ngam: [] };
+    let last = null; const KEY = { LO: 'dang_lo', CH: 'lua_chon', TD: 'theo_doi', NG: 'ngam' };
     for (const line of text.split(/\r?\n/)) {
-      const m = line.trim().replace(/^[-*•\s]+/, '').match(/^(TT|SL|GT|CH|TH)\s*[|:]\s*(.+)$/);
+      const m = line.trim().replace(/^[-*•\s]+/, '').match(/^(TT|LO|CH|TD|NG)\s*[|:]\s*(.+)$/);
       if (!m) continue;
       const v = m[2].replace(/\*\*/g, '').trim(); if (!v) continue;
       if (m[1] === 'TT') out.tom_tat = out.tom_tat ? out.tom_tat + ' ' + v : v; else { out[KEY[m[1]]].push(v); last = KEY[m[1]]; }
     }
     if (data.stop_reason === 'max_tokens' && last && out[last].length > 1) out[last].pop();
-    if (!out.tom_tat && !out.dien_giai.length) {
+    if (!out.tom_tat && !out.dang_lo.length) {
       console.log('AI sai khuôn', data.stop_reason, text.slice(0, 400));
-      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800), blocks: (data.content || []).map(c => c.type), usage: data.usage } : {}) }, 502);
+      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800) } : {}) }, 502);
     }
-    const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 4);
-    return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: used, ...(TEST ? { raw: text.slice(0, 800), blocks: (data.content || []).map(c => c.type), usage: data.usage } : {}) });
+    const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 3);
+    return json({ tom_tat: String(out.tom_tat || ''), dang_lo: arr(out.dang_lo), lua_chon: arr(out.lua_chon), theo_doi: arr(out.theo_doi), ngam: arr(out.ngam).slice(0, 1), model: used, ...(TEST ? { raw: text.slice(0, 800), usage: data.usage } : {}) });
   } catch (e) {
     return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
