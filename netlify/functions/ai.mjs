@@ -2,8 +2,8 @@
 // Gọi Claude qua Netlify AI Gateway (biến môi trường tự có: NETLIFY_AI_GATEWAY_KEY/URL hoặc ANTHROPIC_API_KEY/BASE_URL).
 // Không lưu dữ liệu người dùng. AI chỉ diễn giải số liệu đã tính sẵn và nêu câu hỏi; không khuyến nghị.
 
-const MODEL = process.env.TB_AI_MODEL || 'claude-sonnet-5-5';
-const FALLBACK = 'claude-sonnet-4-5';
+const MODEL = process.env.TB_AI_MODEL || 'claude-opus-5-5';
+const FALLBACK = 'claude-sonnet-5-5';
 
 const SYSTEM = `Bạn là "Bác sĩ danh mục" của Top Broker (topbroker.fun), một công cụ giúp nhà đầu tư chứng khoán Việt Nam hiểu danh mục của chính họ.
 
