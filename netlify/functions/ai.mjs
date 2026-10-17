@@ -45,7 +45,7 @@ export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
   const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(1000, +qs.get('max') || 60) : 1000;
-  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b5' });
+  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b6' });
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
@@ -72,9 +72,10 @@ export default async (req, context) => {
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: 'disabled' }, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
-    let r = await call(MODEL), used = MODEL;
+    let r = await call(MODEL), used = MODEL, firstErr = null;
     let data = await r.json().catch(() => ({}));
     if (!r.ok && (r.status === 400 || r.status === 404) && /model/i.test(JSON.stringify(data))) {
+      firstErr = r.status + ' ' + JSON.stringify(data).slice(0, 300);
       used = FALLBACK; r = await call(FALLBACK); data = await r.json().catch(() => ({}));
     }
     if (TEST && !r.ok) return json({ test: true, status: r.status, url_host: new URL(url).host, model: used, detail: JSON.stringify(data).slice(0, 600) }, 200);
@@ -94,7 +95,7 @@ export default async (req, context) => {
       return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800) } : {}) }, 502);
     }
     const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 3);
-    return json({ tom_tat: String(out.tom_tat || ''), dang_lo: arr(out.dang_lo), lua_chon: arr(out.lua_chon), theo_doi: arr(out.theo_doi), ngam: arr(out.ngam).slice(0, 1), model: used, ...(TEST ? { raw: text.slice(0, 800), usage: data.usage } : {}) });
+    return json({ tom_tat: String(out.tom_tat || ''), dang_lo: arr(out.dang_lo), lua_chon: arr(out.lua_chon), theo_doi: arr(out.theo_doi), ngam: arr(out.ngam).slice(0, 1), model: used, ...(TEST ? { raw: text.slice(0, 800), usage: data.usage, firstErr } : {}) });
   } catch (e) {
     return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
