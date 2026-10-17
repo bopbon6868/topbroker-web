@@ -36,15 +36,19 @@
     }).join('');
   }
 
-  /* 2. Trang chủ: bài mới nhất */
+  /* 2. Trang chủ: xoay tua mỗi ngày một bài (anh Hải yêu cầu 18/10/2026).
+     Ngày có bài mới đăng/cập nhật thì bài đó lên trước; các ngày sau lần lượt lùi về bài cũ hơn, hết danh sách thì quay vòng. */
   var feat = document.querySelector('.feat');
-  if (feat && feat.querySelector('h3')) {
-    var f = A[0], box = feat.querySelector('div') || feat, base = 'co-phieu/' + f.tk.toLowerCase() + '/index.html';
+  if (feat && feat.querySelector('h3') && A.length) {
+    var vnDay = function (ms) { return Math.floor((ms + 7 * 3600 * 1000) / 86400000); };
+    var newest = Date.parse(key(A[0]) + ':00+07:00'), today = vnDay(Date.now());
+    var off = isFinite(newest) ? Math.max(0, today - vnDay(newest)) : 0;
+    var f = A[off % A.length], box = feat.querySelector('div') || feat, base = 'co-phieu/' + f.tk.toLowerCase() + '/index.html';
     box.innerHTML = '<span class="tkr">' + badge(f) + esc(f.sector) + '</span>' +
       '<h3><a href="' + base + '">' + esc(f.title) + '</a></h3>' +
       '<div class="px">' + esc(f.price) + ' <span class="' + f.y1[0] + '">' + esc(f.y1[1]) + ' 1 năm</span></div>' +
       '<ul>' + f.points.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' +
-      '<div class="chips">' + A.slice(1).map(function (a) { return '<a href="co-phieu/' + a.tk.toLowerCase() + '/index.html">' + (a.upd ? '↻ ' : '') + a.tk + '</a>'; }).join('') +
+      '<div class="chips">' + A.filter(function (a) { return a !== f; }).map(function (a) { return '<a href="co-phieu/' + a.tk.toLowerCase() + '/index.html">' + (a.upd ? '↻ ' : '') + a.tk + '</a>'; }).join('') +
       '<a class="more" href="' + base + '">Đọc tiếp phân tích ' + f.tk + ' →</a></div>';
   }
 
