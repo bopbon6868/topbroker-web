@@ -32,4 +32,12 @@ json.dump(old, open('tools/articles_cache.json', 'w', encoding='utf-8'), ensure_
 out.sort(key=lambda a: (a['upd'] or a['pub']), reverse=True)
 js = '/* Sinh tự động bởi tools/build_articles.py, đừng sửa tay. Sắp xếp: bài mới đăng hoặc mới cập nhật đứng đầu. */\nwindow.TB_ARTICLES = ' + json.dumps(out, ensure_ascii=False, indent=1) + ';\n'
 open('site/co-phieu/articles.js', 'w', encoding='utf-8').write(js)
+# Gắn ?v=<mã băm nội dung> vào mọi thẻ <script src=...articles.js> để điện thoại không giữ bản cũ (thiếu tranh, thiếu bài mới)
+import hashlib, glob
+ver = hashlib.md5(js.encode('utf-8')).hexdigest()[:8]
+for f in ['site/index.html'] + glob.glob('site/co-phieu/**/index.html', recursive=True):
+    h = open(f, encoding='utf-8').read()
+    h2 = re.sub(r'(src="[./]*(?:co-phieu/)?articles\.js)(\?v=\w+)?"', r'\1?v=' + ver + '"', h)
+    if h2 != h: open(f, 'w', encoding='utf-8').write(h2)
+print('articles.js?v=' + ver)
 print([a['tk'] for a in out])
