@@ -1089,7 +1089,7 @@ function renderOpts() {
       '<div class="pd-2"><label>Hoặc số tiền nộp (đ)<input id="pd-dep-m" inputmode="numeric" placeholder="VD: 30,000,000"></label></div></div>';
     if (dis) PD.on[k] = false;
     return '<div class="pd-o' + (dis ? ' dis' : '') + (PD.on[k] ? ' on' : '') + '" data-k="' + k + '"><label class="pd-chk"><input type="checkbox" data-k="' + k + '"' + (PD.on[k] ? ' checked' : '') + (dis ? ' disabled' : '') + '><span><b>' + inf[0] + '</b><em>' + (dis || inf[1]) + '</em></span></label>' +
-      (inner ? '<div class="pd-in"' + (PD.on[k] ? '' : ' hidden') + '>' + inner + '<p class="pd-res" id="res-' + k + '"></p></div>' : '') + '</div>';
+      (inner ? '<div class="pd-in"' + (PD.on[k] ? '' : ' hidden') + '>' + inner + '<p class="pd-res" id="res-' + k + '"></p></div>' : '') + '<div class="pd-save" data-k="' + k + '" hidden></div></div>';
   }).join('');
 }
 $('#pd-syms').addEventListener('click', function (e) { var b = e.target.closest('[data-sym]'); if (b) setSym(b.getAttribute('data-sym')); });
@@ -1212,6 +1212,7 @@ function sim() {
   LAST_SIM = { sym: sym, px: px, opts: opts, date: today() };
   var anyDep = opts.some(function (x) { return x.o.dep; });
   var chosen = PLAN[sym] ? PLAN[sym].label : null;
+  updSave(opts, chosen, sym);
   var head = '<thead><tr><th></th>' + opts.map(function (x, i) { var on = chosen === x.label; return '<th><b>' + esc(x.label) + '</b><button type="button" class="btn sm ' + (on ? '' : 'ghost ') + 'pick" data-i="' + i + '">' + (on ? '✓ Đã vào phác đồ' : 'Đưa vào phác đồ') + '</button></th>'; }).join('') + '</tr></thead>';
   function row(lbl, f) { return '<tr><td>' + lbl + '</td>' + opts.map(function (x) { return '<td>' + f(x.o) + '</td>'; }).join('') + '</tr>'; }
   $('#sim-tbl').innerHTML = head + '<tbody>' +
@@ -1297,6 +1298,22 @@ function sim() {
     return '<div><b>' + esc(x.label) + '</b>' + t.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</div>';
   }).join('');
 }
+/* Nút lưu ngay cuối mỗi ô phương án đã tích (anh Hải yêu cầu 18/10/2026) */
+function updSave(opts, chosen, sym) {
+  $$('#pd-opts .pd-save').forEach(function (el) {
+    var k = el.getAttribute('data-k'), i = -1;
+    opts.forEach(function (x, j) { if (x.k === k) i = j; });
+    if (!PD.on[k] || i < 0) { el.hidden = true; el.innerHTML = ''; return; }
+    var on = chosen === opts[i].label;
+    el.innerHTML = on ? '<button type="button" class="btn pd-savebtn done" data-pi="' + i + '">✓ Đã lưu vào phác đồ: ' + esc(opts[i].label) + '</button>'
+      : '<button type="button" class="btn pd-savebtn" data-pi="' + i + '">Lưu phương án này vào phác đồ ' + sym + ' →</button><span class="note">Lưu xong chuyển sang mã tiếp theo; Bước 4 gộp lại cho cả danh mục.</span>';
+    el.hidden = false;
+  });
+}
+$('#pd-opts').addEventListener('click', function (e) {
+  var b = e.target.closest('.pd-savebtn'); if (!b || !LAST_SIM) return;
+  e.preventDefault(); addToPlan(+b.getAttribute('data-pi'));
+});
 $('#sim-tbl').addEventListener('click', function (e) {
   var b = e.target.closest('.pick'); if (!b || !LAST_SIM) return;
   addToPlan(+b.getAttribute('data-i'));
