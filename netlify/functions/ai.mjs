@@ -45,7 +45,7 @@ export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
   const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(1200, +qs.get('max') || 60) : 1200;
-  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b4' });
+  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b5' });
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
@@ -70,7 +70,7 @@ export default async (req, context) => {
     const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: MAXTOK, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: 'disabled' }, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
     let r = await call(MODEL), used = MODEL;
     let data = await r.json().catch(() => ({}));
@@ -91,10 +91,10 @@ export default async (req, context) => {
     if (data.stop_reason === 'max_tokens' && last && out[last].length > 1) out[last].pop();
     if (!out.tom_tat && !out.dien_giai.length) {
       console.log('AI sai khuôn', data.stop_reason, text.slice(0, 400));
-      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800) } : {}) }, 502);
+      return json({ error: 'AI trả lời chưa đúng mẫu. Bấm thử lại.', code: data.stop_reason || '', ...(TEST ? { raw: text.slice(0, 800), blocks: (data.content || []).map(c => c.type), usage: data.usage } : {}) }, 502);
     }
     const arr = v => (Array.isArray(v) ? v : []).map(x => String(x)).slice(0, 4);
-    return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: used, ...(TEST ? { raw: text.slice(0, 800) } : {}) });
+    return json({ tom_tat: String(out.tom_tat || ''), dien_giai: arr(out.dien_giai), gia_thuyet: arr(out.gia_thuyet), cau_hoi: arr(out.cau_hoi), thieu_du_lieu: arr(out.thieu_du_lieu), model: used, ...(TEST ? { raw: text.slice(0, 800), blocks: (data.content || []).map(c => c.type), usage: data.usage } : {}) });
   } catch (e) {
     return json({ error: e.name === 'AbortError' ? 'AI trả lời quá lâu. Thử lại nhé.' : 'Không gọi được AI.', detail: String(e.message || e).slice(0, 160) }, 504);
   } finally { clearTimeout(timer); }
