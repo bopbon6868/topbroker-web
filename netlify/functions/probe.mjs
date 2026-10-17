@@ -7,7 +7,7 @@ export default async (req) => {
   let lines = [];
   try {
     if (mode === 'models') {
-      const j = await get(`financial_models?sort=displayOrder:asc&q=codeList:${s}~modelType:${t}~displayLevel:0,1,2&size=200`);
+      const j = await get(`financial_models?sort=displayOrder:asc&q=${q.get('cl')==='0'?'':'codeList:'+s+'~'}modelType:${t}&size=300`);
       lines = (j.data || []).map(d => `${d.itemCode} ${d.itemVnName} [${d.note || ''}]`);
     } else if (mode === 'fs') {
       const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER~modelType:${t}&sort=fiscalDate:desc&size=400`);
