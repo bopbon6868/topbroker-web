@@ -15,6 +15,12 @@ export default async (req) => {
       lines.push('dates ' + dates.join(','));
       const want = (q.get('items') || '').split(',').filter(Boolean);
       d.filter(x => x.fiscalDate === dates[0] && (!want.length || want.includes(String(x.itemCode)))).forEach(x => lines.push(`${x.fiscalDate} ${x.itemCode} ${x.numericValue}`));
+    } else if (mode === 'mt') {
+      const j = await get(`financial_statements?q=code:${s}~reportType:${q.get('rt')||'QUARTER'}&sort=fiscalDate:desc&size=600`);
+      const d = j.data || [], m = {};
+      d.forEach(x => { const k = x.modelType + ' ' + x.fiscalDate; m[k] = (m[k] || 0) + 1; });
+      lines = Object.entries(m).slice(0, 30).map(([k, v]) => k + ' n=' + v);
+      lines.push('total ' + d.length + ' ' + JSON.stringify(j).slice(0, 200));
     } else if (mode === 'ratio') {
       const j = await get(`ratios/latest?filter=ratioCode:${q.get('r') || 'PRICE_TO_EARNINGS,PRICE_TO_BOOK,ROAE_TR_AVG5Q,ROAA_TR_AVG5Q,EPS_TR,MARKETCAP'}&where=code:${s}&order=reportDate&fields=ratioCode,value,reportDate`);
       lines = (j.data || []).map(d => `${d.ratioCode} ${d.value} ${d.reportDate}`);

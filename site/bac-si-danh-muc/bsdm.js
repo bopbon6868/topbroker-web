@@ -151,6 +151,96 @@ function fetchHist(syms) {
   }));
 }
 
+/* ---------- XÉT NGHIỆM: chỉ báo kỹ thuật (tính từ lịch sử giá ngày) ---------- */
+function sma(a, n) { var o = new Array(a.length).fill(null), s = 0; for (var i = 0; i < a.length; i++) { s += a[i]; if (i >= n) s -= a[i - n]; if (i >= n - 1) o[i] = s / n; } return o; }
+function ema(a, n) {
+  var o = new Array(a.length).fill(null), k = 2 / (n + 1), st = -1;
+  for (var i = 0; i < a.length; i++) { if (a[i] == null) continue; if (st < 0) st = i; if (i - st === n - 1) { var s = 0; for (var j = st; j <= i; j++) s += a[j]; o[i] = s / n; } else if (i - st >= n) o[i] = a[i] * k + o[i - 1] * (1 - k); }
+  return o;
+}
+function wilder(a, n, start) { var o = new Array(a.length).fill(null), s = 0; for (var i = start; i < a.length; i++) { if (i < start + n) { s += a[i]; if (i === start + n - 1) o[i] = s / n; } else o[i] = (o[i - 1] * (n - 1) + a[i]) / n; } return o; }
+function techOf(sym) {
+  var h = HIST[sym]; if (!h || !h.c || h.c.length < 30) return null;
+  var c = h.c, n = c.length, L = n - 1, T = { n: n, d: h.t[L], p: c[L] };
+  [20, 50, 200].forEach(function (m) { if (n >= m) { var s = sma(c, m); T['ma' + m] = s[L]; T['ma' + m + 'p'] = s[Math.max(0, L - 5)]; } });
+  // RSI 14 (Wilder)
+  var up = [0], dn = [0]; for (var i = 1; i < n; i++) { var d = c[i] - c[i - 1]; up.push(Math.max(d, 0)); dn.push(Math.max(-d, 0)); }
+  if (n > 15) { var au = wilder(up, 14, 1), ad = wilder(dn, 14, 1); T.rsi = ad[L] === 0 ? 100 : 100 - 100 / (1 + au[L] / ad[L]); }
+  // MACD 12-26-9
+  if (n >= 35) {
+    var e12 = ema(c, 12), e26 = ema(c, 26), mc = c.map(function (_, i) { return e12[i] != null && e26[i] != null ? e12[i] - e26[i] : null; }), sg = ema(mc, 9);
+    T.macd = mc[L]; T.sig = sg[L]; T.hist = mc[L] - sg[L];
+    for (var k = L; k > L - 6 && k > 0; k--) { if (sg[k - 1] == null) break; var a1 = mc[k] - sg[k], a0 = mc[k - 1] - sg[k - 1]; if (a1 > 0 && a0 <= 0) { T.cross = { t: 'up', ago: L - k }; break; } if (a1 < 0 && a0 >= 0) { T.cross = { t: 'dn', ago: L - k }; break; } }
+  }
+  // ADX 14 (cần giá cao/thấp)
+  if (h.h && h.l && h.h.length === n && n > 30) {
+    var tr = [0], pdm = [0], mdm = [0];
+    for (var j = 1; j < n; j++) { var um = h.h[j] - h.h[j - 1], dm = h.l[j - 1] - h.l[j]; pdm.push(um > dm && um > 0 ? um : 0); mdm.push(dm > um && dm > 0 ? dm : 0); tr.push(Math.max(h.h[j] - h.l[j], Math.abs(h.h[j] - c[j - 1]), Math.abs(h.l[j] - c[j - 1]))); }
+    var atr = wilder(tr, 14, 1), sp = wilder(pdm, 14, 1), sm = wilder(mdm, 14, 1), dx = [];
+    for (var z = 0; z < n; z++) { if (atr[z] == null || !atr[z]) { dx.push(null); continue; } var pd = 100 * sp[z] / atr[z], md = 100 * sm[z] / atr[z]; dx.push(pd + md ? 100 * Math.abs(pd - md) / (pd + md) : 0); if (z === L) { T.pdi = pd; T.mdi = md; } }
+    var first = dx.findIndex(function (v) { return v != null; }), ax = wilder(dx.map(function (v) { return v == null ? 0 : v; }), 14, first);
+    T.adx = ax[L];
+  }
+  return T;
+}
+/* Đọc chỉ báo thành lời: chỉ mô tả, không khuyến nghị */
+function techRead(T) {
+  if (!T) return null;
+  var p = T.p, R = [], sc = 0, lv = [];
+  var mas = [20, 50, 200].filter(function (m) { return T['ma' + m]; }), above = mas.filter(function (m) { return p >= T['ma' + m]; });
+  if (mas.length) {
+    sc += above.length - mas.length / 2;
+    R.push(above.length === mas.length ? 'Giá nằm trên cả ' + mas.map(function (m) { return 'MA' + m; }).join(', ') + ': xu hướng tăng ở mọi khung đang giữ.'
+      : !above.length ? 'Giá nằm dưới cả ' + mas.map(function (m) { return 'MA' + m; }).join(', ') + ': xu hướng giảm ở mọi khung.'
+      : 'Giá trên ' + above.map(function (m) { return 'MA' + m; }).join(', ') + ' nhưng dưới ' + mas.filter(function (m) { return above.indexOf(m) < 0; }).map(function (m) { return 'MA' + m; }).join(', ') + ': xu hướng các khung đang lệch nhau.');
+    if (T.ma50 && T.ma200) R.push('MA50 ' + (T.ma50 > T.ma200 ? 'nằm trên' : 'nằm dưới') + ' MA200: nền trung – dài hạn ' + (T.ma50 > T.ma200 ? 'đang tích cực' : 'đang tiêu cực') + '.');
+  }
+  if (T.rsi != null) {
+    var r = Math.round(T.rsi);
+    if (T.rsi >= 70) { R.push('RSI ' + r + ': vùng quá mua theo quy ước (trên 70). Giá đã lên nhanh, dễ có nhịp nghỉ; trong xu hướng mạnh RSI có thể ở cao khá lâu.'); }
+    else if (T.rsi <= 30) { R.push('RSI ' + r + ': vùng quá bán theo quy ước (dưới 30). Giá đã giảm nhanh, có thể hồi kỹ thuật nhưng chưa phải tín hiệu đảo chiều.'); }
+    else { sc += T.rsi >= 50 ? 0.5 : -0.5; R.push('RSI ' + r + ': ' + (T.rsi >= 50 ? 'động lượng nghiêng về bên mua.' : 'động lượng nghiêng về bên bán.')); }
+  }
+  if (T.macd != null) {
+    sc += T.hist > 0 ? 0.5 : -0.5;
+    R.push('MACD ' + (T.hist > 0 ? 'nằm trên' : 'nằm dưới') + ' đường tín hiệu' + (T.cross ? ', vừa cắt ' + (T.cross.t === 'up' ? 'lên' : 'xuống') + (T.cross.ago ? ' ' + T.cross.ago + ' phiên trước' : ' phiên gần nhất') : '') + ': động lượng ' + (T.hist > 0 ? 'đang mạnh lên.' : 'đang yếu đi.'));
+  }
+  if (T.adx != null) {
+    var a = Math.round(T.adx), dir = T.pdi > T.mdi ? 'tăng' : 'giảm';
+    R.push('ADX ' + a + ': ' + (T.adx < 20 ? 'chưa có xu hướng rõ, giá chủ yếu đi ngang.' : T.adx < 25 ? 'xu hướng ' + dir + ' đang hình thành.' : T.adx < 40 ? 'xu hướng ' + dir + ' rõ ràng.' : 'xu hướng ' + dir + ' rất mạnh, nhưng ở mức này cũng dễ chững lại.'));
+  }
+  var tag = sc >= 1.5 ? ['g', 'Khỏe'] : sc <= -1.5 ? ['r', 'Yếu'] : ['n', 'Trung tính'];
+  if (T.rsi >= 70 && tag[0] === 'g') tag = ['g', 'Khỏe, đang nóng'];
+  if (T.rsi <= 30 && tag[0] === 'r') tag = ['r', 'Yếu, đã giảm sâu'];
+  mas.forEach(function (m) { lv.push(['MA' + m, Math.round(T['ma' + m] * 100) * 10]); });
+  return { lines: R, tag: tag, lv: lv, score: sc };
+}
+
+/* ---------- XÉT NGHIỆM: kết quả kinh doanh mới nhất (/api/fund, VNDirect) ---------- */
+var FUND = {}, FUND_API = (location.protocol === 'file:' ? 'https://topbroker.fun' : '') + '/api/fund';
+function fetchFund(syms) {
+  var need = syms.filter(function (s) { return !(s in FUND); });
+  if (!need.length) return Promise.resolve();
+  return getJSON(FUND_API + '?s=' + need.join(',')).then(function (j) { need.forEach(function (s) { FUND[s] = (j.f || {})[s] || null; }); }).catch(function () {});
+}
+function fundRead(F) {
+  if (!F || !F.q) return null;
+  var R = [], g = function (x) { return x == null ? '' : ' (' + pct(x, 0) + ' so với cùng kỳ)'; }, sc = 0;
+  var bil = function (v) { return Math.abs(v) >= 1e12 ? nf(v / 1e12, 2) + ' nghìn tỷ' : nf(v / 1e9, 0) + ' tỷ'; };
+  if (F.rev != null) R.push((F.bank ? 'Thu nhập lãi thuần ' : 'Doanh thu ') + bil(F.rev) + g(F.revY) + '.');
+  if (F.np != null) {
+    R.push('Lợi nhuận sau thuế ' + (F.np < 0 ? 'lỗ ' + bil(-F.np) : bil(F.np)) + (F.npPrev != null && F.npPrev <= 0 && F.np > 0 ? ' (cùng kỳ lỗ)' : F.npPrev != null && F.npPrev > 0 && F.np < 0 ? ' (cùng kỳ còn lãi)' : g(F.npY)) + '.');
+    sc = F.np < 0 ? -2 : F.npY == null ? 0 : F.npY >= 0.15 ? 1 : F.npY <= -0.15 ? -1 : 0;
+  }
+  var v = [];
+  if (F.pe != null && F.pe > 0) v.push('P/E ' + nf(F.pe, 1));
+  if (F.pb != null && F.pb > 0) v.push('P/B ' + nf(F.pb, 1));
+  if (F.roe != null) v.push('ROE ' + pct(F.roe, 1, false));
+  if (v.length) R.push(v.join(' · ') + '.');
+  var tag = sc >= 1 ? ['g', 'Lợi nhuận tăng'] : sc <= -2 ? ['r', 'Đang lỗ'] : sc <= -1 ? ['r', 'Lợi nhuận giảm'] : ['n', 'Đi ngang'];
+  return { lines: R, tag: tag, q: F.q, score: sc };
+}
+
 /* ---------- 1 · KHÁM ---------- */
 function settings() {
   return {
