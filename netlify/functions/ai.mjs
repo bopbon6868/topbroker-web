@@ -44,8 +44,8 @@ function json(obj, status = 200) {
 export default async (req, context) => {
   const TEST = req.method === 'GET' && new URL(req.url).searchParams.get('test') === '1';
   T0 = Date.now(); TESTMODE = TEST;
-  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(1000, +qs.get('max') || 60) : 1000;
-  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b6' });
+  const qs = new URL(req.url).searchParams; const MAXTOK = TEST && qs.get('max') ? Math.min(800, +qs.get('max') || 60) : 800;
+  if (TEST && qs.get('ping')) return json({ pong: true, build: 'b7' });
   if (req.method === 'GET' && !TEST) return json({ ready: !!(process.env.ANTHROPIC_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY), model: MODEL, via: process.env.ANTHROPIC_API_KEY ? 'anthropic-env' : 'gateway-env' });
   if (req.method !== 'POST' && !TEST) return json({ error: 'Chỉ nhận POST' }, 405);
   const ip = context?.ip || req.headers.get('x-nf-client-connection-ip') || 'x';
@@ -70,11 +70,11 @@ export default async (req, context) => {
     const call = model => fetch(url, {
       method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: 'disabled' }, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
+      body: JSON.stringify({ model, max_tokens: MAXTOK, thinking: { type: /-4-|-3-/.test(model) ? 'disabled' : 'between_tools' }, system: SYSTEM, messages: [{ role: 'user', content: userMsg }] }),
     });
     let r = await call(MODEL), used = MODEL, firstErr = null;
     let data = await r.json().catch(() => ({}));
-    if (!r.ok && (r.status === 400 || r.status === 404) && /model/i.test(JSON.stringify(data))) {
+    if (!r.ok && (r.status === 400 || r.status === 404) && /model|thinking/i.test(JSON.stringify(data))) {
       firstErr = r.status + ' ' + JSON.stringify(data).slice(0, 300);
       used = FALLBACK; r = await call(FALLBACK); data = await r.json().catch(() => ({}));
     }
