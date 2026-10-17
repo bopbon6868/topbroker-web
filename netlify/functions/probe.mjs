@@ -10,11 +10,19 @@ export default async (req) => {
       const j = await get(`financial_models?sort=displayOrder:asc&q=${q.get('cl')==='0'?'':'codeList:'+s+'~'}modelType:${t}&size=300`);
       lines = (j.data || []).map(d => `${d.itemCode} ${d.itemVnName} [${d.note || ''}]`);
     } else if (mode === 'fs') {
-      const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER&sort=fiscalDate:desc&size=800`);
+      const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER&sort=fiscalDate:desc&size=${q.get('size')||500}`);
       const d = (j.data || []).filter(x => String(x.modelType) === t); const dates = [...new Set(d.map(x => x.fiscalDate))].slice(0, 6);
       lines.push('dates ' + dates.join(','));
       const want = (q.get('items') || '').split(',').filter(Boolean);
       d.filter(x => x.fiscalDate === dates[0] && (!want.length || want.includes(String(x.itemCode)))).forEach(x => lines.push(`${x.fiscalDate} ${x.itemCode} ${x.numericValue}`));
+    } else if (mode === 'var') {
+      const vs = [`financial_statements?q=code:${s}~reportType:QUARTER~modelType:${t}&sort=fiscalDate:desc&size=200`,
+        `financial_statements?q=code:${s}~modelType:${t}~reportType:QUARTER&sort=fiscalDate:desc&size=200`,
+        `financial_statements?q=code:${s}~reportType:QUARTER~modelType:${t}&size=200`,
+        `financial_statements?q=code:${s}~reportType:QUARTER&sort=fiscalDate:desc&size=1000`,
+        `financial_statements?q=code:${s}~reportType:QUARTER~fiscalDate:2026-06-30,2025-06-30&size=500`,
+        `financial_statements?q=code:${s}~reportType:QUARTER~itemCode:${q.get('ic')||'23000'}&sort=fiscalDate:desc&size=50`];
+      for (const v of vs) { try { const j = await get(v); lines.push((j.data||[]).length + ' total=' + j.totalElements + ' ' + v.slice(0,110) + ' :: ' + JSON.stringify(j).slice(0,120)); } catch (e) { lines.push('ERR ' + e.message + ' ' + v); } }
     } else if (mode === 'mt') {
       const j = await get(`financial_statements?q=code:${s}~reportType:${q.get('rt')||'QUARTER'}&sort=fiscalDate:desc&size=600`);
       const d = j.data || [], m = {};
