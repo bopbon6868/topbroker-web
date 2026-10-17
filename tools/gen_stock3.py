@@ -52,7 +52,7 @@ def page(tk, S):
 <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
 <link rel="icon" href="../../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<link rel="stylesheet" href="../../assets/site.css?v=20261017a">
+<link rel="stylesheet" href="../../assets/site.css?v=20261017f">
 <style>{CSS}</style>
 <style>body{{margin:0}}.nav{{z-index:15}}.back a{{color:var(--blue);text-decoration:none}}.back span{{color:var(--label2)}}@media (max-width:560px){{.back span{{display:none}}}}</style>
 </head>
@@ -87,7 +87,8 @@ def page(tk, S):
   <footer class="legal"><p><b>Nguồn:</b> TCBS (BCTC, giá điều chỉnh, chỉ báo kỹ thuật, tin HOSE và báo chí). Dữ liệu chốt phiên 16/10/2026.</p><p>Công cụ tham khảo và giáo dục, không phải khuyến nghị mua hay bán. Các số "khoảng", "ước tính" được suy ra từ BCTC và cần đối chiếu thuyết minh gốc.</p></footer>
 </div>
 <div id="tb-foot"></div>
-<script src="../../assets/site.js?v=20261017a"></script>
+<script src="../../assets/site.js?v=20261017f"></script>
+<script src="../articles.js"></script><script src="../articles-ui.js?v=20261017g"></script>
 <script>
 var S={json.dumps(data, ensure_ascii=False)};
 (function(){{
