@@ -15,6 +15,10 @@ export default async (req) => {
       lines.push('dates ' + dates.join(','));
       const want = (q.get('items') || '').split(',').filter(Boolean);
       d.filter(x => x.fiscalDate === dates[0] && (!want.length || want.includes(String(x.itemCode)))).forEach(x => lines.push(`${x.fiscalDate} ${x.itemCode} ${x.numericValue}`));
+    } else if (mode === 'is') {
+      const j = await get(`financial_statements?q=code:${s}~reportType:QUARTER~fiscalDate:${q.get('d')||'2026-06-30'}&size=500`);
+      const d = (j.data || []).filter(x => !/^(1|89|101|411|3|91|103|413)$/.test(String(x.modelType)));
+      lines = d.map(x => `${x.modelType} ${x.itemCode} ${x.numericValue}`);
     } else if (mode === 'var') {
       const vs = [`financial_statements?q=code:${s}~reportType:QUARTER~modelType:${t}&sort=fiscalDate:desc&size=200`,
         `financial_statements?q=code:${s}~modelType:${t}~reportType:QUARTER&sort=fiscalDate:desc&size=200`,
