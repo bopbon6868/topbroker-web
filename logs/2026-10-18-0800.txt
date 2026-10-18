@@ -1,0 +1,18 @@
+Cập nhật phiên sáng 18/10/2026 · 08:00 (Chủ Nhật, sàn VN nghỉ: giữ số đóng cửa 16/10, bản tin dạng tổng kết tuần + tin cuối tuần)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED -> 'Chủ Nhật, 18/10/2026 · 08:00'; TB.TICKER thêm Khối ngoại HOSE tuần (−3.008 tỷ), FDI đăng ký 9T (50,36 tỷ USD, +76,4%), Nhập siêu 9T (~19,4 tỷ USD), Cước siêu tàu Vịnh–TQ (~1,2 tr USD/ngày, LSEG 5/10), TMG LNTT Q3 (84 tỷ, +305%), Vàng SJC bán ra (143,6 tr, −1,2 tr/tuần); BTC 81.238 (−0,47%, 18/10).
+- site/index.html: giờ số liệu .bf -> 18/10/2026 · 08:00; bản tin 5 tin mới (1 Hormuz: Iran nói hai tàu dầu trúng mìn + cước siêu tàu 1,2 triệu USD/ngày; 2 khối ngoại bán ròng 3.008 tỷ tuần, >120.000 tỷ từ đầu năm; 3 FDI 9T +76,4% nhưng nhập khẩu tăng nhanh hơn xuất khẩu; 4 BCTC quý 3 cuối tuần TMG/SBA/VDS, hạn 20/10; 5 VN-Index tuần giảm thứ 5 + biên TVS 1.670–1.800 + vàng SJC); tranh mới "Cước tàu dầu qua Hormuz vọt lên" (tàu dầu chở chồng xu, thủy lôi, khiên bảo hiểm nứt, mũi tên đi lên); ô BTC, dòng Bitcoin, ô Khối ngoại (tuần) cập nhật; 3 tin cần biết mới. Lịch giữ nguyên (7 sự kiện đều sắp tới). Số VN, Mỹ, Á–Âu, vàng TG, dầu, NHNN, tỷ giá, lãi qua đêm giữ nguyên (cuối tuần không có phiên).
+- site/radar/index.html: giờ 08:00 18/10; sửa tin Hormuz (Reuters 17/10, cước VLCC, phí bảo hiểm chiến tranh, CENTCOM 25 tỷ USD); thêm tin thế giới IEA xả nốt 100 triệu thùng (tg Kinh tế); thêm tin khối ngoại tuần, tin FDI/nhập siêu, tin BCTC quý 3 ngày 18/10; tin Nasdaq/VIX bỏ nhãn thế giới (giữ 4 tin tg: Hormuz, Nga, IEA, Fed); bỏ tin 10/10 (quá 7 ngày). Khối NHNN giữ nguyên.
+
+NGUỒN
+- Reuters qua gCaptain 17/10 07:44 PDT, Business Recorder 18/10: hai tàu ~2 triệu thùng/chiếc trúng mìn theo IRNA, chưa xác nhận độc lập.
+- House of Saud 17/10 (LSEG, Kpler/CSIS): VLCC Vịnh–TQ ~1,2 triệu USD/ngày tới 5/10 vs ~80.000; phí bảo hiểm 0,5–1,5%.
+- RFE/RL 17/10: CENTCOM nói phong tỏa chặn ≥25 tỷ USD dầu Iran.
+- Rigzone (Bloomberg) 16/10, Anadolu: IEA xả nốt 100 triệu thùng, 20 triệu diesel; đã xả 330/400 triệu.
+- Tinnhanhchungkhoan 17/10 09:28: khối ngoại bán ròng HOSE 3.008,2 tỷ tuần 12–16/10. Người Quan Sát 17/10 19:00: >120.000 tỷ từ đầu năm, sở hữu ngoại ~13%.
+- VietnamPlus 17/10 14:56 (toàn văn báo cáo KT-XH): FDI 50,36 tỷ USD +76,4%; XK 434,3 (+24,5%), NK 453,7 (+36,7%). VietnamPlus 18/10 06:05: lịch Quốc hội 18/10.
+- CafeF 18/10 00:02: TMG 84 tỷ (+305%), SBA −49%, NTH −78%, KAFI 171 tỷ, VDS lỗ 105 tỷ.
+- Người Quan Sát 17/10 11:51 (TVS Research): biên 1.670–1.800.
+- VietNamNet 18/10 06:00: vàng SJC 140,6–143,6 triệu, −1,2 triệu/tuần.
+- Coinbase 18/10: BTC 81.238 (−0,47%). ETH giữ 2.425 (CoinDesk 17/10).
