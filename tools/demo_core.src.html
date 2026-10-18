@@ -1,0 +1,459 @@
+<title>Lõi tính toán Đợt 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:wght@600;700&display=swap">
+<style>
+/* Bố cục: bàn thử hai cột – trái là phiếu nhập, phải là kết quả; điện thoại xếp một cột. Màu và chữ theo topbroker.fun. */
+:root{
+  --paper:#f6f4ef; --card:#fffdf9; --ink:#1c1b20; --ink2:#55545c; --ink3:#86847e;
+  --rule:#e2ddd2; --rule2:#cfc9bc; --accent:#c4500a; --accent-soft:#fbe9dc;
+  --ok:#1e7a46; --ok-soft:#e6f2ea; --warn:#a86405; --warn-soft:#fbf0db; --bad:#c0352b; --bad-soft:#fbe6e3;
+  --input:#ffffff; --shadow:0 1px 2px rgba(28,27,32,.05),0 8px 24px rgba(28,27,32,.06);
+  --sans:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --serif:"Lora",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141317; --card:#1d1c21; --ink:#f1efea; --ink2:#bdbab3; --ink3:#8d8a84;
+  --rule:#2f2d33; --rule2:#45424a; --accent:#ff8a4c; --accent-soft:#3a2418;
+  --ok:#5cc38a; --ok-soft:#173326; --warn:#e9a93c; --warn-soft:#352812; --bad:#ff7b6e; --bad-soft:#3a1c19;
+  --input:#17161a; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141317; --card:#1d1c21; --ink:#f1efea; --ink2:#bdbab3; --ink3:#8d8a84;
+  --rule:#2f2d33; --rule2:#45424a; --accent:#ff8a4c; --accent-soft:#3a2418;
+  --ok:#5cc38a; --ok-soft:#173326; --warn:#e9a93c; --warn-soft:#352812; --bad:#ff7b6e; --bad-soft:#3a1c19;
+  --input:#17161a; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding-block:28px 48px;display:flex;flex-direction:column;gap:24px}
+.kick{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:10px}
+header h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,46px);line-height:1.1;letter-spacing:-.015em}
+.dek{font-size:16.5px;color:var(--ink2);max-width:68ch}
+.chg{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.chg li{border-top:2px solid var(--ink);padding-top:8px;display:flex;flex-direction:column;gap:2px}
+.chg b{font-size:14.5px}
+.chg span{font-size:13.5px;color:var(--ink2)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.presets .lbl{font-size:13px;font-weight:600;color:var(--ink2);margin-right:4px}
+.chip{appearance:none;border:1.5px solid var(--rule2);background:var(--card);color:var(--ink);font:600 13.5px var(--sans);padding:8px 14px;border-radius:999px;cursor:pointer;min-height:38px}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:20px 20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h2{font-size:17px;font-weight:800;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.panel h2 small{font-size:12.5px;font-weight:500;color:var(--ink3)}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.scroll{overflow-x:auto;margin-inline:-4px;padding-inline:4px}
+table{border-collapse:collapse;width:100%}
+th{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:6px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:6px 6px;border-bottom:1px solid var(--rule);vertical-align:middle}
+td.n,th.n{text-align:right}
+.inp td{padding:4px 3px}
+.inp input,.inp select{width:100%;min-width:0;font:500 14px var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);background:var(--input);border:1px solid var(--rule2);border-radius:8px;padding:7px 8px;min-height:38px}
+.inp input.sym{font-family:var(--sans);font-weight:700;text-transform:uppercase;width:68px}
+.inp input.w-s{width:76px}.inp input.w-m{width:88px}.inp select{width:78px;font-family:var(--sans)}
+.inp input[type=checkbox]{width:20px;height:20px;min-height:0;accent-color:var(--accent)}
+.inp td.cb{text-align:center}
+.inp input.err{border-color:var(--bad);background:var(--bad-soft)}
+.x{appearance:none;border:0;background:none;color:var(--ink3);font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:8px}
+.x:hover{color:var(--bad);background:var(--bad-soft)}
+.btn{appearance:none;border:1.5px dashed var(--rule2);background:none;color:var(--ink2);font:600 13.5px var(--sans);padding:8px 14px;border-radius:10px;cursor:pointer;align-self:flex-start}
+.btn:hover{border-color:var(--ink);color:var(--ink)}
+.acct{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 12px}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld label{font-size:12.5px;font-weight:600;color:var(--ink2)}
+.fld input{font:500 15px var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);background:var(--input);border:1px solid var(--rule2);border-radius:8px;padding:8px 10px;min-height:40px;width:100%}
+.fld.opt label::after{content:" · tùy chọn";font-weight:400;color:var(--ink3)}
+.fld input.err{border-color:var(--bad);background:var(--bad-soft)}
+.note{font-size:12.5px;color:var(--ink3);line-height:1.5}
+.errs{background:var(--bad-soft);color:var(--bad);border-radius:12px;padding:10px 14px;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.errs b{font-family:var(--mono);font-size:12px;margin-right:6px}
+/* Kết quả */
+.status{display:flex;flex-direction:column;gap:14px}
+.pill{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:7px 14px;border-radius:999px;align-self:flex-start}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.s-above,.s-nodebt{background:var(--ok-soft);color:var(--ok)}
+.s-near{background:var(--warn-soft);color:var(--warn)}
+.s-below,.s-force,.s-unknown{background:var(--bad-soft);color:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpis div{background:var(--card);padding:10px 12px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.kpis span{font-size:12px;color:var(--ink3);font-weight:600}
+.kpis b{font-family:var(--mono);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpis em{font-style:normal;font-size:12px;color:var(--ink2)}
+.cal{font-size:13.5px;color:var(--ink2);border-left:3px solid var(--rule2);padding:2px 0 2px 12px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.big div{border:1px solid var(--rule);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.big span{font-size:12.5px;color:var(--ink2);font-weight:600}
+.big b{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}
+.big em{font-style:normal;font-size:13px;color:var(--ink2)}
+.cmp{border-radius:12px;padding:10px 14px;font-size:13.5px;display:flex;gap:10px;align-items:flex-start}
+.cmp.warn{background:var(--warn-soft);color:var(--ink)}
+.cmp.same{background:var(--ok-soft);color:var(--ink)}
+.cmp .tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:6px;white-space:nowrap;margin-top:1px}
+.cmp.warn .tag{background:var(--warn);color:var(--card)}
+.cmp.same .tag{background:var(--ok);color:var(--card)}
+.tgt{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tgt .fld{flex-direction:row;align-items:center;gap:6px}
+.tgt .fld input{width:78px;min-height:38px;padding:6px 8px}
+.res td{font-size:14px}
+.res td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.res .k{font-weight:600}
+.res .sub{display:block;font-size:12px;color:var(--ink3);font-weight:400}
+.res tr.grp td{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);padding-top:14px;border-bottom:1px solid var(--rule2)}
+.res .best{color:var(--ok);font-weight:700}
+.res .bad{color:var(--bad)}
+.res .mut,.res td.n.mut,.res td.n.bad{color:var(--ink3);font-family:var(--sans)}
+.res td.n.bad{color:var(--bad)}
+.badge{display:inline-block;font:700 11px var(--sans);padding:1px 7px;border-radius:6px;margin-left:6px;vertical-align:1px}
+.badge.w{background:var(--warn-soft);color:var(--warn)}
+.badge.b{background:var(--bad-soft);color:var(--bad)}
+.assume{font-size:12.5px;color:var(--ink2);background:var(--paper);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+/* Kiểm thử */
+.tests-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:28px;font-weight:600}
+.score.pass{color:var(--ok)} .score.fail{color:var(--bad)}
+details{border-top:1px solid var(--rule)}
+details:first-of-type{border-top:0}
+summary{cursor:pointer;padding:10px 2px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:10px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--ink3)}
+details[open] summary::after{content:"−"}
+summary .cnt{font-family:var(--mono);font-weight:500;color:var(--ok);margin-left:auto}
+summary .cnt.f{color:var(--bad)}
+.tcase{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;padding:8px 2px;border-top:1px dashed var(--rule);font-size:13.5px}
+.tcase .c{font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 6px;border-radius:6px;align-self:start}
+.tcase .c.p{background:var(--ok-soft);color:var(--ok)} .tcase .c.f{background:var(--bad-soft);color:var(--bad)}
+.tcase .eg{grid-column:2;font-size:12.5px;color:var(--ink2)}
+.tcase .eg i{font-style:normal;font-family:var(--mono);color:var(--ink)}
+.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.todo div{display:flex;flex-direction:column;gap:6px}
+.todo h3{font-size:14px;font-weight:800}
+.todo ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--ink2)}
+.todo .q{color:var(--warn);font-weight:700;font-size:12px}
+footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="kick">Top Broker · Bác sĩ danh mục · Bản demo Đợt 1</div>
+    <h1>Lõi tính toán mới, chạy thử trước khi gắn vào web</h1>
+    <p class="dek">Trang này chạy lõi tính toán mới, tách riêng khỏi topbroker.fun nên không ảnh hưởng gì tới web đang chạy. Danh mục là số mẫu, giá nhập tay. Anh sửa bất kỳ ô nào, kết quả và bộ kiểm thử tính lại ngay.</p>
+    <ul class="chg">
+      <li><b>Mô hình margin có tham số</b><span>Đánh dấu mã không được cho vay và giá chặn, thay cho một tỷ lệ chung cho mọi tài khoản.</span></li>
+      <li><b>Sửa cách quy đổi Rtt app</b><span>Cách cũ có thể báo khoảng đệm rộng hơn thực tế. Cách mới chọn giả định bất lợi hơn khi chưa chắc.</span></li>
+      <li><b>Cần tối thiểu bao nhiêu</b><span>Nộp bao nhiêu, bán bao nhiêu cổ phiếu mã nào để Rtt về mức anh chọn, có kiểm lại.</span></li>
+      <li><b>Đếm theo phiên sàn</b><span>Đúng biên độ HOSE 7%, HNX 10%, UPCoM 15% và bước giá.</span></li>
+    </ul>
+  </header>
+
+  <div class="presets" role="group" aria-label="Danh mục mẫu">
+    <span class="lbl">Thử nhanh:</span>
+    <button class="chip" id="p-goc" data-p="goc" aria-pressed="true">Danh mục mẫu</button>
+    <button class="chip" id="p-nvl" data-p="nvl" aria-pressed="false">NVL không được cho vay</button>
+    <button class="chip" id="p-app" data-p="app" aria-pressed="false">Có Rtt trên app</button>
+    <button class="chip" id="p-call" data-p="call" aria-pressed="false">Đã bị call</button>
+  </div>
+
+  <div class="grid">
+    <section class="col" aria-label="Nhập liệu">
+      <div class="panel">
+        <h2>Danh mục <small>số mẫu, không phải danh mục thật của ai</small></h2>
+        <div class="scroll">
+          <table class="inp">
+            <thead><tr><th>Mã</th><th>Sàn</th><th class="n">Khối lượng</th><th class="n">Giá vốn</th><th class="n">Giá hiện tại</th><th>Cho vay</th><th class="n">Giá chặn</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <button class="btn" id="add" type="button">+ Thêm mã</button>
+        <p class="note">"Cho vay": bỏ dấu nếu công ty chứng khoán không cho vay mã này (không tính vào tài sản margin). "Giá chặn": giá tối đa công ty dùng để định giá mã, để trống nếu không có.</p>
+      </div>
+      <div class="panel">
+        <h2>Tài khoản</h2>
+        <div class="acct">
+          <div class="fld"><label for="cash">Tiền mặt (đ)</label><input id="cash" inputmode="numeric"></div>
+          <div class="fld"><label for="debt">Dư nợ margin (đ)</label><input id="debt" inputmode="numeric"></div>
+          <div class="fld"><label for="call">Ngưỡng call margin (%)</label><input id="call" inputmode="decimal"></div>
+          <div class="fld"><label for="force">Ngưỡng giải chấp (%)</label><input id="force" inputmode="decimal"></div>
+          <div class="fld"><label for="fee">Phí giao dịch (%)</label><input id="fee" inputmode="decimal"></div>
+          <div class="fld"><label for="tax">Thuế bán (%)</label><input id="tax" inputmode="decimal"></div>
+          <div class="fld opt"><label for="apprtt">Rtt trên app (%)</label><input id="apprtt" inputmode="decimal" placeholder="để trống"></div>
+        </div>
+        <div class="errs" id="errs" hidden></div>
+      </div>
+    </section>
+
+    <section class="col" aria-label="Kết quả" id="results">
+      <div class="panel status">
+        <h2>Tình trạng tài khoản <small id="ver"></small></h2>
+        <span class="pill" id="pill"></span>
+        <div class="kpis" id="kpis"></div>
+        <p class="cal" id="cal"></p>
+      </div>
+
+      <div class="panel">
+        <h2>Còn cách call bao xa</h2>
+        <div class="big" id="dist"></div>
+        <div id="cmp"></div>
+        <div class="scroll"><table class="res" id="perstock"></table></div>
+      </div>
+
+      <div class="panel">
+        <h2>Cần tối thiểu bao nhiêu</h2>
+        <div class="tgt" role="group" aria-label="Rtt mục tiêu">
+          <span class="note">Đưa Rtt về:</span>
+          <button class="chip" id="t-0" data-t="0" aria-pressed="false">Ngưỡng call</button>
+          <button class="chip" id="t-5" data-t="5" aria-pressed="true">Call + 5 điểm</button>
+          <button class="chip" id="t-10" data-t="10" aria-pressed="false">Call + 10 điểm</button>
+          <div class="fld"><label for="tcustom" class="note">hoặc</label><input id="tcustom" inputmode="decimal" placeholder="…%"></div>
+        </div>
+        <div id="need"></div>
+        <div class="assume">
+          <span><b>Giả định của bảng này</b> (đổi được khi chốt nghiệp vụ):</span>
+          <span>· Tiền bán được ghi nhận ngay vào tài sản tính margin và cấn trừ nợ ngay. Tùy công ty, thực tế có thể khác.</span>
+          <span>· Bán ở giá hiện tại, trừ phí và thuế ở trên. Chưa xét khả năng khớp lệnh khi mã nằm sàn.</span>
+          <span>· Đây là phép tính, không phải khuyến nghị. Bảng không xếp hạng phương án.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel" aria-label="Bộ kiểm thử">
+    <div class="tests-hd">
+      <span class="score" id="score"></span>
+      <div>
+        <h2>Bộ kiểm thử lõi tính toán</h2>
+        <p class="note">Chạy ngay trên trình duyệt của anh lúc mở trang. Số mong đợi được tính độc lập bằng Python, không dùng lại code của lõi.</p>
+      </div>
+    </div>
+    <div id="tests"></div>
+  </section>
+
+  <section class="panel" aria-label="Phạm vi Đợt 1">
+    <h2>Đợt 1 gồm gì, còn chờ anh chốt gì</h2>
+    <div class="todo">
+      <div><h3>Đã làm trong bản demo</h3><ul>
+        <li>Lõi tính toán tách riêng (<span class="num">tb-core.js</span>), không phụ thuộc giao diện.</li>
+        <li>Kiểm tra đầu vào: thiếu giá vốn, số âm, mã trùng, ngưỡng sai, thiếu giá.</li>
+        <li>Mô hình margin với cờ cho vay, giá chặn, hiệu chỉnh theo Rtt app.</li>
+        <li>Mốc call và giải chấp: giảm đều, từng mã, theo phiên sàn.</li>
+        <li>Cần tối thiểu: nộp tiền (2 cách), bán từng mã (trả nợ hoặc giữ tiền), làm tròn lô 100.</li>
+        <li>Bộ kiểm thử, có kiểm thử ngẫu nhiên.</li>
+      </ul></div>
+      <div><h3>Khi anh duyệt sẽ làm tiếp</h3><ul>
+        <li>Thay phần tính trong Bác sĩ danh mục bằng lõi này; giá vẫn lấy tự động như hiện tại.</li>
+        <li>Thêm ô "Cho vay" và "Giá chặn" vào bảng nhập (mặc định: cho vay, không giá chặn).</li>
+        <li>Đưa khung "Cần tối thiểu" vào thẻ kết quả 30 giây.</li>
+        <li>Tự lấy khối lượng giao dịch bình quân 20 phiên để báo mức khó bán.</li>
+      </ul></div>
+      <div><h3>Cần anh chốt <span class="q">[CẦN CHỐT]</span></h3><ul>
+        <li>"Gần ngưỡng" là cách call dưới bao nhiêu điểm %? (đang để 10)</li>
+        <li>Mục tiêu mặc định của "cần tối thiểu": call, call + 5 hay call + 10?</li>
+        <li>Nộp tiền mặc định là cấn trừ nợ ngay?</li>
+        <li>Tiền bán coi như ghi nhận ngay, hay chờ T+2?</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <footer><span id="ver2"></span><span>Bản demo · không ảnh hưởng topbroker.fun</span></footer>
+</div>
+
+<script>
+/*CORE*/
+</script>
+<script>
+/*TESTS*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var C = window.TBCore;
+  var $ = function (s) { return document.querySelector(s); };
+  var PRESETS = {
+    goc: { rows: [['HPG', 'HOSE', 2000, 28500, 27000], ['VPB', 'HOSE', 3000, 22000, 20500], ['NVL', 'HOSE', 5000, 15000, 13000], ['SSI', 'HOSE', 2000, 38000, 33000], ['MWG', 'HOSE', 500, 68000, 120000]], app: '' },
+    nvl: { rows: [['HPG', 'HOSE', 2000, 28500, 27000], ['VPB', 'HOSE', 3000, 22000, 20500], ['NVL', 'HOSE', 5000, 15000, 13000, false], ['SSI', 'HOSE', 2000, 38000, 33000], ['MWG', 'HOSE', 500, 68000, 120000]], app: '' },
+    app: { rows: [['HPG', 'HOSE', 2000, 28500, 27000], ['VPB', 'HOSE', 3000, 22000, 20500], ['NVL', 'HOSE', 5000, 15000, 13000], ['SSI', 'HOSE', 2000, 38000, 33000], ['MWG', 'HOSE', 500, 68000, 120000]], app: '42,6' },
+    call: { rows: [['HPG', 'HOSE', 2000, 28500, 20250], ['VPB', 'HOSE', 3000, 22000, 15400], ['NVL', 'HOSE', 5000, 15000, 9750], ['SSI', 'HOSE', 2000, 38000, 24750], ['MWG', 'HOSE', 500, 68000, 90000]], app: '' }
+  };
+  var S, target = '5';
+
+  /* ---------- định dạng ---------- */
+  function g(n) { return Math.round(n).toLocaleString('vi-VN'); }
+  function tr(n) { var a = Math.abs(n); return (n < 0 ? '−' : '') + (a >= 1e9 ? (a / 1e9).toFixed(2).replace('.', ',') + ' tỷ' : a >= 1e6 ? (a / 1e6).toFixed(2).replace('.', ',') + ' tr' : g(a) + ' đ'); }
+  function pc(x, d) { return x == null ? '–' : (x * 100).toFixed(d == null ? 1 : d).replace('.', ',') + '%'; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function parseMoney(s) { s = String(s == null ? '' : s).trim(); if (!s) return null; var neg = /^[-−]/.test(s), d = s.replace(/[^\d]/g, ''); if (!d) return NaN; return (neg ? -1 : 1) * Number(d); }
+  function parsePct(s) { s = String(s == null ? '' : s).trim().replace('%', '').replace(',', '.'); if (!s) return null; var v = Number(s); return isFinite(v) ? v / 100 : NaN; }
+
+  /* ---------- trạng thái nhập ---------- */
+  function load(name) {
+    var p = PRESETS[name];
+    S = { rows: p.rows.map(function (r) { return { sym: r[0], exch: r[1], qty: g(r[2]), cost: g(r[3]), price: g(r[4]), marginable: r[5] !== false, cap: '' }; }),
+      cash: g(20e6), debt: g(150e6), call: '40', force: '30', fee: '0,15', tax: '0,1', apprtt: p.app };
+    document.querySelectorAll('[data-p]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.p === name ? 'true' : 'false'); });
+    renderInputs(); compute();
+  }
+  function renderInputs() {
+    $('#rows').innerHTML = S.rows.map(function (r, i) {
+      return '<tr data-i="' + i + '">' +
+        '<td><input class="sym" id="r' + i + '-sym" data-k="sym" value="' + esc(r.sym) + '" aria-label="Mã dòng ' + (i + 1) + '"></td>' +
+        '<td><select id="r' + i + '-exch" data-k="exch" aria-label="Sàn">' + ['HOSE', 'HNX', 'UPCOM'].map(function (e) { return '<option' + (e === r.exch ? ' selected' : '') + '>' + e + '</option>'; }).join('') + '</select></td>' +
+        '<td><input class="w-s" id="r' + i + '-qty" data-k="qty" inputmode="numeric" value="' + esc(r.qty) + '" aria-label="Khối lượng"></td>' +
+        '<td><input class="w-m" id="r' + i + '-cost" data-k="cost" inputmode="numeric" value="' + esc(r.cost) + '" aria-label="Giá vốn"></td>' +
+        '<td><input class="w-m" id="r' + i + '-price" data-k="price" inputmode="numeric" value="' + esc(r.price) + '" aria-label="Giá hiện tại"></td>' +
+        '<td class="cb"><input type="checkbox" id="r' + i + '-mg" data-k="marginable"' + (r.marginable ? ' checked' : '') + ' aria-label="Được cho vay"></td>' +
+        '<td><input class="w-m" id="r' + i + '-cap" data-k="cap" inputmode="numeric" value="' + esc(r.cap) + '" placeholder="–" aria-label="Giá chặn"></td>' +
+        '<td><button class="x" type="button" data-del="' + i + '" aria-label="Xóa dòng">×</button></td></tr>';
+    }).join('');
+    ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { $('#' + k).value = S[k]; });
+  }
+  $('#rows').addEventListener('input', function (e) {
+    var tr = e.target.closest('tr'); if (!tr) return;
+    var r = S.rows[+tr.dataset.i], k = e.target.dataset.k;
+    r[k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    compute();
+  });
+  $('#rows').addEventListener('change', function (e) { if (e.target.tagName === 'SELECT') { S.rows[+e.target.closest('tr').dataset.i].exch = e.target.value; compute(); } });
+  $('#rows').addEventListener('click', function (e) { var d = e.target.dataset.del; if (d == null) return; S.rows.splice(+d, 1); renderInputs(); compute(); });
+  $('#add').addEventListener('click', function () { S.rows.push({ sym: '', exch: 'HOSE', qty: '', cost: '', price: '', marginable: true, cap: '' }); renderInputs(); $('#r' + (S.rows.length - 1) + '-sym').focus(); compute(); });
+  ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { $('#' + k).addEventListener('input', function (e) { S[k] = e.target.value; compute(); }); });
+  document.querySelectorAll('[data-p]').forEach(function (b) { b.addEventListener('click', function () { load(b.dataset.p); }); });
+  document.querySelectorAll('[data-t]').forEach(function (b) { b.addEventListener('click', function () { target = b.dataset.t; $('#tcustom').value = ''; compute(); }); });
+  $('#tcustom').addEventListener('input', function () { target = $('#tcustom').value.trim() ? 'custom' : '5'; compute(); });
+
+  function buildInput() {
+    return {
+      rows: S.rows.map(function (r) { return { sym: r.sym, exch: r.exch, qty: parseMoney(r.qty), cost: parseMoney(r.cost), price: parseMoney(r.price), marginable: r.marginable, cap: parseMoney(r.cap) }; }),
+      cash: parseMoney(S.cash), debt: parseMoney(S.debt), call: parsePct(S.call), force: parsePct(S.force),
+      fee: parsePct(S.fee) || 0, tax: parsePct(S.tax) || 0, appRtt: parsePct(S.apprtt)
+    };
+  }
+
+  /* ---------- tính và hiển thị ---------- */
+  var STATUS = {
+    above: 'Trên ngưỡng call', near: 'Gần ngưỡng call', below: 'Dưới ngưỡng call (theo mô hình)',
+    force: 'Dưới ngưỡng giải chấp (theo mô hình)', nodebt: 'Không vay margin', unknown: 'Chưa đủ cơ sở xác định'
+  };
+  function distText(d, f) {
+    if (d.t === 'nodebt') return ['–', 'không vay margin'];
+    if (d.t === 'below') return ['Đã dưới', 'ngưỡng ngay lúc này'];
+    if (d.t === 'never') return ['Không chạm', 'giảm sâu đến đâu cũng chưa chạm'];
+    return [pc(d.x), f && f.t === 'n' ? 'tương đương ' + f.n + ' phiên giảm sàn liên tiếp' : f && f.t === 'never' ? 'giảm sàn 30 phiên vẫn chưa chạm' : ''];
+  }
+
+  function compute() {
+    document.querySelectorAll('.err').forEach(function (el) { el.classList.remove('err'); });
+    var n = C.normalize(buildInput());
+    var box = $('#errs');
+    if (!n.ok) {
+      box.hidden = false;
+      box.innerHTML = n.errors.map(function (e) { return '<div><b>' + e.code + '</b>' + esc(e.msg) + '</div>'; }).join('');
+      n.errors.forEach(function (e) {
+        var m = /^rows\[(\d+)\]\.(\w+)$/.exec(e.field), id = m ? 'r' + m[1] + '-' + (m[2] === 'marginable' ? 'mg' : m[2]) : e.field === 'appRtt' ? 'apprtt' : e.field;
+        var el = document.getElementById(id); if (el) el.classList.add('err');
+      });
+      $('#results').style.opacity = '.35';
+      return;
+    }
+    box.hidden = true; $('#results').style.opacity = '';
+    var P = n.P, a = C.assess(P), h = a.cal.h, v = a.v;
+    $('#ver').textContent = C.VERSION;
+    var pill = $('#pill'); pill.className = 'pill s-' + a.status; pill.textContent = STATUS[a.status];
+    $('#kpis').innerHTML = [
+      ['Rtt theo mô hình', pc(v.rtt, 2), P.debt ? 'call ' + pc(P.call, 0) + ' · giải chấp ' + pc(P.force, 0) : ''],
+      ['Rtt tự tính (mọi mã)', pc(v.rttOwn, 2), 'tài sản ròng ÷ (cổ phiếu + tiền)'],
+      ['Rtt trên app', P.appRtt == null ? '–' : pc(P.appRtt, 2), P.appRtt == null ? 'chưa nhập' : 'anh nhập'],
+      ['Tài sản ròng', tr(v.nav), 'cổ phiếu + tiền − nợ'],
+      ['Giá trị cổ phiếu', tr(v.mv), g(P.rows.length) + ' mã'],
+      ['Tài sản tính margin', tr(v.assets), 'tiền + cổ phiếu được công nhận']
+    ].map(function (k) { return '<div><span>' + k[0] + '</span><b>' + k[1] + '</b><em>' + k[2] + '</em></div>'; }).join('');
+    $('#cal').textContent = a.cal.note || '';
+
+    // Còn cách bao xa
+    var dC = C.dropTo(P, P.call, null, h), dF = C.dropTo(P, P.force, null, h);
+    var fC = C.floorSessions(P, P.call, null, h), fF = C.floorSessions(P, P.force, null, h);
+    var tC = distText(dC, fC), tF = distText(dF, fF);
+    $('#dist').innerHTML = '<div><span>Cả danh mục giảm đều tới call</span><b>' + tC[0] + '</b><em>' + tC[1] + '</em></div>' +
+      '<div><span>Cả danh mục giảm đều tới giải chấp</span><b>' + tF[0] + '</b><em>' + tF[1] + '</em></div>';
+    var L = C.legacy.calibratedDrop(P), cmp = '';
+    if (P.debt > 0) {
+      var lx = L.t === 'x' ? pc(L.x) : L.t === 'below' ? 'đã dưới ngưỡng' : 'không chạm';
+      if (L.t === 'x' && dC.t === 'x' && L.x - dC.x > 0.0005)
+        cmp = '<div class="cmp warn"><span class="tag">So với web</span><span>Bác sĩ danh mục đang chạy trên web sẽ báo <b class="num">' + lx + '</b> cho cùng danh mục này, rộng hơn mô hình mới <b class="num">' + ((L.x - dC.x) * 100).toFixed(1).replace('.', ',') + ' điểm %</b>. ' + (P.appRtt != null ? 'Lý do: cách quy đổi Rtt app cũ giữ một tỷ lệ cố định khi giá đổi.' : 'Lý do: web hiện chưa có ô đánh dấu mã không được cho vay hay giá chặn.') + '</span></div>';
+      else if (L.t === dC.t && (L.t !== 'x' || Math.abs(L.x - dC.x) <= 0.0005))
+        cmp = '<div class="cmp same"><span class="tag">So với web</span><span>Khớp với bản đang chạy trên web (' + lx + ').</span></div>';
+      else
+        cmp = '<div class="cmp warn"><span class="tag">So với web</span><span>Bản đang chạy trên web báo: <b>' + lx + '</b>; mô hình mới: <b>' + tC[0] + '</b>.</span></div>';
+    }
+    $('#cmp').innerHTML = cmp;
+    if (P.debt > 0 && a.status !== 'below' && a.status !== 'force') {
+      $('#perstock').innerHTML = '<thead><tr><th>Riêng một mã giảm</th><th class="n">Tỷ trọng</th><th class="n">Giảm tới call</th><th class="n">Giá chạm</th><th class="n">Phiên sàn</th></tr></thead><tbody>' +
+        P.rows.slice().sort(function (x, y) { return y.qty * y.price - x.qty * x.price; }).map(function (r) {
+          var d = C.dropTo(P, P.call, r.sym, h), f = C.floorSessions(P, P.call, r.sym, h);
+          return '<tr><td class="k">' + r.sym + (r.marginable ? '' : '<span class="badge w">không cho vay</span>') + '</td><td class="n">' + pc(r.qty * r.price / v.mv) + '</td>' +
+            (d.t === 'x' ? '<td class="n">' + pc(d.x) + '</td><td class="n">' + g(d.prices[r.sym]) + '</td><td class="n">' + (f.t === 'n' ? f.n : '–') + '</td>'
+              : '<td class="n mut" colspan="3">một mình không kéo tới call</td>') + '</tr>';
+        }).join('') + '</tbody>';
+    } else $('#perstock').innerHTML = '';
+
+    // Cần tối thiểu
+    document.querySelectorAll('[data-t]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.t === target ? 'true' : 'false'); });
+    var tg = target === 'custom' ? parsePct($('#tcustom').value) : P.call + Number(target) / 100;
+    var need = $('#need');
+    if (!(tg > 0 && tg < 1)) { need.innerHTML = '<p class="note">Nhập mục tiêu từ 1% đến 99%.</p>'; }
+    else {
+      var m = C.minToTarget(P, tg);
+      if (m.t === 'nodebt') need.innerHTML = '<p class="note">Không vay margin nên không có gì phải bù.</p>';
+      else if (m.t === 'ok') need.innerHTML = '<p class="note">Rtt theo mô hình (' + pc(m.rtt) + ') đã cao hơn mục tiêu ' + pc(tg) + '. Không cần nộp hay bán thêm.</p>';
+      else {
+        var rows = '<thead><tr><th>Cách</th><th class="n">Cần</th><th class="n">Rtt sau</th></tr></thead><tbody>';
+        function after(acts) { var s = C.simulate(P, acts); return s.ok ? pc(s.after.v.rtt, 2) : '–'; }
+        rows += '<tr class="grp"><td colspan="3">Nộp tiền</td></tr>';
+        m.options.filter(function (o) { return o.kind.indexOf('deposit') === 0; }).forEach(function (o, i) {
+          var mode = o.kind === 'deposit-repay' ? 'repay' : 'cash';
+          rows += '<tr><td class="k">' + o.label + (i === 0 ? '' : '<span class="sub">cần nhiều hơn vì tiền mặt cũng nằm trong mẫu số của Rtt</span>') + '</td><td class="n' + (i === 0 ? ' best' : '') + '" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td><td class="n">' + after([{ type: 'deposit', amount: o.amount, mode: mode }]) + '</td></tr>';
+        });
+        ['sell-repay', 'sell-cash'].forEach(function (kind) {
+          rows += '<tr class="grp"><td colspan="3">' + (kind === 'sell-repay' ? 'Bán một mã để trả nợ' : 'Bán một mã, giữ tiền mặt') + '</td></tr>';
+          m.options.filter(function (o) { return o.kind === kind; }).sort(function (x, y) { return (x.amount || Infinity) - (y.amount || Infinity); }).forEach(function (o) {
+            var r = P.rows.filter(function (x) { return x.sym === o.sym; })[0];
+            var nm = '<td class="k">' + o.sym + (r.marginable ? '' : '<span class="badge w">không cho vay</span>');
+            if (o.t === 'ok') rows += '<tr>' + nm + '<span class="sub">bán ' + g(o.shares) + ' cp, ' + pc(o.pctOfQty, 0) + ' lượng đang có</span></td><td class="n" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td><td class="n">' + after([{ type: 'sell', sym: o.sym, shares: o.shares, use: kind === 'sell-repay' ? 'repay' : 'cash' }]) + '</td></tr>';
+            else if (o.t === 'insufficient') rows += '<tr>' + nm + '</td><td class="n bad" colspan="2">bán hết vẫn thiếu · Rtt ' + pc(o.rttIfAll, 1) + '</td></tr>';
+            else rows += '<tr>' + nm + '</td><td class="n mut" colspan="2">không làm Rtt tăng</td></tr>';
+          });
+        });
+        need.innerHTML = '<p class="note">Thiếu hụt quy ra tiền trả nợ: <b class="num">' + tr(m.shortfall) + '</b> để Rtt lên ' + pc(tg) + '. "Rtt sau" là kết quả tính lại sau khi làm đúng con số đó.</p><div class="scroll"><table class="res">' + rows + '</tbody></table></div>';
+      }
+    }
+  }
+
+  /* ---------- kiểm thử ---------- */
+  function runTests() {
+    var res = window.TBCoreTests.run(C), pass = res.filter(function (r) { return r.pass; }).length;
+    var sc = $('#score'); sc.textContent = pass + '/' + res.length; sc.className = 'score ' + (pass === res.length ? 'pass' : 'fail');
+    var groups = []; res.forEach(function (r) { if (groups.indexOf(r.group) < 0) groups.push(r.group); });
+    $('#tests').innerHTML = groups.map(function (gname) {
+      var list = res.filter(function (r) { return r.group === gname; }), ok = list.filter(function (r) { return r.pass; }).length;
+      return '<details' + (ok < list.length ? ' open' : '') + '><summary>' + gname + '<span class="cnt' + (ok < list.length ? ' f' : '') + '">' + ok + '/' + list.length + ' đạt</span></summary>' +
+        list.map(function (r) {
+          return '<div class="tcase"><span class="c ' + (r.pass ? 'p' : 'f') + '">' + r.code + '</span><span>' + esc(r.name) + '</span>' +
+            '<span class="eg">Mong đợi <i>' + esc(r.expect) + '</i> · Nhận được <i>' + esc(r.got) + '</i></span></div>';
+        }).join('') + '</details>';
+    }).join('');
+    $('#ver2').textContent = C.VERSION;
+  }
+
+  load('goc');
+  runTests();
+})();
+</script>
