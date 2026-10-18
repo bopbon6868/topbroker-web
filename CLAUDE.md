@@ -16,6 +16,7 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Giọng văn: dễ hiểu, gọn, dí dỏm kiểu miền Bắc, không bôi nhọ ai.
 
 ## Lịch tự động
+- **ĐANG TẠM DỪNG (anh Hải yêu cầu 18/10/2026 tối):** cả 4 lịch cập nhật tin đã tắt; không đăng bài/tin mới. Anh đang cơ cấu lại web để chỉ tập trung vào Bác sĩ danh mục. Chỉ bật lại khi anh yêu cầu.
 - 7:45, 12:15, 15:45 và 20:45 hằng ngày (mốc 8:00, 12:30, 16:00, 21:00), chạy trên mây: sửa bản tin, bảng Thị trường, 3 tin cần biết, Lịch (`site/index.html`), Radar (`site/radar/index.html`) và `TB.UPDATED`/`TB.TICKER` trong `site/assets/site.js`.
 
 - **Bản tin trang chủ (anh Hải chốt 17/10/2026): 5 tin** trong `<ul class="bl">`. Tiêu đề khối là **"Đọc nhanh bắt gọn"** (`h1#h-brief`, anh Hải đổi 18/10/2026), lịch cập nhật không sửa tiêu đề này. Tin 1 LUÔN là chính trị, chiến sự, địa chính trị thế giới có thể tác động thị trường (nói rõ đi vào Việt Nam qua kênh nào: giá dầu, tỷ giá, dòng vốn ngoại, xuất khẩu…). 4 tin còn lại là những gì ảnh hưởng nhất tới tiền nhà đầu tư lúc đó. Chất riêng: **Nhanh, Gọn, Sâu, Dí dỏm chất Bắc, Tập trung vào điều ảnh hưởng nhất**. Mỗi tin 1–2 câu (≤ ~45 chữ), có con số kèm nguồn và mốc thời gian, kết bằng "thế thì sao" với nhà đầu tư.
