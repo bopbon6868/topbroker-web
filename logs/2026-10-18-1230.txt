@@ -1,0 +1,15 @@
+Cập nhật phiên trưa 18/10/2026 · 12:30 (Chủ Nhật, sàn VN nghỉ: giữ số đóng cửa 16/10; bản tin dạng tổng kết tuần + tin cuối tuần + tuần tới)
+
+THAY ĐỔI
+- site/assets/site.js: TB.UPDATED -> 'Chủ Nhật, 18/10/2026 · 12:30'; TB.TICKER thêm Dầu qua Hormuz (2,9 tr thùng 11/10, Kpler), GDP Trung Quốc Q3 dự báo 4,4% (công bố 19/10), Nam A Bank LNTT 9T >4.700 tỷ (+25%); BTC 81.699, ETH 2.414 (11:45 18/10).
+- site/index.html: giờ số liệu .bf -> 18/10/2026 · 12:30; bản tin 5 tin mới (1 Hormuz: Kpler 20,8 -> 2,9 triệu thùng, Trump chờ thỏa thuận sau bầu cử giữa kỳ 3/11; 2 VN-Index tuần + hỗ trợ 1.700/cản 1.715–1.750, thanh khoản −18,6%; 3 ngân hàng lãi 9 tháng; 4 công ty chứng khoán quý 3 MBS/KAFI/VDS; 5 GDP Trung Quốc 19/10 + Bitcoin); tranh mới "Tàu dầu chờ ở Hormuz tới sau bầu cử Mỹ" (eo biển, tàu dầu chờ trước hàng phao, đồng hồ cát, hòm phiếu, giọt dầu); ô/dòng BTC, ETH; 3 tin cần biết mới; Lịch: 19/10 thêm GDP Trung Quốc, thay mục 05/11 HPG bằng 03/11 bầu cử giữa kỳ Mỹ. Số VN, Mỹ, Á–Âu, vàng, dầu, NHNN, tỷ giá, lãi qua đêm, khối ngoại giữ nguyên (cuối tuần không có phiên/số mới).
+- site/radar/index.html: giờ 12:30 18/10; sửa tin Hormuz (thêm Kpler, phát biểu Trump, link Al Jazeera 18/10); thêm tin thế giới "Tuần tới: GDP Trung Quốc 19/10, LPR 20/10, Warsh 23/10" (tg Kinh tế); bỏ nhãn tg ở tin Fed/Warsh 17/10 để giữ 4 điểm nóng (Hormuz, Trung Quốc, Nga, IEA); thêm tin VN-Index tuần/nhận định (VietnamPlus, Vietstock 18/10); bổ sung MBS vào tin BCTC 18/10. Khối NHNN giữ nguyên (không có số mới cuối tuần).
+
+NGUỒN
+- Al Jazeera 18/10: IRGC nói 2 tàu ~2 triệu thùng/chiếc bốc cháy; Kpler 20,8 triệu thùng (8/10) -> 2,9 triệu (11/10); Trump (Newsmax) chờ thỏa thuận sau bầu cử 3/11.
+- VietnamPlus 18/10 11:07: VN-Index 1.705,91, thanh khoản HOSE −18,6%, hỗ trợ 1.700, cản 1.715–1.750, P/E ngoài Vingroup ~9,75 (SHS).
+- Vietstock 18/10 07:30: phân tích kỹ thuật tuần 19–23/10 (MACD dưới 0).
+- Người Quan Sát 17/10 16:13: ABBank ~4.540 tỷ (+97%), Vietbank 1.297 tỷ (+50%), Nam A Bank >4.700 tỷ (+25%), SHB ~14.300 tỷ (+17%).
+- Thời báo Tài chính VN 16/10: MBS quý 3 ~394 tỷ (−6%). CafeF 18/10 00:02: KAFI 171 tỷ (−13%), VDS lỗ 105 tỷ.
+- Newsquawk Week Ahead (Global-View) 16/10: GDP Trung Quốc Q3 dự báo 4,4% (19/10), LPR 20/10, BoK 22/10, Warsh tại IMF 23/10.
+- Robinhood (chỉ số BRTI) 18/10 00:45 EDT = 11:45 giờ VN: BTC 81.699,34; ETH 2.414,36. Biến động: so với 81.238 lúc 8:00 và 2.425 (17/10), Top Broker tính.
