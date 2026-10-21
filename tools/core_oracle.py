@@ -21,3 +21,12 @@ print('NVL excl all->call',sessions(.4,excl=('NVL',)))
 # S4 stressed target .45 HPG
 mv=306.5e6*.75;A=mv+C;n=A-D;need=.45*A-n;S=need/(.45-.0025);print('S4 rtt',n/A,'need',need,'S',S,'sh',S/20250)
 print('legacy S3', 1-(D/(1-.4/((111.5/261.5)/(176.5/326.5)))-C)/306.5e6)
+
+# --- T+2 (21/10/2026): bán 1.400 HPG ở danh mục đã bị call (giá ×0,75), phí+thuế 0,25%
+phi=0.0025; A=306.5e6*.75+20e6; D=150e6
+S=1400*20250; net=S*(1-phi)
+A0=A-S+net; print('T0 rtt HPG', (A0-D)/A0)          # tiền chờ về vẫn tính tài sản, nợ chưa giảm
+A2=A-S; print('T2 rtt HPG', (A2-(D-net))/A2)
+# NVL không cho vay: bán 2.000 NVL (giá 9.750) để trả nợ
+Am=A-5000*9750; S=2000*9750; net=S*(1-phi)
+print('NVL base', (Am-D)/Am, 'T0', (Am+net-D)/(Am+net), 'T2', (Am-(D-net))/Am)

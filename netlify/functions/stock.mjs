@@ -2,6 +2,7 @@
 // /api/stock?s=HPG,VPB         → giá gần nhất (TRỄ 15 PHÚT) và giá tham chiếu phiên trước
 // /api/stock?s=HPG,VNINDEX&h=400 → thêm lịch sử giá ngày (đóng cửa, cao, thấp) trong h ngày gần nhất
 // Nguồn: VNDirect dchart. Đơn vị giá cổ phiếu trả về: nghìn đồng (như bảng điện).
+// q[mã].x = sàn niêm yết (HOSE/HNX/UPCOM, từ VNDirect finfo; thiếu thì bỏ trống), h[mã].v = khối lượng khớp từng ngày.
 
 const DELAY = 15 * 60;
 const HEADERS = {
@@ -38,7 +39,22 @@ async function history(sym, days) {
   const now = Math.floor(Date.now() / 1000);
   const j = await getJSON(`https://dchart-api.vndirect.com.vn/dchart/history?resolution=D&symbol=${sym}&from=${now - days * 86400}&to=${now}`);
   if (j?.s !== 'ok' || !j.t?.length) throw new Error('no data');
-  return { t: j.t.map(dayVN), c: j.c, h: j.h, l: j.l };
+  return { t: j.t.map(dayVN), c: j.c, h: j.h, l: j.l, v: j.v };
+}
+
+// Sàn niêm yết, để tính giá sàn đúng biên độ (HOSE 7%, HNX 10%, UPCoM 15%)
+const FLOOR = { HOSE: 'HOSE', HSX: 'HOSE', HNX: 'HNX', UPCOM: 'UPCOM' };
+async function floors(syms) {
+  const list = syms.filter(s => s !== 'VNINDEX');
+  if (!list.length) return {};
+  try {
+    const r = await fetch(`https://api-finfo.vndirect.com.vn/v4/stocks?q=code:${list.join(',')}&fields=code,floor&size=${list.length + 5}`, {
+      headers: { ...HEADERS, Origin: 'https://dstock.vndirect.com.vn', Referer: 'https://dstock.vndirect.com.vn/' }, signal: AbortSignal.timeout(4000) });
+    if (!r.ok) return {};
+    const j = await r.json(), out = {};
+    (j.data || []).forEach(x => { const f = FLOOR[String(x.floor || '').toUpperCase()]; if (f && x.code) out[String(x.code).toUpperCase()] = f; });
+    return out;
+  } catch (e) { return {}; }
 }
 
 export default async (req) => {
@@ -46,10 +62,13 @@ export default async (req) => {
   const syms = [...new Set((u.searchParams.get('s') || '').toUpperCase().split(',').map(x => x.trim()).filter(x => /^[A-Z0-9]{3,8}$/.test(x)))].slice(0, 40);
   const h = Math.min(800, Math.max(0, parseInt(u.searchParams.get('h') || '0', 10) || 0));
   const out = { updated: new Date().toISOString(), delay: 15, q: {}, h: {}, errors: {} };
+  const flP = h ? Promise.resolve({}) : floors(syms);
   await Promise.all(syms.map(async s => {
     try { out.q[s] = await quote(s); } catch (e) { out.errors[s] = 'Không lấy được giá'; }
     if (h) { try { out.h[s] = await history(s, h); } catch (e) { out.errors[s] = out.errors[s] || 'Không lấy được lịch sử giá'; } }
   }));
+  const fl = await flP;
+  Object.keys(out.q).forEach(s => { if (fl[s]) out.q[s].x = fl[s]; });
   return new Response(JSON.stringify(out), {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',

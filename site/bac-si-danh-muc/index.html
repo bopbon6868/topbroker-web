@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261018e">
+<link rel="stylesheet" href="bsdm.css?v=20261021a">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -71,7 +71,7 @@
       <div class="ocr-res" id="ocr-res" hidden></div>
       <div id="tab-tay" role="tabpanel" aria-labelledby="t-tay">
       <div class="tw"><table class="bs-in" id="in-tbl">
-        <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Ngành</th><th><span class="sr">Xóa</span></th></tr></thead>
+        <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Ngành</th><th>Cho vay</th><th>Giá chặn</th><th><span class="sr">Xóa</span></th></tr></thead>
         <tbody></tbody>
       </table></div>
       <div class="bs-row">
@@ -95,7 +95,7 @@
         <label>Phí giao dịch (%)<input id="fee" inputmode="decimal" value="0,15"></label>
         <label>Thuế bán (%)<input id="tax" inputmode="decimal" value="0,1"></label>
       </div>
-      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản − Nợ) ÷ Tài sản. Công ty chứng khoán tính theo tỷ lệ cho vay riêng từng mã nên số trên app có thể khác; nhập <b>tỷ lệ ký quỹ app đang hiện</b> để Bác sĩ chỉnh các mốc call margin cho khớp.</p>
+      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản được công nhận − Nợ) ÷ Tài sản được công nhận. Bỏ dấu <b>Được cho vay</b> ở mã công ty không cho vay, điền <b>giá chặn</b> nếu công ty định giá mã thấp hơn thị giá, và nhập <b>tỷ lệ ký quỹ app đang hiện</b> để mốc call margin sát với app. Khi chưa chắc, Bác sĩ chọn giả định bất lợi hơn.</p>
       <div class="bs-row end"><span id="in-msg" class="note" aria-live="polite"></span><button type="button" class="btn big" id="run">Bắt đầu khám →</button></div>
     </div>
   </section>
@@ -329,6 +329,7 @@
 <div id="tb-foot"></div>
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
-<script src="bsdm.js?v=20261018e"></script>
+<script src="tb-core.js?v=20261021a"></script>
+<script src="bsdm.js?v=20261021a"></script>
 </body>
 </html>

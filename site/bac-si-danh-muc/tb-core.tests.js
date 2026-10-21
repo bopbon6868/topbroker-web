@@ -221,6 +221,32 @@
       return { pass: a === 25150 && b === 24300 && c === 23000, expect: 'HOSE 25.150 · HNX 24.300 · UPCoM 23.000', got: 'HOSE ' + a + ' · HNX ' + b + ' · UPCoM ' + c };
     });
 
+    /* ----- Tiền bán chờ T+2 và các điểm đã chốt (21/10/2026) ----- */
+    T('T2-01', 'Tiền về T+2', 'Bán 1.400 HPG trả nợ: hôm nay Rtt chưa lên (39,95%), T+2 tiền về mới lên 45,05%', function () {
+      var s = C.simulate(P(sample(stressed)), [{ type: 'sell', sym: 'HPG', shares: 1400, use: 'repay' }]);
+      return { pass: near(s.afterT0.v.rtt, 0.39952953138784) && near(s.after.v.rtt, 0.45053210698567) && s.P0.debt === 150e6 && s.flags.indexOf('sale-proceeds-t2') >= 0,
+        expect: 'hôm nay 39,953%, nợ chưa giảm · T+2 45,053%', got: 'hôm nay ' + pc(s.afterT0.v.rtt) + ', nợ ' + vnd(s.P0.debt) + ' · T+2 ' + pc(s.after.v.rtt) };
+    });
+    T('T2-02', 'Tiền về T+2', 'Bán mã không được cho vay: Rtt tăng ngay hôm nay (25,42% → 32,00%), T+2 lên 35,09%', function () {
+      var p = P(sample(function (o) { stressed(o); o.rows[2].marginable = false; }));
+      var s = C.simulate(p, [{ type: 'sell', sym: 'NVL', shares: 2000, use: 'repay' }]);
+      return { pass: near(C.assess(p).v.rtt, 0.25419515226849) && near(s.afterT0.v.rtt, 0.31996305132579) && near(s.after.v.rtt, 0.35090739589807),
+        expect: '25,420% → hôm nay 31,996% → T+2 35,091%', got: pc(C.assess(p).v.rtt) + ' → hôm nay ' + pc(s.afterT0.v.rtt) + ' → T+2 ' + pc(s.after.v.rtt) };
+    });
+    T('T2-03', 'Tiền về T+2', 'Bảng "cần tối thiểu" tính theo lúc tiền về và báo kèm Rtt hôm nay', function () {
+      var o = C.minToTarget(P(sample(stressed)), 0.45).options.filter(function (x) { return x.kind === 'sell-repay' && x.sym === 'HPG'; })[0];
+      return { pass: o.shares === 1400 && near(o.rttAfter, 0.45053210698567) && near(o.rttT0, 0.39952953138784),
+        expect: '1.400 cp · T+2 45,053% · hôm nay 39,953%', got: o.shares + ' cp · T+2 ' + pc(o.rttAfter) + ' · hôm nay ' + pc(o.rttT0) };
+    });
+    T('T2-04', 'Tiền về T+2', 'Nộp tiền vẫn cấn trừ nợ ngay, không phải chờ', function () {
+      var s = C.simulate(P(sample(stressed)), [{ type: 'deposit', amount: 12568750 }]);
+      return { pass: near(s.afterT0.v.rtt, 0.45) && near(s.P0.debt, 150e6 - 12568750, 1e-3), expect: 'hôm nay đã 45,000%', got: 'hôm nay ' + pc(s.afterT0.v.rtt) };
+    });
+    T('DEF-01', 'Tiền về T+2', 'Mặc định đã chốt: gần ngưỡng 10 điểm, mục tiêu call + 5, nộp tiền cấn trừ, tiền bán T+2', function () {
+      var d = C.DEFAULTS, ok = d.nearBand === 0.10 && d.targetAdd === 0.05 && d.depositMode === 'repay' && d.settle === 't2';
+      return { pass: ok, expect: '0,10 · 0,05 · repay · t2', got: d.nearBand + ' · ' + d.targetAdd + ' · ' + d.depositMode + ' · ' + d.settle };
+    });
+
     /* ----- Kiểm thử ngẫu nhiên ----- */
     T('RND-01', 'Ngẫu nhiên', '500 danh mục ngẫu nhiên: lời giải số khớp công thức cũ khi không có giá chặn/mã loại trừ', function () {
       var seed = 7, bad = 0, n = 0;

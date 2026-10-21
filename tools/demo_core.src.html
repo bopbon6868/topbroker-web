@@ -146,8 +146,8 @@ footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18
 <div class="wrap">
   <header>
     <div class="kick">Top Broker · Bác sĩ danh mục · Bản demo Đợt 1</div>
-    <h1>Lõi tính toán mới, chạy thử trước khi gắn vào web</h1>
-    <p class="dek">Trang này chạy lõi tính toán mới, tách riêng khỏi topbroker.fun nên không ảnh hưởng gì tới web đang chạy. Danh mục là số mẫu, giá nhập tay. Anh sửa bất kỳ ô nào, kết quả và bộ kiểm thử tính lại ngay.</p>
+    <h1>Lõi tính toán mới của Bác sĩ danh mục</h1>
+    <p class="dek">Trang này chạy đúng lõi tính toán đang dùng trên topbroker.fun, tách riêng để thử. Danh mục là số mẫu, giá nhập tay. Anh sửa bất kỳ ô nào, kết quả và bộ kiểm thử tính lại ngay.</p>
     <ul class="chg">
       <li><b>Mô hình margin có tham số</b><span>Đánh dấu mã không được cho vay và giá chặn, thay cho một tỷ lệ chung cho mọi tài khoản.</span></li>
       <li><b>Sửa cách quy đổi Rtt app</b><span>Cách cũ có thể báo khoảng đệm rộng hơn thực tế. Cách mới chọn giả định bất lợi hơn khi chưa chắc.</span></li>
@@ -219,7 +219,7 @@ footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18
         <div id="need"></div>
         <div class="assume">
           <span><b>Giả định của bảng này</b> (đổi được khi chốt nghiệp vụ):</span>
-          <span>· Tiền bán được ghi nhận ngay vào tài sản tính margin và cấn trừ nợ ngay. Tùy công ty, thực tế có thể khác.</span>
+          <span>· Nộp tiền: công ty tự cấn trừ nợ ngay. Tiền bán: chờ T+2 mới trả được nợ, nên số cần bán tính theo lúc tiền về; cột "Hôm nay" là Rtt trong lúc chờ (anh Hải chốt 21/10/2026).</span>
           <span>· Bán ở giá hiện tại, trừ phí và thuế ở trên. Chưa xét khả năng khớp lệnh khi mã nằm sàn.</span>
           <span>· Đây là phép tính, không phải khuyến nghị. Bảng không xếp hạng phương án.</span>
         </div>
@@ -249,22 +249,22 @@ footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18
         <li>Cần tối thiểu: nộp tiền (2 cách), bán từng mã (trả nợ hoặc giữ tiền), làm tròn lô 100.</li>
         <li>Bộ kiểm thử, có kiểm thử ngẫu nhiên.</li>
       </ul></div>
-      <div><h3>Khi anh duyệt sẽ làm tiếp</h3><ul>
+      <div><h3>Đã gắn vào Bác sĩ danh mục (21/10/2026)</h3><ul>
         <li>Thay phần tính trong Bác sĩ danh mục bằng lõi này; giá vẫn lấy tự động như hiện tại.</li>
         <li>Thêm ô "Cho vay" và "Giá chặn" vào bảng nhập (mặc định: cho vay, không giá chặn).</li>
         <li>Đưa khung "Cần tối thiểu" vào thẻ kết quả 30 giây.</li>
         <li>Tự lấy khối lượng giao dịch bình quân 20 phiên để báo mức khó bán.</li>
       </ul></div>
-      <div><h3>Cần anh chốt <span class="q">[CẦN CHỐT]</span></h3><ul>
-        <li>"Gần ngưỡng" là cách call dưới bao nhiêu điểm %? (đang để 10)</li>
-        <li>Mục tiêu mặc định của "cần tối thiểu": call, call + 5 hay call + 10?</li>
-        <li>Nộp tiền mặc định là cấn trừ nợ ngay?</li>
-        <li>Tiền bán coi như ghi nhận ngay, hay chờ T+2?</li>
+      <div><h3>Anh Hải đã chốt (21/10/2026)</h3><ul>
+        <li>"Gần ngưỡng": cách call dưới 10 điểm %.</li>
+        <li>Mục tiêu mặc định của "cần tối thiểu": call + 5 điểm.</li>
+        <li>Nộp tiền: công ty tự cấn trừ nợ ngay.</li>
+        <li>Tiền bán: chờ T+2 mới trả được nợ.</li>
       </ul></div>
     </div>
   </section>
 
-  <footer><span id="ver2"></span><span>Bản demo · không ảnh hưởng topbroker.fun</span></footer>
+  <footer><span id="ver2"></span><span>Trang thử lõi · không ảnh hưởng dữ liệu trên topbroker.fun</span></footer>
 </div>
 
 <script>
@@ -388,11 +388,11 @@ footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18
     if (P.debt > 0) {
       var lx = L.t === 'x' ? pc(L.x) : L.t === 'below' ? 'đã dưới ngưỡng' : 'không chạm';
       if (L.t === 'x' && dC.t === 'x' && L.x - dC.x > 0.0005)
-        cmp = '<div class="cmp warn"><span class="tag">So với web</span><span>Bác sĩ danh mục đang chạy trên web sẽ báo <b class="num">' + lx + '</b> cho cùng danh mục này, rộng hơn mô hình mới <b class="num">' + ((L.x - dC.x) * 100).toFixed(1).replace('.', ',') + ' điểm %</b>. ' + (P.appRtt != null ? 'Lý do: cách quy đổi Rtt app cũ giữ một tỷ lệ cố định khi giá đổi.' : 'Lý do: web hiện chưa có ô đánh dấu mã không được cho vay hay giá chặn.') + '</span></div>';
+        cmp = '<div class="cmp warn"><span class="tag">So với bản cũ</span><span>Bác sĩ danh mục bản trước 21/10 sẽ báo <b class="num">' + lx + '</b> cho cùng danh mục này, rộng hơn mô hình mới <b class="num">' + ((L.x - dC.x) * 100).toFixed(1).replace('.', ',') + ' điểm %</b>. ' + (P.appRtt != null ? 'Lý do: cách quy đổi Rtt app cũ giữ một tỷ lệ cố định khi giá đổi.' : 'Lý do: bản cũ chưa có ô đánh dấu mã không được cho vay hay giá chặn.') + '</span></div>';
       else if (L.t === dC.t && (L.t !== 'x' || Math.abs(L.x - dC.x) <= 0.0005))
-        cmp = '<div class="cmp same"><span class="tag">So với web</span><span>Khớp với bản đang chạy trên web (' + lx + ').</span></div>';
+        cmp = '<div class="cmp same"><span class="tag">So với bản cũ</span><span>Khớp với bản trước 21/10 (' + lx + ').</span></div>';
       else
-        cmp = '<div class="cmp warn"><span class="tag">So với web</span><span>Bản đang chạy trên web báo: <b>' + lx + '</b>; mô hình mới: <b>' + tC[0] + '</b>.</span></div>';
+        cmp = '<div class="cmp warn"><span class="tag">So với bản cũ</span><span>Bản trước 21/10 báo: <b>' + lx + '</b>; mô hình mới: <b>' + tC[0] + '</b>.</span></div>';
     }
     $('#cmp').innerHTML = cmp;
     if (P.debt > 0 && a.status !== 'below' && a.status !== 'force') {
@@ -415,24 +415,24 @@ footer{font-size:12.5px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 18
       if (m.t === 'nodebt') need.innerHTML = '<p class="note">Không vay margin nên không có gì phải bù.</p>';
       else if (m.t === 'ok') need.innerHTML = '<p class="note">Rtt theo mô hình (' + pc(m.rtt) + ') đã cao hơn mục tiêu ' + pc(tg) + '. Không cần nộp hay bán thêm.</p>';
       else {
-        var rows = '<thead><tr><th>Cách</th><th class="n">Cần</th><th class="n">Rtt sau</th></tr></thead><tbody>';
-        function after(acts) { var s = C.simulate(P, acts); return s.ok ? pc(s.after.v.rtt, 2) : '–'; }
-        rows += '<tr class="grp"><td colspan="3">Nộp tiền</td></tr>';
+        var rows = '<thead><tr><th>Cách</th><th class="n">Cần</th><th class="n">Hôm nay</th><th class="n">Khi tiền về</th></tr></thead><tbody>';
+        function after(acts) { var s = C.simulate(P, acts); return s.ok ? '<td class="n">' + pc(s.afterT0.v.rtt, 2) + '</td><td class="n">' + pc(s.after.v.rtt, 2) + '</td>' : '<td class="n">–</td><td class="n">–</td>'; }
+        rows += '<tr class="grp"><td colspan="4">Nộp tiền</td></tr>';
         m.options.filter(function (o) { return o.kind.indexOf('deposit') === 0; }).forEach(function (o, i) {
           var mode = o.kind === 'deposit-repay' ? 'repay' : 'cash';
-          rows += '<tr><td class="k">' + o.label + (i === 0 ? '' : '<span class="sub">cần nhiều hơn vì tiền mặt cũng nằm trong mẫu số của Rtt</span>') + '</td><td class="n' + (i === 0 ? ' best' : '') + '" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td><td class="n">' + after([{ type: 'deposit', amount: o.amount, mode: mode }]) + '</td></tr>';
+          rows += '<tr><td class="k">' + o.label + (i === 0 ? '' : '<span class="sub">cần nhiều hơn vì tiền mặt cũng nằm trong mẫu số của Rtt</span>') + '</td><td class="n' + (i === 0 ? ' best' : '') + '" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td>' + after([{ type: 'deposit', amount: o.amount, mode: mode }]) + '</tr>';
         });
         ['sell-repay', 'sell-cash'].forEach(function (kind) {
-          rows += '<tr class="grp"><td colspan="3">' + (kind === 'sell-repay' ? 'Bán một mã để trả nợ' : 'Bán một mã, giữ tiền mặt') + '</td></tr>';
+          rows += '<tr class="grp"><td colspan="4">' + (kind === 'sell-repay' ? 'Bán một mã để trả nợ' : 'Bán một mã, giữ tiền mặt') + '</td></tr>';
           m.options.filter(function (o) { return o.kind === kind; }).sort(function (x, y) { return (x.amount || Infinity) - (y.amount || Infinity); }).forEach(function (o) {
             var r = P.rows.filter(function (x) { return x.sym === o.sym; })[0];
             var nm = '<td class="k">' + o.sym + (r.marginable ? '' : '<span class="badge w">không cho vay</span>');
-            if (o.t === 'ok') rows += '<tr>' + nm + '<span class="sub">bán ' + g(o.shares) + ' cp, ' + pc(o.pctOfQty, 0) + ' lượng đang có</span></td><td class="n" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td><td class="n">' + after([{ type: 'sell', sym: o.sym, shares: o.shares, use: kind === 'sell-repay' ? 'repay' : 'cash' }]) + '</td></tr>';
-            else if (o.t === 'insufficient') rows += '<tr>' + nm + '</td><td class="n bad" colspan="2">bán hết vẫn thiếu · Rtt ' + pc(o.rttIfAll, 1) + '</td></tr>';
-            else rows += '<tr>' + nm + '</td><td class="n mut" colspan="2">không làm Rtt tăng</td></tr>';
+            if (o.t === 'ok') rows += '<tr>' + nm + '<span class="sub">bán ' + g(o.shares) + ' cp, ' + pc(o.pctOfQty, 0) + ' lượng đang có</span></td><td class="n" title="' + g(o.amount) + ' đ">' + tr(o.amount) + '</td>' + after([{ type: 'sell', sym: o.sym, shares: o.shares, use: kind === 'sell-repay' ? 'repay' : 'cash' }]) + '</tr>';
+            else if (o.t === 'insufficient') rows += '<tr>' + nm + '</td><td class="n bad" colspan="3">bán hết vẫn thiếu · Rtt ' + pc(o.rttIfAll, 1) + '</td></tr>';
+            else rows += '<tr>' + nm + '</td><td class="n mut" colspan="3">không làm Rtt tăng</td></tr>';
           });
         });
-        need.innerHTML = '<p class="note">Thiếu hụt quy ra tiền trả nợ: <b class="num">' + tr(m.shortfall) + '</b> để Rtt lên ' + pc(tg) + '. "Rtt sau" là kết quả tính lại sau khi làm đúng con số đó.</p><div class="scroll"><table class="res">' + rows + '</tbody></table></div>';
+        need.innerHTML = '<p class="note">Thiếu hụt quy ra tiền trả nợ: <b class="num">' + tr(m.shortfall) + '</b> để Rtt lên ' + pc(tg) + '. Hai cột Rtt là kết quả tính lại sau khi làm đúng con số đó.</p><div class="scroll"><table class="res">' + rows + '</tbody></table></div>';
       }
     }
   }

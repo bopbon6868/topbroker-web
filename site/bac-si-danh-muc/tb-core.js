@@ -1,6 +1,6 @@
 /*
  * TB Core – lõi tính toán Bác sĩ danh mục (Đợt 1, bản demo)
- * Hàm thuần: cùng đầu vào + cùng phiên bản => cùng kết quả. Không gọi mạng, không đụng giao diện.
+ * Dùng chung cho trang Bác sĩ danh mục và trang demo. Hàm thuần: cùng đầu vào + cùng phiên bản => cùng kết quả. Không gọi mạng, không đụng giao diện.
  * Dùng được cả trên trình duyệt (window.TBCore) lẫn Node (require).
  *
  * Mô hình margin có tham số (thay cho "thư viện quy tắc theo từng CTCK"):
@@ -15,7 +15,9 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = 'tb-core 1.0.0-demo (18/10/2026)';
+  var VERSION = 'tb-core 1.1.0 (21/10/2026)';
+  /** Các điểm anh Hải chốt ngày 21/10/2026. */
+  var DEFAULTS = { nearBand: 0.10, targetAdd: 0.05, depositMode: 'repay', settle: 't2' };
   var BAND = { HOSE: 0.07, HNX: 0.10, UPCOM: 0.15 };   // biên độ dao động giá
   var LOT = 100;                                        // lô chẵn
   var EPS = 1e-9;
@@ -80,10 +82,11 @@
     });
     var appRtt = input.appRtt == null || input.appRtt === '' ? null : input.appRtt;
     if (appRtt != null && !(isNum(appRtt) && appRtt > 0 && appRtt <= 1)) err('IN-05', 'appRtt', 'Rtt trên app phải từ 0% đến 100%, hoặc để trống.');
-    var near = input.nearBand == null ? 0.10 : input.nearBand;
+    var near = input.nearBand == null ? DEFAULTS.nearBand : input.nearBand;
+    var recv = isNum(input.recv) && input.recv > 0 ? input.recv : 0;
     return {
       ok: errors.length === 0, errors: errors, warnings: warnings,
-      P: { rows: rows, cash: input.cash || 0, debt: input.debt || 0, call: call, force: force,
+      P: { rows: rows, cash: input.cash || 0, debt: input.debt || 0, recv: recv, call: call, force: force,
            fee: input.fee || 0, tax: input.tax || 0, appRtt: appRtt, nearBand: near }
     };
   }
@@ -98,10 +101,10 @@
   function valueAt(P, prices, h) {
     var mv = 0, mc = 0;
     P.rows.forEach(function (r) { var px = prices ? prices[r.sym] : r.price; mv += r.qty * px; mc += countedRow(r, px, h); });
-    var A = mc + P.cash, nav = mv + P.cash - P.debt;
+    var R = P.recv || 0, A = mc + P.cash + R, nav = mv + P.cash + R - P.debt;
     return {
-      mv: mv, counted: mc, assets: A, nav: nav,
-      rttOwn: mv + P.cash > 0 ? nav / (mv + P.cash) : null,
+      mv: mv, counted: mc, assets: A, nav: nav, recv: R,
+      rttOwn: mv + P.cash + R > 0 ? nav / (mv + P.cash + R) : null,
       rtt: P.debt <= 0 ? 1 : A > 0 ? (A - P.debt) / A : null
     };
   }
@@ -173,10 +176,14 @@
   /**
    * actions: [{type:'deposit', amount, mode:'repay'|'cash'}, {type:'sell', sym, shares, price?, use:'repay'|'cash'},
    *           {type:'buy', sym, shares, price?, fund:'cash'|'loan'}]
-   * Giả định: tiền bán được ghi nhận ngay vào tài sản tính margin (tùy CTCK; ghi rõ trên kết quả).
+   * Tiền bán chờ T+2 (anh Hải chốt 21/10/2026): hôm nay (T0) tiền bán là "tiền chờ về", vẫn tính vào tài sản
+   * nhưng CHƯA trả được nợ; tới T+2 tiền về mới cấn trừ nợ (nếu chọn trả nợ). Kết quả trả cả hai trạng thái:
+   * afterT0 (hôm nay) và after (sau khi tiền về). opts.settle = 'now' để coi như tiền về ngay.
    */
-  function simulate(P, actions) {
-    var Q = JSON.parse(JSON.stringify(P)), fees = 0, realized = 0, deposit = 0, errors = [], flags = [];
+  function simulate(P, actions, opts) {
+    var settle = (opts && opts.settle) || DEFAULTS.settle;
+    var Q = JSON.parse(JSON.stringify(P)), fees = 0, realized = 0, deposit = 0, errors = [], flags = [], pend = [];
+    Q.recv = Q.recv || 0;
     var bySym = {}; Q.rows.forEach(function (r) { bySym[r.sym] = r; });
     (actions || []).forEach(function (a, i) {
       if (a.type === 'deposit') {
@@ -192,9 +199,9 @@
         if (a.shares > r.qty) { errors.push({ code: 'CE-12', msg: 'Bán ' + a.shares + ' cp ' + a.sym + ' vượt lượng đang có (' + r.qty + ').' }); return; }
         var px = a.price || r.price, gross = a.shares * px, cost = gross * (Q.fee + Q.tax), net = gross - cost;
         fees += cost; realized += net - a.shares * r.cost; r.qty -= a.shares;
-        if (a.use === 'cash') Q.cash += net;
-        else { var p2 = Math.min(net, Q.debt); Q.debt -= p2; Q.cash += net - p2; }
-        flags.push('sale-proceeds-immediate');
+        if (settle === 'now') settleSale(Q, net, a.use);
+        else { Q.recv += net; pend.push({ net: net, use: a.use }); }
+        flags.push(settle === 'now' ? 'sale-proceeds-immediate' : 'sale-proceeds-t2');
       } else if (a.type === 'buy') {
         var b = bySym[a.sym];
         if (!b) { errors.push({ code: 'IN-01', msg: 'Mã ' + a.sym + ' chưa có trong danh mục (thêm dòng trước).' }); return; }
@@ -205,9 +212,19 @@
         else { var fromCash = Math.min(Q.cash, outlay); Q.cash -= fromCash; Q.debt += outlay - fromCash; }
       }
     });
-    var after = errors.length ? null : assess(Q);
+    var afterT0 = null, after = null, Q0 = null;
+    if (!errors.length) {
+      Q0 = JSON.parse(JSON.stringify(Q)); afterT0 = assess(Q0);
+      pend.forEach(function (x) { Q.recv -= x.net; settleSale(Q, x.net, x.use); });
+      if (Q.recv < EPS) Q.recv = 0;
+      after = assess(Q);
+    }
     if (after && after.v.mv === 0 && Q.debt > 0) flags.push('no-stock-debt-left');   // CE-06
-    return { ok: errors.length === 0, errors: errors, P: Q, after: after, fees: fees, realized: realized, deposit: deposit, flags: flags };
+    return { ok: errors.length === 0, errors: errors, P: Q, P0: Q0, after: after, afterT0: afterT0, fees: fees, realized: realized, deposit: deposit, flags: flags };
+  }
+  function settleSale(Q, net, use) {
+    if (use === 'cash') Q.cash += net;
+    else { var p = Math.min(net, Q.debt); Q.debt -= p; Q.cash += net - p; }
   }
 
   /* ---------- 5. Cần tối thiểu bao nhiêu để đưa Rtt về mục tiêu ---------- */
@@ -231,6 +248,8 @@
         var lot = Math.min(r.qty, Math.ceil(sh / LOT - EPS) * LOT);
         if (f(lot) < target - EPS) lot = r.qty;   // làm tròn lô vẫn thiếu thì phải bán hết phần lẻ
         o.t = 'ok'; o.sharesExact = sh; o.shares = lot; o.amount = lot * r.price; o.pctOfQty = lot / r.qty;
+        var sim = simulate(P, [{ type: 'sell', sym: r.sym, shares: lot, use: use }]);
+        o.rttAfter = sim.after.v.rtt; o.rttT0 = sim.afterT0.v.rtt;
         o.advPct = r.adv20 ? lot / r.adv20 : null;
         o.liquidity = o.advPct == null ? 'unknown' : o.advPct > 1 ? 'over-adv' : o.advPct > 0.2 ? 'heavy' : 'ok';
         out.options.push(o);
@@ -257,7 +276,7 @@
   };
 
   return {
-    VERSION: VERSION, BAND: BAND, LOT: LOT,
+    VERSION: VERSION, DEFAULTS: DEFAULTS, BAND: BAND, LOT: LOT,
     normalize: normalize, valueAt: valueAt, calibrate: calibrate, assess: assess,
     dropTo: dropTo, floorSessions: floorSessions, floorPrice: floorPrice,
     simulate: simulate, minToTarget: minToTarget, legacy: legacy
