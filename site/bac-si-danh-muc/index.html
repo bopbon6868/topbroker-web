@@ -10,7 +10,7 @@
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 <link rel="stylesheet" href="../assets/site.css?v=20261017f">
-<link rel="stylesheet" href="bsdm.css?v=20261021a">
+<link rel="stylesheet" href="bsdm.css?v=20261021b">
 </head>
 <body data-root="../" data-page="bac-si">
 <div id="tb-top"></div>
@@ -71,9 +71,10 @@
       <div class="ocr-res" id="ocr-res" hidden></div>
       <div id="tab-tay" role="tabpanel" aria-labelledby="t-tay">
       <div class="tw"><table class="bs-in" id="in-tbl">
-        <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Ngành</th><th>Cho vay</th><th>Giá chặn</th><th><span class="sr">Xóa</span></th></tr></thead>
+        <thead><tr><th>Mã</th><th>Khối lượng</th><th>Giá vốn</th><th>Giá hiện tại</th><th>Lãi/lỗ hiện tại</th><th>Ngành</th><th>Cho vay</th><th><span class="sr">Xóa</span></th></tr></thead>
         <tbody></tbody>
       </table></div>
+      <p class="note in-sum" id="in-sum" aria-live="polite"></p>
       <div class="bs-row">
         <button type="button" class="btn" id="add-row">+ Thêm mã</button>
         <button type="button" class="btn ghost" id="paste-toggle">Dán nhanh từ app</button>
@@ -95,7 +96,7 @@
         <label>Phí giao dịch (%)<input id="fee" inputmode="decimal" value="0,15"></label>
         <label>Thuế bán (%)<input id="tax" inputmode="decimal" value="0,1"></label>
       </div>
-      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản được công nhận − Nợ) ÷ Tài sản được công nhận. Bỏ dấu <b>Được cho vay</b> ở mã công ty không cho vay, điền <b>giá chặn</b> nếu công ty định giá mã thấp hơn thị giá, và nhập <b>tỷ lệ ký quỹ app đang hiện</b> để mốc call margin sát với app. Khi chưa chắc, Bác sĩ chọn giả định bất lợi hơn.</p>
+      <p class="note">Ngưỡng ký quỹ và phí: sửa theo hợp đồng với công ty chứng khoán của bạn. Rtt = (Tài sản được công nhận − Nợ) ÷ Tài sản được công nhận. Bỏ dấu <b>Được cho vay</b> ở mã công ty không cho vay, và nhập <b>tỷ lệ ký quỹ app đang hiện</b> để mốc call margin sát với app. Khi chưa chắc, Bác sĩ chọn giả định bất lợi hơn.</p>
       <div class="bs-row end"><span id="in-msg" class="note" aria-live="polite"></span><button type="button" class="btn big" id="run">Bắt đầu khám →</button></div>
     </div>
   </section>
@@ -188,9 +189,9 @@
     <div class="bs-stage-b" id="bat-benh-b" hidden>
     <div class="card bs-pad bs-ctx" id="ctx"><span class="kick2">Hỏi bệnh</span><h3>Hoàn cảnh của bạn</h3>
       <fieldset><legend>1. Số tiền này bạn định để đầu tư trong bao lâu?</legend>
-        <label><input type="radio" name="hz" value="s"><span>Dưới 6 tháng</span></label>
-        <label><input type="radio" name="hz" value="m"><span>6 tháng – 2 năm</span></label>
-        <label><input type="radio" name="hz" value="l"><span>Trên 2 năm</span></label></fieldset>
+        <label><input type="radio" name="hz" value="s"><span>3 tháng</span></label>
+        <label><input type="radio" name="hz" value="m"><span>6 tháng đến 1 năm</span></label>
+        <label><input type="radio" name="hz" value="l"><span>Trên 1 năm</span></label></fieldset>
       <fieldset><legend>2. Khi nào bạn có thể cần rút tiền ra dùng?</legend>
         <label><input type="radio" name="liq" value="3m"><span>Trong 3 tháng tới</span></label>
         <label><input type="radio" name="liq" value="1y"><span>Trong vòng 1 năm</span></label>
@@ -330,6 +331,6 @@
 <script src="../assets/site.js?v=20261017f"></script>
 <script src="sectors.js?v=20261017d"></script>
 <script src="tb-core.js?v=20261021a"></script>
-<script src="bsdm.js?v=20261021a"></script>
+<script src="bsdm.js?v=20261021b"></script>
 </body>
 </html>

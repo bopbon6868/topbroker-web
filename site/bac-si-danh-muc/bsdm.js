@@ -34,7 +34,7 @@ function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function 
 function fmtInt(n) { return String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ; }
 function dispNum(v) { var n = parseNum(v); return v !== '' && v != null && isFinite(n) && Math.abs(n - Math.round(n)) < 1e-9 && n >= 1000 ? fmtInt(n) : (v == null ? '' : v); }
 /* Ô nhập số: tự thêm dấu phẩy ngăn cách hàng nghìn khi gõ (1,000,000) */
-var NUMSEL = '#in-tbl .qty, #in-tbl .cost, #in-tbl .cap, #cash, #debt, #sim-px, #pd-guess, #pd-dep-m, input[data-qk]';
+var NUMSEL = '#in-tbl .qty, #in-tbl .cost, #cash, #debt, #sim-px, #pd-guess, #pd-dep-m, input[data-qk]';
 document.addEventListener('input', function (e) {
   var t = e.target; if (!t.matches || !t.matches(NUMSEL)) return;
   var v = t.value; if (!/^[\d,]*$/.test(v)) return;
@@ -68,20 +68,22 @@ function rowHTML(r) {
   return '<tr><td data-l="Mã"><input aria-label="Mã" class="sym" placeholder="VD: HPG" value="' + esc(r.sym) + '" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false"></td>' +
     '<td data-l="Khối lượng"><input aria-label="Khối lượng" class="qty" inputmode="numeric" placeholder="1,000" value="' + esc(dispNum(r.qty)) + '"></td>' +
     '<td data-l="Giá vốn (đ)"><input aria-label="Giá vốn" class="cost" inputmode="decimal" placeholder="25,000" value="' + esc(dispNum(r.cost)) + '"></td>' +
+    '<td data-l="Giá hiện tại" class="lv-px" aria-live="polite"><span class="lv">–</span></td>' +
+    '<td data-l="Lãi/lỗ hiện tại" class="lv-pl" aria-live="polite"><span class="lv">–</span></td>' +
     '<td data-l="Ngành"><select aria-label="Ngành" class="sec">' + opts + '</select></td>' +
     '<td data-l="Cho vay margin" class="mgc"><label class="mgl"><input type="checkbox" class="mg" aria-label="Công ty chứng khoán cho vay mã này"' + (r.mg === false ? '' : ' checked') + '><span>Được cho vay</span></label></td>' +
-    '<td data-l="Giá chặn (đ)"><input aria-label="Giá chặn" class="cap" inputmode="decimal" placeholder="không có" value="' + esc(dispNum(r.cap || '')) + '"></td>' +
     '<td><button type="button" class="x" aria-label="Xóa dòng">×</button></td></tr>';
 }
 function renderInputs() {
   var tb = $('#in-tbl tbody');
   if (!S.rows.length) S.rows = [{ sym: '', qty: '', cost: '', sector: 'Khác' }];
   tb.innerHTML = S.rows.map(rowHTML).join('');
+  liveSoon(0);
   ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { $('#' + k).value = S[k] == null ? '' : (k === 'cash' || k === 'debt' ? dispNum(S[k]) : S[k]); });
 }
 function readInputs() {
   S.rows = $$('#in-tbl tbody tr').map(function (tr) {
-    return { sym: $('.sym', tr).value.trim().toUpperCase(), qty: $('.qty', tr).value.trim(), cost: $('.cost', tr).value.trim(), sector: $('.sec', tr).value, mg: $('.mg', tr).checked, cap: $('.cap', tr).value.trim() };
+    return { sym: $('.sym', tr).value.trim().toUpperCase(), qty: $('.qty', tr).value.trim(), cost: $('.cost', tr).value.trim(), sector: $('.sec', tr).value, mg: $('.mg', tr).checked };
   });
   ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { S[k] = $('#' + k).value.trim(); });
   store(KEY, S);
@@ -91,12 +93,12 @@ $('#in-tbl').addEventListener('input', function (e) {
     var tr = e.target.closest('tr'), v = e.target.value.trim().toUpperCase(), s = sectorOf(v);
     if (v.length >= 3 && s !== 'Khác') $('.sec', tr).value = s;
   }
-  readInputs();
+  readInputs(); liveSoon(600);
 });
-$('#in-tbl').addEventListener('change', readInputs);
+$('#in-tbl').addEventListener('change', function () { readInputs(); liveSoon(0); });
 $('#in-tbl').addEventListener('click', function (e) {
   if (!e.target.classList.contains('x')) return;
-  e.target.closest('tr').remove(); readInputs(); if (!S.rows.length) renderInputs();
+  e.target.closest('tr').remove(); readInputs(); if (!S.rows.length) renderInputs(); liveSoon(0);
 });
 $$('#cash,#debt,#call,#force,#fee,#tax,#apprtt').forEach(function (el) { el.addEventListener('input', readInputs); });
 $('#add-row').addEventListener('click', function () {
@@ -211,7 +213,7 @@ $('#ocr-go').addEventListener('click', function () {
 function ocrApply(j) {
   readInputs();
   var had = S.rows.filter(function (r) { return r.sym; }).length;
-  var rows = (j.rows || []).map(function (r) { var o = S.rows.filter(function (x) { return x.sym === r.sym; })[0] || {}; return { sym: r.sym, qty: fmtInt(r.qty), cost: r.cost ? fmtInt(Math.round(toDong(r.cost))) : '', sector: sectorOf(r.sym), ai: 1, mg: o.mg, cap: o.cap || '' }; });
+  var rows = (j.rows || []).map(function (r) { var o = S.rows.filter(function (x) { return x.sym === r.sym; })[0] || {}; return { sym: r.sym, qty: fmtInt(r.qty), cost: r.cost ? fmtInt(Math.round(toDong(r.cost))) : '', sector: sectorOf(r.sym), ai: 1, mg: o.mg }; });
   if (rows.length) S.rows = rows;
   if (j.cash != null) S.cash = fmtInt(j.cash);
   if (j.debt != null) S.debt = fmtInt(j.debt); else if (rows.length) S.debt = S.debt || '';
@@ -230,6 +232,36 @@ function ocrApply(j) {
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 if (MB && MB.code) { MB.checked = false; mbCheck(MB.code, true); }
+
+/* ---------- Giá hiện tại và lãi/lỗ ngay trong bảng nhập (anh Hải yêu cầu 21/10/2026) ---------- */
+var LV_T = null, LV_BAD = {};
+function liveSoon(ms) { clearTimeout(LV_T); LV_T = setTimeout(liveFetch, ms); }
+function liveFetch() {
+  var syms = S.rows.map(function (r) { return r.sym; }).filter(function (s, i, a) { return /^[A-Z0-9]{3,8}$/.test(s) && a.indexOf(s) === i; });
+  var need = syms.filter(function (s) { return !PX[s] && !LV_BAD[s]; });
+  liveRender();
+  if (!need.length) return;
+  $$('#in-tbl tbody tr').forEach(function (tr) { var s = $('.sym', tr).value.trim().toUpperCase(); if (need.indexOf(s) >= 0) $('.lv-px .lv', tr).textContent = 'đang lấy giá…'; });
+  fetchQuotes(need).then(function () { need.forEach(function (s) { if (!PX[s]) LV_BAD[s] = 1; }); }, function () {}).then(liveRender);
+}
+function liveRender() {
+  var tv = 0, tc = 0, n = 0, ts = 0;
+  $$('#in-tbl tbody tr').forEach(function (tr) {
+    var s = $('.sym', tr).value.trim().toUpperCase(), q = parseNum($('.qty', tr).value), c = toDong(parseNum($('.cost', tr).value));
+    var px = $('.lv-px .lv', tr), pl = $('.lv-pl .lv', tr), X = PX[s];
+    if (!/^[A-Z0-9]{3,8}$/.test(s)) { px.textContent = '–'; pl.textContent = '–'; pl.className = 'lv'; return; }
+    if (!X) { px.textContent = LV_BAD[s] ? 'không lấy được giá' : '–'; pl.textContent = '–'; pl.className = 'lv'; return; }
+    var chg = X.ref ? X.p / X.ref - 1 : null;
+    px.innerHTML = '<b>' + nf(X.p) + '</b>' + (chg != null ? ' <small class="' + cls(chg) + '" title="So với giá tham chiếu hôm nay">' + pct(chg, 1) + '</small>' : '');
+    ts = Math.max(ts, X.t || 0);
+    if (q > 0 && c > 0) {
+      var v = q * (X.p - c); tv += q * X.p; tc += q * c; n++;
+      pl.className = 'lv ' + cls(v); pl.innerHTML = '<b>' + money(v, true) + '</b> <small>' + pct(X.p / c - 1, 1) + '</small>';
+    } else { pl.className = 'lv'; pl.textContent = 'nhập KL, giá vốn'; }
+  });
+  var sum = $('#in-sum');
+  if (sum) sum.innerHTML = n ? 'Tổng ' + n + ' mã: giá trị <b>' + money(tv) + '</b>, ' + (tv >= tc ? 'lãi' : 'lỗ') + ' <b class="' + cls(tv - tc) + '">' + money(Math.abs(tv - tc)) + ' (' + pct(tv / tc - 1, 1) + ')</b> so với giá vốn. Giá lúc ' + hm(ts) + ', trễ 15 phút, nguồn VNDirect.' : '';
+}
 
 /* ---------- lấy giá ---------- */
 function getJSON(url) { return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
@@ -427,7 +459,7 @@ function settings() {
 var CORE = window.TBCore, MGH = 0;
 function metaOf(sym) { return S.rows.filter(function (x) { return x.sym === sym; })[0] || {}; }
 function mgOf(sym) { return metaOf(sym).mg !== false; }
-function capOf(sym) { var c = toDong(parseNum(metaOf(sym).cap)); return c > 0 ? c : null; }
+function capOf() { return null; }   // giá chặn: anh Hải bỏ khỏi bảng nhập 21/10/2026 (lõi vẫn hỗ trợ nếu cần lại)
 function exchOf(sym) { return (PX[sym] && PX[sym].x) || 'HOSE'; }
 function advOf(sym) { var h = HIST[sym]; if (!h || !h.v || h.v.length < 5) return null; var a = h.v.slice(-20).filter(function (v) { return v > 0; }); return a.length ? a.reduce(function (s, v) { return s + v; }, 0) / a.length : null; }
 function holdOf(P) { return P.rows.map(function (r) { return { sym: r.sym, q: r.qty, p: r.p }; }); }
@@ -761,10 +793,9 @@ function floorTxt(P) {
   return f.t === 'n' ? ', tương đương <b>' + f.n + ' phiên giảm sàn liên tiếp</b>' + (noX ? ' (coi các mã chưa rõ sàn là HOSE, biên độ 7%)' : '') : '';
 }
 function marginNote(P) {
-  var st = P.st, c = P.cal || {}, nm = P.rows.filter(function (r) { return !mgOf(r.sym); }).map(function (r) { return r.sym; }), cap = P.rows.filter(function (r) { return capOf(r.sym); }).map(function (r) { return r.sym; });
+  var st = P.st, c = P.cal || {}, nm = P.rows.filter(function (r) { return !mgOf(r.sym); }).map(function (r) { return r.sym; });
   var t = 'Rtt tính theo tài sản được công ty chứng khoán công nhận (<b>' + money(P.massets) + '</b>)';
   t += nm.length ? ', không tính ' + nm.join(', ') + ' (không được cho vay)' : '';
-  t += cap.length ? ', ' + cap.join(', ') + ' tính theo giá chặn' : '';
   t += '. ';
   if (c.mode === 'app-lower') t += 'Rtt app ' + pct(st.appRtt, 1, false) + ' thấp hơn cách tính này nên đã coi như công ty không công nhận khoảng <b>' + money(c.excluded) + '</b> giá trị cổ phiếu: mốc call báo theo hướng bất lợi hơn. ';
   else if (c.mode === 'app-higher') t += 'Rtt app ' + pct(st.appRtt, 1, false) + ' cao hơn cách tính này: giữ số thấp hơn cho chắc, nên hỏi công ty cách tính. ';
@@ -967,7 +998,7 @@ function renderCause(n) {
 }
 
 /* ---------- 2 · HOÀN CẢNH ---------- */
-var HZ = { s: 'dưới 6 tháng', m: '6 tháng – 2 năm', l: 'trên 2 năm' }, LIQ = { '3m': 'có thể cần rút tiền trong 3 tháng tới', '1y': 'có thể cần rút tiền trong vòng 1 năm', 'no': 'chưa cần rút tiền ít nhất 1 năm' };
+var HZ = { s: 'khoảng 3 tháng', m: '6 tháng đến 1 năm', l: 'trên 1 năm' }, LIQ = { '3m': 'có thể cần rút tiền trong 3 tháng tới', '1y': 'có thể cần rút tiền trong vòng 1 năm', 'no': 'chưa cần rút tiền ít nhất 1 năm' };
 var GOAL = { keep: 'giữ tiền, hơn gửi tiết kiệm là được', grow: 'tài sản lớn dần đều đặn', max: 'lãi càng nhiều càng tốt, chấp nhận sóng gió' }, REACT = { all: 'bán hết cho nhẹ đầu', sell: 'bán bớt một phần', hold: 'ngồi im chờ hồi', buy: 'mua thêm vì giá rẻ' };
 function ctx() { var c = S.ctx || {}; return { hz: c.hz || null, liq: c.liq || null, tol: c.tol ? +c.tol : null, goal: c.goal || null, react: c.react || null }; }
 
@@ -1086,7 +1117,7 @@ function setSym(sym) {
   var m = $('#plan-msg'); if (m && PD.sym && PD.sym !== sym) m.hidden = true;
   var st = PORT.st; PD.sym = sym;
   var r = curRow();
-  PD.on = { hold: true }; PD.on[st.debt ? 'sellpay' : 'sell'] = true;
+  PD.on = {};   // khách tự tích phương án (anh Hải yêu cầu 21/10/2026)
   PD.q = { sell: { m: 'pct', v: 0.25 }, sellpay: { m: 'pct', v: 0.25 }, swap: { m: 'pct', v: 0.25 }, buy: { m: 'pct', v: 0.25 } };
   var others = PORT.rows.filter(function (x) { return x.sym !== sym; }).sort(function (a, b) { return b.plp - a.plp; });
   PD.to = others.length ? others[0].sym : ''; PD.src = st.cash > 0 ? 'cash' : 'margin'; PD.dep = { m: 'rtt', v: 0.6 };
