@@ -41,7 +41,17 @@
 .tb-date{font-family:var(--tb-mono);font-size:12px;color:var(--tb-mastInk2);white-space:nowrap;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:7px}
 .tb-live{width:7px;height:7px;border-radius:50%;background:#3ccf7a;box-shadow:0 0 0 3px rgba(60,207,122,.18);flex:none}
 @media (prefers-reduced-motion:no-preference){.tb-live{animation:tbpulse 2s ease-in-out infinite}@keyframes tbpulse{50%{opacity:.35}}}
-.tb-top a:focus-visible,.tb-foot a:focus-visible{outline:2px solid var(--tb-accent);outline-offset:2px}
+.tb-me{display:inline-flex;align-items:center;gap:6px;flex:none}
+.tb-me[hidden]{display:none}
+.tb-me-a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--tb-mastInk);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:4px 12px 4px 4px;max-width:220px}
+.tb-me-a:hover{background:rgba(255,255,255,.14)}
+.tb-av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,#3FC79A,#128A63)}
+.tb-me-t{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.tb-me-t b{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-me-t small{font-family:var(--tb-mono);font-size:10.5px;color:var(--tb-mastInk2);letter-spacing:.02em}
+.tb-me-x{font:inherit;font-size:12px;font-weight:600;color:var(--tb-mastInk2);background:none;border:0;padding:8px 4px;cursor:pointer;min-height:36px}
+.tb-me-x:hover{color:var(--tb-mastInk);text-decoration:underline}
+.tb-top a:focus-visible,.tb-foot a:focus-visible,.tb-me-x:focus-visible{outline:2px solid var(--tb-accent);outline-offset:2px}
 
 /* ---------- ticker ---------- */
 .tb-tick{background:var(--tb-mast2);border-top:1px solid #2a2a30}
@@ -74,6 +84,9 @@
   .tb-bar{flex-wrap:wrap;gap:0 16px;min-height:0;padding-top:12px}
   .tb-logo{order:1}
   .tb-date{order:2;margin-left:auto}
+  .tb-me{order:2;margin-left:auto}
+  .tb-bar.has-me .tb-date{display:none}
+  .tb-me-a{max-width:170px}
   .tb-nav{order:3;flex-basis:100%;margin-inline:-10px}
   .tb-nav a{padding:12px 10px}
   .tb-foot .tb-in{grid-template-columns:1fr 1fr}

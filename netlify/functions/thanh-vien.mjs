@@ -37,7 +37,7 @@ export default async (req) => {
     if (!m) return json({ ok: false, error: 'Không tìm thấy mã này. Kiểm tra lại hoặc nhắn Zalo 0939 660 996.' });
     if (m.active === false) return json({ ok: false, error: 'Mã này đang tạm khóa. Nhắn Zalo 0939 660 996 để được hỗ trợ.' });
     const hm = m.han_muc || HAN_MUC;
-    return json({ ok: true, han_muc: hm, con_lai: Math.max(0, hm - ((m.dung || {})[today()] || 0)) });
+    return json({ ok: true, ten: m.ten || '', han_muc: hm, con_lai: Math.max(0, hm - ((m.dung || {})[today()] || 0)) });
   }
 
   if (req.method !== 'POST') return json({ error: 'Chỉ nhận GET hoặc POST' }, 405);

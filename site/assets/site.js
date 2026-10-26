@@ -112,8 +112,11 @@ TB.LIVEMAP = {'VN-Index':'VNINDEX','VN30':'VN30','HNX':'HNX','HNX-Index':'HNX','
   'Nikkei 225':'N225','Hang Seng':'HSI','KOSPI':'KS11','FTSE 100':'FTSE','Vàng':'GOLD','Brent':'BRENT','WTI':'WTI','BTC':'BTC','ETH':'ETH'};
 
 function header(){
-  var nav = '<a href="'+TB.url('index.html')+'"'+(page==='home'?' aria-current="page"':'')+'>Trang chủ</a>';
-  TB.PRODUCTS.forEach(function(p){
+  /* Bác sĩ danh mục đứng đầu thanh menu (anh Hải yêu cầu 26/10/2026) */
+  var nav = '', home = '<a href="'+TB.url('index.html')+'"'+(page==='home'?' aria-current="page"':'')+'>Trang chủ</a>';
+  var order = TB.PRODUCTS.filter(function(p){return p.id==='bac-si'}).concat([null], TB.PRODUCTS.filter(function(p){return p.id!=='bac-si'}));
+  order.forEach(function(p){
+    if(p===null){ nav += home; return; }
     if(!p.nav) return;
     nav += '<a href="'+TB.url(p.href)+'"'+(page===p.id?' aria-current="page"':'')+(/^https?:/.test(p.href)?' class="tb-ext" target="_blank" rel="noopener"':'')+'>'+esc(p.nav)+(p.status==='soon'?'<span class="tb-soon">SẮP</span>':'')+(p.hot?'<span class="tb-hot">'+esc(p.hot)+'</span>':'')+'</a>';
   });
@@ -121,7 +124,7 @@ function header(){
     var lk=TB.LIVEMAP[t[0]]; return '<li'+(lk?' data-q="'+lk+'"':'')+'><b>'+esc(t[0])+'</b><span class="v">'+esc(t[1])+'</span>'+(t[2]||lk?'<span class="c '+t[3]+'">'+esc(t[2])+'</span>':'')+'<span class="t">'+esc(t[4])+'</span></li>';
   }).join('');
   return '<div class="tb-in tb-bar"><a class="tb-logo" href="'+TB.url('index.html')+'">'+TB.LOGO+'Top Broker<small>ĐẦU TƯ</small></a>'+
-         '<nav class="tb-nav" aria-label="Điều hướng chính">'+nav+'</nav><span class="tb-date" title="Số liệu cập nhật: '+esc(TB.UPDATED)+'"><span class="tb-live" aria-hidden="true"></span><span data-clock="full">'+esc(TB.UPDATED)+'</span></span></div>'+
+         '<nav class="tb-nav" aria-label="Điều hướng chính">'+nav+'</nav><span class="tb-date" title="Số liệu cập nhật: '+esc(TB.UPDATED)+'"><span class="tb-live" aria-hidden="true"></span><span data-clock="full">'+esc(TB.UPDATED)+'</span></span><span class="tb-me" id="tb-me" hidden></span></div>'+
          '<div class="tb-tick"><div class="tb-in"><ul aria-label="Chỉ số thị trường">'+tick+tick.replace(/<li>/g,'<li aria-hidden="true">')+'</ul></div></div>';
 }
 
@@ -140,6 +143,35 @@ function footer(){
 var top = document.getElementById('tb-top'), foot = document.getElementById('tb-foot');
 if(top){top.className='tb-top';top.setAttribute('role','banner');top.innerHTML=header()}
 if(foot){foot.className='tb-foot';foot.innerHTML=footer()}
+
+/* Thành viên đã nhập mã (localStorage tb-member-v1, dùng chung với Bác sĩ danh mục): hiện ở góc phải đầu trang (anh Hải yêu cầu 26/10/2026) */
+TB.MKEY = 'tb-member-v1';
+TB.member = function(){ try{ var m = JSON.parse(localStorage.getItem(TB.MKEY)); return m && m.code ? m : null; }catch(_){ return null; } };
+TB.renderMe = function(){
+  var box = document.getElementById('tb-me'); if(!box) return;
+  var m = TB.member(), bar = box.parentNode;
+  if(!m){ box.hidden = true; box.innerHTML = ''; bar.classList.remove('has-me'); return; }
+  var nm = m.ten || 'Thành viên', ch = (m.ten ? m.ten.trim().split(/\s+/).pop() : 'T').charAt(0).toUpperCase();
+  box.innerHTML = '<a class="tb-me-a" href="'+TB.url('bac-si-danh-muc/index.html')+'" title="Thành viên Top Broker · '+esc(m.code)+'"><span class="tb-av" aria-hidden="true">'+esc(ch)+'</span><span class="tb-me-t"><b>'+esc(nm)+'</b><small>'+esc(m.code)+'</small></span></a>'+
+    '<button type="button" class="tb-me-x" aria-label="Thoát mã thành viên '+esc(m.code)+'" title="Thoát">Thoát</button>';
+  box.hidden = false; bar.classList.add('has-me');
+};
+document.addEventListener('click', function(e){
+  if(!(e.target.closest && e.target.closest('.tb-me-x'))) return;
+  try{ localStorage.setItem(TB.MKEY, 'null'); }catch(_){}
+  TB.renderMe();
+  try{ window.dispatchEvent(new Event('tb-member-out')); }catch(_){}
+});
+window.addEventListener('storage', function(e){ if(e.key===TB.MKEY) TB.renderMe(); });
+TB.renderMe();
+/* Mã lưu từ trước chưa có tên: hỏi máy chủ một lần để lấy tên */
+(function(){
+  var m = TB.member(); if(!m || 'ten' in m || location.protocol==='file:' || !window.fetch) return;
+  fetch('/api/thanh-vien?code='+encodeURIComponent(m.code)).then(function(r){return r.json()}).then(function(j){
+    var cur = TB.member(); if(!cur || cur.code!==m.code) return;
+    if(j && j.ok){ cur.ten = j.ten || ''; try{ localStorage.setItem(TB.MKEY, JSON.stringify(cur)); }catch(_){} TB.renderMe(); }
+  }).catch(function(){});
+})();
 
 /* Đồng hồ chạy theo giờ Việt Nam: mọi phần tử có data-clock tự cập nhật mỗi giây
    data-clock="full"  → Thứ Sáu, 16/10/2026 · 21:11:05

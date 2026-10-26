@@ -71,7 +71,6 @@ function rowHTML(r) {
     '<td data-l="Giá hiện tại" class="lv-px" aria-live="polite"><span class="lv">–</span></td>' +
     '<td data-l="Lãi/lỗ hiện tại" class="lv-pl" aria-live="polite"><span class="lv">–</span></td>' +
     '<td data-l="Ngành"><select aria-label="Ngành" class="sec">' + opts + '</select></td>' +
-    '<td data-l="Cho vay margin" class="mgc"><label class="mgl"><input type="checkbox" class="mg" aria-label="Công ty chứng khoán cho vay mã này"' + (r.mg === false ? '' : ' checked') + '><span>Được cho vay</span></label></td>' +
     '<td><button type="button" class="x" aria-label="Xóa dòng">×</button></td></tr>';
 }
 function renderInputs() {
@@ -83,7 +82,7 @@ function renderInputs() {
 }
 function readInputs() {
   S.rows = $$('#in-tbl tbody tr').map(function (tr) {
-    return { sym: $('.sym', tr).value.trim().toUpperCase(), qty: $('.qty', tr).value.trim(), cost: $('.cost', tr).value.trim(), sector: $('.sec', tr).value, mg: $('.mg', tr).checked };
+    return { sym: $('.sym', tr).value.trim().toUpperCase(), qty: $('.qty', tr).value.trim(), cost: $('.cost', tr).value.trim(), sector: $('.sec', tr).value };
   });
   ['cash', 'debt', 'call', 'force', 'fee', 'tax', 'apprtt'].forEach(function (k) { S[k] = $('#' + k).value.trim(); });
   store(KEY, S);
@@ -159,8 +158,8 @@ function mbCheck(code, silent, msgSel) {
   if (!/^TB-[A-Z0-9]{4,10}$/.test(code)) { M.textContent = 'Mã có dạng TB-XXXXXX (chữ và số).'; return Promise.resolve(false); }
   if (!silent) M.textContent = 'Đang kiểm tra mã…';
   return getJSON(MB_API + '?code=' + encodeURIComponent(code)).then(function (j) {
-    if (j.ok) { MB = { code: code, left: j.con_lai, checked: true }; store(MKEY, { code: code }); M.textContent = ''; mbShow(); return true; }
-    if (silent) { MB = null; store(MKEY, null); mbShow(); mbRevoked(j.error); }
+    if (j.ok) { MB = { code: code, ten: j.ten || '', left: j.con_lai, checked: true }; store(MKEY, { code: code, ten: j.ten || '' }); M.textContent = ''; mbShow(); meBar(); return true; }
+    if (silent) { MB = null; store(MKEY, null); mbShow(); mbRevoked(j.error); meBar(); }
     M.textContent = j.error || 'Mã chưa đúng.'; return false;
   }).catch(function () { M.textContent = 'Chưa kiểm tra được mã (mạng hoặc máy chủ đang lỗi). Thử lại sau ít phút.'; if (MB) { MB.checked = true; mbShow(); } return !!(MB && MB.code); });
 }
@@ -168,7 +167,10 @@ function mbCheck(code, silent, msgSel) {
 function mbRevoked(err) { if (!$('#deep').hidden) { $('#deep').hidden = true; $('#deep-gate').hidden = false; $('#dg-msg').textContent = err || 'Mã thành viên không còn dùng được.'; } }
 $('#mb-check').addEventListener('click', function () { mbCheck($('#mb-code').value); });
 $('#mb-code').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); mbCheck($('#mb-code').value); } });
-$('#mb-out').addEventListener('click', function () { MB = null; store(MKEY, null); $('#mb-code').value = ''; mbShow(); mbRevoked('Đã thoát mã thành viên. Nhập mã để mở lại phần khám chuyên sâu.'); });
+function meBar() { try { if (window.TB && TB.renderMe) TB.renderMe(); } catch (e) {} }
+/* Thoát từ góc phải đầu trang (site.js phát sự kiện tb-member-out) */
+window.addEventListener('tb-member-out', function () { MB = null; $('#mb-code').value = ''; mbShow(); mbRevoked('Đã thoát mã thành viên. Nhập mã để mở lại phần khám chuyên sâu.'); });
+$('#mb-out').addEventListener('click', function () { MB = null; store(MKEY, null); meBar(); $('#mb-code').value = ''; mbShow(); mbRevoked('Đã thoát mã thành viên. Nhập mã để mở lại phần khám chuyên sâu.'); });
 /* Thu nhỏ ảnh trên máy trước khi gửi: cạnh dài tối đa 2000px, JPEG 0,85 */
 function shrink(file) {
   return new Promise(function (ok, bad) {
@@ -213,7 +215,7 @@ $('#ocr-go').addEventListener('click', function () {
 function ocrApply(j) {
   readInputs();
   var had = S.rows.filter(function (r) { return r.sym; }).length;
-  var rows = (j.rows || []).map(function (r) { var o = S.rows.filter(function (x) { return x.sym === r.sym; })[0] || {}; return { sym: r.sym, qty: fmtInt(r.qty), cost: r.cost ? fmtInt(Math.round(toDong(r.cost))) : '', sector: sectorOf(r.sym), ai: 1, mg: o.mg }; });
+  var rows = (j.rows || []).map(function (r) { return { sym: r.sym, qty: fmtInt(r.qty), cost: r.cost ? fmtInt(Math.round(toDong(r.cost))) : '', sector: sectorOf(r.sym), ai: 1 }; });
   if (rows.length) S.rows = rows;
   if (j.cash != null) S.cash = fmtInt(j.cash);
   if (j.debt != null) S.debt = fmtInt(j.debt); else if (rows.length) S.debt = S.debt || '';
@@ -458,7 +460,7 @@ function settings() {
    h suy ra từ Rtt app theo hướng bất lợi hơn (lõi calibrate). Rtt = (tài sản tính margin − nợ) ÷ tài sản tính margin. */
 var CORE = window.TBCore, MGH = 0;
 function metaOf(sym) { return S.rows.filter(function (x) { return x.sym === sym; })[0] || {}; }
-function mgOf(sym) { return metaOf(sym).mg !== false; }
+function mgOf() { return true; }   // cột Cho vay: anh Hải bỏ 26/10/2026, mọi mã coi như được cho vay (lõi vẫn hỗ trợ marginable)
 function capOf() { return null; }   // giá chặn: anh Hải bỏ khỏi bảng nhập 21/10/2026 (lõi vẫn hỗ trợ nếu cần lại)
 function exchOf(sym) { return (PX[sym] && PX[sym].x) || 'HOSE'; }
 function advOf(sym) { var h = HIST[sym]; if (!h || !h.v || h.v.length < 5) return null; var a = h.v.slice(-20).filter(function (v) { return v > 0; }); return a.length ? a.reduce(function (s, v) { return s + v; }, 0) / a.length : null; }
@@ -801,7 +803,7 @@ function marginNote(P) {
   else if (c.mode === 'app-higher') t += 'Rtt app ' + pct(st.appRtt, 1, false) + ' cao hơn cách tính này: giữ số thấp hơn cho chắc, nên hỏi công ty cách tính. ';
   else if (c.mode === 'match') t += 'Khớp với Rtt app. ';
   else if (c.mode === 'inconsistent') t += 'Rtt app không khớp được với số tiền mặt, dư nợ đã nhập: kiểm tra lại. ';
-  else t += 'Chưa nhập Rtt app: đánh dấu mã không được cho vay hoặc nhập Rtt app ở phần nhập để mốc call sát hơn. ';
+  else t += 'Chưa nhập Rtt app: nhập tỷ lệ ký quỹ app đang hiện ở phần nhập để mốc call sát hơn (công ty có thể không cho vay một số mã). ';
   return t + 'Kiểm tra lại trên app.';
 }
 /* Cần tối thiểu bao nhiêu để Rtt về call + 5 điểm (anh Hải chốt 21/10/2026). Phép tính, không phải khuyến nghị. */
