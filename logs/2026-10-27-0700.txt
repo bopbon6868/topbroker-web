@@ -1,0 +1,25 @@
+Cập nhật phiên sáng 27/10/2026 · 07:00 (Thứ Ba). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (thẻ VN-Index, độ rộng, sparkline 25 phiên, khối NHNN, Điểm nóng thế giới, mảng N).
+
+BẢN TIN
+1. (Thế giới) Mỹ có thể đánh lớn Iran trong 96 giờ nếu có lệnh (CNN qua Gulf News 26/10); Saudi, Pakistan, Thổ Nhĩ Kỳ sang Tehran hòa giải (Al Jazeera 26/10); Brent chốt 115,81 (−0,8%) (Reuters qua Investing.com).
+2. VN-Index 1.763,55 (−10,60, −0,60%) 26/10; 97 tăng/65 đứng/203 giảm; thanh khoản 13.529 tỷ (Thời báo Tài chính); vùng hỗ trợ 1.740–1.750, Kafi: thủng 1.750 có thể về 1.700–1.720 (Người Quan Sát 27/10).
+3. Khối ngoại HOSE bán ròng 892 tỷ, FPT −258 tỷ (Thời báo Tài chính, Dân Việt); NHNN hút ròng 5.064 tỷ phiên 26/10, OMO lưu hành 90.000 tỷ, qua đêm 4,3% (23/10) (Người Quan Sát).
+4. Lãi huy động giảm: VPBank 6,6% kỳ 6–11 tháng, >20 ngân hàng giảm (VietNamNet 26/10 09:35); yêu cầu NHNN (CV 608, họp 19/10) – Vietstock.
+5. Mỹ 26/10: Dow 52.361,52 (+0,28%), S&P 7.676,80 (+0,70%), Nasdaq 26.169,38 (+0,82%) (TheStreet); Fed 27–28/10, ~10% khả năng tăng (CME qua FXStreet).
+
+SỐ LIỆU KHÁC
+- VN30 1.889,53 (−0,92%), HNX 259,32 (−1,29%), UPCoM 126,28 (+0,02%) – Thời báo Tài chính 26/10. Chuỗi VN-Index 25 phiên 22/9–26/10: TCBS.
+- VIX 18,30 (−5,9%) – ad-hoc-news 26/10. FTSE 100 10.767,33 (+0,72%) – MarketScreener/Reuters 26/10. Hang Seng 23.211 (+0,5%) – News Directory 3. Nikkei, KOSPI giữ số đóng cửa 26/10 (AP).
+- Vàng ~4.010 USD/oz đầu phiên châu Á 27/10 – FXStreet (không có % nên ghi "hồi trên 4.000"). WTI 101,76 (−1,46%) – Reuters. BTC 80.348,63 (+0,15%) 6:39 EDT 26/10, ETH 2.317,53 (−0,92%) 2:11 EDT 26/10 – CoinDesk. Vàng SJC ~141,7 tr – Vietstock/Investing 27/10.
+- Tỷ giá trung tâm 27/10 chưa công bố lúc chạy nên giữ 25.627 (26/10).
+- Lợi suất TP Mỹ 10 năm 4,98% – AP 26/10. 159 tàu neo chờ quanh Hormuz – Straits.live 26/10.
+- Không lấy được khối ngoại HOSE từng phiên 19–23/10 (công cụ TCBS bị chặn) nên giữ biểu đồ khối ngoại 10 phiên 5–16/10 trên Radar (đã ghi mốc).
+
+RADAR
+- Thêm 8 tin: 3 tin thế giới (Chiến sự: Mỹ – Iran, Hormuz; Chính trị: hòa giải tại Tehran, Houthi – Saudi; Kinh tế: Fed + Phố Wall), phiên 26/10, khối ngoại, NHNN phiên 26/10, giảm lãi huy động, doanh nghiệp (MCH, PNJ, OCB, KOS, PSH).
+- Bỏ tin thế giới cũ 15–18/10 (tin Hormuz cũ thay bằng diễn biến mới), tin 12–16/10, tin mạng xã hội 12–14/10 (quá 7 ngày).
+- Khối NHNN chuyển sang "Hút nhẹ"; thêm điểm qua đêm 23/10 = 4,3% vào biểu đồ; nhãn "NHNN cho vay 4,5%" chuyển sang trái để khỏi đè số.
+- Mã đang được nhắc: NHNN, FPT, VCB, GAS, MCH, PNJ, TCB, HDB, VIC, BSR.
+
+LỊCH: bỏ 19/10, 20/10, 23/10; thêm Fed (01:00 29/10 giờ VN), Alphabet/Microsoft/Amazon báo lãi, PSH rời UPCoM 29/10, SMA GDKHQ 02/11.
+TRANH: eo biển, tàu dầu chờ; mây giông có sét và đồng hồ bấm giờ (96 giờ) bên trái, bồ câu ngậm cành ô liu bên phải.
