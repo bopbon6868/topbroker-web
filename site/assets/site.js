@@ -111,9 +111,9 @@ TB.LIVEMAP = {'VN-Index':'VNINDEX','VN30':'VN30','HNX':'HNX','HNX-Index':'HNX','
   'Nikkei 225':'N225','Hang Seng':'HSI','KOSPI':'KS11','FTSE 100':'FTSE','Vàng':'GOLD','Brent':'BRENT','WTI':'WTI','BTC':'BTC','ETH':'ETH'};
 
 function header(){
-  /* Bác sĩ danh mục đứng đầu thanh menu (anh Hải yêu cầu 26/10/2026) */
+  /* Trang chủ đứng đầu, Bác sĩ danh mục ngay sau (anh Hải chốt 26/10/2026) */
   var nav = '', home = '<a href="'+TB.url('index.html')+'"'+(page==='home'?' aria-current="page"':'')+'>Trang chủ</a>';
-  var order = TB.PRODUCTS.filter(function(p){return p.id==='bac-si'}).concat([null], TB.PRODUCTS.filter(function(p){return p.id!=='bac-si'}));
+  var order = [null].concat(TB.PRODUCTS.filter(function(p){return p.id==='bac-si'}), TB.PRODUCTS.filter(function(p){return p.id!=='bac-si'}));
   order.forEach(function(p){
     if(p===null){ nav += home; return; }
     if(!p.nav) return;

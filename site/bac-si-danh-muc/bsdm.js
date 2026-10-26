@@ -1752,6 +1752,7 @@ function aiRun(step) {
   fetch(AI_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buoc: step, so_lieu: data, code: MB && MB.code }) })
     .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.error) throw new Error((j.error || 'Lỗi') + (j.code ? ' (mã ' + j.code + (j.detail ? ': ' + j.detail : '') + ')' : '')); return j; }); })
     .then(function (j) {
+      LAST_AI = j;
       box.innerHTML = '<div class="ai-h"><h3>' + AI_ICON + AI_TITLE[step] + '</h3><button type="button" class="btn sm ghost ai-go">Hỏi lại</button></div>' +
         (j.khau_vi ? '<p class="kvline"><b>Khẩu vị của bạn:</b> ' + esc(j.khau_vi) + '</p>' : '') +
         (j.tom_tat ? '<p class="tt">' + esc(j.tom_tat) + '</p>' : '') +
@@ -1767,6 +1768,133 @@ function aiRun(step) {
     });
 }
 document.addEventListener('click', function (e) { var b = e.target.closest('.ai-go'); if (!b) return; aiRun(b.closest('.ai').getAttribute('data-step')); });
+
+/* ---------- ĐƠN THUỐC: xuất PDF tóm tắt buổi khám (Mẫu A, anh Hải chọn 26/10/2026) ----------
+   Dựng trên trình duyệt, in ra PDF bằng chức năng in của máy (Lưu dưới dạng PDF): số liệu không gửi đi đâu.
+   Chỉ dùng số đã tính ở các phần khác; phác đồ là lựa chọn của khách; lời AI chỉ hiện khi khách đã hỏi. */
+var RX_LOGO = '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="rxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF9A4A"/><stop offset="1" stop-color="#E4500A"/></linearGradient></defs><path d="M30 0H70C89.5 0 100 10.5 100 30V70C100 89.5 89.5 100 70 100H30C10.5 100 0 89.5 0 70V30C0 10.5 10.5 0 30 0Z" fill="url(#rxg)"/><rect x="26" y="52" width="12" height="24" rx="4" fill="#fff" fill-opacity=".72"/><rect x="44" y="40" width="12" height="36" rx="4" fill="#fff" fill-opacity=".86"/><rect x="62" y="26" width="12" height="50" rx="4" fill="#fff"/></svg>';
+function rxClip(s, n) { s = String(s || ''); return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : s; }
+function rxPlain(h) { return String(h || '').replace(/<[^>]+>/g, ''); }
+function rxData() {
+  var P = PORT, st = P.st, H = health(P), W = worries(P), K = profile(), C = ctx();
+  var nowD = new Date(Date.now() + 7 * 3600 * 1000), iso = today();
+  var tNow = ('0' + nowD.getUTCHours()).slice(-2) + ':' + ('0' + nowD.getUTCMinutes()).slice(-2);
+  var ts = Math.max.apply(null, P.rows.map(function (r) { return r.t || 0; }));
+  var code = MB && MB.code ? MB.code : '';
+  var D = { name: MB && MB.ten ? MB.ten : (code ? 'Thành viên Top Broker' : 'Khách của Top Broker'), code: code, date: vnDate(iso), time: tNow, px: ts ? hm(ts) : '',
+    no: 'BSDM-' + iso.slice(8, 10) + iso.slice(5, 7) + iso.slice(2, 4) + '-' + (code ? code.replace(/^TB-/, '').slice(0, 4) : tNow.replace(':', '')),
+    kv: K.decL ? K.decL.name : null, hc: [], score: H.score, lv: H.lv, dx: [], vit: [], rx: [], rxTitle: '', eff: [], watch: [], ai: null, rev: null };
+  if (C.hz) D.hc.push('đầu tư ' + HZ[C.hz]);
+  if (C.liq) D.hc.push(LIQ[C.liq]);
+  if (C.tol) D.hc.push('chịu được giảm khoảng ' + pct(C.tol, 0, false));
+  // 1. chẩn đoán: tối đa 3 điều đáng lo (đã xếp theo mức độ), cộng dòng margin nếu chưa có
+  var d = H.d, dx = W.filter(function (x) { return x.k !== 'ok' && x.s >= 30; }).slice(0, 3);
+  if (!dx.length) dx = W.slice(0, 1);
+  D.dx = dx.map(function (x) { return x.w; });
+  if (st.debt && d.t === 'x' && !dx.some(function (x) { return x.k === 'margin'; }) && D.dx.length < 3) {
+    var f = floorNow(P);
+    D.dx.push('<b>Margin:</b> cả danh mục giảm thêm <b>' + pct(d.x, 1, false) + '</b> (mất ' + money(d.x * P.mv) + ')' + (f.t === 'n' ? ', tương đương <b>' + f.n + ' phiên giảm sàn</b> liên tiếp' : '') + ' là bị call margin.');
+  }
+  D.vit = [['Tài sản ròng', money(P.nav), 'tài sản − nợ'], ['Cổ phiếu', money(P.mv), P.rows.length + ' mã · lãi/lỗ ' + money(P.mv - P.cv, true)],
+    ['Tiền mặt', money(st.cash), pct(P.assets > 0 ? st.cash / P.assets : 0, 1, false) + ' tổng tài sản'],
+    ['Dư nợ', st.debt ? money(st.debt) : 'Không vay', st.debt ? 'đòn bẩy ' + nf(P.lev, 2) + ' lần' : ''],
+    ['Tỷ lệ ký quỹ', st.debt ? pct(P.rtt, 1, false) : '–', st.debt ? 'call ' + pct(st.call, 0, false) + ' · giải chấp ' + pct(st.force, 0, false) : 'không vay margin']];
+  // 2. phác đồ: lấy phác đồ khách đã đưa vào ở chặng 3; chưa có thì là các việc cần kiểm tra
+  var CB = PLAN_ORDER.length ? combine() : null;
+  if (CB) {
+    D.rxTitle = 'Phác đồ (bạn tự chọn ở buổi khám)';
+    CB.acts.slice(0, 4).forEach(function (a) {
+      var how = (a.trade || []).slice(0, 2).join(' ');
+      if (/pay/.test(a.k || '') || /trả nợ/i.test(a.label)) how = 'Tiền bán về sau T+2 mới trả được nợ. ' + how;
+      D.rx.push({ what: a.sym + ' · ' + a.label, tag: /hold/.test(a.k || '') ? ['Theo dõi', 't2'] : /deposit/.test(a.k || '') ? ['Nộp tiền', 't1'] : /buy|swap/.test(a.k || '') ? ['Tăng vị thế', 't3'] : ['Giảm vị thế', 't1'], how: rxClip(how, 230) });
+    });
+    if (CB.acts.length > 4) D.rx.push({ what: 'Và ' + (CB.acts.length - 4) + ' quyết định khác trong phác đồ', tag: null, how: 'Xem đủ ở chặng 3 trên Bác sĩ danh mục.' });
+    var undec = P.rows.filter(function (r) { return !PLAN[r.sym]; }).map(function (r) { return r.sym; });
+    if (undec.length && D.rx.length < 5) D.rx.push({ what: undec.join(', ') + ' · giữ nguyên', tag: ['Theo dõi', 't2'], how: 'Mã chưa có quyết định được tính là giữ nguyên.' });
+    var B = CB.B, A = CB.A, fA = A.debt ? CORE.floorSessions(coreP(A.rows.map(function (h) { return { sym: h.sym, q: h.q, p: h.px }; }), A.cash, A.debt), st.call, null, MGH) : null, fB = floorNow(P);
+    D.eff = [['Dư nợ', money(B.debt), money(A.debt)], ['Tỷ lệ ký quỹ' + (A.debt < B.debt ? ' (khi tiền về)' : ''), B.debt ? pct(B.rtt, 1, false) : '–', A.debt ? pct(A.rtt, 1, false) : 'Hết nợ'],
+      ['Giảm thêm mới bị call', B.dtc.t === 'x' ? pct(B.dtc.x, 1, false) : dtcText(B.dtc), A.dtc.t === 'x' ? pct(A.dtc.x, 1, false) : dtcText(A.dtc)]];
+    if (fA && fA.t === 'n' && fB.t === 'n') D.eff.push(['Phiên giảm sàn liên tiếp', String(fB.n), fA.n + ' phiên']);
+    else D.eff.push(['Tài sản ròng', money(B.nav), money(A.nav)]);
+  } else {
+    D.rxTitle = 'Việc cần làm sau buổi khám';
+    dx.forEach(function (x) { var t = rxPlain(x.t).replace(/\s*\(Xem sâu[^)]*\)/, '').trim(), m = t.match(/^(.{20,110}?[.:])\s+(.+)$/); D.rx.push({ what: m ? m[1].replace(/[.:]$/, '') : rxClip(t, 110), tag: ['Kiểm tra', 't2'], how: m ? rxClip(m[2], 200) : '' }); });
+    D.rx.push({ what: 'Lên phác đồ cho từng mã', tag: ['Bước tiếp', 't3'], how: 'Ở chặng 3 (Xem sâu), so các phương án giữ, bán bớt, trả nợ… bằng con số, rồi bấm "Đưa vào phác đồ". Đơn thuốc sau sẽ có phác đồ của bạn.' });
+  }
+  if (st.debt && !(st.appRtt > 0) && D.rx.length < 5) D.rx.push({ what: 'Nhập tỷ lệ ký quỹ app đang hiện vào Bác sĩ', tag: ['Bổ sung', 't3'], how: 'Buổi này chưa có Rtt từ app nên mốc call tính theo mô hình; có số app thì sát hơn.' });
+  // 3. lời dặn: điều kiện theo dõi khách đã lưu hôm nay, chưa có thì gợi ý theo số liệu
+  var jr = J[0] && J[0].date === iso ? J[0] : null, wl = PENDING ? $('#jr-watch').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean) : jr ? (jr.watch || []).map(function (w) { return w.t; }) : [];
+  if (!wl.length) {
+    if (st.debt) wl.push('Tỷ lệ ký quỹ trên app xuống dưới ' + pct(Math.min(0.95, st.call + CORE.DEFAULTS.nearBand), 0, false) + ': mở lại Bác sĩ và khám ngay.');
+    if (PX.VNINDEX) wl.push('VN-Index (hôm nay ' + nf(PX.VNINDEX.p, 2) + ' điểm) giảm quá 10%.');
+    var weak = P.rows.filter(function (r) { return weakInfo(r).length; }).sort(function (a, b) { return b.w - a.w; }).slice(0, 2).map(function (r) { return r.sym; });
+    if (weak.length) wl.push(weak.join(', ') + ' công bố kết quả kinh doanh quý tới: xem lại phần xét nghiệm từng mã.');
+  }
+  D.watch = wl.slice(0, 4).map(function (s) { return rxClip(s, 140); });
+  if (LAST_AI && (LAST_AI.loi_khuyen || LAST_AI.tom_tat)) D.ai = { t: rxClip(LAST_AI.loi_khuyen || LAST_AI.tom_tat, 260), q: LAST_AI.ngam && LAST_AI.ngam[0] ? rxClip(LAST_AI.ngam[0], 120) : '' };
+  var rev = PENDING ? $('#jr-review').value : jr ? jr.review : null;
+  if (!rev) { var days = C.hz === 's' ? 14 : C.hz === 'l' ? 90 : 30; rev = new Date(Date.now() + 7 * 3600 * 1000 + days * 86400000).toISOString().slice(0, 10); }
+  var rd = new Date(rev + 'T00:00:00Z');
+  D.rev = { d: ('0' + rd.getUTCDate()).slice(-2), m: 'Tháng ' + (rd.getUTCMonth() + 1) + '/' + rd.getUTCFullYear(), full: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'][rd.getUTCDay()] + ', ' + vnDate(rev) };
+  D.stampDate = iso.slice(8, 10) + '.' + iso.slice(5, 7) + '.' + iso.slice(0, 4);
+  return D;
+}
+function rxHTML(D) {
+  var lvc = { g: '#9BE3BF', w: '#F7C948', b: '#F4A29A' }[D.lv[0]] || '#F7C948';
+  return '<div class="rx-in">' +
+    '<div class="rx-hd"><div class="rx-clinic"><span class="rx-logo">' + RX_LOGO + 'Phòng khám danh mục Top Broker</span><p>Bác sĩ danh mục · topbroker.fun · Zalo 0939 660 996</p></div>' +
+    '<div class="rx-meta">Số phiếu <b>' + esc(D.no) + '</b><br>Ngày khám <b>' + D.date + ' · ' + D.time + '</b>' + (D.px ? '<br>Giá lúc ' + esc(D.px) + ', trễ 15 phút (VNDirect)' : '') + '</div></div>' +
+    '<h1 class="rx-h1">ĐƠN THUỐC</h1><p class="rx-sub">Tóm tắt buổi khám danh mục chứng khoán</p>' +
+    '<div class="rx-pt"><div><span>Khách hàng:</span><b>' + esc(D.name) + '</b></div><div><span>Mã thành viên:</span><b>' + (D.code ? esc(D.code) : '–') + '</b></div><div><span>Khẩu vị:</span><b>' + (D.kv ? esc(D.kv) : 'chưa trả lời') + '</b></div>' +
+    '<div class="w"><span>Hoàn cảnh:</span><b>' + (D.hc.length ? esc(D.hc.join(' · ')) : 'chưa trả lời các câu hoàn cảnh ở chặng 2') + '</b></div></div>' +
+    '<div class="rx-sec"><p class="rx-lab"><i>1</i>Chẩn đoán</p><div class="rx-dx"><div class="rx-score"><div class="n">' + D.score + '<small>/100</small></div><span class="t" style="background:' + lvc + '">' + esc(D.lv[1]).toUpperCase() + '</span></div>' +
+    '<ul>' + D.dx.map(function (h) { return '<li>' + h + '</li>'; }).join('') + '</ul></div>' +
+    '<div class="rx-vit">' + D.vit.map(function (v) { return '<div><span>' + v[0] + '</span><b>' + v[1] + '</b><em>' + esc(v[2]) + '</em></div>'; }).join('') + '</div></div>' +
+    '<div class="rx-sec"><p class="rx-lab"><i>2</i>' + esc(D.rxTitle) + '</p><div class="rx-rx"><div class="sym">℞</div><ol>' +
+    D.rx.map(function (x) { return '<li><div class="what">' + esc(x.what) + (x.tag ? '<span class="tag ' + x.tag[1] + '">' + x.tag[0] + '</span>' : '') + '</div>' + (x.how ? '<div class="how"><u>Cách dùng:</u> ' + esc(x.how) + '</div>' : '') + '</li>'; }).join('') + '</ol></div>' +
+    (D.eff.length ? '<div class="rx-eff">' + D.eff.map(function (e) { return '<div>' + e[0] + '<b>' + e[1] + ' → <span class="a">' + e[2] + '</span></b></div>'; }).join('') + '</div>' : '') + '</div>' +
+    '<div class="rx-sec rx-cols' + (D.ai ? '' : ' one') + '"><div><p class="rx-lab"><i>3</i>Lời dặn: theo dõi khi</p><ul class="rx-watch">' + D.watch.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></div>' +
+    (D.ai ? '<div class="rx-ai"><b>Chuyên gia AI nói gì với bạn</b><div>' + esc(D.ai.t) + '</div>' + (D.ai.q ? '<p class="q">“' + esc(D.ai.q.replace(/^["“]|["”]$/g, '')) + '”</p>' : '') + '<small>Ý kiến tham khảo, không phải khuyến nghị chính thức.</small></div>' : '') + '</div>' +
+    '<div class="rx-foot"><div class="rx-rev"><div class="cal"><span>TÁI KHÁM</span><b>' + D.rev.d + '</b><em>' + D.rev.m + '</em></div><p><b>' + D.rev.full + '.</b> Mang danh mục mới nhất, mở Bác sĩ danh mục và bấm “Bắt đầu khám” để so với đơn này.</p></div>' +
+    '<div class="rx-sign"><svg class="stamp" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="#C8322A" stroke-width="3"/><circle cx="50" cy="50" r="38" fill="none" stroke="#C8322A" stroke-width="1.4"/><path id="rxarc" d="M14 50a36 36 0 1 1 72 0" fill="none"/><text font-size="10.5" font-weight="700" fill="#C8322A" letter-spacing="1.4"><textPath href="#rxarc" startOffset="50%" text-anchor="middle">TOP BROKER</textPath></text><text x="50" y="58" font-size="15" font-weight="800" fill="#C8322A" text-anchor="middle">ĐÃ KHÁM</text><text x="50" y="74" font-size="8" fill="#C8322A" text-anchor="middle">' + D.stampDate + '</text></svg>' +
+    '<div class="nm">Bác sĩ danh mục</div>Ký bằng công thức · số liệu kiểm lại được</div></div>' +
+    '<div class="rx-legal">Số liệu do công thức tính từ dữ liệu bạn nhập và giá trễ 15 phút; luôn kiểm tra lại trên app công ty chứng khoán. Đây không phải khuyến nghị mua, bán chứng khoán. Bạn là người quyết định cuối cùng.</div></div>';
+}
+var LAST_AI = null, RX_TITLE = null;
+function rxFit() {
+  var sh = $('#rx-sheet'), inn = sh && sh.querySelector('.rx-in'); if (!inn) return;
+  inn.style.transform = ''; inn.style.width = '';
+  var need = inn.scrollHeight, have = sh.clientHeight;
+  if (need > have + 1) { var k = Math.max(0.78, have / need); inn.style.transformOrigin = 'top left'; inn.style.transform = 'scale(' + k + ')'; inn.style.width = (100 / k) + '%'; }
+  var box = $('#rx-view'), sc = Math.min(1, (box.clientWidth - 24) / sh.offsetWidth);
+  $('#rx-scale').style.transform = 'scale(' + sc + ')'; $('#rx-scale').style.height = (sh.offsetHeight * sc) + 'px';
+}
+function openRx() {
+  if (!PORT) { $('#in-msg').textContent = 'Bấm "Bắt đầu khám" trước, rồi mới xuất đơn thuốc.'; return; }
+  var w = $('#rx-wrap');
+  if (!w) {
+    w = document.createElement('div'); w.id = 'rx-wrap'; w.hidden = true;
+    w.setAttribute('role', 'dialog'); w.setAttribute('aria-modal', 'true'); w.setAttribute('aria-label', 'Đơn thuốc');
+    w.innerHTML = '<div class="rx-bar"><b>Đơn thuốc</b><span class="note">Bấm <b>Lưu PDF</b>, rồi chọn <b>Lưu dưới dạng PDF</b> (Save as PDF) trong hộp in.</span><span class="rx-btns"><button type="button" class="btn" id="rx-print">Lưu PDF</button><button type="button" class="btn ghost" id="rx-close">Đóng</button></span></div>' +
+      '<div id="rx-view"><div id="rx-scale"><div id="rx-sheet" class="rx-sheet"></div></div></div>';
+    document.body.appendChild(w);
+    $('#rx-close').addEventListener('click', closeRx);
+    $('#rx-print').addEventListener('click', function () { rxFit(); window.print(); });
+    w.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeRx(); });
+    window.addEventListener('resize', function () { if (!w.hidden) rxFit(); });
+    window.addEventListener('afterprint', function () { if (RX_TITLE != null && w.hidden) { document.title = RX_TITLE; RX_TITLE = null; } });
+  }
+  var D = rxData();
+  $('#rx-sheet').innerHTML = rxHTML(D);
+  w.hidden = false; document.documentElement.classList.add('rx-on');
+  if (RX_TITLE == null) RX_TITLE = document.title;
+  document.title = 'Don-thuoc-' + (D.code || 'Top-Broker') + '-' + D.date.replace(/\//g, '-');   // tên file PDF khi lưu
+  var go = function () { rxFit(); try { $('#rx-print').focus({ preventScroll: true }); } catch (e) {} };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go();
+  setTimeout(rxFit, 300);
+}
+function closeRx() { var w = $('#rx-wrap'); if (!w) return; w.hidden = true; document.documentElement.classList.remove('rx-on'); if (RX_TITLE != null) { document.title = RX_TITLE; RX_TITLE = null; } }
+document.addEventListener('click', function (e) { if (e.target.closest('[data-rx]')) openRx(); });
 
 /* ---------- thanh bước ---------- */
 function updateSteps() {
