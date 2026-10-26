@@ -470,3 +470,100 @@ details.ind ul{font-size:13.5px}
 .pd-save{margin:0 16px 0 50px;padding:12px 0 14px}
 @media (max-width:640px){ .pd-save{margin:0 14px} }
 .kq-margin .note+h3{margin-top:14px}
+
+/* ---------- Đơn thuốc (Mẫu A, anh Hải chọn 26/10/2026) ---------- */
+.rx-btn svg{width:18px;height:18px}
+.rx-cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rx-cta b{display:block;font-size:16px}
+.rx-cta .note{margin:4px 0 0;display:block}
+#rx-wrap{position:fixed;inset:0;z-index:1000;background:rgba(30,28,34,.72);display:flex;flex-direction:column}
+#rx-wrap[hidden]{display:none}
+html.rx-on{overflow:hidden}
+.rx-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;padding:10px max(16px,env(safe-area-inset-left,0px));box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.rx-bar>b{font-size:16px}
+.rx-bar .note{margin:0;flex:1;min-width:200px;font-size:13px}
+.rx-btns{display:flex;gap:8px;margin-left:auto}
+#rx-view{flex:1;overflow:auto;padding:16px 12px 40px;-webkit-overflow-scrolling:touch}
+#rx-scale{transform-origin:top left;margin:0 auto;width:210mm;max-width:none}
+.rx-sheet{width:210mm;height:297mm;position:relative;overflow:hidden;background:#FBF7EF;color:#2C2A30;font-family:var(--tb-sans);font-size:10pt;line-height:1.45;font-variant-numeric:tabular-nums;box-shadow:0 10px 40px rgba(0,0,0,.35);-webkit-print-color-adjust:exact;print-color-adjust:exact;text-align:left}
+.rx-sheet *{box-sizing:border-box}
+.rx-sheet p,.rx-sheet ul,.rx-sheet ol,.rx-sheet h1{margin:0;padding:0}
+.rx-sheet::before{content:"";position:absolute;inset:7mm;border:1.2pt solid #2C2A30;border-radius:4mm;pointer-events:none}
+.rx-sheet::after{content:"";position:absolute;inset:8.4mm;border:.5pt solid rgba(44,42,48,.5);border-radius:3.2mm;pointer-events:none}
+.rx-in{height:100%;padding:12mm 15mm 10.5mm;display:flex;flex-direction:column}
+.rx-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10mm;padding-bottom:3mm;border-bottom:1pt dashed #2C2A30}
+.rx-logo{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:13pt;letter-spacing:-.01em}
+.rx-logo svg{width:22px;height:22px;flex:none}
+.rx-clinic p{margin-top:1.5mm;font-size:8pt;color:#5C5862}
+.rx-meta{text-align:right;font-size:8pt;color:#5C5862;line-height:1.55}
+.rx-meta b{color:#2C2A30;font-family:var(--tb-mono);font-weight:500;font-size:8.3pt}
+.rx-h1{font-family:"Lora",Georgia,serif;font-size:22pt;letter-spacing:.14em;text-align:center;margin-top:3mm!important;font-weight:700;line-height:1.2}
+.rx-sub{text-align:center;font-size:8pt;color:#5C5862;margin-bottom:3mm!important;letter-spacing:.06em;text-transform:uppercase}
+.rx-pt{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:2.5mm 7mm;font-size:9.5pt}
+.rx-pt div{border-bottom:.6pt dotted #8A8590;padding-bottom:1mm;display:flex;gap:2mm;align-items:baseline;min-width:0}
+.rx-pt span{color:#5C5862;font-size:8.5pt;white-space:nowrap}
+.rx-pt b{font-weight:600}
+.rx-pt .w{grid-column:1/-1}
+.rx-sec{margin-top:3mm}
+.rx-lab{font-family:"Lora",Georgia,serif;font-weight:700;font-size:11pt;display:flex;align-items:center;gap:2.5mm;margin-bottom:1.6mm!important}
+.rx-lab i{font-style:normal;display:inline-grid;place-items:center;width:6mm;height:6mm;border-radius:50%;background:#2C2A30;color:#FBF7EF;font-family:var(--tb-sans);font-size:8pt}
+.rx-dx{display:grid;grid-template-columns:30mm 1fr;gap:5mm;align-items:center;background:#fff;border:.8pt solid #2C2A30;border-radius:3mm;padding:2.5mm 4mm}
+.rx-score{text-align:center}
+.rx-score .n{font-size:30pt;font-weight:800;line-height:1;letter-spacing:-.02em}
+.rx-score .n small{font-size:10pt;font-weight:600;color:#8A8590}
+.rx-score .t{display:inline-block;margin-top:1.5mm;font-size:8pt;font-weight:700;border:.8pt solid #2C2A30;border-radius:10mm;padding:.6mm 3mm}
+.rx-dx ul{list-style:none}
+.rx-dx li{padding:.9mm 0 .9mm 5mm;position:relative;font-size:9.1pt}
+.rx-dx li+li{border-top:.5pt dotted #C9C3B8}
+.rx-dx li::before{content:"";position:absolute;left:0;top:2.6mm;width:2.2mm;height:2.2mm;border-radius:50%;background:#E4500A}
+.rx-dx .dn,.rx-sheet .dn{color:#C8322A}.rx-sheet .up{color:#128A63}
+.rx-vit{display:grid;grid-template-columns:repeat(5,1fr);margin-top:3mm;border:.8pt solid #2C2A30;border-radius:3mm;overflow:hidden;background:#fff}
+.rx-vit div{padding:1.8mm 3mm;border-left:.6pt solid #D9D2C5;min-width:0}
+.rx-vit div:first-child{border-left:0}
+.rx-vit span{display:block;font-size:7.4pt;color:#5C5862;text-transform:uppercase;letter-spacing:.04em}
+.rx-vit b{display:block;font-size:12.5pt;font-weight:700;margin-top:.5mm;white-space:nowrap}
+.rx-vit em{display:block;font-style:normal;font-size:7.6pt;color:#5C5862}
+.rx-rx{display:flex;gap:4mm}
+.rx-rx .sym{font-family:"Lora",Georgia,serif;font-size:34pt;line-height:.9;font-weight:700;color:#128A63;flex:none;margin-top:-1mm}
+.rx-rx ol{list-style:none;flex:1;counter-reset:r}
+.rx-rx li{counter-increment:r;padding:1.6mm 0 1.7mm 8mm;position:relative;border-bottom:.6pt dotted #8A8590}
+.rx-rx li::before{content:counter(r) ".";position:absolute;left:0;top:1.5mm;font-weight:800;font-size:10.5pt}
+.rx-rx .what{font-weight:700;font-size:10.4pt}
+.rx-rx .tag{font-size:7pt;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:.7pt solid currentColor;border-radius:1mm;padding:.2mm 1.2mm;margin-left:2mm;vertical-align:1pt;white-space:nowrap}
+.rx-rx .t1{color:#128A63}.rx-rx .t2{color:#B4540A}.rx-rx .t3{color:#5A3FC8}
+.rx-rx .how{font-size:8.5pt;line-height:1.4;color:#45414B;margin-top:.6mm}
+.rx-rx .how u{text-decoration:none;font-style:italic;color:#2C2A30;font-family:"Lora",Georgia,serif}
+.rx-eff{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;margin-top:2.5mm}
+.rx-eff div{background:#fff;border:.6pt solid #C9C3B8;border-radius:2mm;padding:1.8mm 2.5mm;font-size:7.8pt;color:#5C5862}
+.rx-eff b{display:block;color:#2C2A30;font-size:9.6pt}
+.rx-eff .a{color:#128A63}
+.rx-cols{display:grid;grid-template-columns:1.25fr 1fr;gap:6mm}
+.rx-cols.one{grid-template-columns:1fr}
+.rx-watch{padding-left:4.5mm!important}
+.rx-watch li{font-size:8.6pt;margin:0 0 .8mm;line-height:1.4}
+.rx-ai{background:#EAF6F0;border:.8pt solid #128A63;border-radius:3mm;padding:2.6mm 3.6mm;font-size:8.7pt;line-height:1.42}
+.rx-ai>div{margin-top:1mm}
+.rx-ai .q{font-family:"Lora",Georgia,serif;font-style:italic;font-size:10pt;margin-top:1.5mm!important;color:#0E6E4F}
+.rx-ai small{display:block;font-size:7.2pt;color:#5C5862;margin-top:1.5mm}
+.rx-foot{margin-top:auto;padding-top:3mm;display:flex;justify-content:space-between;align-items:flex-end;gap:8mm}
+.rx-rev{display:flex;align-items:center;gap:3.5mm}
+.rx-rev .cal{width:21mm;border:1pt solid #2C2A30;border-radius:2mm;overflow:hidden;text-align:center;background:#fff;flex:none}
+.rx-rev .cal span{display:block;background:#E4500A;color:#fff;font-size:7pt;font-weight:700;padding:.6mm 0;letter-spacing:.05em}
+.rx-rev .cal b{display:block;font-size:17pt;line-height:1.15;padding-top:.5mm}
+.rx-rev .cal em{display:block;font-style:normal;font-size:7pt;padding-bottom:.8mm}
+.rx-rev p{font-size:8.6pt;max-width:62mm}
+.rx-sign{text-align:center;font-size:7.6pt;color:#5C5862;position:relative;width:62mm}
+.rx-sign .stamp{position:absolute;left:-24mm;top:-8mm;width:27mm;height:27mm;opacity:.85;transform:rotate(-12deg);font-family:var(--tb-sans)}
+.rx-sign .nm{font-family:"Lora",Georgia,serif;font-style:italic;font-size:13pt;color:#2C2A30;margin:4mm 0 .3mm;border-bottom:.6pt solid #2C2A30;padding-bottom:1mm}
+.rx-legal{margin-top:2mm;font-size:6.6pt;color:#8A8590;text-align:center}
+@media (max-width:560px){.rx-bar .note{order:3;flex-basis:100%}.rx-btns .btn{min-height:40px;padding:0 14px}}
+@media print{
+  @page{size:A4;margin:0}
+  html.rx-on body>*:not(#rx-wrap){display:none!important}
+  html.rx-on,html.rx-on body{background:#fff!important;overflow:visible!important;margin:0!important;padding:0!important}
+  html.rx-on #rx-wrap{position:static;background:none;display:block}
+  html.rx-on .rx-bar{display:none}
+  html.rx-on #rx-view{padding:0;overflow:visible}
+  html.rx-on #rx-scale{transform:none!important;height:auto!important;margin:0}
+  html.rx-on .rx-sheet{box-shadow:none;page-break-after:avoid;break-after:avoid}
+}
