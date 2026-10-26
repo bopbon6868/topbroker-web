@@ -1,0 +1,23 @@
+Cập nhật chỉ số chiều 26/10/2026 · 15:00 (Thứ Hai). Chỉ sửa TB.UPDATED, TB.TICKER (site.js) và 5 dòng class="qr" (index.html). Không sửa tin tức.
+
+LƯU Ý: lúc chạy (~15:15–15:30) báo chí chưa đăng số đóng cửa phiên 26/10 (Vietstock thường đăng ~17:00). Dùng số giữa phiên 11:30 26/10, ghi rõ mốc. Các ô data-q tự lấy giá mới trên trang.
+
+VIỆT NAM
+- VN-Index 1.772,78 (−1,37 điểm, −0,08%) 11:30 26/10 – Vietstock/Investing.com "Nhịp đập thị trường 26/10" (13:33).
+- HNX-Index 261,84 (−0,33%) 11:30 26/10 – Vietstock/Investing.com; Tin nhanh chứng khoán 26/10.
+- UPCoM 126,51 (+0,2%) trưa 26/10 – Tin nhanh chứng khoán 26/10.
+- VN30: không tìm được số có nguồn rõ -> giữ 1.855,41 (16/10).
+- Tham chiếu: đóng cửa 23/10 VN-Index 1.774,15 (+0,77%), HNX 262,70 – Vietstock tuần 19–23/10.
+- Khối ngoại HOSE tuần 19–23/10: bán ròng hơn 965 tỷ – Vietstock "Chứng khoán tuần 19–23/10/2026". Bỏ dòng ticker khối ngoại phiên 16/10 (cũ). Chưa có số phiên 26/10.
+
+DÒNG TIỀN
+- NHNN tuần 19–23/10: hút ròng 9.868 tỷ; OMO lưu hành 95.064 tỷ; qua đêm LNH 4,3% (23/10) – Người Quan Sát (SBV, WiData).
+- Tỷ giá trung tâm 26/10: 25.627, đi ngang so với 23/10 – Thị trường Tài chính Tiền tệ, VOV.
+
+THẾ GIỚI
+- Mỹ đóng cửa 23/10: S&P 500 7.623,68 (−0,52%), Dow 52.215,16 (−1,23%), Nasdaq 25.955,34 (−0,21%) – AP/Yahoo Finance; VIX 19,45 (+2,2%) – Dean Financials Market Pulse 23/10.
+- Nikkei 62.189,65 (−0,8%), KOSPI 5.469,47 (−1,5%) đóng cửa 26/10; Hang Seng 23.206,82 (+0,5%) trong phiên – AP 26/10.
+- FTSE 100: không tìm được số mới -> giữ 10.881,90 (16/10).
+- Vàng ~4.003 USD/oz (+0,18%) 6:00 26/10 – Báo Lào Cai.
+- Brent 115,40 (−1,17%), WTI 101,80 (−1,43%) 5:15 26/10 – VOH.
+- BTC ~80.029 (−1,0%/24h), ETH ~2.320 (−1,8%/24h), ~12:50 giờ VN 26/10 – The Crypto Times.
