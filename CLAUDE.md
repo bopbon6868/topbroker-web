@@ -68,6 +68,10 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
   3. **AI diễn giải và nêu các câu hỏi cần kiểm tra**: giải thích con số nghĩa là gì, tách rõ đâu là bằng chứng, đâu là giả thuyết.
   4. **Người dùng quyết định phương án cuối cùng.** Phần công thức (chặng 1–3) không gợi ý, không xếp hạng phương án. Riêng thẻ chuyên gia AI cuối buổi được đưa lời khuyên bước tiếp theo (anh Hải đổi 17/10/2026), luôn ghi rõ là ý kiến tham khảo.
 
+## Nhận diện thương hiệu (anh Hải duyệt 26/10/2026, phong cách miền Tây)
+- Logo: bò húc lên (góc nghiêng, nét khắc gỗ) đạp trên đường giá đỏ đi lên, trong ô bo góc nền #211B17; chữ TOP BROKER (Playfair Display 900, đã chuyển thành nét) + dòng "CHỨNG KHOÁN · EST. 2026". Nằm trong `TB.LOGO` và `TB.WM` (site.js), `assets/logo.svg`, favicon-32, apple-touch-icon, icon-512. Con dấu tròn và các bản SVG gốc giữ ở ngoài kho (anh Hải có file).
+- Màu: giấy `--tb-paper:#f4eee3`, mực `--tb-ink:#211b17`, thanh đầu trang `--tb-mast:#17120f`, nhấn đỏ sẫm `--tb-accent:#a3211b` (trên nền tối dùng `--tb-accent2:#e0574a`). Màu tăng/giảm giá (`--tb-up`, `--tb-dn`) giữ nguyên.
+
 ## Thanh đầu trang (anh Hải yêu cầu 26/10/2026)
 - Menu: **Trang chủ đứng đầu, Bác sĩ danh mục ngay sau** (anh Hải chốt lại 26/10/2026), rồi các mục khác (`header()` trong site.js; không đổi thứ tự `TB.PRODUCTS`).
 - Thành viên đã nhập mã (localStorage `tb-member-v1` = `{code, ten}`) hiện ở góc phải mọi trang: chữ cái đầu, tên, mã, nút Thoát (`TB.renderMe()`, `#tb-me`). `/api/thanh-vien?code=` trả thêm `ten`. Mã cũ chưa có tên thì site.js tự hỏi máy chủ một lần. Thoát ở góc phải phát sự kiện `tb-member-out` để Bác sĩ danh mục đóng phần chuyên sâu. Điện thoại: thẻ thành viên thay chỗ đồng hồ.
