@@ -354,9 +354,13 @@ async function exportPdf(){const r=$("report");r.innerHTML=reportHtml();
   const cuts=[...r.querySelectorAll("tbody tr,.box,p,li,.rhead,table")].map(el=>Math.round((el.getBoundingClientRect().bottom-top0)*k)).filter(v=>v>0);
   r.querySelectorAll("h4").forEach(h=>{const t=Math.round((h.getBoundingClientRect().top-top0)*k);cuts.push(t)});
   cuts.push(canvas.height);cuts.sort((a,b)=>a-b);
+  // Mục ngắn (tiêu đề + bảng/khung ngay sau, cao dưới 60% trang) giữ trọn trên một trang
+  const full=Math.floor((ph-2*M)*pxPerPt),keep=[...r.querySelectorAll("h4")].map(h=>{const n=h.nextElementSibling;if(!n)return null;
+   const s=Math.round((h.getBoundingClientRect().top-top0)*k),e=Math.round((n.getBoundingClientRect().bottom-top0)*k);return e-s<full*0.6?[s,e]:null}).filter(Boolean);
+  const okCut=c=>!keep.some(([s,e])=>c>s+2&&c<e-2);
   const pages=[];let y=0;
   while(y<canvas.height-4){const room=Math.floor(((pages.length?ph-2*M:ph-M))*pxPerPt);
-   let cut=cuts.filter(c=>c>y+room*0.35&&c<=y+room).pop();if(!cut)cut=Math.min(y+room,canvas.height);
+   let cut=cuts.filter(c=>c>y+room*0.35&&c<=y+room&&okCut(c)).pop()||cuts.filter(c=>c>y+room*0.35&&c<=y+room).pop();if(!cut)cut=Math.min(y+room,canvas.height);
    pages.push([y,cut]);y=cut}
   pages.forEach(([a,b],i)=>{if(i)pdf.addPage();const c=document.createElement("canvas");c.width=canvas.width;c.height=b-a;
    const g=c.getContext("2d");g.fillStyle="#FFFCF6";g.fillRect(0,0,c.width,c.height);g.drawImage(canvas,0,a,c.width,b-a,0,0,c.width,b-a);
