@@ -3,7 +3,7 @@
 Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Zalo 0939 660 996). Website tĩnh. Các mục Tin nhanh, Bài viết và trang quản trị /admin đã bỏ theo yêu cầu ngày 16/10/2026: không tạo lại nếu anh không yêu cầu. Mục "Sổ danh mục khách hàng" (menu Danh mục) đã bỏ ngày 17/10/2026, anh không phát triển nữa: không tạo lại.
 
 ## Nơi sửa và cách đưa lên
-- **Chỉ đưa lên web khi anh Hải quyết định (anh dặn 21/10/2026):** làm trên nhánh riêng, chạy thử, gửi anh xem; anh đồng ý mới gộp vào `main`. Nếu push `main` mà Netlify không tự triển khai (21/10/2026 từng bị), vào app.netlify.com → topbroker-web → Deploys → Trigger deploy → Deploy project.
+- **Chỉ đưa lên web khi anh Hải quyết định (anh dặn 21/10/2026):** làm trên nhánh riêng, chạy thử, gửi anh xem; anh đồng ý mới gộp vào `main`. Nếu push `main` mà Netlify không tự triển khai (21/10/2026 từng bị), vào app.netlify.com → topbroker-web → Deploys → Trigger deploy → Deploy project. KHÔNG bấm "Publish deploy" trên một bản cụ thể: Netlify sẽ khóa tự đăng (Auto Publishing Locked) và mọi lần push sau, kể cả lịch 7:00/15:00, không tự lên web (27/10/2026 từng bị). Thấy khóa thì bấm "Unlock to start auto publishing" rồi Trigger deploy.
 - Kho GitHub: **bopbon6868/topbroker-web** (công khai, nhánh `main`). Gắn kho bằng công cụ `add_repo` (owner `bopbon6868`, repo `topbroker-web`, access `push`), rồi clone.
 - Thư mục `site/` là toàn bộ website. Push lên `main` thì Netlify tự đưa lên topbroker.fun sau khoảng 1 phút.
 - Kiểm tra: WebFetch `https://topbroker-web.netlify.app/?v=<số ngẫu nhiên>` (WebFetch hay trả bản cũ của topbroker.fun).
