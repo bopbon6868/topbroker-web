@@ -76,9 +76,10 @@ Website đầu tư tiếng Việt của anh Hải (môi giới chứng khoán, Z
 - Menu: **Trang chủ đứng đầu, Bác sĩ danh mục ngay sau** (anh Hải chốt lại 26/10/2026), rồi các mục khác (`header()` trong site.js; không đổi thứ tự `TB.PRODUCTS`).
 - Thành viên đã nhập mã (localStorage `tb-member-v1` = `{code, ten}`) hiện ở góc phải mọi trang: chữ cái đầu, tên, mã, nút Thoát (`TB.renderMe()`, `#tb-me`). `/api/thanh-vien?code=` trả thêm `ten`. Mã cũ chưa có tên thì site.js tự hỏi máy chủ một lần. Thoát ở góc phải phát sự kiện `tb-member-out` để Bác sĩ danh mục đóng phần chuyên sâu. Điện thoại: thẻ thành viên thay chỗ đồng hồ.
 
-## Soi mã theo ngành (anh Hải yêu cầu 27/10/2026)
-- Công cụ nằm trên claude.ai (artifact `https://claude.ai/artifact/BVTtfqrNrTfxyamLzq6Vt9`), người xem cần tài khoản claude.ai và tự kết nối TCBS/DNSE. Web chỉ trỏ tới: tên miền `rate.topbroker.fun` chuyển hướng 302 (khối `[[redirects]]` trong `netlify.toml`, tên miền phụ thêm làm domain alias của site Netlify, bản ghi CNAME `rate` ở iNET).
-- Menu: mục "Soi mã ngành" (`id:'soi-ma'` trong `TB.PRODUCTS`) đứng ngay sau Radar, mở tab mới.
+## Soi mã theo ngành (`site/soi-ma/`, anh Hải yêu cầu 27/10/2026)
+- Bản web thay bản claude.ai (bản claude.ai `https://claude.ai/artifact/BVTtfqrNrTfxyamLzq6Vt9` anh giữ dùng riêng, dùng TCBS/DNSE). Menu "Soi mã ngành" (`id:'soi-ma'`) đứng ngay sau Radar, trỏ `soi-ma/index.html`; `rate.topbroker.fun` chuyển 302 về `https://topbroker.fun/soi-ma/` (`[[redirects]]` trong `netlify.toml`, domain alias trên Netlify, CNAME `rate` → `topbroker-web.netlify.app` ở iNET).
+- Dữ liệu: `/api/soi` (`netlify/functions/soi.mjs`, VNDirect finfo): phân ngành ICB cấp 3 (ít hơn 6 mã thì cấp 2), nhóm so sánh = 6 mã đang niêm yết vốn hóa lớn nhất cùng ngành (hoặc `p=` tự chọn 3–10 mã), báo cáo tài chính năm (mã hàng trong `IT`), P/E – P/B ngày 31/12 từng năm, chỉ số hiện tại (vốn hóa, free float, SLCP, beta). Chỉ số tự tính trong `ratios()`; ROE/ROA = LNST cổ đông mẹ ÷ bình quân đầu–cuối năm. Ngân hàng (có 421900, không có 21001) dùng bộ chỉ số riêng. Giá ngày 3 năm qua `/api/stock?h=1150` (giới hạn h nâng lên 1200).
+- Trang `index.html` + `soi.css` (mọi luật CSS bọc trong `.smn` để không đụng khung chung) + `soi.js` (giữ logic chấm điểm, mẫu phiếu QTRR, deal margin, xuất Excel/PDF của bản claude.ai; chỉ thay lớp dữ liệu). Ngưỡng: ≥60% Mạnh hơn ngành, <35% Rủi ro riêng; 3 nhóm Cơ bản/Định giá/Kỹ thuật chia đều. Ghi chú định tính và thông số deal lưu localStorage theo mã. Mở thẳng một mã: `/soi-ma/?ma=HPG`.
 
 ## Không đụng
 - Phần đồng hồ (`TB.now`/`tbTick`), phần giá tự cập nhật (`TB.LIVE`, `tbApply`, `TB.LIVEMAP`) và đoạn mở cửa sổ Webgame trong `site/assets/site.js`.

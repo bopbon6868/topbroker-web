@@ -60,7 +60,7 @@ async function floors(syms) {
 export default async (req) => {
   const u = new URL(req.url);
   const syms = [...new Set((u.searchParams.get('s') || '').toUpperCase().split(',').map(x => x.trim()).filter(x => /^[A-Z0-9]{3,8}$/.test(x)))].slice(0, 40);
-  const h = Math.min(800, Math.max(0, parseInt(u.searchParams.get('h') || '0', 10) || 0));
+  const h = Math.min(1200, Math.max(0, parseInt(u.searchParams.get('h') || '0', 10) || 0));
   const out = { updated: new Date().toISOString(), delay: 15, q: {}, h: {}, errors: {} };
   const flP = h ? Promise.resolve({}) : floors(syms);
   await Promise.all(syms.map(async s => {

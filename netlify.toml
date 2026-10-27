@@ -13,9 +13,9 @@
   [headers.values]
     Cache-Control = "no-cache, must-revalidate"
 
-# Soi mã theo ngành: rate.topbroker.fun chuyển sang công cụ trên claude.ai (anh Hải yêu cầu 27/10/2026)
+# Soi mã theo ngành: rate.topbroker.fun chuyển về trang /soi-ma/ (bản web thay bản claude.ai, anh Hải yêu cầu 27/10/2026)
 [[redirects]]
   from = "https://rate.topbroker.fun/*"
-  to = "https://claude.ai/artifact/BVTtfqrNrTfxyamLzq6Vt9"
+  to = "https://topbroker.fun/soi-ma/"
   status = 302
   force = true

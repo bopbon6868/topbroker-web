@@ -19,8 +19,8 @@ TB.UPDATED = 'Thứ Ba, 27/10/2026 · 15:00';
 TB.PRODUCTS = [
   {id:'radar',   name:'Radar tin nóng',            group:'Tin tức & vĩ mô', status:'live', href:'radar/index.html', icon:'radar', tint:['#FF6A5C','#D9302A'], short:'Radar',
    desc:'Tin chuẩn và tin mạng xã hội tách bạch, theo sát động thái bơm hút tiền của Ngân hàng Nhà nước.', nav:'Radar'},
-  {id:'soi-ma',  name:'Soi mã theo ngành',         group:'Phân tích',       status:'live', href:'https://rate.topbroker.fun', icon:'scale', tint:['#E0574A','#A3211B'], short:'Soi mã',
-   desc:'Gõ một mã, so với 6 mã cùng ngành: cơ bản 3 năm, định giá, kỹ thuật, kèm bảng theo mẫu phiếu thẩm định. Mở trên claude.ai.', nav:'Soi mã ngành'},
+  {id:'soi-ma',  name:'Soi mã theo ngành',         group:'Phân tích',       status:'live', href:'soi-ma/index.html', icon:'scale', tint:['#E0574A','#A3211B'], short:'Soi mã',
+   desc:'Gõ một mã, so với 6 mã lớn nhất cùng ngành: cơ bản 3 năm, định giá, kỹ thuật và thanh khoản, kèm bảng theo mẫu phiếu thẩm định margin. Xuất Excel, PDF.', nav:'Soi mã ngành'},
   {id:'giai-ma', name:'Giải mã cổ phiếu',          group:'Phân tích',       status:'live', href:'co-phieu/index.html', icon:'chart', tint:['#5AA5FF','#1F6FD1'], short:'Cổ phiếu',
    desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 16 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR, SSI, TCB, GEX, PDR, VCG.', nav:'Cổ phiếu'},
   {id:'bac-si',  name:'Bác sĩ danh mục',           group:'Quản lý tài sản', status:'live', href:'bac-si-danh-muc/index.html', icon:'pulse', tint:['#3FC79A','#128A63'], short:'Bác sĩ',
