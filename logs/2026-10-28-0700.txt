@@ -1,0 +1,27 @@
+Cập nhật phiên sáng 28/10/2026 · 07:00 (Thứ Tư; chạy ~06:45–07:10 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (thẻ VN-Index, sparkline 25 phiên 23/9–27/10, độ rộng, khối ngoại 10 phiên, khối NHNN, Điểm nóng thế giới, mảng N).
+
+BẢN TIN
+1. (Thế giới) Lãnh tụ Iran Mojtaba Khamenei: điều kiện của Iran (Mỹ dỡ phong tỏa cảng, bỏ trừng phạt dầu) phải được đáp ứng để dứt chiến (27/10, Reuters qua Türkiye Today); Brent 113,72 (−1,8%) lúc 17:44 GMT 27/10 (Reuters qua Express Tribune). Kênh: giá dầu → xăng, lạm phát, tỷ giá.
+2. VN-Index 1.761,87 (−1,68, −0,10%) 27/10; HOSE 118 tăng/56 đứng/192 giảm; VIC đóng góp 5,12 điểm; thanh khoản HOSE 13.922 tỷ, dưới bình quân 20 phiên 14,8% (Thời báo Tài chính).
+3. Khối ngoại HOSE bán ròng 441 tỷ (ACB −177, FPT −149, TCB +197) – Thời báo Tài chính; NHNN bơm ròng 6.357 tỷ phiên 27/10, OMO lưu hành 96.358 tỷ – Người Quan Sát.
+4. BCTC quý 3: ACB LNTT 5.879 tỷ (+9%), Sacombank 1.757 tỷ (−52%) – CafeF 28/10; Fitch nâng ACB lên BB – Vietstock qua Investing 28/10.
+5. Mỹ 27/10: Nasdaq +1,18%, S&P +0,60% (TheStreet); VIX 17,52 (−4,7%, ad-hoc-news/Cboe); Fed công bố 01:00 29/10 giờ VN, thị trường chờ giữ nguyên (AP qua BNN Bloomberg).
+
+SỐ LIỆU KHÁC
+- Dow 52.377,57 (+0,03%) – TheStreet. FTSE 100 10.686,5 (−0,8%) – ad-hoc-news 27/10. Nikkei, Hang Seng, KOSPI giữ số đóng cửa 27/10 (đã có từ lượt 15:00).
+- Vàng thế giới ~4.063 USD/oz (+49 USD, +1,22%) sáng 28/10; SJC 139–142 tr (+0,3 tr) – Báo Lào Cai 06:15 28/10.
+- WTI 99,83 (−1,9%) 17:44 GMT 27/10 – Reuters. Lưu ý: AP dùng hợp đồng Brent khác (~109–110 USD); bản này thống nhất theo chuỗi Reuters (115,81 chốt 26/10).
+- BTC 79.699,75 (−0,71%) 6:40 EDT 27/10 – CoinDesk; ETH 2.311,53 lúc 8:00 ET 27/10 – Fortune (không có % 24h).
+- NHNN 27/10: chào 15.170 tỷ (7/14/35/91 ngày, 4,5%), đáo hạn 8.813 tỷ; qua đêm VND 4,2% (26/10) – Người Quan Sát (dẫn Kiến thức Đầu tư).
+- Tỷ giá trung tâm: giữ 25.633 (+6) ngày 27/10; số 28/10 chưa công bố lúc chạy.
+- Khối ngoại 10 phiên 14–27/10 trên Radar lấy từ TCBS (getMarketForeignVal), tổng −3.873 tỷ; TCBS ghi 27/10 −231 tỷ, 26/10 −808 tỷ (khác số báo do cách tính). Chuỗi VN-Index: TCBS + 1.761,87 (27/10).
+- VN30, HNX, UPCoM, HNX30: Thời báo Tài chính 27/10.
+
+RADAR
+- Thêm 2 tin thế giới (Chính trị: điều kiện dứt chiến của Iran + dầu giảm; Kinh tế: Fed + Phố Wall 27/10, thay tin Fed cũ 26/10), giữ 2 tin thế giới 26/10 (96 giờ; hòa giải Tehran).
+- Thêm 4 tin trong nước: phiên 27/10, khối ngoại 27/10, NHNN 27/10, BCTC quý 3 (ACB, STB, OCB, HDC, BVB, QTP).
+- Bỏ các tin 17–18/10 (quá 7 ngày).
+- Khối NHNN: "Bơm nhẹ"; thêm điểm 26/10 = 4,2% vào biểu đồ qua đêm. Mã đang được nhắc: NHNN, ACB, STB, TCB, FPT, VIC, GAS, BSR, MCH, PNJ.
+
+LỊCH: bỏ mốc Fed 27–28/10 cũ; thêm 28/10 (ngân sách Anh, Microsoft/Alphabet báo lãi), 29/10 (Fed 01:00, Amazon), QTP tạm ứng cổ tức tháng 11.
+TRANH: sợi xích chăng ngang cảng khóa bằng ổ khóa, chìa khóa vàng bay tới; tàu dầu đỏ; thùng dầu lăn xuống dốc kèm mũi tên đi xuống (điều kiện mở phong tỏa, giá dầu hạ).
