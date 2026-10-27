@@ -348,8 +348,21 @@ function bsHtml(D){if(!D.finReady)return "";const ys=D.years,t=D.t,keep=D.isBank
  ${D.isBank?"":`<div style="margin-top:4px">${BS_CMP.map(m=>`${m.n}: <b>${fmt(me[m.k],m.f)}</b> (ngành ${fmt(mm(m.k),m.f)})`).join(" · ")}</div>`}`}
 async function exportPdf(){const r=$("report");r.innerHTML=reportHtml();
  try{const canvas=await html2canvas(r,{scale:2,backgroundColor:"#FFFCF6"}),{jsPDF}=window.jspdf,pdf=new jsPDF({unit:"pt",format:"a4"});
-  const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),imgH=canvas.height*pw/canvas.width,img=canvas.toDataURL("image/jpeg",0.92);
-  let y=0;while(y<imgH){if(y>0)pdf.addPage();pdf.addImage(img,"JPEG",0,-y,pw,imgH);y+=ph}
+  const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),M=28;
+  const k=canvas.width/r.offsetWidth,top0=r.getBoundingClientRect().top,pxPerPt=canvas.width/pw;
+  // Điểm được phép ngắt trang: đáy của từng dòng bảng, đoạn văn, khung, mục danh sách (không ngắt ngay sau tiêu đề h4 hay đầu bảng)
+  const cuts=[...r.querySelectorAll("tbody tr,.box,p,li,.rhead,table")].map(el=>Math.round((el.getBoundingClientRect().bottom-top0)*k)).filter(v=>v>0);
+  r.querySelectorAll("h4").forEach(h=>{const t=Math.round((h.getBoundingClientRect().top-top0)*k);cuts.push(t)});
+  cuts.push(canvas.height);cuts.sort((a,b)=>a-b);
+  const pages=[];let y=0;
+  while(y<canvas.height-4){const room=Math.floor(((pages.length?ph-2*M:ph-M))*pxPerPt);
+   let cut=cuts.filter(c=>c>y+room*0.35&&c<=y+room).pop();if(!cut)cut=Math.min(y+room,canvas.height);
+   pages.push([y,cut]);y=cut}
+  pages.forEach(([a,b],i)=>{if(i)pdf.addPage();const c=document.createElement("canvas");c.width=canvas.width;c.height=b-a;
+   const g=c.getContext("2d");g.fillStyle="#FFFCF6";g.fillRect(0,0,c.width,c.height);g.drawImage(canvas,0,a,c.width,b-a,0,0,c.width,b-a);
+   pdf.setFillColor(255,252,246);pdf.rect(0,0,pw,ph,"F");
+   pdf.addImage(c.toDataURL("image/jpeg",0.92),"JPEG",0,i?M:0,pw,(b-a)/pxPerPt);
+   pdf.setFontSize(8);pdf.setTextColor(139,137,132);pdf.text(`${i+1}/${pages.length}`,pw-M,ph-12,{align:"right"})});
   await save(fileBase()+".pdf",pdf.output("blob"))}
  catch(e){status("warn","Không tạo được PDF: "+esc(e&&e.message||e))}finally{r.innerHTML=""}}
 
