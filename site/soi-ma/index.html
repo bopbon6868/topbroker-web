@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Soi mã theo ngành · Top Broker</title>
+<meta name="description" content="Gõ một mã cổ phiếu, so với 6 mã lớn nhất cùng ngành: cơ bản 3 năm, định giá, kỹ thuật và thanh khoản, kèm bảng theo mẫu phiếu thẩm định margin. Xuất Excel, PDF.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:wght@600;700&family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/site.css?v=20261027sw">
+<link rel="stylesheet" href="soi.css?v=1">
+</head>
+<body data-root="../" data-page="soi-ma">
+<div id="tb-top"></div>
+<div class="smn">
+<template id="brandLogo"><svg viewBox="0 0 300 300" aria-hidden="true"><path d="M60 0H240C285 0 300 15 300 60V240C300 285 285 300 240 300H60C15 300 0 285 0 240V60C0 15 15 0 60 0Z" fill="#211B17"/><g transform="translate(152 152) scale(0.8621) translate(-140 -114)"><path d="M-6 236 L52 230 L78 238 L128 224 L156 230 L214 212 L236 216 L286 192" fill="none" stroke="#C9372C" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><g transform="rotate(-9 150 150)"><g fill="#F2E8D5"><path d="M60 102 Q40 96 34 72 Q32 60 22 52 L30 50 Q42 58 42 72 Q46 90 64 96 Z"/><path d="M22 52 L14 40 L26 46 L24 34 L32 48 Z"/><path d="M70 100 L118 76 L156 48 L186 32 L210 38 L228 54 L240 62 L256 88 L266 108 L268 118 L256 124 L240 116 L228 124 L222 144 L216 156 L242 162 L262 142 L274 142 L274 152 L252 178 L228 184 L204 172 L198 178 L204 204 L210 214 L196 216 L186 186 L178 170 L150 164 L120 160 L114 166 L108 190 L108 214 L94 214 L94 190 L98 168 L86 162 L76 170 L60 190 L42 212 L30 208 L48 182 L58 158 L54 132 L58 110Z"/><path d="M212 52 Q216 36 232 32 Q246 28 252 16 L258 4 Q260 26 246 38 Q232 46 228 58 Z"/><path d="M222 60 Q230 44 250 42 Q266 40 274 26 L284 10 Q284 34 270 50 Q256 60 244 62 L240 68 Z"/><path d="M214 64 L190 64 L206 74 Z"/></g><g fill="#211B17"><path d="M176 64 L194 92 L196 140 L188 98 Z"/><path d="M92 108 L106 128 L100 150 L100 128 Z"/><path d="M236 72 L254 82 L252 86 L236 78 Z"/><path d="M258 108 L264 110 L262 116 Z"/></g></g></g></svg></template>
+<section class="search-hero">
+  <div class="hero-in">
+    <div class="eyebrow">Phân tích · Soi mã theo ngành</div>
+    <h1 class="hero-title">Nhập mã cổ phiếu cần soi</h1>
+    <form class="searchbox" id="f" autocomplete="off" role="search">
+      <label for="q" class="sr">Mã cổ phiếu</label>
+      <input id="q" maxlength="6" placeholder="VD: VPI" autocapitalize="characters" spellcheck="false">
+      <button type="submit" id="go">Soi mã →</button>
+    </form>
+    <div class="recent" id="recent"></div>
+  <details class="deal" id="dealbox">
+    <summary>Tùy chọn: nhóm so sánh &amp; thông số deal margin</summary>
+    <div class="dealgrid">
+      <label style="grid-column:1/-1">Nhóm so sánh tự chọn (để trống = 6 mã vốn hóa lớn nhất cùng ngành)<input id="d_peers" placeholder="VD: VHM, NVL, KDH, NLG, DXG, PDR"></label>
+      <label>Tỷ lệ vay (%)<input id="d_ratio" type="number" min="0" max="100" step="5" placeholder="VD 40"></label>
+      <label>Giá chặn (đ)<input id="d_cap" type="number" min="0" step="100" placeholder="VD 21000"></label>
+      <label>Room (cp)<input id="d_room" type="number" min="0" step="10000" placeholder="VD 2000000"></label>
+      <label>Pool (tỷ đ)<input id="d_pool" type="number" min="0" step="1" placeholder="VD 40"></label>
+      <label>Bán tối đa / KL phiên (%)<input id="d_part" type="number" min="5" max="100" step="5" value="20"></label>
+      <label>Tỷ lệ ban đầu TK (%)<input id="d_init" type="number" min="0" max="100" step="5" value="70"></label>
+      <label>Tỷ lệ FS (%)<input id="d_fs" type="number" min="0" max="100" step="5" value="45"></label>
+    </div>
+  </details>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="toolbar"><span class="asof" id="asof">Dữ liệu VNDirect · so sánh với nhóm cùng ngành</span><div class="exp"><button type="button" class="ghost" id="xl" disabled>Xuất Excel</button><button type="button" class="ghost" id="pdf" disabled>Xuất PDF</button></div></div>
+  <div id="status" class="status" hidden></div>
+  <div id="empty" class="empty"><b>Kết quả sẽ hiện ở đây</b>Công cụ lấy 6 mã vốn hóa lớn nhất cùng ngành (phân ngành ICB) làm nhóm so sánh, đối chiếu báo cáo tài chính 3 năm, định giá và giá, thanh khoản 3 năm. Dữ liệu VNDirect, giá trễ 15 phút.</div>
+
+  <div id="out" hidden>
+    <h2>1 · Tổng quan ngành</h2>
+    <p class="lede" id="indLede"></p>
+    <div class="grid2">
+      <section class="panel"><h3>Mặt bằng nhóm đầu ngành (trung vị)</h3><div class="grid4" id="indKpi"></div><p class="src" id="peerNote"></p></section>
+      <section class="panel"><h3>Diễn biến ngành</h3><ul class="ctx" id="indCtx"></ul></section>
+    </div>
+
+    <h2>2 · Kết luận nhanh</h2>
+    <section class="panel">
+      <div class="hero">
+        <div><div class="tick" id="tk"></div><div id="vd"></div></div>
+        <div><div class="gauges" id="gauges"></div><ul class="points" id="points"></ul></div>
+      </div>
+    </section>
+
+    <h2 id="hQ">3 · Thông tin theo mẫu phiếu QTRR</h2>
+    <p class="lede">Đúng các kỳ QTRR dùng (249 phiên, 3 tháng, 52 phiên), kèm trung vị nhóm so sánh để thấy biến động và thanh khoản của mã đang ở mức nào so với ngành.</p>
+    <section class="panel"><div class="grid4" id="qInfo"></div><div class="tbl" style="margin-top:14px"><table id="qTbl"></table></div><p class="src" id="qNote"></p></section>
+    <div id="dealSec" hidden>
+      <h2 id="hDeal">4 · Khả năng xử lý tài sản đảm bảo</h2>
+      <section class="panel"><div class="dealout" id="dealOut"></div><div class="dealout" id="dealOut2" style="margin-top:14px"></div><p class="src" id="dealNote"></p></section>
+    </div>
+
+    <h2 id="hFund">Cơ bản: xu hướng 3 năm so với ngành</h2>
+    <p class="lede">Mỗi ô là giá trị của mã; dòng nhỏ bên dưới là mức trung vị của nhóm so sánh cùng năm.</p>
+    <div class="legend-row"><span><span class="pill g">xanh</span> tốt hơn ngành năm đó</span><span><span class="pill b">đỏ</span> kém hơn ngành năm đó</span><span class="sub">Màu so với ngành, không phải lãi hay lỗ: +2,0% tô đỏ nghĩa là tăng chậm hơn ngành.</span></div>
+    <div class="tbl"><table id="t3"></table></div>
+    <h3 style="margin-top:20px">Đặt cạnh từng mã đầu ngành</h3>
+    <div class="tabs" id="yrTabs"></div>
+    <div class="tbl"><table id="tp"></table></div>
+
+    <h2 id="hTech">Kỹ thuật &amp; thanh khoản: 3 giai đoạn 12 tháng</h2>
+    <p class="lede">Tính từ giá ngày 3 năm gần nhất, chia thành 3 giai đoạn 12 tháng (mỗi giai đoạn 250 phiên).</p>
+    <div class="legend-row"><span><span class="pill g">xanh</span> tốt hơn ngành</span><span><span class="pill b">đỏ</span> kém hơn ngành</span><span class="sub">Dòng nhỏ dưới mỗi ô là trung vị nhóm so sánh.</span></div>
+    
+    <div class="tbl"><table id="tw"></table></div>
+    <div class="grid2" style="margin-top:16px">
+      <section class="panel chart"><h3 id="chTitle">Giá 6 tháng</h3><div id="chart"></div>
+        <div class="legend"><span><i style="background:var(--chart-a)"></i>Giá đóng cửa</span><span><i style="background:var(--chart-b)"></i>MA20</span><span><i style="background:var(--chart-c)"></i>MA50</span></div>
+        <div class="ind" id="ind"></div></section>
+      <section class="panel"><h3>So với ngành hôm nay</h3><div class="tbl" style="border:0"><table id="tt"></table></div>
+        <p class="src" id="ttNote"></p></section>
+    </div>
+    <h2 id="hBs">Kết quả kinh doanh, nguồn vốn &amp; dòng tiền</h2>
+    <p class="lede">Giá trị tuyệt đối 3 năm theo mẫu phiếu QTRR, cùng các chỉ số QTRR hay dùng để đánh giá áp lực nợ ngắn hạn và dòng tiền.</p>
+    <div id="bsBox" class="status" style="margin:0 0 12px" hidden><span id="bsMsg"></span></div>
+    <div id="bsOut" hidden><div class="tbl"><table id="bsTbl"></table></div><h3 style="margin-top:18px">So với nhóm so sánh (năm gần nhất)</h3><div class="tbl"><table id="bsCmp"></table></div><p class="src">Nợ ngắn hạn lấy thẳng từ bảng cân đối. CFO = lưu chuyển tiền thuần từ hoạt động kinh doanh. Đơn vị: tỷ đồng.</p></div>
+
+    <h2 id="hNotes">Thông tin định tính (tự điền)</h2>
+    <p class="lede">Các yếu tố QTRR thường nêu trong phiếu nhưng không có trong dữ liệu thị trường. Nội dung được lưu riêng theo mã trên trình duyệt này và in kèm khi xuất Excel/PDF.</p>
+    <section class="panel"><div class="dealgrid" style="padding:0;grid-template-columns:repeat(2,minmax(0,1fr))" id="notesBox">
+      <label>Cổ phiếu cổ đông nội bộ đang cầm cố<select id="n_pledge"><option value="">Chưa rõ</option><option>Không</option><option>Có</option></select></label>
+      <label>Diện cảnh báo / kiểm soát / hạn chế GD<select id="n_warn"><option value="">Chưa rõ</option><option>Không</option><option>Có</option></select></label>
+      <label>Thuộc danh mục ký quỹ của Sở GDCK<select id="n_margin"><option value="">Chưa rõ</option><option>Có</option><option>Không</option></select></label>
+      <label>Tỷ trọng dư nợ ngành / VCSH SBSI (%)<input id="n_conc" type="number" min="0" step="1" placeholder="VD 20"></label>
+      <label style="grid-column:1/-1">Kế hoạch phát hành, trái phiếu đáo hạn 12 tháng tới<input id="n_issue" placeholder="VD: phát hành 527 tỷ cổ phiếu để tái cơ cấu nợ"></label>
+      <label style="grid-column:1/-1">Ghi chú khác cho QTRR<input id="n_other" placeholder="VD: KH là người nội bộ; đã hoàn tất 1 vòng quay giao dịch"></label>
+    </div></section>
+    <p class="src" style="margin-top:20px" id="foot"></p>
+  </div>
+  <div id="report" aria-hidden="true"></div>
+</main>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</div>
+<div id="tb-foot"></div>
+<script src="../assets/site.js?v=20261027sw"></script>
+<script src="soi.js?v=1"></script>
+</body>
+</html>
