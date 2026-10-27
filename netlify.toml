@@ -12,3 +12,10 @@
   for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache, must-revalidate"
+
+# Soi mã theo ngành: rate.topbroker.fun chuyển sang công cụ trên claude.ai (anh Hải yêu cầu 27/10/2026)
+[[redirects]]
+  from = "https://rate.topbroker.fun/*"
+  to = "https://claude.ai/artifact/BVTtfqrNrTfxyamLzq6Vt9"
+  status = 302
+  force = true
