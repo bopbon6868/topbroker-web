@@ -19,6 +19,8 @@ TB.UPDATED = 'Thứ Ba, 27/10/2026 · 15:00';
 TB.PRODUCTS = [
   {id:'radar',   name:'Radar tin nóng',            group:'Tin tức & vĩ mô', status:'live', href:'radar/index.html', icon:'radar', tint:['#FF6A5C','#D9302A'], short:'Radar',
    desc:'Tin chuẩn và tin mạng xã hội tách bạch, theo sát động thái bơm hút tiền của Ngân hàng Nhà nước.', nav:'Radar'},
+  {id:'soi-ma',  name:'Soi mã theo ngành',         group:'Phân tích',       status:'live', href:'https://rate.topbroker.fun', icon:'scale', tint:['#E0574A','#A3211B'], short:'Soi mã',
+   desc:'Gõ một mã, so với 6 mã cùng ngành: cơ bản 3 năm, định giá, kỹ thuật, kèm bảng theo mẫu phiếu thẩm định. Mở trên claude.ai.', nav:'Soi mã ngành'},
   {id:'giai-ma', name:'Giải mã cổ phiếu',          group:'Phân tích',       status:'live', href:'co-phieu/index.html', icon:'chart', tint:['#5AA5FF','#1F6FD1'], short:'Cổ phiếu',
    desc:'Đọc doanh nghiệp bằng tiếng dễ hiểu, kèm những rủi ro ít người nói. Đang có 16 mã: HPG, VPB, VIC, FPT, PNJ, VIX, SHB, MSB, NVL, MWG, BSR, SSI, TCB, GEX, PDR, VCG.', nav:'Cổ phiếu'},
   {id:'bac-si',  name:'Bác sĩ danh mục',           group:'Quản lý tài sản', status:'live', href:'bac-si-danh-muc/index.html', icon:'pulse', tint:['#3FC79A','#128A63'], short:'Bác sĩ',
@@ -82,6 +84,7 @@ TB.GLYPH = {
   tea:'<path d="M5 10h11v3a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5zM16 11h1.3a2.4 2.4 0 0 1 0 4.8H15.6M9 4.5v2.5M12.5 4.5v2.5"/>',
   book:'<path d="M5.5 5.5A2 2 0 0 1 7.5 4H18v13H7.5a2 2 0 0 0-2 2zM5.5 19a2 2 0 0 0 2 1.5H18"/>',
   game:'<rect x="3" y="7.5" width="18" height="10" rx="5"/><path d="M8.2 10.5v4M6.2 12.5h4"/><circle cx="15.3" cy="11.3" r=".9" fill="#fff"/><circle cx="17.3" cy="13.6" r=".9" fill="#fff"/>',
+  scale:'<path d="M12 4v16M7 20h10M5 7h14M5 7l-2.6 6.2a2.8 2.8 0 0 0 5.2 0zM19 7l-2.6 6.2a2.8 2.8 0 0 0 5.2 0z"/>',
   pulse:'<path d="M3 12.5h4l2.2-5 4 10 2.3-5H21"/>',
   filter:'<path d="M4 5.5h16l-6 7.3v5.7l-4-2v-3.7z"/>',
   "case":'<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/>',
