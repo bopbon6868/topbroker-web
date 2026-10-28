@@ -33,8 +33,8 @@ function pctl(x,arr,d){arr=arr.filter(num);if(!num(x)||!arr.length||!d)return nu
 let STATE=null, YR=0, RUN=0;
 /* nhãn cột: năm, hoặc kỳ quý mới nhất (chỉ số = 12 tháng gần nhất, KQKD = lũy kế từ đầu năm) */
 const isP=y=>typeof y==="string";
-const yl=y=>isP(y)?`${y} <span class="sub">(12T gần nhất)</span>`:String(y);
-const ylBs=y=>isP(y)?`${STATE?.period?.ytd||y} <span class="sub">(số dư cuối ${y})</span>`:String(y);
+const yl=y=>String(y);
+const ylBs=y=>isP(y)?(STATE?.period?.ytd||y):String(y);
 const yt=y=>isP(y)?`12T đến ${y}`:`năm ${y}`;
 function status(kind,html){const s=$("status");s.hidden=!kind;s.className="status"+(kind==="err"?" err":kind==="warn"?" warn":"");s.innerHTML=html||""}
 function load(label){status("load",`<span class="spin"></span>${esc(label)}`)}
@@ -338,7 +338,7 @@ function exportXlsx(){
 function reportHtml(){
  const D=STATE,S=score(D),M=D.isBank?M_BK:M_NB,ys=D.years,dc=dealCalc(D),t=D.t,g=v=>num(v)?Math.round(v*100)+"%":"–";
  const cell=(x,md,m)=>{let c="";if(m.d&&num(x)&&num(md))c=(adjPE(m.k,x)-adjPE(m.k,md))*m.d>0?"g":"b";return `<td class="${c}">${fmt(x,m.f)}</td><td>${fmt(md,m.f)}</td>`};
- let f=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${ys.map(y=>`<th>${isP(y)?y+' (12T)':y}<br>${t}</th><th>${isP(y)?y:y}<br>Ngành</th>`).join("")}</tr></thead><tbody>`;
+ let f=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${ys.map(y=>`<th>${y}<br>${t}</th><th>${isP(y)?y:y}<br>Ngành</th>`).join("")}</tr></thead><tbody>`;
  M.forEach(m=>{f+=`<tr><td style="text-align:left">${m.n}</td>${ys.map(y=>cell(D.fin[t]?.[y]?.[m.k],med(D.peers.map(p=>D.fin[p]?.[y]?.[m.k])),m)).join("")}</tr>`});f+="</tbody></table>";
  const win=(x,i)=>i===0?D.tech[x]:(D.older[x]?D.older[x][i]:null),cols=D.olderReady?[0,1,2]:[0];
  let k=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${cols.map(i=>`<th>${W_LBL[i]}<br>${t}</th><th>Ngành</th>`).join("")}</tr></thead><tbody>`;
