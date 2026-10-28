@@ -1,0 +1,16 @@
+Cập nhật chỉ số chiều Thứ Tư 28/10/2026 (chạy 15:06 giờ VN)
+Việt Nam (TCBS, công cụ getIndustryIndex/getMarketForeignVal/getMarketBreadth):
+- VN-Index 1.766,65 (+0,27%) 14:45; VN30 1.890,22 (+0,10%) 14:45
+- HNX-Index 259,86 (+0,14%); UPCoM 125,90 (−0,29% so 126,26 TCBS ghi ngày 27/10) 14:59
+- HOSE tăng/giảm 120/179, 60 đứng (TCBS 14:30)
+- Khối ngoại HOSE −327,6 tỷ (TCBS 14:59), bán ròng 4 phiên liền (23–28/10)
+Dòng tiền:
+- Tỷ giá trung tâm 25.631, −2 đồng (Thời báo Ngân hàng, sáng 28/10)
+- NHNN: chưa có số phiên 28/10, giữ bơm ròng 6.357 tỷ phiên 27/10, OMO lưu hành 96.358 tỷ (Người Quan Sát)
+- Qua đêm LNH: chưa có số mới, giữ 4,20% (26/10)
+Á – Âu (AP qua KSAT, 28/10): Nikkei 63.954,19 (+1,08%), KOSPI 6.023,73 (+6,84%), Hang Seng 23.089,22 (+0,21%, số trong phiên)
+FTSE 100: chưa có số mới, giữ 27/10
+Mỹ: giữ đóng cửa 27/10 (hợp đồng tương lai sáng 28/10 đi ngang trước giờ Fed, IC Markets)
+Hàng hóa (IC Markets 06:16 UTC = 13:16 VN): vàng 4.054,6 (−0,49%), Brent 110,91 (+1,34%), WTI 101,39 (+1,49%)
+  Lưu ý: số Brent 113,72 bản sáng lệch với các nguồn hôm nay (~111); Báo Lâm Đồng ghi vàng 4.030,2 lúc 13:02.
+Tiền số (CoinCodex 06:00 UTC = 13:00 VN): BTC 80.901 (+1,16%), ETH 2.349,08 (+1,52%)
