@@ -1,0 +1,25 @@
+Cập nhật phiên sáng 29/10/2026 · 07:00 (Thứ Năm; chạy ~06:46–07:20 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (thẻ VN-Index, sparkline 25 phiên 24/9–28/10, độ rộng, khối ngoại 10 phiên, khối NHNN/tỷ giá, Điểm nóng thế giới, mảng N, mã nóng).
+
+BẢN TIN
+1. (Thế giới) Houthi đánh Ras Tanura (lọc dầu lớn nhất Saudi); Qatar đưa bản nháp hòa 7 ngày, quan chức Iran gọi "không chấp nhận được" (Reuters qua Ynet 28/10); Brent +2% lên 111,59 USD lúc 14:31 NY (AP qua BNN Bloomberg). Kênh: giá dầu → lạm phát, tỷ giá.
+2. Fed giữ 3,75–4%, 2 phiếu (Cook, Hammack) muốn tăng; lợi suất 10 năm ~5% (AP, Reuters 28/10). Tỷ giá trung tâm 25.631 đứng yên 29/10 (Vietbao 05:23).
+3. VN-Index 1.766,65 (+4,78, +0,27%) 28/10; HOSE 124/60/176; VCB +2,5%; công nghệ −2,25%, FPT −2,53% (Nhân Dân, VTV).
+4. Khối ngoại HOSE bán ròng 267,3 tỷ, FPT −260, TCB +172 (Tinnhanhchungkhoan); TCBS ghi −275 tỷ, 4 phiên bán ròng liền.
+5. BCTC quý 3: MWG LNST ~3.100 tỷ (+75%), DGW +66% nhưng giảm sàn (Vietstock qua Investing 29/10); Alphabet −8–10% sau giờ (Reuters Trading Day, TradingKey).
+
+SỐ LIỆU KHÁC
+- Mỹ 28/10 (Reuters qua Investing.com): Dow 52.479,62 (+0,19%), S&P 7.744,37 (+0,28%), Nasdaq 26.549,85 (+0,27%), VIX 16,91 (−3,48%), 10 năm 5,007%, vàng 4.066,65 (+0,37%).
+- Brent: các nguồn lệch theo hợp đồng (Reuters ticker 110,72; Trading Economics ~114; AP 111,59). Bản này dùng AP.
+- BTC 81.359,62 (+2,01%), ETH 2.363,28 lúc 7:00 ET 28/10 (Fortune); ETH +2,2% so 2.311,53 (Fortune 27/10).
+- SJC 139,6–142,7 tr (+0,7 tr) chốt 28/10 (VietNamNet 29/10).
+- Nikkei, KOSPI, Hang Seng giữ số 28/10 (AP qua KSAT); FTSE 100 chưa có số đóng cửa 28/10, giữ 27/10.
+- NHNN: không tìm được số thị trường mở phiên 28/10, giữ phiên 27/10 (bơm ròng 6.357 tỷ). Qua đêm giữ 4,20% (26/10).
+- UPCoM 125,74 (−0,28%), HNX 259,86, VN30 1.890,22 (Nhân Dân).
+
+RADAR
+- Thế giới: thêm Chiến sự (Houthi/Ras Tanura), Chính trị (Qatar–Iran), Kinh tế (Fed giữ lãi + Big Tech, thay tin Fed 27/10); giữ Khamenei 27/10; bỏ 2 tin thế giới 26/10 (96 giờ, Mecca – ý chính gộp vào tin Qatar).
+- Trong nước: thêm phiên 28/10, khối ngoại 28/10, BCTC quý 3 (MWG, DGW, VIB, GEX, HDC...).
+- Sparkline thêm 1.766,65; khối ngoại 10 phiên 15–28/10 (TCBS), tổng −3.455 tỷ.
+
+LỊCH: bỏ 28/10 và mốc Fed; thêm 02/11 hạn nộp thuế đất PNN, 11/11 VNM/PPC/WCS không hưởng quyền cổ tức.
+TRANH: nhà máy lọc dầu sa mạc bị tên lửa đánh, cột khói; cuộn giấy hòa giải bị gió thổi bay; thùng dầu trên mũi tên đi lên.
