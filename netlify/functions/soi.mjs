@@ -120,7 +120,8 @@ export default async (req) => {
       get(`financial_statements?q=code:${all.join(',')}~reportType:ANNUAL~itemCode:${ITEMS}~fiscalDate:gte:${y1}-01-01&sort=fiscalDate:desc&size=3000`, 8000),
       get(`ratios?q=code:${all.join(',')}~ratioCode:PRICE_TO_EARNINGS,PRICE_TO_BOOK~reportDate:${yearEnds},${qEnds.join(',')}&size=300`).catch(() => []),
       get(`ratios/latest?filter=ratioCode:MARKETCAP,PRICE_TO_EARNINGS,PRICE_TO_BOOK,BETA,FREEFLOAT,OUTSTANDING_SHARES,DIVIDEND_YIELD,ROAE_TR_AVG5Q&where=code:${all.join(',')}&order=reportDate&fields=code,ratioCode,value,reportDate`).catch(() => []),
-      get(`financial_statements?q=code:${all.join(',')}~reportType:QUARTER~itemCode:${ITEMS}~fiscalDate:gte:${q0}&sort=fiscalDate:desc&size=4000`, 8000).catch(() => []),
+      (async () => { const u = `financial_statements?q=code:${all.join(',')}~reportType:QUARTER~itemCode:${ITEMS}~fiscalDate:gte:${q0}&sort=fiscalDate:desc&size=4000`;
+        try { return await get(u, 8000); } catch (e) { try { return await get(u, 8000); } catch (e2) { return null; } } })(),
     ]);
 
     const raw = {};
@@ -147,8 +148,8 @@ export default async (req) => {
     });
     // 4) cột mới nhất theo quý: chỉ số 12 tháng gần nhất (TTM) + KQKD lũy kế từ đầu năm, số dư cuối quý
     const FLOW = ['rev', 'gp', 'op', 'np', 'npAll', 'pbt', 'int', 'cfo', 'nii', 'toi', 'ppop'];
-    const rq = {};
-    fq.forEach(x => {
+    const rq = {}; if (!fq) out.qErr = true;
+    (fq || []).forEach(x => {
       const k = Object.keys(IT).find(kk => IT[kk] === +x.itemCode);
       if (!k || !num(x.numericValue)) return;
       ((rq[x.code] = rq[x.code] || {})[x.fiscalDate] = rq[x.code][x.fiscalDate] || {})[k] = x.numericValue / 1e9;
@@ -192,7 +193,7 @@ export default async (req) => {
       if (k && num(x.value)) { o[k] = x.value; if (k === 'pe') o.asof = x.reportDate; }
     });
     out.missing = all.filter(c => !Object.keys(out.fin[c]).length);
-    return send(out);
+    return send(out, 200, !out.qErr);
   } catch (e) {
     return send({ error: 'Không lấy được dữ liệu từ VNDirect (' + (e.name === 'TimeoutError' ? 'quá thời gian chờ' : e.message) + '). Thử lại sau ít phút.' }, 502, false);
   }
