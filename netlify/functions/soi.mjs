@@ -113,10 +113,14 @@ export default async (req) => {
 
     // 3) báo cáo tài chính năm, P/E – P/B cuối năm, chỉ số hiện tại
     const yearEnds = [0, 1, 2, 3].map(k => `${new Date().getFullYear() - 1 - k}-12-31`).join(',');
-    const [fs, hist, now] = await Promise.all([
+    // quý gần nhất: 3 cuối quý gần đây (cho P/E – P/B tại cuối quý)
+    const qEnds = (() => { const o = []; const d = new Date(); let y = d.getFullYear(), q = Math.floor(d.getMonth() / 3); for (let i = 0; i < 3; i++) { if (q === 0) { y--; q = 4; } o.push(`${y}-${['03-31', '06-30', '09-30', '12-31'][q - 1]}`); q--; } return o; })();
+    const q0 = (() => { const d = new Date(); d.setMonth(d.getMonth() - 30); return d.toISOString().slice(0, 8) + '01'; })();
+    const [fs, hist, now, fq] = await Promise.all([
       get(`financial_statements?q=code:${all.join(',')}~reportType:ANNUAL~itemCode:${ITEMS}~fiscalDate:gte:${y1}-01-01&sort=fiscalDate:desc&size=3000`, 8000),
-      get(`ratios?q=code:${all.join(',')}~ratioCode:PRICE_TO_EARNINGS,PRICE_TO_BOOK~reportDate:${yearEnds}&size=200`).catch(() => []),
+      get(`ratios?q=code:${all.join(',')}~ratioCode:PRICE_TO_EARNINGS,PRICE_TO_BOOK~reportDate:${yearEnds},${qEnds.join(',')}&size=300`).catch(() => []),
       get(`ratios/latest?filter=ratioCode:MARKETCAP,PRICE_TO_EARNINGS,PRICE_TO_BOOK,BETA,FREEFLOAT,OUTSTANDING_SHARES,DIVIDEND_YIELD,ROAE_TR_AVG5Q&where=code:${all.join(',')}&order=reportDate&fields=code,ratioCode,value,reportDate`).catch(() => []),
+      get(`financial_statements?q=code:${all.join(',')}~reportType:QUARTER~itemCode:${ITEMS}~fiscalDate:gte:${q0}&sort=fiscalDate:desc&size=4000`, 8000).catch(() => []),
     ]);
 
     const raw = {};
@@ -141,8 +145,44 @@ export default async (req) => {
         out.fin[c][y] = ratios(cur, raw[c]?.[y - 1], out.isBank);
       });
     });
+    // 4) cột mới nhất theo quý: chỉ số 12 tháng gần nhất (TTM) + KQKD lũy kế từ đầu năm, số dư cuối quý
+    const FLOW = ['rev', 'gp', 'op', 'np', 'npAll', 'pbt', 'int', 'cfo', 'nii', 'toi', 'ppop'];
+    const rq = {};
+    fq.forEach(x => {
+      const k = Object.keys(IT).find(kk => IT[kk] === +x.itemCode);
+      if (!k || !num(x.numericValue)) return;
+      ((rq[x.code] = rq[x.code] || {})[x.fiscalDate] = rq[x.code][x.fiscalDate] || {})[k] = x.numericValue / 1e9;
+    });
+    const qKey = d => { const y = +d.slice(0, 4), q = Math.ceil(+d.slice(5, 7) / 3); return { y, q, i: y * 4 + q - 1, lbl: `Q${q}/${y}` }; };
+    const byIdx = c => { const m = {}; Object.entries(rq[c] || {}).forEach(([d, v]) => { if (num(v.np ?? v.npAll)) m[qKey(d).i] = { ...v, d }; }); return m; };
+    const sumQ = (m, from, to, extra) => { const o = { ...m[to] }; FLOW.forEach(f => { let s = 0, n = 0; for (let i = from; i <= to; i++) if (num(m[i]?.[f])) { s += m[i][f]; n++; } o[f] = n ? s : null; }); return Object.assign(o, extra || {}); };
+    const tIdx = byIdx(t), tLast = Math.max(...Object.keys(tIdx).map(Number));
+    if (isFinite(tLast)) {
+      const lastY = Math.floor(tLast / 4), lastQ = tLast % 4 + 1, P = `Q${lastQ}/${lastY}`;
+      if (lastY > out.years[out.years.length - 1] || (lastY === out.years[out.years.length - 1] && lastQ < 4)) {
+        out.period = { key: P, q: lastQ, y: lastY, ytd: lastQ === 4 ? `Năm ${lastY}` : `${lastQ * 3}T/${lastY}`, end: tIdx[tLast].d };
+        out.lag = {}; out.endOf = {};
+        all.forEach(c => {
+          const m = byIdx(c); let L = m[tLast] ? tLast : Math.max(...Object.keys(m).map(Number).filter(i => i < tLast));
+          if (!isFinite(L)) return;
+          const have = i => !!m[i];
+          if (![0, 1, 2, 3].every(k => have(L - k))) return;
+          out.endOf[c] = m[L].d;
+          if (L !== tLast) out.lag[c] = `Q${L % 4 + 1}/${Math.floor(L / 4)}`;
+          const cur = sumQ(m, L - 3, L);
+          const prev = [4, 5, 6, 7].every(k => have(L - k)) ? sumQ(m, L - 7, L - 4) : (m[L - 4] ? { ...m[L - 4], rev: null, np: null, npAll: null, nii: null } : null);
+          out.fin[c][P] = ratios(cur, prev, out.isBank);
+          const ytd = sumQ(m, L - (L % 4), L); ytd.cfo12 = cur.cfo;
+          out.st[c][P] = ytd;
+        });
+        if (out.fin[t][P]) out.years.push(P); else delete out.period;
+      }
+    }
     hist.forEach(x => {
-      const y = +String(x.reportDate).slice(0, 4); const f = out.fin[x.code]?.[y]; if (!f || !num(x.value)) return;
+      const ds = String(x.reportDate).slice(0, 10);
+      if (out.period && ds === out.endOf?.[x.code]) { const f = out.fin[x.code]?.[out.period.key]; if (f && num(x.value)) { if (x.ratioCode === 'PRICE_TO_EARNINGS') f.pe = x.value; else if (x.ratioCode === 'PRICE_TO_BOOK') f.pb = x.value; } return; }
+      if (!ds.endsWith('12-31')) return;
+      const y = +ds.slice(0, 4); const f = out.fin[x.code]?.[y]; if (!f || !num(x.value)) return;
       if (x.ratioCode === 'PRICE_TO_EARNINGS') f.pe = x.value; else if (x.ratioCode === 'PRICE_TO_BOOK') f.pb = x.value;
     });
     out.now = {};
