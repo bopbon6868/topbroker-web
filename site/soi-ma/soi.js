@@ -1,5 +1,5 @@
 /* Soi mã theo ngành – bản chạy trên topbroker.fun
-   Dữ liệu: /api/soi (VNDirect finfo: ngành ICB, BCTC năm, P/E–P/B cuối năm, chỉ số hiện tại)
+   Dữ liệu: /api/soi (VNDirect finfo: ngành ICB, BCTC năm + quý, P/E–P/B cuối kỳ, chỉ số hiện tại)
             /api/stock (VNDirect dchart: giá ngày 3 năm, trễ 15 phút). Tính toán chạy trên trình duyệt. */
 const N_PEERS=6, TH_GOOD=0.60, TH_BAD=0.35;
 const M_NB=[
@@ -7,12 +7,12 @@ const M_NB=[
  {k:"revG",n:"Tăng trưởng doanh thu",d:1,f:"s"},{k:"npG",n:"Tăng trưởng LNST",d:1,f:"s"},
  {k:"de",n:"Nợ vay / VCSH",d:-1,f:"x"},{k:"le",n:"Nợ phải trả / VCSH",d:-1,f:"x"},
  {k:"cr",n:"Thanh toán hiện hành",d:1,f:"x"},{k:"ic",n:"EBIT / lãi vay",d:1,f:"x"},{k:"cfoNp",n:"CFO / LNST",d:1,f:"x"},
- {k:"pe",n:"P/E cuối năm",d:-1,f:"x",val:1},{k:"pb",n:"P/B cuối năm",d:-1,f:"x",val:1}];
+ {k:"pe",n:"P/E cuối kỳ",d:-1,f:"x",val:1},{k:"pb",n:"P/B cuối kỳ",d:-1,f:"x",val:1}];
 const M_BK=[
  {k:"roe",n:"ROE",d:1,f:"p"},{k:"roa",n:"ROA",d:1,f:"p"},{k:"niiTa",n:"TN lãi thuần / tổng TS",d:1,f:"p"},
  {k:"npG",n:"Tăng trưởng LNST",d:1,f:"s"},{k:"loanG",n:"Tăng trưởng cho vay",d:1,f:"s"},{k:"depG",n:"Tăng trưởng tiền gửi",d:1,f:"s"},
  {k:"cir",n:"CIR (chi phí / thu nhập)",d:-1,f:"p"},{k:"eqTa",n:"VCSH / tổng TS",d:1,f:"p"},{k:"ldr",n:"Cho vay / tiền gửi",d:0,f:"p"},
- {k:"pe",n:"P/E cuối năm",d:-1,f:"x",val:1},{k:"pb",n:"P/B cuối năm",d:-1,f:"x",val:1}];
+ {k:"pe",n:"P/E cuối kỳ",d:-1,f:"x",val:1},{k:"pb",n:"P/B cuối kỳ",d:-1,f:"x",val:1}];
 const W_LBL=["12T gần nhất","12T trước đó","12T trước nữa"];
 const TW=[{k:"ret",n:"Hiệu suất giá",d:1,f:"s"},{k:"rel",n:"So với VN-Index",d:1,f:"s"},{k:"mdd",n:"Sụt giảm tối đa",d:1,f:"s"},{k:"vol",n:"Biến động (năm)",d:-1,f:"p"},{k:"adtv",n:"GTGD BQ (tỷ/phiên)",d:1,f:"t"}];
 
@@ -31,6 +31,11 @@ const adjPE=(k,v)=>k==="pe"&&num(v)&&v<0?1e9:v;
 function pctl(x,arr,d){arr=arr.filter(num);if(!num(x)||!arr.length||!d)return null;return arr.filter(v=>d>0?v<x:v>x).length/arr.length}
 
 let STATE=null, YR=0, RUN=0;
+/* nhãn cột: năm, hoặc kỳ quý mới nhất (chỉ số = 12 tháng gần nhất, KQKD = lũy kế từ đầu năm) */
+const isP=y=>typeof y==="string";
+const yl=y=>isP(y)?`${y} <span class="sub">(12T gần nhất)</span>`:String(y);
+const ylBs=y=>isP(y)?`${STATE?.period?.ytd||y} <span class="sub">(số dư cuối ${y})</span>`:String(y);
+const yt=y=>isP(y)?`12T đến ${y}`:`năm ${y}`;
 function status(kind,html){const s=$("status");s.hidden=!kind;s.className="status"+(kind==="err"?" err":kind==="warn"?" warn":"");s.innerHTML=html||""}
 function load(label){status("load",`<span class="spin"></span>${esc(label)}`)}
 async function getJ(url,ms=25000){
@@ -83,7 +88,7 @@ async function analyze(t){
   D.peers=j.peers;D.peerSrc=j.peerSrc;D.names=j.names||{};D.isBank=!!j.isBank;D.now=j.now||{};
   D.ov={industry:j.industry||"",exchange:j.floor||"",company:j.company||""};D.names[t]=j.name||t;
   if(j.error){status("err",esc(j.error));return}
-  D.fin=j.fin||{};D.st=j.st||{};D.years=j.years||[];D.finReady=D.years.length>0;YR=D.years.length-1;
+  D.fin=j.fin||{};D.st=j.st||{};D.years=j.years||[];D.period=j.period||null;D.lag=j.lag||{};D.finReady=D.years.length>0;YR=D.years.length-1;
   (j.missing||[]).forEach(x=>D.missing.push(x+" (tài chính)"));
   load("Đang tải giá 3 năm của "+t+" và "+D.peers.length+" mã so sánh…");
   const ppxP=getJ(pxURL(D.peers)).catch(e=>({__e:e}));
@@ -99,11 +104,19 @@ async function analyze(t){
   D.peers.forEach(x=>{const b=ppx&&!ppx.__e?toBars(ppx.h?.[x]):null;if(b&&b.length>=60){D.tech[x]=dailyStats(b.slice(-250),D.vmap);D.older[x]=dailyOlder(b,D.vmap)}else D.missing.push(x+" (giá)")});
   D.olderReady=!!D.older[t];
   render();
-  status(D.missing.length?"warn":null,D.missing.length?"Thiếu dữ liệu: "+esc(D.missing.join(", "))+". Các phần khác vẫn tính trên những mã có dữ liệu.":"");
+  const msg=[D.missing.length?"Thiếu dữ liệu: "+esc(D.missing.join(", "))+". Các phần khác vẫn tính trên những mã có dữ liệu.":"",periodNote(D)].filter(Boolean).join(" ");
+  status(msg?"warn":null,msg);
   try{localStorage.setItem("smtn-last",t)}catch(e){}pushRecent(t);
  }catch(e){if(my===RUN)status("err","Không lấy được dữ liệu ("+esc(e&&e.message||e)+"). Bấm Soi mã lại sau ít phút.")}
  finally{if(my===RUN)$("go").disabled=false}}
 
+function periodNote(D){
+ const now=new Date(),cq=Math.floor(now.getMonth()/3),exp=cq===0?`Q4/${now.getFullYear()-1}`:`Q${cq}/${now.getFullYear()}`;
+ if(!D.period)return `VNDirect chưa có báo cáo quý của ${esc(D.t)} sau năm ${D.years?.[D.years.length-1]||""}; cột mới nhất sẽ tự thêm khi có.`;
+ const P=D.period.key,lag=Object.entries(D.lag||{});let s=`Cột ${P}: chỉ số tính 12 tháng gần nhất, KQKD là lũy kế ${D.period.ytd}.`;
+ if(P!==exp)s+=` ${esc(D.t)} chưa có BCTC ${exp} trên VNDirect, trang tự cập nhật khi doanh nghiệp công bố.`;
+ if(lag.length)s+=` Chưa có BCTC ${P}: ${lag.map(([c,q])=>esc(c)+" (dùng "+q+")").join(", ")}.`;
+ return s}
 /* ---------- chấm điểm ---------- */
 function techScore(D){const me=D.tech[D.t];if(!me)return null;const pt=D.peers.map(p=>D.tech[p]).filter(Boolean);if(!pt.length)return null;
  return avg([pctl(me.ret,pt.map(x=>x.ret),1),pctl(me.dd,pt.map(x=>x.dd),1),pctl(me.adtv,pt.map(x=>x.adtv),1),pctl(me.vol,pt.map(x=>x.vol),-1)])}
@@ -121,9 +134,9 @@ function score(D){
 function bullets(D,S){
  const pts=[],t=D.t,me=D.tech[t],pt=D.peers.map(p=>D.tech[p]).filter(Boolean);
  if(D.finReady){const F=D.fin,y=S.y,pm=k=>({x:F[t]?.[y]?.[k],m:med(D.peers.map(p=>F[p]?.[y]?.[k]))});
-  const r=pm("roe");if(num(r.x)&&num(r.m))pts.push(`ROE ${y} ${fmt(r.x,"p")} so với trung vị ngành ${fmt(r.m,"p")} – ${r.x>r.m?"cao hơn":"thấp hơn"} ngành.`);
-  const e=pm("npG");if(num(e.x)&&num(e.m))pts.push(`Tăng trưởng LNST ${y}: ${fmt(e.x,"s")}, ngành ${fmt(e.m,"s")}.`);
-  const pb=pm("pb");if(num(pb.x)&&num(pb.m))pts.push(`P/B ${y} ${fmt(pb.x,"x")} so với ngành ${fmt(pb.m,"x")}${pb.x>pb.m*2?" – định giá cao hơn hẳn ngành":pb.x<pb.m?" – rẻ hơn ngành":""}.`)}
+  const r=pm("roe");if(num(r.x)&&num(r.m))pts.push(`ROE ${yt(y)} ${fmt(r.x,"p")} so với trung vị ngành ${fmt(r.m,"p")} – ${r.x>r.m?"cao hơn":"thấp hơn"} ngành.`);
+  const e=pm("npG");if(num(e.x)&&num(e.m))pts.push(`Tăng trưởng LNST ${yt(y)}: ${fmt(e.x,"s")}, ngành ${fmt(e.m,"s")}.`);
+  const pb=pm("pb");if(num(pb.x)&&num(pb.m))pts.push(`P/B cuối ${isP(y)?y:"năm "+y} ${fmt(pb.x,"x")} so với ngành ${fmt(pb.m,"x")}${pb.x>pb.m*2?" – định giá cao hơn hẳn ngành":pb.x<pb.m?" – rẻ hơn ngành":""}.`)}
  if(me&&pt.length){const mdd=med(pt.map(x=>x.dd)),gap=me.dd-mdd;
   pts.push(Math.abs(gap)<0.1?`Giá ${fmt(me.dd,"s")} so với đỉnh 52 tuần, tương đương mức chung của ngành (${fmt(mdd,"s")}): áp lực giá chủ yếu đến từ ngành.`:gap>0?`Giá ${fmt(me.dd,"s")} so với đỉnh 52 tuần, chống chịu tốt hơn ngành (${fmt(mdd,"s")}).`:`Giá ${fmt(me.dd,"s")} so với đỉnh 52 tuần, sâu hơn hẳn ngành (${fmt(mdd,"s")}): rủi ro riêng của mã.`);
   pts.push(`Thanh khoản ~${fmt(me.adtv,"t")} tỷ/phiên (20 phiên) so với trung vị ngành ${fmt(med(pt.map(x=>x.adtv)),"t")} tỷ.`)}
@@ -150,12 +163,12 @@ function render(){
  if(D.asof)$("asof").textContent="Dữ liệu VNDirect · giá đến phiên "+D.asof.split("-").reverse().join("/")+" (trễ 15 phút)";
  $("indLede").textContent=`${t} – ${D.names[t]}${D.ov.industry?" thuộc ngành "+D.ov.industry:""}. Nhóm so sánh: ${D.peers.length} mã ${D.peerSrc==="manual"?"tự chọn":"vốn hóa lớn nhất cùng ngành (ICB)"}.`;
  const ly=D.finReady?D.years[D.years.length-1]:null;
- $("indKpi").innerHTML=[[`ROE ${ly||""}`,ly?fmt(med(D.peers.map(p=>F[p]?.[ly]?.roe)),"p"):"…"],[`P/B ${ly||""}`,ly?fmt(med(D.peers.map(p=>F[p]?.[ly]?.pb)),"x"):"…"],["Giá 12T",pt.length?fmt(med(pt.map(x=>x.ret)),"s"):"…"],["GTGD (tỷ/phiên)",pt.length?fmt(med(pt.map(x=>x.adtv)),"t"):"…"]].map(([a,b])=>`<div class="kpi"><b>${b}</b><span>${a}</span></div>`).join("");
+ $("indKpi").innerHTML=[[`ROE ${ly?(isP(ly)?"12T đến "+ly:ly):""}`,ly?fmt(med(D.peers.map(p=>F[p]?.[ly]?.roe)),"p"):"…"],[`P/B ${ly||""}`,ly?fmt(med(D.peers.map(p=>F[p]?.[ly]?.pb)),"x"):"…"],["Giá 12T",pt.length?fmt(med(pt.map(x=>x.ret)),"s"):"…"],["GTGD (tỷ/phiên)",pt.length?fmt(med(pt.map(x=>x.adtv)),"t"):"…"]].map(([a,b])=>`<div class="kpi"><b>${b}</b><span>${a}</span></div>`).join("");
  $("peerNote").textContent="Nhóm so sánh: "+D.peers.join(", ")+(D.peerSrc==="manual"?" (tự chọn).":" (6 mã vốn hóa lớn nhất cùng ngành, phân ngành ICB của VNDirect).");
  const ctx=[];
  if(D.finReady){const ys=D.years,y=ys[ys.length-1];
-  const eY=med(D.peers.map(p=>F[p]?.[y]?.npG));if(num(eY))ctx.push(`Tăng trưởng LNST trung vị ngành năm ${y}: ${fmt(eY,"s")}.`);
-  const r0=med(D.peers.map(p=>F[p]?.[ys[0]]?.roe)),r2=med(D.peers.map(p=>F[p]?.[y]?.roe));if(num(r0)&&num(r2))ctx.push(`ROE trung vị ngành ${ys[0]} → ${y}: ${fmt(r0,"p")} → ${fmt(r2,"p")}.`)}
+  const eY=med(D.peers.map(p=>F[p]?.[y]?.npG));if(num(eY))ctx.push(`Tăng trưởng LNST trung vị ngành ${yt(y)}: ${fmt(eY,"s")}.`);
+  const r0=med(D.peers.map(p=>F[p]?.[ys[0]]?.roe)),r2=med(D.peers.map(p=>F[p]?.[y]?.roe));if(num(r0)&&num(r2))ctx.push(`ROE trung vị ngành ${ys[0]} → ${isP(y)?"12T đến "+y:y}: ${fmt(r0,"p")} → ${fmt(r2,"p")}.`)}
  if(pt.length&&D.vni)ctx.push(`Giá 12 tháng: trung vị ngành ${fmt(med(pt.map(x=>x.ret)),"s")} so với VN-Index ${fmt(D.vni.r12,"s")}.`);
  if(pt.length)ctx.push(`Trung vị giá ngành đang ${fmt(med(pt.map(x=>x.dd)),"s")} so với đỉnh 52 tuần.`);
  $("indCtx").innerHTML=ctx.map(c=>`<li>${c}</li>`).join("")||'<li><span class="spin" style="display:inline-block;vertical-align:middle"></span> Đang tải…</li>';
@@ -189,20 +202,20 @@ function render(){
  if(!D.finReady){$("t3").innerHTML='<tbody><tr><td><span class="spin" style="display:inline-block;vertical-align:middle"></span> Đang tải báo cáo tài chính 3 năm của '+(D.peers.length+1)+' mã…</td></tr></tbody>';$("tp").innerHTML="";$("yrTabs").innerHTML=""}
  else{const M=D.isBank?M_BK:M_NB,ys=D.years;
   const py=ys.length>1?ys[ys.length-2]:null,ly2=ys[ys.length-1];
-  let h=`<thead><tr><th>Chỉ số</th>${ys.map(y=>`<th>${y}</th>`).join("")}<th>${ly2} so với ${py||"năm trước"}</th><th>So với ngành</th></tr></thead><tbody>`;
+  let h=`<thead><tr><th>Chỉ số</th>${ys.map(y=>`<th>${yl(y)}</th>`).join("")}<th>${ly2} so với ${py||"năm trước"}</th><th>So với ngành</th></tr></thead><tbody>`;
   M.forEach(m=>{h+=`<tr><td>${m.n}${m.d<0?' <span class="sub">(càng thấp càng tốt)</span>':m.d===0?' <span class="sub">(tham khảo)</span>':""}</td>`;let win=0,cnt=0;
    ys.forEach(y=>{const x=F[t]?.[y]?.[m.k],mdr=med(D.peers.map(p=>F[p]?.[y]?.[m.k])),md=med(D.peers.map(p=>adjPE(m.k,F[p]?.[y]?.[m.k])));let c="n";
     if(m.d&&num(x)&&num(md)){const ok=(adjPE(m.k,x)-md)*m.d>0;c=ok?"g":"b";cnt++;if(ok)win++}
     h+=`<td><span class="pill ${c}">${fmt(x,m.f)}</span><div class="sub">ngành ${fmt(mdr,m.f)}</div></td>`});
    const a=py?F[t]?.[py]?.[m.k]:null,c=F[t]?.[ly2]?.[m.k];let tr="–";
    if(num(a)&&num(c)){if(m.d===0)tr=c>a?"↑ Tăng":c<a?"↓ Giảm":"Không đổi";else{const d=(adjPE(m.k,c)-adjPE(m.k,a))*m.d;tr=d>0?'<span class="tg">↑ Tốt lên</span>':d<0?'<span class="tb">↓ Xấu đi</span>':"Không đổi"}}
-   const vs=!m.d||!cnt?"–":win===cnt?`<span class="tg">Hơn ngành ${win}/${cnt} năm</span>`:win===0?`<span class="tb">Kém ngành ${cnt}/${cnt} năm</span>`:`Hơn ngành ${win}/${cnt} năm`;
+   const vs=!m.d||!cnt?"–":win===cnt?`<span class="tg">Hơn ngành ${win}/${cnt} kỳ</span>`:win===0?`<span class="tb">Kém ngành ${cnt}/${cnt} kỳ</span>`:`Hơn ngành ${win}/${cnt} kỳ`;
    h+=`<td>${tr}</td><td>${vs}</td></tr>`});
   $("t3").innerHTML=h+"</tbody>";
   $("yrTabs").innerHTML=ys.map((y,i)=>`<button type="button" class="chip" aria-pressed="${i===YR}" data-i="${i}">${y}</button>`).join("");
   $("yrTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{YR=+b.dataset.i;render()});
   const yy=ys[YR];let ph=`<thead><tr><th>Mã</th>${M.map(m=>`<th>${m.n}</th>`).join("")}</tr></thead><tbody>`;
-  [...D.peers,t].forEach(p=>{ph+=`<tr class="${p===t?"me":""}"><td>${p}</td>${M.map(m=>`<td>${fmt(F[p]?.[yy]?.[m.k],m.f)}</td>`).join("")}</tr>`});
+  [...D.peers,t].forEach(p=>{ph+=`<tr class="${p===t?"me":""}"><td>${p}${isP(yy)&&D.lag?.[p]?` <span class="sub">(${D.lag[p]})</span>`:""}</td>${M.map(m=>`<td>${fmt(F[p]?.[yy]?.[m.k],m.f)}</td>`).join("")}</tr>`});
   ph+=`<tr class="med"><td>Trung vị ngành</td>${M.map(m=>`<td>${fmt(med(D.peers.map(p=>F[p]?.[yy]?.[m.k])),m.f)}</td>`).join("")}</tr>`;$("tp").innerHTML=ph+"</tbody>"}
 
  // kỹ thuật theo 3 giai đoạn 12 tháng, đều từ giá ngày
@@ -220,7 +233,7 @@ function render(){
  $("tt").innerHTML=th+"</tbody>";
  $("ttNote").textContent="Tính từ giá ngày 12 tháng gần nhất (VNDirect). Biến động = độ lệch chuẩn lợi suất ngày, quy năm. GTGD = bình quân 20 phiên. Beta tính so với VN-Index.";
  drawChart(D);
- $("foot").textContent=`Nguồn: VNDirect (phân ngành ICB, báo cáo tài chính năm, P/E – P/B cuối năm, free float, SLCP; giá ngày 3 năm trễ 15 phút). Chỉ số tự tính: ROE, ROA = LNST cổ đông mẹ ÷ bình quân đầu – cuối năm. Điểm = phân vị của mã trong nhóm ${D.peers.length} mã so sánh (0% kém nhất, 100% tốt nhất); Cơ bản, Định giá, Kỹ thuật chia đều. Tham khảo, không phải khuyến nghị đầu tư.`}
+ $("foot").textContent=`Nguồn: VNDirect (phân ngành ICB, báo cáo tài chính năm và quý, P/E – P/B cuối kỳ, free float, SLCP; giá ngày 3 năm trễ 15 phút). Chỉ số tự tính: ROE, ROA = LNST cổ đông mẹ ÷ bình quân đầu – cuối năm. Điểm = phân vị của mã trong nhóm ${D.peers.length} mã so sánh (0% kém nhất, 100% tốt nhất); Cơ bản, Định giá, Kỹ thuật chia đều. Tham khảo, không phải khuyến nghị đầu tư.`}
 
 function smaArr(a,n){return a.map((_,i)=>i<n-1?null:avg(a.slice(i-n+1,i+1)))}
 function rsi(c,n=14){if(c.length<=n)return null;let g=0,l=0;for(let i=1;i<=n;i++){const d=c[i]-c[i-1];d>0?g+=d:l-=d}g/=n;l/=n;for(let i=n+1;i<c.length;i++){const d=c[i]-c[i-1];g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n}return l?100-100/(1+g/l):100}
@@ -265,15 +278,15 @@ const BS_ROWS_BK=[["Thu nhập lãi thuần","nii"],["Tổng thu nhập hoạt �
 const bsRows=D=>D.isBank?BS_ROWS_BK:BS_ROWS;
 const stv=(D,x,y,k)=>D.st?.[x]?.[y]?.[k];
 function bsMetrics(D,x){if(D.isBank)return{};const ys=D.years||[],y=ys[ys.length-1],b=D.st?.[x]?.[y];if(!b)return{};
- const cfo=ys.map(yy=>stv(D,x,yy,"cfo")).filter(num),e=b.eq;
+ const cfo=ys.filter(yy=>!isP(yy)).map(yy=>stv(D,x,yy,"cfo")).filter(num),e=b.eq,c12=num(b.cfo12)?b.cfo12:b.cfo;
  return{stlE:num(b.stl)&&e?b.stl/e:null,sdE:num(b.sd)&&e?b.sd/e:null,
-  cashSd:num(b.cash)&&b.sd>0?b.cash/b.sd:null,cfoE:num(b.cfo)&&e?b.cfo/e:null,cfoPos:cfo.length?cfo.filter(v=>v>0).length:null}}
-const BS_CMP=[{k:"stlE",n:"Nợ ngắn hạn / VCSH",d:-1,f:"x"},{k:"sdE",n:"Vay ngắn hạn / VCSH",d:-1,f:"x"},{k:"cashSd",n:"Tiền mặt / vay ngắn hạn",d:1,f:"x"},{k:"cfoE",n:"CFO / VCSH",d:1,f:"p"},{k:"cfoPos",n:"Số năm CFO dương (/3)",d:1,f:"t"}];
+  cashSd:num(b.cash)&&b.sd>0?b.cash/b.sd:null,cfoE:num(c12)&&e?c12/e:null,cfoPos:cfo.length?cfo.filter(v=>v>0).length:null}}
+const BS_CMP=[{k:"stlE",n:"Nợ ngắn hạn / VCSH",d:-1,f:"x"},{k:"sdE",n:"Vay ngắn hạn / VCSH",d:-1,f:"x"},{k:"cashSd",n:"Tiền mặt / vay ngắn hạn",d:1,f:"x"},{k:"cfoE",n:"CFO 12T / VCSH",d:1,f:"p"},{k:"cfoPos",n:"Số năm CFO dương (/3)",d:1,f:"t"}];
 function renderBs(D){
  const box=$("bsBox"),outEl=$("bsOut");
  if(!D.finReady||!D.st?.[D.t]){box.hidden=false;$("bsMsg").textContent="Chưa có báo cáo tài chính năm của mã này.";outEl.hidden=true;return}
  box.hidden=true;outEl.hidden=false;const ys=D.years,t=D.t;
- let h=`<thead><tr><th>Chỉ tiêu (tỷ đ)</th>${ys.map(y=>`<th>${y}</th>`).join("")}</tr></thead><tbody>`;
+ let h=`<thead><tr><th>Chỉ tiêu (tỷ đ)</th>${ys.map(y=>`<th>${ylBs(y)}</th>`).join("")}</tr></thead><tbody>`;
  bsRows(D).forEach(([lbl,k])=>{h+=`<tr><td>${lbl}</td>${ys.map(y=>{const v=stv(D,t,y,k);return `<td${(k==="cfo"||k==="np")&&num(v)&&v<0?' class="tb"':""}>${fmt(v,"d")}</td>`}).join("")}</tr>`});
  $("bsTbl").innerHTML=h+"</tbody>";
  const cmpWrap=$("bsCmp").closest(".tbl"),cmpH=cmpWrap.previousElementSibling;cmpWrap.hidden=cmpH.hidden=D.isBank;
@@ -285,7 +298,7 @@ function renderBs(D){
  $("bsCmp").innerHTML=c+"</tbody>"}
 function bsBullets(D){if(!D.finReady||D.isBank)return[];const me=bsMetrics(D,D.t),pts=[];const mm=k=>med(D.peers.map(p=>bsMetrics(D,p)[k]));
  if(num(me.stlE)&&num(mm("stlE")))pts.push(`Nợ ngắn hạn/VCSH ${fmt(me.stlE,"x")} so với ngành ${fmt(mm("stlE"),"x")}${me.stlE>mm("stlE")?" – áp lực đảo nợ cao hơn ngành":" – thấp hơn ngành"}.`);
- if(num(me.cfoPos))pts.push(`Dòng tiền kinh doanh dương ${me.cfoPos}/${(D.years||[]).length} năm (trung vị ngành ${fmt(mm("cfoPos"),"t")}).`);
+ if(num(me.cfoPos))pts.push(`Dòng tiền kinh doanh dương ${me.cfoPos}/${(D.years||[]).filter(y=>!isP(y)).length} năm (trung vị ngành ${fmt(mm("cfoPos"),"t")}).`);
  return pts}
 
 /* ---------- mức 3: ghi chú định tính ---------- */
@@ -319,13 +332,13 @@ function exportXlsx(){
  if(me){const pt=D.peers.map(p=>D.tech[p]).filter(Boolean);me.q.forEach((x,i)=>q.push([x.lbl,Math.round(x.lo),dstr(x.loD),Math.round(x.hi),dstr(x.hiD),pc(x.range),pc(med(pt.map(y=>y.q?.[i]?.range))),Math.round(x.vol),pc(x.adtv),pc(med(pt.map(y=>y.q?.[i]?.adtv)))]))}
  if(D.finReady){q.push([],["KẾT QUẢ KINH DOANH & NGUỒN VỐN (tỷ đ)",...ys.map(String)]);bsRows(D).forEach(([l,kk])=>q.push([l,...ys.map(y=>{const v=stv(D,D.t,y,kk);return num(v)?Math.round(v):null})]));}
  if(D.finReady&&!D.isBank){
-  q.push([],["So với ngành (năm gần nhất)","Mã",...BS_CMP.map(m=>m.n)]);[...D.peers,D.t].forEach(x=>{const mm=bsMetrics(D,x);q.push(["",x,...BS_CMP.map(m=>pc(mm[m.k]))])});q.push(["","Trung vị ngành",...BS_CMP.map(m=>pc(med(D.peers.map(p=>bsMetrics(D,p)[m.k]))))])}
+  q.push([],["So với ngành (kỳ gần nhất)","Mã",...BS_CMP.map(m=>m.n)]);[...D.peers,D.t].forEach(x=>{const mm=bsMetrics(D,x);q.push(["",x,...BS_CMP.map(m=>pc(mm[m.k]))])});q.push(["","Trung vị ngành",...BS_CMP.map(m=>pc(med(D.peers.map(p=>bsMetrics(D,p)[m.k]))))])}
  const ws4=XLSX.utils.aoa_to_sheet(q);ws4["!cols"]=[{wch:30},{wch:14},{wch:12},{wch:14},{wch:12},{wch:12},{wch:14},{wch:14},{wch:14},{wch:14}];XLSX.utils.book_append_sheet(wb,ws4,"Mau QTRR");
  save(fileBase()+".xlsx",new Blob([XLSX.write(wb,{bookType:"xlsx",type:"array"})]))}
 function reportHtml(){
  const D=STATE,S=score(D),M=D.isBank?M_BK:M_NB,ys=D.years,dc=dealCalc(D),t=D.t,g=v=>num(v)?Math.round(v*100)+"%":"–";
  const cell=(x,md,m)=>{let c="";if(m.d&&num(x)&&num(md))c=(adjPE(m.k,x)-adjPE(m.k,md))*m.d>0?"g":"b";return `<td class="${c}">${fmt(x,m.f)}</td><td>${fmt(md,m.f)}</td>`};
- let f=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${ys.map(y=>`<th>${y}<br>${t}</th><th>${y}<br>Ngành</th>`).join("")}</tr></thead><tbody>`;
+ let f=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${ys.map(y=>`<th>${isP(y)?y+' (12T)':y}<br>${t}</th><th>${isP(y)?y:y}<br>Ngành</th>`).join("")}</tr></thead><tbody>`;
  M.forEach(m=>{f+=`<tr><td style="text-align:left">${m.n}</td>${ys.map(y=>cell(D.fin[t]?.[y]?.[m.k],med(D.peers.map(p=>D.fin[p]?.[y]?.[m.k])),m)).join("")}</tr>`});f+="</tbody></table>";
  const win=(x,i)=>i===0?D.tech[x]:(D.older[x]?D.older[x][i]:null),cols=D.olderReady?[0,1,2]:[0];
  let k=`<table><thead><tr><th style="text-align:left">Chỉ số</th>${cols.map(i=>`<th>${W_LBL[i]}<br>${t}</th><th>Ngành</th>`).join("")}</tr></thead><tbody>`;
@@ -344,7 +357,7 @@ function qHtml(D){const me=D.tech[D.t];if(!me)return "";const pt=D.peers.map(p=>
  <div style="margin-top:4px;color:#6E6A66">SLCP lưu hành ${fmt(sharesOut(D),"d")} · Free float ${fmt(D.now[D.t]?.ff,"p")} · Giá tham chiếu ${fmt(me.p,"d")}đ</div>`}
 function bsHtml(D){if(!D.finReady)return "";const ys=D.years,t=D.t,keep=D.isBank?["Thu nhập lãi thuần","LNST cổ đông mẹ","Tổng tài sản","Cho vay khách hàng","Tiền gửi khách hàng","Vốn chủ sở hữu"]:["Doanh thu thuần","LNST cổ đông mẹ","Tổng tài sản","Nợ phải trả","Nợ ngắn hạn","Vốn chủ sở hữu","Dòng tiền kinh doanh (CFO)"];
  const me=bsMetrics(D,t),mm=k=>med(D.peers.map(p=>bsMetrics(D,p)[k]));
- return `<h4>KQKD & nguồn vốn (tỷ đ)</h4><table><thead><tr><th style="text-align:left">Chỉ tiêu</th>${ys.map(y=>`<th>${y}</th>`).join("")}</tr></thead><tbody>${bsRows(D).filter(r=>keep.includes(r[0])).map(([l,k])=>`<tr><td style="text-align:left">${l}</td>${ys.map(y=>`<td>${fmt(stv(D,t,y,k),"d")}</td>`).join("")}</tr>`).join("")}</tbody></table>
+ return `<h4>KQKD & nguồn vốn (tỷ đ)</h4><table><thead><tr><th style="text-align:left">Chỉ tiêu</th>${ys.map(y=>`<th>${isP(y)?(D.period?.ytd||y):y}</th>`).join("")}</tr></thead><tbody>${bsRows(D).filter(r=>keep.includes(r[0])).map(([l,k])=>`<tr><td style="text-align:left">${l}</td>${ys.map(y=>`<td>${fmt(stv(D,t,y,k),"d")}</td>`).join("")}</tr>`).join("")}</tbody></table>
  ${D.isBank?"":`<div style="margin-top:4px">${BS_CMP.map(m=>`${m.n}: <b>${fmt(me[m.k],m.f)}</b> (ngành ${fmt(mm(m.k),m.f)})`).join(" · ")}</div>`}`}
 async function exportPdf(){const r=$("report");r.innerHTML=reportHtml();
  try{const canvas=await html2canvas(r,{scale:2,backgroundColor:"#FFFCF6"}),{jsPDF}=window.jspdf,pdf=new jsPDF({unit:"pt",format:"a4"});
