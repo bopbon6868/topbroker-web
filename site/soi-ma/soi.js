@@ -209,7 +209,7 @@ function render(){
     h+=`<td><span class="pill ${c}">${fmt(x,m.f)}</span><div class="sub">ngành ${fmt(mdr,m.f)}</div></td>`});
    const a=py?F[t]?.[py]?.[m.k]:null,c=F[t]?.[ly2]?.[m.k];let tr="–";
    if(num(a)&&num(c)){if(m.d===0)tr=c>a?"↑ Tăng":c<a?"↓ Giảm":"Không đổi";else{const d=(adjPE(m.k,c)-adjPE(m.k,a))*m.d;tr=d>0?'<span class="tg">↑ Tốt lên</span>':d<0?'<span class="tb">↓ Xấu đi</span>':"Không đổi"}}
-   const vs=!m.d||!cnt?"–":win===cnt?`<span class="tg">Hơn ngành ${win}/${cnt} năm</span>`:win===0?`<span class="tb">Kém ngành ${cnt}/${cnt} năm</span>`:`Hơn ngành ${win}/${cnt} năm`;
+   const vs=!m.d||!cnt?"–":win===cnt?`<span class="tg">Hơn ngành ${win}/${cnt} kỳ</span>`:win===0?`<span class="tb">Kém ngành ${cnt}/${cnt} kỳ</span>`:`Hơn ngành ${win}/${cnt} kỳ`;
    h+=`<td>${tr}</td><td>${vs}</td></tr>`});
   $("t3").innerHTML=h+"</tbody>";
   $("yrTabs").innerHTML=ys.map((y,i)=>`<button type="button" class="chip" aria-pressed="${i===YR}" data-i="${i}">${y}</button>`).join("");
