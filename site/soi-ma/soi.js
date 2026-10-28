@@ -88,7 +88,7 @@ async function analyze(t){
   D.peers=j.peers;D.peerSrc=j.peerSrc;D.names=j.names||{};D.isBank=!!j.isBank;D.now=j.now||{};
   D.ov={industry:j.industry||"",exchange:j.floor||"",company:j.company||""};D.names[t]=j.name||t;
   if(j.error){status("err",esc(j.error));return}
-  D.fin=j.fin||{};D.st=j.st||{};D.years=j.years||[];D.period=j.period||null;D.lag=j.lag||{};D.finReady=D.years.length>0;YR=D.years.length-1;
+  D.fin=j.fin||{};D.st=j.st||{};D.years=j.years||[];D.period=j.period||null;D.qErr=!!j.qErr;D.lag=j.lag||{};D.finReady=D.years.length>0;YR=D.years.length-1;
   (j.missing||[]).forEach(x=>D.missing.push(x+" (tài chính)"));
   load("Đang tải giá 3 năm của "+t+" và "+D.peers.length+" mã so sánh…");
   const ppxP=getJ(pxURL(D.peers)).catch(e=>({__e:e}));
@@ -112,6 +112,7 @@ async function analyze(t){
 
 function periodNote(D){
  const now=new Date(),cq=Math.floor(now.getMonth()/3),exp=cq===0?`Q4/${now.getFullYear()-1}`:`Q${cq}/${now.getFullYear()}`;
+ if(!D.period&&D.qErr)return `Chưa lấy được số liệu quý từ VNDirect lúc này, bảng đang chỉ có các năm. Bấm Soi mã lại sau ít phút để có cột quý mới nhất.`;
  if(!D.period)return `VNDirect chưa có báo cáo quý của ${esc(D.t)} sau năm ${D.years?.[D.years.length-1]||""}; cột mới nhất sẽ tự thêm khi có.`;
  const P=D.period.key,lag=Object.entries(D.lag||{});let s=`Cột ${P}: chỉ số tính 12 tháng gần nhất, KQKD là lũy kế ${D.period.ytd}.`;
  if(P!==exp)s+=` ${esc(D.t)} chưa có BCTC ${exp} trên VNDirect, trang tự cập nhật khi doanh nghiệp công bố.`;
