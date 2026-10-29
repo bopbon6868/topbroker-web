@@ -1,0 +1,25 @@
+Cập nhật phiên sáng 30/10/2026 · 07:00 (Thứ Sáu; chạy ~06:46–07:10 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (thẻ VN-Index, sparkline 25 phiên 25/9–29/10, độ rộng, khối ngoại 10 phiên 16–29/10, khối NHNN/tỷ giá/lãi qua đêm, Điểm nóng thế giới, mảng N, mã nóng).
+
+BẢN TIN
+1. (Thế giới) Iran nói 3 tàu dầu trúng mìn, cháy ở Hormuz (AP qua WFTV 29/10); WSJ: tướng Mỹ trình ông Trump phương án quân sự (qua Euronext); Brent chốt 114,88 (−0,38%) 29/10 (Euronext). Kênh: dầu → xăng, lạm phát, tỷ giá.
+2. VN-Index 1.755,61 (−11,04; −0,62%) 29/10; HOSE 97/56/215; năng lượng −3,64%, PVP sàn (Nhân Dân, Vietnamplus).
+3. Khối ngoại HOSE −423,7 tỷ (TCBS), 5 phiên bán ròng; NHNN bơm ròng 2.749 tỷ phiên 29/10 (Người Quan Sát); tỷ giá trung tâm 25.644 (+13) 29/10 (Thời báo Ngân hàng).
+4. Mỹ 29/10: Nasdaq −1,38%, Alphabet −12%, Amazon −10% sau giờ (Yahoo Finance, TheStreet); ECB giữ lãi, cảnh báo năng lượng (Yahoo Finance UK).
+5. BCTC quý 3 (CafeF 30/10 00:04): PV OIL LNTT 902 tỷ +438%, TCH +1.233%, GEE −54%. TCB −33,28% là điều chỉnh do cổ tức cổ phiếu 50%, GDKHQ 29/10, ĐKCC 30/10 (CafeF 20/10).
+
+SỐ LIỆU KHÁC
+- Mỹ 29/10 (Yahoo Finance): Dow 52.342,56 (−0,25%), S&P 7.720,39 (−0,30%), Nasdaq 26.184,73 (−1,38%), VIX 17,20 (+1,71%), 10 năm 4,989%.
+- FTSE 100 10.722,07 (+0,26%) 29/10 (Yahoo Finance UK). Nikkei, Hang Seng, KOSPI giữ số 29/10 của bản chiều (không tìm được số mới sáng 30/10; BOJ công bố lãi suất trong ngày 30/10).
+- Vàng 4.021 USD/oz (−39 USD, ~−0,96%) sáng 30/10; SJC 139,7–142,7 tr đứng giá (Thời báo Tài chính 06:41).
+- BTC 78.474 (−3,42%), ETH 2.258 (−4,2%) lúc 06:38 30/10 (webgia.com).
+- NHNN 29/10: chào 10.556 tỷ, đáo hạn 7.807, bơm ròng 2.749, OMO 107.157 tỷ; qua đêm 4,1% (28/10) (Người Quan Sát).
+- Sửa lỗi: tỷ giá trung tâm 29/10 là 25.644 (Thời báo Ngân hàng 09:37 29/10), không phải 25.631 như bản trước (25.631 là số 28/10).
+- UPCoM chốt 124,10 (−1,30%) thay số trong phiên 124,82 (Nhân Dân). Độ rộng HOSE chốt 97/56/215 (Nhân Dân), TCBS ghi 86/233/46 trong phiên.
+
+RADAR
+- Thế giới: thay tin Houthi 28/10 bằng tin Chiến sự 29/10 (mìn Hormuz + Houthi), thay tin Qatar 28/10 bằng Chính trị 29/10 (phương án quân sự Mỹ, thư Vance; gộp ý Khamenei 27/10), thêm Kinh tế 29/10 (Big Tech, ECB); giữ Fed 28/10; bỏ tin Khamenei 27/10.
+- Trong nước: thêm phiên 29/10, khối ngoại 29/10, NHNN 27–29/10 (thay tin NHNN 27/10), BCTC 30/10, TCB chia cổ phiếu + lịch cổ tức; bỏ 3 tin 26/10.
+- Biểu đồ lãi qua đêm thêm 27/10 (4,9) và 28/10 (4,1), bỏ 5/10, 7/10.
+
+LỊCH: bỏ 26–30/10 ETF và 29/10; thêm 30/10 (BOJ, TCB chốt quyền, CLW), 04/11 SGN, BMP vào 11/11, 27/11 FPT tạm ứng 10%.
+TRANH: eo biển giữa hai vách đá, tàu dầu cháy, ba thủy lôi, phong thư bay (hòa đàm), thùng dầu trên mũi tên lên.
