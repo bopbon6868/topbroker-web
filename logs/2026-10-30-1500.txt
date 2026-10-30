@@ -1,0 +1,18 @@
+Cập nhật chỉ số chiều Thứ Sáu 30/10/2026 (chạy ~15:20 giờ VN)
+Việt Nam (TCBS getIndustryIndex/getMarketForeignVal/getMarketBreadth):
+- VN-Index 1.741,62 (−13,99; −0,80%) 14:45; VN30 1.855,04 (−1,18%) 14:45
+- HNX-Index 252,74 (−1,51%) 14:59; UPCoM 123,70 (−0,91% so 124,84 ngày 29/10 theo TCBS)
+- HOSE tăng/giảm 72/267, 32 đứng (TCBS 14:30)
+- Khối ngoại HOSE −574,5 tỷ (TCBS 14:59), bán ròng 6 phiên liền (23–30/10)
+Dòng tiền:
+- Tỷ giá trung tâm 25.637, −7 đồng (Thị trường Tài chính Tiền tệ, Thời báo Ngân hàng 30/10)
+- NHNN: chưa có số phiên 30/10 → giữ phiên 29/10 (bơm ròng 2.749 tỷ, Người Quan Sát)
+- Qua đêm LNH: giữ 4,10% (28/10)
+Á – Âu:
+- Nikkei 63.154 (−2,33%) đóng cửa 30/10 – Trading Economics (AP: 63.155,94 −2,3% chiều)
+- KOSPI 5.730,74 (−206,92; −3,48%) đóng cửa 30/10 – Seoul Economic Daily
+- Hang Seng 23.359 (+1,69%) trong phiên chiều 30/10 – AP (News4Jax); chưa có số đóng cửa
+- FTSE 100: giữ 29/10
+Mỹ: giữ đóng cửa 29/10 (Capp Notes/AP xác nhận cùng số)
+Hàng hóa: vàng 3.985 (−0,91%) Trading Economics 30/10; Brent 116,09 (+1,05%) AP 30/10
+Tiền số: BTC 77.984 (−2,2% 24h), ETH 2.230 (−3,2%) CoinGecko 7:51 giờ UAE = 10:51 VN (The National)
