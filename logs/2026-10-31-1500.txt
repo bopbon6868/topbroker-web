@@ -1,0 +1,9 @@
+Cập nhật chỉ số chiều 31/10/2026 · 15:00 (Thứ Bảy, sàn VN nghỉ → giữ số đóng cửa phiên 30/10). Chỉ sửa TB.UPDATED, TB.TICKER (site.js) và các dòng class="qr" (index.html).
+
+ĐỔI
+- NHNN thị trường mở phiên 30/10: bơm ròng 16.068 tỷ (đáo hạn 13.867 tỷ), OMO lưu hành 123.226 tỷ — Người Quan Sát 31/10 09:05.
+- Lãi suất qua đêm LNH 3,70% (phiên 29/10), từ 4,10% (28/10) — Người Quan Sát 31/10.
+- FTSE 100 chốt 30/10: 10.729,78 (+7,71 điểm, +0,07%) — Alliance News/MarketScreener 30/10.
+- Bitcoin 77.367 USD (+0,6% 24h), Ethereum 2.241 USD (+2,2% 24h) — CoinGecko qua Coin Gabbar, 01:30 UTC 31/10 (08:30 giờ VN).
+
+GIỮ NGUYÊN (đã là số chốt phiên gần nhất 30/10 hoặc không có số mới): VN-Index 1.741,62, VN30, HNX, UPCoM, khối ngoại HOSE −634 tỷ, tỷ giá trung tâm 25.637, Mỹ (Dow/Nasdaq/S&P/VIX 30/10), Nikkei, Hang Seng, KOSPI, vàng, Brent.
