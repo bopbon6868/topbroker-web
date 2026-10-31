@@ -1,0 +1,16 @@
+Cập nhật phiên sáng 31/10/2026 · 07:00 (Thứ Bảy, sàn VN nghỉ → chế độ cuối tuần; chạy ~06:46–07:30 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, các dòng Thị trường (Mỹ, Hàng hóa, Dòng tiền), 3 tin cần biết, Lịch (index.html); Radar (thẻ VN-Index 30/10 + tuần, sparkline 28/9–30/10, độ rộng 30/10, khối ngoại 10 phiên 19–30/10, tỷ giá 30/10, mảng N, mã nóng).
+
+BẢN TIN (tổng kết tuần)
+1. (Thế giới) IRGC nói siêu tàu >2 triệu thùng cháy ở Hormuz, chặn 2 tàu (Al Jazeera, Iran International 30/10); Lầu Năm Góc trình phương án đánh Iran sau 3/11 (Fox News); Brent kỳ hạn T12 chốt 117,64 (+2,4%), T1 113,43, WTI 104,12 (Rigzone 30/10). Kênh: dầu → xăng, lạm phát, tỷ giá.
+2. Tuần 26–30/10: VN-Index 1.741,62, −32,53 điểm (−1,83%), giảm 4/5 phiên; HNX −3,79%; phiên 30/10 −13,99 (−0,80%), khớp HOSE ~11.900 tỷ (Vietstock).
+3. Khối ngoại HOSE cả tuần bán ròng gần 2.700 tỷ; 30/10 −633,74 tỷ (VIC −353,68) (Vietstock; TCBS 14:59 ghi −574,5). Tỷ giá trung tâm 25.637, +10 đồng/tuần; USD tự do 26.140–26.210 (Vietstock).
+4. Mỹ 30/10 (Yahoo Finance): Dow 51.770,31 (−1,09%), S&P 7.580,07 (−1,82%), Nasdaq 25.437,00 (−2,86%), VIX 19,42 (+12,91%), 10 năm 4,929%, vàng 3.884,90 (−3,63%), BTC 76.710 (−2,73%). Binance hack ~6,3 tỷ USD, dừng nạp/rút (Bitcoin Magazine 29/10).
+5. BCTC quý 3 (CafeF 31/10 00:23): BSR LNTT 10.072 tỷ (+858%), GAS +80%, SHB +57%, EIB −67%, HVN −46%; ngân hàng (CafeF 30/10): VCB 11.218 tỷ (−0,2%), VPB +20,3%, TCB +25,8%, MB +42,5%.
+
+GIỮ SỐ CŨ (không tìm được số mới): NHNN thị trường mở phiên 30/10 (giữ 29/10), lãi qua đêm (giữ 28/10), FTSE 100 (giữ 29/10), Hang Seng (chiều 30/10), ETH (10:51 30/10), vàng SJC (29/10).
+
+RADAR
+- Thế giới: sửa tin Chiến sự 29/10 → 29–30/10 (Hormuz), Chính trị 29/10 → 30/10 (phương án sau 3/11, Qatar ở Tehran, Pakistan, dự luật rút NPT), Kinh tế 29/10 → 30/10 (Phố Wall, vàng, Fed); thêm Kinh tế Binance 29–30/10; bỏ tin Fed 28/10 (đã gộp).
+- Trong nước: thêm tuần 26–30/10 + phiên 30/10, khối ngoại 30/10 + tỷ giá tuần, BCTC 30–31/10; bỏ 2 tin phiên 27/10.
+LỊCH: bỏ 30/10; thêm 01/11 OPEC+ (House of Saud), 02/11 ISM Mỹ, 06/11 việc làm Mỹ (FXStreet).
+TRANH: siêu tàu dầu cháy trên biển, đồng hồ cát trên mỏm đá (chờ mốc 3/11), thùng dầu trên mũi tên lên, đồng xu vàng lăn xuống.
