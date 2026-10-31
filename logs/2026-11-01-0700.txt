@@ -1,0 +1,18 @@
+Cập nhật phiên sáng 01/11/2026 · 07:00 (Chủ Nhật, sàn VN nghỉ → chế độ cuối tuần; giữ số đóng cửa phiên 30/10). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, ô Bitcoin (.bn), giờ số liệu, tranh, dòng Hàng hóa & tiền số (Bitcoin), 3 tin cần biết, Lịch (index.html); Radar (khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Tấn công tàu quanh Hormuz tháng 10 cao nhất từ đầu chiến sự, gấp đôi tháng 9 (The National 31/10); Trump chưa quyết đánh tiếp, nguồn vùng Vịnh nói có thể từ 4/11 (Iran International dẫn MS NOW 31/10); Brent 117,64 (Rigzone 30/10). Kênh: dầu → tỷ giá, lạm phát, vốn ngoại.
+2. Thuế TTĐB xăng 0% từ 1/11 đến 31/3/2027 (NQ 45/2026/NQ-CP, Dân trí 31/10); E5 RON92 24.223 đ (−1.804), E10 24.159 (−1.575) (Báo Lào Cai 1/11); điện bình quân −2% còn 2.159,9037 đ/kWh (EVN, Tuổi Trẻ 31/10).
+3. Tuần 26–30/10 VN-Index −1,83% về 1.741,62, khối ngoại bán ròng ~2.700 tỷ (Vietstock); Chứng khoán ASEAN (31/10) hỗ trợ 1.715–1.730, cản 1.755–1.775.
+4. 29 ngân hàng hạ lãi huy động tháng 10, phổ biến 0,5 điểm (Báo Nghệ An 31/10); NHNN bơm ròng 16.068 tỷ phiên 30/10, qua đêm 3,7% (29/10) (Người Quan Sát 31/10).
+5. Binance bù 90% của 6,3 tỷ USD, hẹn mở rút 1/11 (Cointelegraph 31/10); BTC ~77.520 USD (CoinGecko sáng 1/11); lịch Mỹ: ISM 2/11, bầu cử 3/11, việc làm 6/11.
+
+TICKER: BTC 77.520; thêm OPEC+ T12 giữ sản lượng (Reuters qua SRN 31/10), xăng E5, giá điện, 29 ngân hàng hạ lãi; Binance → "bù 90%"; bỏ PV OIL.
+GIỮ SỐ CŨ: các chỉ số VN/Mỹ/Á–Âu (chốt 30/10), vàng, Brent, ETH (08:30 31/10), dòng Dòng tiền (30/10).
+
+RADAR
+- Thế giới: Chính trị 30–31/10 (Trump chưa quyết, có thể 4/11, Doha, thư Vance; Fox News, Iran International, Al Jazeera); Chiến sự 29–31/10 (tấn công tàu tháng 10 gấp đôi T9, UKMTO −70% lưu lượng, OPEC+ giữ T12; The National, Reuters); Kinh tế Binance 29–31/10 (Cointelegraph, crypto.news, Yahoo Finance, CoinGecko); giữ Phố Wall 30/10.
+- Trong nước: thêm xăng/điện 1/11; nhận định tuần 2–6/11 (ASEAN Securities) + Bộ Tài chính (Znews 1/11); NHNN 29/10 → 30/10; lãi huy động 19–26/10 → 19–31/10 (29 ngân hàng); bỏ tin 27/10 và khối ngoại 28/10.
+- Khối NHNN: OMO 30/10, OMO lưu hành 123.226 tỷ, qua đêm 3,70% (29/10), biểu đồ thêm 29/10, van "Bơm mạnh". Lưu ý: bài Người Quan Sát ghi trúng thầu 10.556 tỷ không khớp số bơm ròng 16.068 tỷ; dùng số bơm ròng/OMO lưu hành như báo công bố.
+LỊCH: 01/11 xăng/điện hiệu lực, OPEC+, Binance; 02/11 thêm Binance công bố dự trữ; 04/11 thêm mốc có thể nối lại không kích.
+TRANH: eo biển giữa hai vách đá, thủy lôi gai, tàu dầu dừng lại; bồ câu ngậm cành ô liu và mây giông có sét; cây xăng với mũi tên xuống.
