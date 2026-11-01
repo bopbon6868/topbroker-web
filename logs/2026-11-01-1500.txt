@@ -1,0 +1,6 @@
+Cập nhật chỉ số chiều Chủ Nhật 01/11/2026 (15:05 giờ VN) – sàn VN nghỉ cuối tuần.
+- Giữ nguyên số đóng cửa phiên 30/10 của VN-Index, VN30, HNX, UPCoM, khối ngoại, NHNN, tỷ giá, qua đêm (không có phiên mới).
+- Thị trường Mỹ/Á/Âu, vàng, Brent: nghỉ cuối tuần, giữ số chốt 30/10.
+- ETH: 2.241 (+2,2%, 08:30 31/10) -> 2.250 (+0,8% 24h, 15:05 1/11). Nguồn: CoinGecko.
+- BTC: 77.520 (+0,5% 24h) giữ giá trị, đổi mốc thành 15:05 1/11. Nguồn: CoinGecko.
+- TB.UPDATED -> 'Chủ Nhật, 01/11/2026 · 15:00'.
