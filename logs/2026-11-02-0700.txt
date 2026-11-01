@@ -1,0 +1,19 @@
+Cập nhật phiên sáng Thứ Hai 02/11/2026 · 07:00 (ngày giao dịch; phiên VN gần nhất là 30/10, giữ số đóng cửa 30/10). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 3 ô .bn (vàng, Brent, BTC), giờ số liệu, tranh, dòng Hàng hóa & tiền số, 3 tin cần biết, Lịch 02/11 và 03/11 (index.html); Radar (mảng N, dòng Brent trong khối NHNN).
+
+BẢN TIN
+1. (Thế giới) Araghchi đề xuất mở Hormuz trong 2 ngày nếu Mỹ đáp ứng điều kiện (ANI 1/11); Trump: đàm phán "ổn", không vội (Investing.com 1/11); Brent 111,92 (−1,33%) đầu phiên Á 06:03 2/11 (Reuters qua GBAF). Kênh: dầu → tỷ giá, CPI, nhóm dầu khí.
+2. VN-Index tuần −1,83% về 1.741,62; CTCK dự báo 1.720–1.780, rủi ro thử 1.700 (Znews 2/11).
+3. Khối ngoại bán ròng 20.844 tỷ tháng 10, mạnh nhất từ đầu năm; MCH 9.602 tỷ (Tinnhanhchungkhoan 31/10); FPT bị xả mạnh nhất tuần cuối (CafeF).
+4. Phố Wall 30/10 Nasdaq −2,86%, S&P −1,82%; vàng chốt tuần 3.875, thấp nhất hơn 1 năm (ABC, VietNamNet 2/11); ISM 2/11, bầu cử 3/11, việc làm 6/11.
+5. NHNN bơm ròng 16.068 tỷ 30/10, OMO 123.226 tỷ, qua đêm 3,7% (Người Quan Sát); 29 ngân hàng hạ lãi (Báo Nghệ An).
+
+ĐÍNH CHÍNH: Brent 117,64 (+2,4%) trước đây là kỳ hạn tháng 12 đã đáo hạn; kỳ hạn gần nhất (tháng 1) chốt 113,43 ngày 30/10 (FinanceFeeds/Rigzone). Từ nay dùng kỳ hạn tháng 1: 111,92 (−1,33%) 06:03 2/11 (Reuters).
+TICKER: thêm "Iran: mở Hormuz trong 2 ngày" (1/11), "Khối ngoại tháng 10 −20.844 tỷ" (31/10); Brent 111,92; OPEC+ tháng 12 giữ sản lượng đã chốt (Reuters 1/11); vàng 3.875 (−3,6%, chốt 30/10, ABC); SJC 136/139 tr (VietNamNet 06:00 2/11); BTC 77.662 +0,3% (ABC, 03:00 2/11); ETH 2.262 +0,3% (CoinGecko 06:50 2/11); Binance mở lại rút BTC, ETH (CBS 1/11).
+GIỮ SỐ CŨ: chỉ số VN/Mỹ/Á–Âu (30/10; châu Á chưa mở cửa lúc cập nhật), Dòng tiền (30/10, chưa có phiên mới).
+
+RADAR
+- Thế giới: Chính trị 30/10–2/11 viết lại (kế hoạch 2 ngày, Trump, Rubio, Rezaei; ANI, Investing.com, Reuters); Chiến sự 29/10–2/11 thêm Brent sáng 2/11, mìn dính thân tàu 30/10 (UKMTO qua ABC), OPEC+ đã chốt; Kinh tế Binance cập nhật mở lại rút tiền 1/11 (CBS News), giá BTC/ETH mới; giữ Phố Wall 30/10.
+- Trong nước: thay tin ASEAN 31/10 bằng tổng hợp nhận định CTCK tuần 2–6/11 (Znews 2/11, Người Quan Sát 1/11); thêm khối ngoại tháng 10 (Tinnhanhchungkhoan, CafeF 31/10).
+- Khối NHNN: không có phiên mới (cuối tuần), chỉ sửa dòng Brent.
+LỊCH: 02/11 ISM tối nay; 03/11 thêm dự báo Dân chủ giành Hạ viện (ABC 2/11).
+TRANH: eo biển giữa hai vách đá, cổng gỗ có ổ khóa đang hé mở với chìa vàng, tàu dầu đỏ chờ, hai mặt trời nối nhau (2 ngày), bàn trà hai chén (đàm phán), thùng dầu kèm mũi tên xanh chỉ xuống.
