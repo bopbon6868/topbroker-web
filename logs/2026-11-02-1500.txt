@@ -1,0 +1,19 @@
+Cập nhật chỉ số chiều Thứ Hai 02/11/2026 (chạy ~15:15 giờ VN). Chỉ sửa TB.UPDATED, TB.TICKER (site.js) và dòng class="qr" (index.html).
+
+ĐỔI
+- VN-Index: 1.741,62 (30/10) -> 1.710,72, −30,90 điểm (−1,77%), đóng cửa 2/11. Nguồn: MarketTimes 15:22 2/11 ("Kết phiên 2/11, VN-Index giảm 30,9 điểm, còn 1.710,72").
+- Khối ngoại: −634 tỷ HOSE 30/10 -> mua ròng gần 100 tỷ toàn thị trường 2/11, gom MWG hơn 306 tỷ (MarketTimes 15:22 2/11). Chưa có số riêng HOSE nên ghi "toàn TT".
+- Tỷ giá trung tâm: 25.637 -> 25.631 (−6 đồng) 2/11. Nguồn: Thị trường Tài chính Tiền tệ, VOV 2/11.
+- Nikkei 225: 63.081,86 (−0,33%) đóng cửa 2/11; KOSPI 5.859,07 (+2,24%) đóng cửa 2/11. Nguồn: KuCoin News flash 2/11.
+- Hang Seng: 23.357 (+0,27%) cuối phiên ~15:20 giờ VN 2/11 (Trading Economics; chưa có bản tin đóng cửa chính thức).
+- Brent: 111,92 -> 109,66 (−3,3%) trưa 2/11. Nguồn: AP (WSLS/ClickOnDetroit 2/11).
+- Vàng: 3.875 -> 3.906 (+0,79%) 2/11. Nguồn: Trading Economics qua FinanceFeeds 2/11.
+- BTC 78.355 (+0,8% 24h), ETH 2.294 (+1,3% 24h) 05:45 UTC = 12:45 giờ VN 2/11. Nguồn: CoinGecko qua MarketAlleys.
+
+GIỮ SỐ CŨ
+- VN30, HNX, UPCoM (30/10): chưa tìm được số đóng cửa 2/11 (trưa: HNX 250,02 −1,08%, Vietstock).
+- HOSE tăng/giảm (30/10).
+- NHNN thị trường mở (30/10): chưa có số phiên 2/11. OMO lưu hành giữ.
+- Qua đêm 3,70% (29/10): Người Quan Sát 2/11 viết qua đêm 30/10 = 6% (+2,1 điểm), mâu thuẫn với tin 3,7% trước đó → giữ số cũ, cần soát lại sáng mai.
+- Mỹ (Dow, Nasdaq, S&P, VIX), FTSE: giữ đóng cửa 30/10; hợp đồng tương lai Mỹ sáng 2/11 nhích tăng nhẹ (AP) nhưng không có số cụ thể.
+- TCBS MCP chưa được cấp quyền, không dùng được; API giá bị chặn từ máy chạy lịch.
