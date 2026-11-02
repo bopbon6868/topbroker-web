@@ -1,0 +1,22 @@
+Cập nhật phiên sáng Thứ Ba 03/11/2026 · 07:00 (chạy ~06:46–07:20 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ cập nhật, khối thị trường, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Lãnh tụ tối cao Iran duyệt theo đuổi đàm phán (IRNA qua Rigzone 2/11), Trump nói "không" đánh tiếp sau bầu cử; Brent chốt 104,77 (−7,6%), WTI 96,46 (−7,4%) (Rigzone). Kênh: dầu → tỷ giá, CPI, hàng không/dầu khí.
+2. VN-Index 2/11: 1.710,72 (−30,90; −1,77%), VN30 1.813,41 (−2,24%), HOSE 43/47/267, VPB −6,1%, VCB −4,8% (Thời báo Tài chính VN 2/11).
+3. Khối ngoại HOSE bán ròng ~523 tỷ (MBB, VCB, ACB) (Thời báo Tài chính); NHNN bơm ròng 993 tỷ phiên 2/11, OMO 124.220 tỷ, qua đêm 6% chốt 30/10 (Người Quan Sát 2/11).
+4. Phố Wall 2/11: Dow 51.983,98 (+0,41%), S&P 7.541,40 (−0,51%), Nasdaq 25.164,36 (−1,07%), VIX 21,15; ISM 55,5 (Yahoo Finance); bầu cử giữa kỳ 3/11, Polymarket 94% Dân chủ giành Hạ viện (Newsweek 1/11).
+5. Vàng 3.944 USD, SJC 137–140 tr (Viettimes sáng 3/11); BTC 76.804 (−1,2%, CoinGecko ~06:50 3/11); BSR lãi quý 3 gần 9.000 tỷ (Vietstock 3/11).
+
+ĐÍNH CHÍNH: bản chiều 2/11 ghi khối ngoại mua ròng ~100 tỷ toàn TT (MarketTimes) – không khớp Thời báo Tài chính (HOSE −523 tỷ), Vietstock (sáng −472,6 tỷ; rút gần 600 tỷ khỏi ngân hàng). Đã thay bằng −523 tỷ HOSE.
+Qua đêm LNH: dùng 6% chốt 30/10 (Người Quan Sát 2/11, cũng nhipsongkinhdoanh) thay 3,70% (29/10).
+ĐỔI KHÁC: VN30/HNX 250,55 (−0,87%)/UPCoM 121,95 (−1,44%) 2/11; FTSE 10.767,22 (+0,35%) 2/11 (ad-hoc-news); lợi suất 10 năm 4,894% (Yahoo); Apple Q4 114,48 tỷ USD +12% (9to5Mac).
+GIỮ SỐ CŨ: Nikkei, KOSPI, Hang Seng (2/11; Nhật nghỉ lễ 3/11, châu Á chưa mở); ETH 2.294 (12:45 2/11, không lấy được số mới); tỷ giá trung tâm 25.631 (2/11, chưa có số 3/11).
+
+RADAR
+- Thế giới (4 tin có tg): Chính trị Iran viết lại (IRNA/Rigzone, Reuters qua Oilprice, Gulf News, ANI, CBS); Kinh tế mới: Phố Wall 2/11 + ISM + Apple (Yahoo, StockTitan, 9to5Mac); Chính trị mới: bầu cử giữa kỳ Mỹ (Newsweek, Admiral Markets); Chiến sự cập nhật tàu trúng vật thể 1/11, CENTCOM 144 tàu (CBS), Brent 2/11. Bỏ tin Binance (29/10–2/11) và Phố Wall 30/10 (gộp số vào tin Kinh tế mới).
+- Trong nước: thêm phiên 2/11 (Thời báo Tài chính, Vietstock), NHNN phiên 2/11 (Người Quan Sát), doanh nghiệp 3/11 (BSR, ACV, SMC, NVL, PNJ – Vietstock, Tinnhanhchungkhoan).
+- Khối thị trường: VN-Index 2/11, sparkline thêm 1.710,72, độ rộng 2/11, khối ngoại 10 phiên thêm 2/11 (−523), tổng −3.104.
+- Khối NHNN: bơm nhẹ, 993 tỷ, OMO 124.220, qua đêm 6% (30/10), tỷ giá 25.631 (2/11); biểu đồ qua đêm thêm 30/10.
+LỊCH: bỏ 01/11, 02/11; thêm 05/11 NVL, 10/11 CPI Mỹ, DVV 11/11; 03/11 và 04/11 viết lại (bầu cử, giờ có kết quả – Admiral Markets).
+TRANH: eo biển, bồ câu trắng ngậm cành ô liu bay qua (đàm phán), thùng dầu trượt cầu trượt xuống biển kèm mũi tên xanh chỉ xuống (dầu −7,6%), tàu dầu đỏ chạy giữa eo.
+TCBS MCP chưa được cấp quyền (cần xác thực), không dùng được.
