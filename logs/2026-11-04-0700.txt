@@ -1,0 +1,21 @@
+Cập nhật phiên sáng Thứ Tư 04/11/2026 · 07:00 (chạy ~06:46–07:20 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, khối thị trường, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Mỹ không kích đảo Qeshm (CBS 2/11 giờ Mỹ), Iran: phản hồi Mỹ "chưa thỏa đáng"; Brent chốt 103,60 (−1,1%), WTI 96,09 (−0,4%) (Rigzone 3/11). Kênh: dầu → tỷ giá, CPI, dầu khí/hàng không.
+2. VN-Index 3/11 1.699,62 (−11,10; −0,65%), VIC −12,8 điểm, HOSE 154 tăng/141 giảm (index.vn 3/11); hỗ trợ 1.650–1.680 (Vietstock Daily 4/11).
+3. Khối ngoại HOSE −500 tỷ (CafeF 3/11; MBB −254, VCB −219, HPG +227); NHNN hút ròng 7.839 tỷ, OMO 116.381 tỷ, qua đêm 4,8% (2/11) (Người Quan Sát 3/11).
+4. Phố Wall 3/11: Dow 51.786,72 (−0,38%), S&P 7.568,92 (+0,36%), Nasdaq 25.372,01 (+0,83%), VIX 20,83 (Yahoo Finance, Motley Fool); AMD Q3 13,4 tỷ USD +45%, +7% sau giờ (SEC 8-K, Yahoo). Bầu cử giữa kỳ: chưa có kết quả lúc 06:45.
+5. Vàng 3.951 (04:30 4/11), SJC 137,6–140,6 tr (Công Thương qua Việt Báo 4/11); BTC 77.446 (+0,2%, CoinGecko ~07:00).
+
+ĐỔI KHÁC: Hang Seng 23.525,97 (+0,6%, AP 3/11); FTSE 10.638,43 (Capp Notes 3/11; −1,20% tính từ 10.767,22 ngày 2/11); lợi suất 10 năm 4,95% (Yahoo); ETH 2.288 (CoinGecko ~07:00, +1,6% so số 13:40 3/11).
+GIỮ SỐ CŨ: Nikkei (2/11; 3/11 nghỉ lễ), KOSPI (3/11), tỷ giá trung tâm 25.630 (3/11, chưa có số 4/11), khối ngoại tháng 10.
+LƯU Ý: độ rộng HOSE 3/11 chỉ có tăng/giảm (154/141), chưa có số đứng giá.
+
+RADAR
+- Thế giới (4 tin tg): Chiến sự viết lại (Qeshm, tàu Ấn Độ trúng đòn – CBS, Rigzone, AP); Chính trị Iran viết lại (đàm phán lúc nóng lúc lạnh – Rigzone, CBS); Chính trị bầu cử Mỹ cập nhật (Yahoo News, Yahoo Finance, Newsweek, Admiral); Kinh tế mới: Phố Wall 3/11 + AMD (Yahoo, Fool, SEC, Capp Notes) thay tin 2/11.
+- Trong nước mới: phiên 3/11 (index.vn, Nhân Dân, CafeF, Vietstock), NHNN 3/11 (Người Quan Sát), sự kiện DN 4/11 (Tinnhanhchungkhoan). Bỏ 2 tin 28/10.
+- Khối thị trường: VN-Index 3/11, sparkline thêm 1.699,62; độ rộng 3/11; khối ngoại 10 phiên thêm 3/11 (−500), tổng −3.379.
+- NHNN: hút nhẹ 7.839 tỷ, OMO 116.381, qua đêm 4,8% (2/11), tỷ giá 25.630 (3/11); biểu đồ qua đêm thêm 2/11.
+LỊCH: bỏ 03/11; viết lại 04/11; thêm 09/11 MVB, VBB.
+TRANH: bập bênh giữa biển – bồ câu ngậm ô liu một đầu, tia nổ một đầu, thùng dầu ở giữa kèm mũi tên xanh xuống; tàu dầu, thùng phiếu trên bờ.
+TCBS MCP chưa được cấp quyền (cần xác thực), không dùng được.
