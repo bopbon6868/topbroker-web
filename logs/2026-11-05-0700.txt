@@ -1,0 +1,20 @@
+Cập nhật phiên sáng Thứ Năm 05/11/2026 · 07:00 (chạy ~06:46–07:30 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, khối thị trường, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Dân chủ thắng cả hai viện; Trump nói chưa có kế hoạch đánh Iran ngay (gCaptain dẫn FT/Bloomberg 4/11); Brent 94,60 (−8,69%, Strategitz chốt 4/11). Kênh: dầu → tỷ giá, giá xăng; dầu khí mất giá đỡ.
+2. VN-Index 4/11 1.733,02 (+33,40; +1,97%), HOSE 268/72, khớp 17.955 tỷ (+39% bq 20 phiên); kháng cự 1.740–1.750 (index.vn 4/11).
+3. Khối ngoại HOSE −66 tỷ (CafeF 4/11; index.vn −69,3), gom FPT 183, MSN 175; NHNN hút ròng 7.143 tỷ, qua đêm 3,7% (3/11) (Người Quan Sát 4/11).
+4. Dow 53.356,12 (+3,03%), S&P 7.688,62 (+1,58%), Nasdaq 25.736,51 (+1,44%) (TheStreet, Motley Fool 4/11); VIX 17,89 (−14,11%, Cboe qua ad-hoc-news). FNArena ghi VIX 16,86 (−19,06%) – lệch, dùng số Cboe có giờ 16:32 ET.
+5. Vàng ~4.065 (+3,4%), SJC 139,4–142,4 tr (+1,8 tr) (Báo Lào Cai 06:18 5/11); BTC ~80.500 (+3,5%), ETH 2.433 (gần +6%) (The Block 15:09 ET 4/11).
+
+ĐỔI KHÁC: FTSE 10.829,21 (+1,79%), DAX 26.437,67, WTI 88,72 (−8,14%), DXY 101,51, lợi suất 10 năm 4,89% (FNArena 5/11); OMO 109.238 tỷ; hoán đổi USD/VND tối đa 2 tỷ USD phiên 6/11 (Người Quan Sát 4/11 16:12).
+GIỮ SỐ CŨ: VN30/HNX/UPCoM, Nikkei, KOSPI, Hang Seng (14:06 4/11, chưa có số đóng cửa), tỷ giá trung tâm 25.627 (4/11; số 5/11 chưa công bố lúc chạy), khối ngoại tháng 10.
+
+RADAR
+- Thế giới (4 tin tg): Chính trị mới – Dân chủ thắng cả hai viện (Variety, Yahoo News, Oilprice, FNArena) thay tin "đang đếm phiếu"; Chiến sự viết lại – Trump chưa định đánh Iran, phong tỏa vẫn duy trì (gCaptain, Oilprice, Al Jazeera); Kinh tế mới – Phố Wall 4/11 + dầu rơi 8,7% + vàng (TheStreet, Fool, Strategitz, FNArena, The Block) thay tin 3/11; Chính trị đàm phán viết lại (Pezeshkian được trao thêm quyền, Qatar chờ phản hồi).
+- Trong nước mới: phiên 4/11 (index.vn, CafeF, Vietnamplus), NHNN 4/11 và hoán đổi 6/11 (Người Quan Sát). Bỏ 3 tin 29/10.
+- Khối thị trường: VN-Index 4/11, sparkline thêm 1.733,02; độ rộng 268/72; khối ngoại 10 phiên thêm 4/11 (−66), tổng −3.640.
+- NHNN: hút nhẹ 7.143 tỷ, OMO 109.238, qua đêm 3,7% (3/11), tỷ giá 25.627 (4/11); biểu đồ qua đêm thêm 3/11.
+LỊCH: bỏ 04/11; 05/11 thêm Qatar chờ phản hồi; 06/11 thêm hoán đổi NHNN; thêm 09/12 Fed + CNC.
+TRANH: thùng phiếu có lá phiếu; khinh khí cầu đỏ xì hơi kéo thùng dầu rơi, mũi tên xanh xuống; ba nến xanh và mũi tên đi lên; đồng xu vàng.
+TCBS MCP chưa được cấp quyền (cần xác thực), không dùng được.
