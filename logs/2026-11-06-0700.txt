@@ -1,0 +1,20 @@
+Cập nhật phiên sáng Thứ Sáu 06/11/2026 · 07:00 (chạy ~06:46–07:20 giờ VN). Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, khối thị trường, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Hormuz: phía Iran nói 5 tàu dầu + 1 tàu kéo cháy vì trúng mìn (Al Jazeera 5/11, chưa kiểm chứng); Eurasia Group hạ khả năng thỏa thuận còn 10% (Cornerstone Futures 5/11); Brent 98,65 (+3,68%, straits.live 20:46 UTC 5/11 = 03:46 6/11). Kênh: dầu → tỷ giá, giá xăng; dầu khí có giá đỡ.
+2. Phố Wall 5/11: Dow 51.523,06 (−3,44%), S&P 7.353,73 (−4,36%), Nasdaq 24.315,00 (−5,52%), VIX 28,18 (+69,66%), SOX −12,25% (Yahoo Finance); nguyên nhân lo Quốc hội Dân chủ làm chậm chi tiêu data center (StockTitan).
+3. VN-Index 5/11 1.740,73 (+7,71; +0,44%), chạm ~1.753, khớp HOSE 15.829 tỷ (−11,84%) (Thời báo Tài chính 5/11); hỗ trợ 1.700–1.710 (index.vn).
+4. Khối ngoại HOSE −171 tỷ (CafeF dẫn Vietcap; Nhân Dân −237,6; Việt Báo −239), phiên thứ 10, gom VIX 452 tỷ; tỷ giá trung tâm 25.623 (Việt Báo 6/11); hoán đổi USD 6/11.
+5. Vàng 4.100,40 (+0,67%, Yahoo Finance 5/11); SJC 139,5–142,5 tr (+0,1 tr, Thời báo Tài chính 06:30 6/11); BTC 75.925 (−5,28%, Yahoo); việc làm Mỹ tối 6/11.
+
+ĐỔI KHÁC: WTI 90,96 (+3,22%), Russell 2000 2.729,89 (−4,45%), lợi suất 10 năm 4,837% (Yahoo 5/11); cược Fed tăng lãi 9/12 70,1% từ 82,7% (StockTitan); BoE tăng lãi lên 4% (Thời báo Tài chính 6/11).
+GIỮ SỐ CŨ: Nikkei, KOSPI, Hang Seng, FTSE (5/11, chưa có số mới đáng tin), ETH (13:00 5/11), NHNN OMO 4/11, lãi qua đêm 3/11 (chưa tìm được bài phiên 5/11), độ rộng 168/139 (24h.com.vn 15:11 5/11).
+
+RADAR
+- Thế giới: Kinh tế mới (Phố Wall 5/11) thay tin Kinh tế 4/11; Chiến sự viết lại (tàu dầu trúng mìn, Trump "đánh mạnh"); Chính trị đàm phán viết lại (Eurasia 10%); giữ Chính trị bầu cử.
+- Trong nước mới: phiên 5/11 (Thời báo Tài chính, CafeF, Việt Báo, Nhân Dân). Bỏ tin TCB 29–30/10.
+- Khối thị trường: VN-Index 5/11, sparkline thêm 1.740,73; độ rộng 168/139; khối ngoại 10 phiên thêm 5/11 (−171), tổng −4.105.
+- NHNN: tỷ giá 25.623 (6/11); thay đoạn "Dầu rơi mạnh" bằng "Dầu bật lại, Phố Wall sập".
+LỊCH: bỏ 05/11; 06/11 ghi "hôm nay"; 09/12 cập nhật xác suất Fed 70,1%.
+TRANH: con chip tím nứt, chảy nhão thành vũng, mũi tên đỏ xuống; tàu dầu bốc khói trên biển; giọt dầu kèm mũi tên xanh lên.
+TCBS MCP chưa được cấp quyền (cần xác thực), không dùng được.
