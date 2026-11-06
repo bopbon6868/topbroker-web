@@ -1,0 +1,12 @@
+Cập nhật chỉ số chiều 06/11/2026 (chạy 15:07–15:45 giờ VN; TCBS chưa được cấp quyền, dùng WebSearch/WebFetch)
+Đổi:
+- VN-Index 1.725,36 (−15,37; −0,88%); HOSE 99 tăng/206 giảm; GTGD 18.558 tỷ (bài ghi lẫn 18.799 tỷ ở thân bài, dùng số ở mô tả), khối ngoại HOSE mua ròng ~378,4 tỷ (KDH +179,6 tỷ, VND +99,2 tỷ; FPT −151,2 tỷ, VCB −110,7 tỷ) – index.vn "VN-Index 6/11 giảm gần 16 điểm", đăng 15:27 6/11
+- Tỷ giá trung tâm 25.615 (−8 đồng so 25.623 ngày 5/11) – vov.vn 6/11 (bản sáng ghi "đi ngang" là số 5/11, nay sửa)
+- NHNN phiên 5/11 hút ròng 3.646,28 tỷ, OMO lưu hành 105.591,75 tỷ; lãi suất qua đêm LNH 4,50% (5/11, giảm so phiên trước) – thoibaonganhang.vn "Điểm lại thông tin kinh tế ngày 5/11"
+- Nikkei 57.410,91 (−6,00%), KOSPI 5.059,65 (−6,02%) đóng cửa 6/11 – tokenpost.com, techflowpost.com
+- Hang Seng 24.612 (−0,7%) 6/11 – tradingeconomics.com
+- FTSE 100 đóng cửa 5/11 10.782,66 (−0,43%) – gulfnews.com
+- Vàng giao ngay ~4.047 USD/oz (−80 USD so cùng giờ hôm trước, ~−1,9%), SJC 138/141 tr (−1,5 tr) lúc 14:30 6/11 – techz.vn
+- BTC 75.620 (−6%), ETH 2.228 (−7,8%) lúc 04:00 UTC (11:00 VN) 6/11 – CoinGecko qua coingabbar.com
+Giữ nguyên (chưa có số chốt đáng tin lúc chạy): VN30, HNX-Index, UPCoM (5/11); Dow/Nasdaq/S&P/VIX đóng cửa 5/11 (không có số HĐTL có mốc giờ); Brent, WTI.
+Ghi chú: ô có data-q vẫn tự lấy giá mới trên trang.
