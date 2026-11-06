@@ -1,0 +1,20 @@
+Cập nhật phiên sáng Thứ Bảy 07/11/2026 · 07:00 (sàn VN nghỉ → chế độ cuối tuần, tổng kết tuần 2–6/11; chạy ~06:47–07:25 giờ VN). TCBS MCH chưa được cấp quyền, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, khối thị trường, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Iran gửi đề xuất qua Qatar, có thể mở Hormuz trong 2 ngày nếu Mỹ gỡ cấm vận (Le Private Banker 6/11); IRGC nói thêm tàu dầu trúng mìn (Al Jazeera 6/11); Brent 97,76 (−0,54%), cả tuần −12,5% (Trading Economics 6/11). Kênh: dầu → xăng, CPI, tỷ giá; dầu khí mất lợi thế.
+2. Tuần 2–6/11 VN-Index −16,26 điểm (−0,93%) về 1.725,36, tuần giảm thứ hai; FPT −3,97% phiên 6/11 (Vietstock qua Investing 6/11); hỗ trợ 1.700, cản 1.750–1.780 (HSC qua Thương trường 6/11).
+3. Khối ngoại HOSE cả tuần −869 tỷ (Vietstock; Nhân Dân −870,1); phiên 6/11 +394 tỷ, gom KDH 171, xả FPT 151 (Thời báo Tài chính 6/11; Thương trường 393,58; bản 15:00 ghi 378,4 theo index.vn, nay dùng TBTC).
+4. Việc làm Mỹ T10 +165.000 (dự báo ~55–70k), thất nghiệp 4,1% (Yahoo Finance 6/11); cược Fed tăng lãi 9/12 ~78% (Capp Notes, thị trường dự đoán); Nasdaq +1,09%, tuần −3,4% (AP qua Yahoo).
+5. NHNN hút ròng 4.013,22 tỷ cả tuần, qua đêm 4,51% (5/11) (Thời báo Tài chính 6/11); SJC 138–141 tr (−1,5 tr, TBTC 06:30 7/11); BTC 75.774 (+0,09%, Yahoo 6/11); tuần tới CPI Mỹ 10/11, VNM 11/11.
+
+SỐ ĐỔI: VN30 1.846,39 (−1,01%), HNX 256,73 (+0,05%), UPCoM 121,75 (−0,60%), độ rộng 99/206, GTGD HOSE 18.799 tỷ (TBTC 6/11). Dow 51.285,73 (−0,46%), S&P 7.376,86 (+0,31%), Nasdaq 24.579,42 (+1,09%), Russell 2.754,11 (AP/Yahoo); VIX 25,64 (−9,01%), 10 năm 4,86% (Yahoo/Capp Notes); FTSE 10.670,50 (−1,04%, ad-hoc-news 6/11); Hang Seng 24.481,86 (−1,27%, Capp Notes); WTI 90,37, ETH 2.241 (Capp Notes); vàng 4.072 (TBTC sáng 7/11); tỷ giá trung tâm 25.615, −22 đồng/tuần, USD tự do 26.130 (Vietstock 6/11).
+GIỮ SỐ CŨ: Nikkei 57.410,91, KOSPI 5.059,65 (6/11, bản 15:00). Kết quả hoán đổi USD 6/11 chưa có bài công bố.
+
+RADAR
+- Thế giới: Kinh tế 5/11 → 5–6/11 (việc làm Mỹ + tuần Phố Wall); Chiến sự 4–6/11 viết lại (2 tàu trúng mìn, drone MQ-1, thủy thủ Velos, miễn trừ tàu Ấn/Trung/Qatar/Iraq); Chính trị đàm phán → 3–6/11 (đề xuất qua Qatar, mở eo 2 ngày); giữ Chính trị bầu cử.
+- Trong nước mới: tuần 2–6/11 + phiên 6/11; NHNN tuần 2–6/11; sự kiện DN 6/11 (Tinnhanhchungkhoan). Bỏ: dự báo tuần 2–6/11 (1–2/11), tuần 26–30/10, khối ngoại 30/10, BCTC 30–31/10, NHNN 30/10, BCTC 30/10.
+- Khối thị trường: VN-Index 6/11, sparkline thêm 1.725,36 (bắt đầu 5/10); độ rộng 99/206; khối ngoại 10 phiên 26/10–6/11, tổng −3.238.
+- NHNN: tuần hút ròng 4.013 tỷ, phiên 5/11 −3.646 tỷ (OMO 105.592), qua đêm 4,51%, tỷ giá 25.615; biểu đồ qua đêm thêm 5/11; 2 đoạn tác động viết lại.
+LỊCH: bỏ 06/11; thêm 10/11 giờ CPI Mỹ (Thrive Markets), 13/11 DPR 14% (Tinnhanhchungkhoan 6/11); 09/12 cập nhật ~78%.
+TRANH: cân đòn trên đảo giữa eo biển, đĩa trái bồ câu ngậm cành ô liu (trĩu xuống), đĩa phải thủy lôi; tàu dầu, giọt dầu kèm mũi tên đỏ xuống.
