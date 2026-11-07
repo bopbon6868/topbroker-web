@@ -1,0 +1,5 @@
+Cập nhật chỉ số chiều 07/11/2026 (Thứ Bảy, sàn VN nghỉ; chạy ~15:05 giờ VN; TCBS chưa được cấp quyền, dùng WebSearch/WebFetch)
+Đổi:
+- BTC 76.034 USD (+0,44%/24h), ETH 2.246 USD (+1,03%/24h) lúc 06:00 UTC (13:00 VN) 7/11 – coincodex.com "Daily Market Update for Nov 07, 2026"
+- TB.UPDATED → 'Thứ Bảy, 07/11/2026 · 15:00'
+Giữ nguyên: VN-Index, VN30, HNX, UPCoM, khối ngoại, tỷ giá (đóng cửa 6/11); NHNN tuần 2–6/11; qua đêm LNH 5/11; Mỹ/Á–Âu/Brent đóng cửa 6/11 (thị trường nghỉ cuối tuần); vàng sáng 7/11 (thị trường vàng thế giới đóng cửa cuối tuần).
