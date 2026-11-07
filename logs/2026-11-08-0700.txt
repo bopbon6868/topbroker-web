@@ -1,0 +1,18 @@
+Cập nhật phiên sáng Chủ Nhật 08/11/2026 · 07:00 (sàn VN nghỉ → chế độ cuối tuần, nhìn tuần 9–13/11; chạy ~06:45–07:10 giờ VN). TCBS MCP chưa được cấp quyền, dùng WebSearch/WebFetch. Không có phiên mới nên giữ số đóng cửa 6/11 ở bảng Thị trường.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, giờ số liệu, tranh, dòng Dòng tiền (ghi chú hoán đổi), 3 tin cần biết, Lịch (index.html); Radar (giờ, mảng N).
+
+BẢN TIN
+1. (Thế giới) Mỹ bắn hỏng tàu St. Kitts vượt phong tỏa ở vịnh Oman, nổ ở Qeshm, Jask (AP 7/11); Iran bỏ giới hạn tầm tên lửa 2.000 km (Al Jazeera 7/11). Kênh: dầu (Brent 97,76 đóng 6/11) → xăng, CPI, tỷ giá.
+2. Tuần 9–13/11: Pinetree trung lập, SHS "tích lũy kém tích cực"; hỗ trợ 1.700, cản 1.770 (VietnamPlus 7/11).
+3. NHNN hoán đổi USD/VND 182 ngày, tối đa 2 tỷ USD (~49.000 tỷ), phí 2,5%/năm (Thanh Niên 6/11); hút ròng 4.013 tỷ cả tuần, qua đêm 4,51% (TBTC 6/11).
+4. CPI Mỹ 10/11, KQKD Cisco, CoreWeave (IBD qua ChainCatcher 7/11); cược Fed tăng lãi 9/12 ~78% (Capp Notes 6/11).
+5. BTC cả tuần −1,4%, ETF rút ~870 triệu USD 4 phiên (SecureShift 7/11); SJC 138–141 tr đứng giá (Báo Lào Cai 06:37 8/11).
+
+TICKER: thay 2 dòng Hormuz/Mỹ–Iran bằng 3 dòng (Mỹ bắn tàu 7/11; Iran bỏ giới hạn tên lửa 7/11; lượt tàu qua Hormuz −65%, UKMTO qua Al Jazeera); thêm NHNN hoán đổi, BTC cả tuần, Tuần 9–13/11; SJC sửa mốc 06:37 8/11.
+GIỮ SỐ CŨ: toàn bộ chỉ số đóng cửa 6/11, vàng 4.072 (sáng 7/11), BTC/ETH 13:00 7/11. Kết quả hoán đổi 6/11 vẫn chưa thấy báo công bố. Khối ngoại tuần: Vietstock −869 tỷ, VietnamPlus/VinaCapital −965 tỷ (ghi chú trong Radar; trang dùng −869).
+
+RADAR
+- Thế giới: thêm Chiến sự 7/11 (AP, Al Jazeera, RFE/RL); Chính trị đàm phán → 3–7/11 (Araghchi 12 ngoại trưởng, Trump "rất muốn thỏa thuận"); bỏ tin Chính trị bầu cử Mỹ 4–5/11 để giữ 4 tin thế giới.
+- Trong nước: thêm nhận định tuần 9–13/11 (VietnamPlus 7/11, Việt Báo/VinaCapital 8/11); tin hoán đổi 4/11 → 4–6/11 thêm số Thanh Niên. Bỏ tin cũ quá 7 ngày: khối ngoại tháng 10 (31/10), lãi huy động tháng 10 (19–31/10).
+LỊCH: 09/11 thêm họp ngoại trưởng G7 Paris 9–10/11 (CBS 6/11); thêm 18/11 AST 20%, NSC (Tinnhanhchungkhoan 7/11).
+TRANH: eo biển với dây phao phong tỏa, tàu hàng khựng lại bốc khói, tàu tuần tra xám, chớp nổ trên mỏm đá, thùng dầu kèm mũi tên đỏ đi lên.

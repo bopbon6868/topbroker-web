@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Bảy, 07/11/2026 · 15:00';
+TB.UPDATED = 'Chủ Nhật, 08/11/2026 · 07:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -48,11 +48,13 @@ TB.TICKER = [
   ['Khối ngoại HOSE cả tuần','−869 tỷ','bán ròng','d','2–6/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
   ['NHNN cả tuần','hút ròng 4.013 tỷ','tuần trước bơm ròng 28.162 tỷ','d','2–6/11'],
+  ['NHNN hoán đổi USD/VND','tối đa 2 tỷ USD','kỳ hạn 182 ngày, phí 2,5%/năm (Thanh Niên)','n','6/11'],
   ['Qua đêm LNH','4,51%','từ 5,79% (30/10), sát lãi OMO 4,5%','n','5/11'],
   ['Tỷ giá trung tâm','25.615','−22 đồng cả tuần','u','6/11'],
   ['USD tự do','26.130 (bán)','−80 đồng/tuần','u','6/11'],
-  ['Hormuz','Iran: thêm tàu dầu trúng mìn','chưa kiểm chứng độc lập','d','6/11'],
-  ['Mỹ – Iran','Iran gửi đề xuất qua Qatar','đòi gỡ cấm vận để mở eo trong 2 ngày','n','6/11'],
+  ['Hormuz','Mỹ bắn hỏng tàu vượt phong tỏa','vịnh Oman; nổ ở Qeshm, Jask (AP)','d','7/11'],
+  ['Iran','bỏ giới hạn tầm tên lửa 2.000 km','vẫn giữ 7 điều kiện mở eo (Al Jazeera)','d','7/11'],
+  ['Tàu qua Hormuz','thấp hơn ~65% trước chiến sự','170 lượt ra, 155 lượt vào/tuần (UKMTO)','d','tuần tới 6/11'],
   ['Brent','97,76','−0,54%; cả tuần −12,5%','d','6/11'],
   ['WTI','90,37','−0,17%','d','6/11'],
   ['Việc làm Mỹ tháng 10','+165.000','dự báo ~59.000; thất nghiệp 4,1%','u','6/11'],
@@ -65,8 +67,10 @@ TB.TICKER = [
   ['Cược Fed tăng lãi 9/12','~78%','sau số việc làm','n','6/11'],
   ['BoE','tăng lãi lên 4%','+0,25 điểm','n','5/11'],
   ['Vàng','4.072','−16 USD','d','sáng 7/11'],
-  ['Vàng SJC','141 tr (bán)','−1,5 tr, mua 138 tr','d','06:30 7/11'],
+  ['Vàng SJC','141 tr (bán)','đứng giá, mua 138 tr','n','06:37 8/11'],
   ['BTC','76.034','+0,44%','u','13:00 7/11'],
+  ['BTC cả tuần','−1,4%','ETF bị rút ~870 triệu USD 4 phiên đầu tháng (SecureShift)','d','7/11'],
+  ['Tuần 9–13/11','CPI Mỹ 10/11','VNM chốt cổ tức 25% ngày 11/11','n','8/11'],
   ['ETH','2.246','+1,03%','u','13:00 7/11'],
   ['HNX','256,73','+0,05%; cả tuần +1,58%','u','6/11'],
   ['UPCoM','121,75','−0,60%','d','6/11'],
