@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Chủ Nhật, 08/11/2026 · 15:00';
+TB.UPDATED = 'Thứ Hai, 09/11/2026 · 07:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -52,7 +52,10 @@ TB.TICKER = [
   ['Qua đêm LNH','4,51%','từ 5,79% (30/10), sát lãi OMO 4,5%','n','5/11'],
   ['Tỷ giá trung tâm','25.615','−22 đồng cả tuần','u','6/11'],
   ['USD tự do','26.130 (bán)','−80 đồng/tuần','u','6/11'],
-  ['Hormuz','Mỹ bắn hỏng tàu vượt phong tỏa','vịnh Oman; nổ ở Qeshm, Jask (AP)','d','7/11'],
+  ['Houthi','tên lửa vào Riyadh, tòa nhà Aramco hư hại','không thương vong, chưa gián đoạn xuất dầu (ABC News)','d','8/11'],
+  ['Hormuz','2 tàu dầu trúng mìn bốc cháy','theo quân đội Iran (ABC Úc)','d','8/11'],
+  ['Mỹ – Iran','Iran xem đề xuất hạt nhân của Qatar','Mỹ nói đàm phán chưa hiệu quả (investingLive)','n','8/11'],
+  ['Vịnh Oman','Mỹ bắn hỏng tàu vượt phong tỏa','nổ ở Qeshm, Jask (AP)','d','7/11'],
   ['Iran','bỏ giới hạn tầm tên lửa 2.000 km','vẫn giữ 7 điều kiện mở eo (Al Jazeera)','d','7/11'],
   ['Tàu qua Hormuz','thấp hơn ~65% trước chiến sự','170 lượt ra, 155 lượt vào/tuần (UKMTO)','d','tuần tới 6/11'],
   ['Brent','97,76','−0,54%; cả tuần −12,5%','d','6/11'],
@@ -68,9 +71,12 @@ TB.TICKER = [
   ['BoE','tăng lãi lên 4%','+0,25 điểm','n','5/11'],
   ['Vàng','4.072','−16 USD','d','sáng 7/11'],
   ['Vàng SJC','141 tr (bán)','đứng giá, mua 138 tr','n','06:37 8/11'],
-  ['BTC','75.714','−0,3%/24h (CoinGecko)','d','15:00 8/11'],
+  ['BTC','75.814','−0,3%/24h (CoinGecko)','d','06:50 9/11'],
   ['BTC cả tuần','−1,4%','ETF bị rút ~870 triệu USD 4 phiên đầu tháng (SecureShift)','d','7/11'],
-  ['Tuần 9–13/11','CPI Mỹ 10/11','VNM chốt cổ tức 25% ngày 11/11','n','8/11'],
+  ['Phiên 9/11','BSC: 1.715–1.750','ACBS: 1.720–1.780 (Tinnhanhchungkhoan)','n','8/11'],
+  ['BSR kế hoạch doanh thu 2026','190.831 tỷ','+23,8% so kế hoạch cũ','u','9/11'],
+  ['HPG','được cấp phép môi trường dự án ray – thép đặc biệt','xong 80%, ra sản phẩm quý 2/2027','u','9/11'],
+  ['CPI Mỹ tháng 10','tối 10/11','20:30 giờ VN','n','10/11'],
   ['ETH','2.246','+1,03%','u','13:00 7/11'],
   ['HNX','256,73','+0,05%; cả tuần +1,58%','u','6/11'],
   ['UPCoM','121,75','−0,60%','d','6/11'],
@@ -80,7 +86,7 @@ TB.TICKER = [
   ['FTSE 100','10.670,50','−1,04%','d','6/11'],
   ['CPI Việt Nam 10T','+4,57%','lạm phát cơ bản +4,24%','n','3/11'],
   ['BSR LNST quý 3','~9.000 tỷ','gấp ~10 lần','u','3/11'],
-  ['Xăng E5 RON92','24.223 đ/lít','−1.804 đ','n','1/11'],
+  ['Xăng E5 RON92','20.890 đ/lít','kỳ điều hành tới 15:00 12/11 (Báo Lào Cai)','n','5/11'],
   ['Fed','giữ 3,75–4%','2 phiếu đòi tăng','n','28/10'],
   ['GDP quý 3/2026','+9,95%','','u','17/10'],
   ['FDI đăng ký 9T','50,36 tỷ USD','+76,4%','u','17/10'],
