@@ -1,0 +1,8 @@
+Cập nhật chỉ số chiều Chủ Nhật 08/11/2026 (15:05) – sàn VN nghỉ, chế độ cuối tuần.
+Đổi:
+- TB.UPDATED: 'Chủ Nhật, 08/11/2026 · 15:00'
+- Bitcoin: 76.034 (13:00 7/11) -> 75.714 USD, −0,3%/24h (CoinGecko, ~15:00 8/11; CryptoTicker 12:12 8/11 ghi ~75.833)
+Giữ nguyên:
+- VN-Index 1.725,36, VN30, HNX, UPCoM, khối ngoại +394 tỷ, NHNN, tỷ giá 25.615 (phiên 6/11) – sàn nghỉ cuối tuần.
+- Mỹ, Á – Âu, Brent: đóng cửa 6/11, không có phiên mới. Vàng: sáng 7/11 (thị trường nghỉ).
+- Ethereum: không tìm được số đáng tin, giữ 2.246 (13:00 7/11).

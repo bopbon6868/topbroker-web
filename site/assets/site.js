@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Chủ Nhật, 08/11/2026 · 07:00';
+TB.UPDATED = 'Chủ Nhật, 08/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -68,7 +68,7 @@ TB.TICKER = [
   ['BoE','tăng lãi lên 4%','+0,25 điểm','n','5/11'],
   ['Vàng','4.072','−16 USD','d','sáng 7/11'],
   ['Vàng SJC','141 tr (bán)','đứng giá, mua 138 tr','n','06:37 8/11'],
-  ['BTC','76.034','+0,44%','u','13:00 7/11'],
+  ['BTC','75.714','−0,3%/24h (CoinGecko)','d','15:00 8/11'],
   ['BTC cả tuần','−1,4%','ETF bị rút ~870 triệu USD 4 phiên đầu tháng (SecureShift)','d','7/11'],
   ['Tuần 9–13/11','CPI Mỹ 10/11','VNM chốt cổ tức 25% ngày 11/11','n','8/11'],
   ['ETH','2.246','+1,03%','u','13:00 7/11'],
