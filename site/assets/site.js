@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Hai, 09/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Hai, 09/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -39,18 +39,18 @@ TB.PRODUCTS = [
 
 /* Thanh chỉ số: [nhãn, giá trị, thay đổi, chiều u/d/n, ghi chú thời điểm] */
 TB.TICKER = [
-  ['VN-Index','1.725,36','−0,88%','d','6/11'],
+  ['VN-Index','1.714,32','−0,64% (−11,04 điểm)','d','9/11'],
   ['VN-Index cả tuần','−16,26 điểm','−0,93%, tuần giảm thứ hai','d','2–6/11'],
   ['VN30','1.846,39','−1,01%','d','6/11'],
   ['HOSE tăng/giảm','99 / 206','VIC, VHM, VCB, MCH lấy đi 9,5 điểm','d','6/11'],
-  ['Thanh khoản HOSE','18.799 tỷ','+18,8% so phiên trước','u','6/11'],
-  ['Khối ngoại HOSE','+394 tỷ','mua ròng, ngắt chuỗi 10 phiên bán; gom KDH 171 tỷ, xả FPT 151 tỷ','u','6/11'],
+  ['Thanh khoản HOSE','13.826 tỷ','−26,5% so phiên trước','d','9/11'],
+  ['Khối ngoại HOSE','−797,9 tỷ','bán ròng trở lại (mua 1.159 tỷ, bán 1.957 tỷ – FireAnt)','d','9/11'],
   ['Khối ngoại HOSE cả tuần','−869 tỷ','bán ròng','d','2–6/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
   ['NHNN cả tuần','hút ròng 4.013 tỷ','tuần trước bơm ròng 28.162 tỷ','d','2–6/11'],
   ['NHNN hoán đổi USD/VND','tối đa 2 tỷ USD','kỳ hạn 182 ngày, phí 2,5%/năm (Thanh Niên)','n','6/11'],
   ['Qua đêm LNH','4,51%','từ 5,79% (30/10), sát lãi OMO 4,5%','n','5/11'],
-  ['Tỷ giá trung tâm','25.615','−22 đồng cả tuần','u','6/11'],
+  ['Tỷ giá trung tâm','25.610','−5 đồng so 6/11','u','9/11'],
   ['USD tự do','26.130 (bán)','−80 đồng/tuần','u','6/11'],
   ['Houthi','tên lửa vào Riyadh, tòa nhà Aramco hư hại','không thương vong, chưa gián đoạn xuất dầu (ABC News)','d','8/11'],
   ['Hormuz','2 tàu dầu trúng mìn bốc cháy','theo quân đội Iran (ABC Úc)','d','8/11'],
@@ -69,7 +69,7 @@ TB.TICKER = [
   ['Lợi suất TP Mỹ 10 năm','4,86%','+0,02 điểm','d','6/11'],
   ['Cược Fed tăng lãi 9/12','~78%','sau số việc làm','n','6/11'],
   ['BoE','tăng lãi lên 4%','+0,25 điểm','n','5/11'],
-  ['Vàng','4.072','−16 USD','d','sáng 7/11'],
+  ['Vàng','4.110','+43 USD/24h (Tuổi Trẻ)','u','08:00 9/11'],
   ['Vàng SJC','141 tr (bán)','đứng giá, mua 138 tr','n','06:37 8/11'],
   ['BTC','75.814','−0,3%/24h (CoinGecko)','d','06:50 9/11'],
   ['BTC cả tuần','−1,4%','ETF bị rút ~870 triệu USD 4 phiên đầu tháng (SecureShift)','d','7/11'],
@@ -80,9 +80,9 @@ TB.TICKER = [
   ['ETH','2.246','+1,03%','u','13:00 7/11'],
   ['HNX','256,73','+0,05%; cả tuần +1,58%','u','6/11'],
   ['UPCoM','121,75','−0,60%','d','6/11'],
-  ['Nikkei 225','57.410,91','−6,00%','d','6/11'],
-  ['Hang Seng','24.481,86','−1,27%','d','6/11'],
-  ['KOSPI','5.059,65','−6,02%','d','6/11'],
+  ['Nikkei 225','58.775,50','+2,33%','u','9/11'],
+  ['Hang Seng','24.448,95','−0,13%','d','9/11'],
+  ['KOSPI','5.018,85','−0,81%, phiên giảm thứ ba','d','9/11'],
   ['FTSE 100','10.670,50','−1,04%','d','6/11'],
   ['CPI Việt Nam 10T','+4,57%','lạm phát cơ bản +4,24%','n','3/11'],
   ['BSR LNST quý 3','~9.000 tỷ','gấp ~10 lần','u','3/11'],

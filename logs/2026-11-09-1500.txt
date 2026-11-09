@@ -1,0 +1,11 @@
+Cập nhật chỉ số chiều 09/11/2026 (chạy 15:09–15:35 giờ VN)
+Đổi:
+- VN-Index 1.714,32, −11,04 điểm (−0,64%) – FireAnt (fireant.vn/thi-truong, 15:18 9/11)
+- Khối ngoại HOSE −797,9 tỷ (mua 1.159,4 / bán 1.957,4 tỷ) – FireAnt 9/11
+- GTGD HOSE 13.826 tỷ (−26,5% so 18.799 tỷ phiên 6/11) – FireAnt
+- Tỷ giá trung tâm 25.610, −5 đồng – NHNN qua Thị trường Tài chính Tiền tệ 9/11
+- Nikkei 225 58.775,50 +2,33%; KOSPI 5.018,85 −0,81% – Seoul Economic Daily, AP 9/11
+- Hang Seng 24.448,95 −0,13% – FX168 9/11
+- Vàng 4.110 USD/oz +43 USD/24h, 08:00 9/11 – Tuổi Trẻ
+Giữ số cũ (không tìm được số chốt phiên đáng tin): VN30, HNX-Index, UPCoM (6/11), Mỹ (đóng cửa 6/11), FTSE 100 (6/11, phiên 9/11 chưa đóng), Brent (6/11; nguồn sáng 9/11 vênh nhau AP 96,60 vs Yahoo 98,41), Bitcoin (06:50 9/11), Ethereum (7/11), van tiền NHNN (tuần 2–6/11), lãi suất qua đêm (5/11).
+TCBS MCP chưa được cấp quyền; API topbroker và CoinGecko bị proxy chặn → dùng WebSearch/WebFetch.
