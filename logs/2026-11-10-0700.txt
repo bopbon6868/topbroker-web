@@ -1,0 +1,18 @@
+Cập nhật phiên sáng Thứ Ba 10/11/2026 · 07:00 (chạy ~06:45–07:10 giờ VN). TCBS MCP chưa được cấp quyền, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, khối VN-Index/độ rộng/khối ngoại 10 phiên, tỷ giá, đoạn tác động dầu – USD, mảng N).
+
+BẢN TIN
+1. (Thế giới) Tin Qatar chuyển đề xuất Iran mở Hormuz đổi lấy Mỹ gỡ phong tỏa (chưa xác nhận) → Brent −5,5% còn 92,91 (JournalArta 9/11; Le Private Banker 9/11). Kênh: giá xăng 12/11, tỷ giá, dầu khí.
+2. VN-Index −11,04 còn 1.714,32; HOSE 129/187; GTGD HOSE 13.826 tỷ −26,5% (Nhân Dân, FireAnt 9/11); MACD cắt xuống, vùng 1.705 (Vietstock Daily 10/11).
+3. Khối ngoại HOSE −797,9 tỷ (FireAnt 9/11), xả HPG/VIC/PNJ/FPT, gom VPB/MBB/TCB (Nhân Dân); tự doanh bán (Vietstock).
+4. S&P 500 +2,35%, Nasdaq +2,74%, VIX 20,02 (JournalArta 9/11); CPI Mỹ 20:30 10/11 dự báo 3,9% (Forex Fundamentals).
+5. 11/11 VNM (25%), BMP (65%) không hưởng cổ tức (Tinnhanhchungkhoan); CFO PNJ từ nhiệm 17/11 (Vietstock 10/11); vàng 4.142 sáng 10/11 (Báo Lào Cai).
+
+SỐ MỚI: VN30 1.830,13 −0,88%, HNX 255,24 −0,58%, UPCoM 121,45 −0,25% (Nhân Dân, Vietstock 9/11); Dow 52.389,75 +2,15%, Nasdaq 25.253,14 +2,74%, S&P 7.549,94 +2,35%, VIX 20,02, Russell +3,15%, 10 năm 4,864%, Brent 92,91 −5,5%, WTI 87,07 −4,14% (JournalArta 9/11); FTSE 100 10.780,07 +0,99% (ad-hoc-news 9/11); vàng 4.142 +72 USD, SJC 138,2/141,2 tr (Báo Lào Cai sáng 10/11); BTC 75.110 −0,03%, ETH 2.129 −0,56% (webgia 06:39 10/11).
+GIỮ SỐ CŨ: Nikkei/Hang Seng/KOSPI (9/11), khối ngoại −797,9 tỷ (FireAnt; Vietstock ghi −805), tỷ giá trung tâm 25.610 (9/11), van tiền NHNN (tuần 2–6/11), lãi qua đêm 4,51% (5/11). Ghi chú: Market Times (9/11) ghi qua đêm chốt 6/11 là 6,2% – khác nguồn Thời báo Tài chính, chưa đối chiếu được nên chưa đổi. Chưa tìm được số OMO phiên 9/11.
+
+RADAR
+- Thế giới: Chính trị sửa thành 3–9/11 (đề xuất qua Qatar, Araghchi, Rubio, Trump – Le Private Banker, Reuters qua Insurance Journal) và đưa lên đầu; thêm Kinh tế 9–10/11 (Phố Wall, dầu, CPI); bỏ Kinh tế 5–6/11 (đã cũ, thay bằng tin mới). Giữ Chiến sự 8/11, 7/11.
+- Trong nước: thêm phiên 9/11 (Nhân Dân, Vietstock, FireAnt) và tin 9–10/11 (Vietstock: Chính phủ yêu cầu NHNN xử lý cạnh tranh lãi suất, dự toán NSNN 2027, PNJ, MSB, HPA…). Bỏ 2 tin 2/11 (quá 7 ngày).
+LỊCH: bỏ 09/11; sửa 10/11 (dự báo CPI), 12/11 (thêm Applied Materials, Cisco).
+TRANH: eo biển giữa hai mỏm đá, thanh chắn sọc đỏ trắng nhấc lên một nửa, tàu dầu chờ, bồ câu ngậm cuộn thư, thùng dầu mũi tên xanh chỉ xuống.
