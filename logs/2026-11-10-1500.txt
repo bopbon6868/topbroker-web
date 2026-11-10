@@ -1,0 +1,14 @@
+Cập nhật chỉ số chiều 10/11/2026 (chạy 15:07–15:50 giờ VN)
+Đổi:
+- VN-Index 1.743,07, +28,75 điểm (+1,68%); HOSE 221 tăng / 94 giảm; GTGD HOSE ~16.900 tỷ; VIC +12,7 điểm, VHM +2,8 điểm – Đầu tư Tài chính (dttc.sggp.org.vn, 15:41 10/11)
+- Khối ngoại HOSE +477 tỷ (gom KDH, POW, SSI, VHM, NVL; xả FPT, VIX, MSB, MSN, PNJ) – Đầu tư Tài chính 10/11
+- Tỷ giá trung tâm 25.600, −10 đồng – Thời báo Ngân hàng, VietnamPlus 10/11
+- NHNN OMO 9/11: trúng thầu 8.684,60 tỷ, đáo hạn 3.036,41 tỷ, bơm ròng 5.648,19 tỷ, lãi 4,5% – Thời báo Ngân hàng
+- Qua đêm LNH 4,60% (9/11) – Thời báo Ngân hàng, Dân trí
+- NHNN mua USD giao ngay giá 25.500, thứ Hai & thứ Tư từ 11/11 – Dân trí 10/11
+- Nikkei 225 60.459,58 +2,87% (+1.684,08) – 21jingji/Chinanews, Odaily 10/11
+- KOSPI 5.239,13 +4,39% – Seoul Economic Daily 10/11
+- Hang Seng 24.557,04 +0,44% (+108,09) – FX168 10/11
+- Vàng 4.123 USD/oz −0,4%; Brent 91,49 −1,2%; Bitcoin 74.595 −0,5% – GFX/FTS briefing 07:32 CET (13:32 VN) 10/11
+Giữ số cũ: VN30, HNX-Index, UPCoM (9/11 – chưa tìm được số chốt phiên 10/11 đáng tin), Mỹ (đóng cửa 9/11), FTSE 100 (9/11), Ethereum (06:39 10/11).
+TCBS MCP chưa được cấp quyền; FireAnt và API topbroker bị chặn → dùng WebSearch/WebFetch.

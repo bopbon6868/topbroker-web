@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Ba, 10/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Ba, 10/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -39,19 +39,21 @@ TB.PRODUCTS = [
 
 /* Thanh chỉ số: [nhãn, giá trị, thay đổi, chiều u/d/n, ghi chú thời điểm] */
 TB.TICKER = [
-  ['VN-Index','1.714,32','−0,64% (−11,04 điểm)','d','9/11'],
+  ['VN-Index','1.743,07','+1,68% (+28,75 điểm); VIC, VHM góp 15,5 điểm (ĐTTC)','u','10/11'],
   ['VN-Index cả tuần','−16,26 điểm','−0,93%, tuần giảm thứ hai','d','2–6/11'],
   ['VN30','1.830,13','−0,88% (−16,26 điểm)','d','9/11'],
-  ['HOSE tăng/giảm','129 / 187','chứng khoán giảm sâu; VHM, MCH, STB, GAS lấy đi gần 5 điểm','d','9/11'],
+  ['HOSE tăng/giảm','221 / 94','NHNN mua USD, bơm tiền; BSR kéo lùi ~0,5 điểm (ĐTTC)','u','10/11'],
   ['Hỗ trợ VN-Index','vùng 1.705','MACD cắt xuống, thanh khoản dưới bình quân 20 phiên (Vietstock Daily)','d','9/11'],
-  ['Thanh khoản HOSE','13.826 tỷ','−26,5% so phiên trước','d','9/11'],
-  ['Khối ngoại HOSE','−797,9 tỷ','xả HPG, VIC, PNJ, FPT; gom VPB, MBB, TCB (FireAnt, Nhân Dân)','d','9/11'],
+  ['Thanh khoản HOSE','~16.900 tỷ','~+22% so phiên 9/11 (ĐTTC)','u','10/11'],
+  ['Khối ngoại HOSE','+477 tỷ','gom KDH, POW, SSI, VHM, NVL; xả FPT, VIX, MSB (ĐTTC)','u','10/11'],
   ['Khối ngoại HOSE cả tuần','−869 tỷ','bán ròng','d','2–6/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
+  ['NHNN OMO','bơm ròng 5.648 tỷ','trúng thầu 8.685 tỷ, đáo hạn 3.036 tỷ, lãi 4,5% (Thời báo Ngân hàng)','u','9/11'],
+  ['NHNN mua USD giao ngay','giá 25.500','thứ Hai, thứ Tư hằng tuần từ 11/11 (Dân trí)','u','10/11'],
   ['NHNN cả tuần','hút ròng 4.013 tỷ','tuần trước bơm ròng 28.162 tỷ','d','2–6/11'],
   ['NHNN hoán đổi USD/VND','tối đa 2 tỷ USD','kỳ hạn 182 ngày, phí 2,5%/năm (Thanh Niên)','n','6/11'],
-  ['Qua đêm LNH','4,51%','từ 5,79% (30/10), sát lãi OMO 4,5%','n','5/11'],
-  ['Tỷ giá trung tâm','25.610','−5 đồng so 6/11','u','9/11'],
+  ['Qua đêm LNH','4,60%','từ 3,7% (3/11), nhỉnh hơn lãi OMO 4,5% (Thời báo Ngân hàng)','n','9/11'],
+  ['Tỷ giá trung tâm','25.600','−10 đồng (NHNN, Thời báo Ngân hàng)','u','10/11'],
   ['USD tự do','26.130 (bán)','−80 đồng/tuần','u','6/11'],
   ['Houthi','tên lửa vào Riyadh, tòa nhà Aramco hư hại','không thương vong, chưa gián đoạn xuất dầu (ABC News)','d','8/11'],
   ['Hormuz','2 tàu dầu trúng mìn bốc cháy','theo quân đội Iran (ABC Úc)','d','8/11'],
@@ -60,7 +62,7 @@ TB.TICKER = [
   ['Vịnh Oman','Mỹ bắn hỏng tàu vượt phong tỏa','nổ ở Qeshm, Jask (AP)','d','7/11'],
   ['Iran','bỏ giới hạn tầm tên lửa 2.000 km','vẫn giữ 7 điều kiện mở eo (Al Jazeera)','d','7/11'],
   ['Tàu qua Hormuz','thấp hơn ~65% trước chiến sự','170 lượt ra, 155 lượt vào/tuần (UKMTO)','d','tuần tới 6/11'],
-  ['Brent','92,91','−5,5%, thấp nhất từ tháng 8 (JournalArta, Bloomberg)','d','9/11'],
+  ['Brent','91,49','−1,2% sau phiên −5,5% hôm 9/11 (GFX/FTS)','d','13:30 10/11'],
   ['WTI','87,07','−4,14%','d','9/11'],
   ['Việc làm Mỹ tháng 10','+165.000','dự báo ~59.000; thất nghiệp 4,1%','u','6/11'],
   ['Dow Jones','52.389,75','+2,15%','u','9/11'],
@@ -71,9 +73,9 @@ TB.TICKER = [
   ['Lợi suất TP Mỹ 10 năm','4,864%','đi ngang','n','9/11'],
   ['Cược Fed tăng lãi 9/12','~78%','sau số việc làm','n','6/11'],
   ['BoE','tăng lãi lên 4%','+0,25 điểm','n','5/11'],
-  ['Vàng','4.142','+72 USD so 9/11 (Báo Lào Cai)','u','sáng 10/11'],
+  ['Vàng','4.123','−0,4% trong phiên Á (GFX/FTS)','d','13:30 10/11'],
   ['Vàng SJC','141,2 tr (bán)','+0,2 tr, mua 138,2 tr','u','sáng 10/11'],
-  ['BTC','75.110','−0,03%/24h (webgia)','n','06:39 10/11'],
+  ['BTC','74.595','−0,5% (GFX/FTS)','d','13:30 10/11'],
   ['BTC cả tuần','−1,4%','ETF bị rút ~870 triệu USD 4 phiên đầu tháng (SecureShift)','d','7/11'],
   ['PNJ','giám đốc tài chính từ nhiệm','hiệu lực 17/11 (Vietstock)','n','10/11'],
   ['BSR kế hoạch doanh thu 2026','190.831 tỷ','+23,8% so kế hoạch cũ','u','9/11'],
@@ -82,9 +84,9 @@ TB.TICKER = [
   ['ETH','2.129','−0,56%/24h (webgia)','d','06:39 10/11'],
   ['HNX','255,24','−0,58%','d','9/11'],
   ['UPCoM','121,45','−0,25%','d','9/11'],
-  ['Nikkei 225','58.775,50','+2,33%','u','9/11'],
-  ['Hang Seng','24.448,95','−0,13%','d','9/11'],
-  ['KOSPI','5.018,85','−0,81%, phiên giảm thứ ba','d','9/11'],
+  ['Nikkei 225','60.459,58','+2,87% (+1.684 điểm), chip, AI hồi mạnh','u','10/11'],
+  ['Hang Seng','24.557,04','+0,44%','u','10/11'],
+  ['KOSPI','5.239,13','+4,39%, kích hoạt ngắt mạch đầu phiên','u','10/11'],
   ['FTSE 100','10.780,07','+0,99%','u','9/11'],
   ['CPI Việt Nam 10T','+4,57%','lạm phát cơ bản +4,24%','n','3/11'],
   ['BSR LNST quý 3','~9.000 tỷ','gấp ~10 lần','u','3/11'],
