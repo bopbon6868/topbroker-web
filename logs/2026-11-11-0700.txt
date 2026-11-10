@@ -1,0 +1,19 @@
+Cập nhật phiên sáng Thứ Tư 11/11/2026 · 07:00 (chạy ~06:48–07:05 giờ VN). TCBS MCP chưa được cấp quyền, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, VN-Index/độ rộng/khối ngoại 10 phiên, khối NHNN, mảng N).
+
+BẢN TIN
+1. (Thế giới) Qatar giành "ít nhất 2 tuần" cho ngoại giao (JPost 10/11); Hormuz vẫn khóa, tàu dầu trúng đòn (Khaleej Times 10/11); Brent 91,49, đáy 2 tháng (Capp Notes). Kênh: giá xăng 12/11, tỷ giá.
+2. VN-Index +28,75 lên 1.743,07; HOSE 221/94; GTGD HOSE 16.901 tỷ +22%; VIC, VHM ~15 điểm (Nhân Dân, Tuổi Trẻ 10/11); Yuanta cản 1.750–1.770 (Thời báo Ngân hàng).
+3. NHNN mua USD giao ngay 25.500 từ 11/11, thứ Hai & thứ Tư (Tuổi Trẻ 10/11); khối ngoại ba sàn +461 tỷ (Nhân Dân).
+4. CPI Mỹ tháng 10 +0,4%/tháng, lõi +0,3%; Waller nghiêng tăng lãi tháng 12 (StockTitan 10/11); Nasdaq −0,74%, 10 năm 4,98% (Capp Notes).
+5. Vàng 4.033 −2,6%, SJC 137,9/140,9 tr (Báo Lào Cai sáng 11/11); BMP, PMC, DVV không hưởng cổ tức 11/11 (Tinnhanhchungkhoan).
+
+SỐ MỚI: VN30 1.860,93 +1,68%, HNX 256,26 +0,40%, UPCoM 121,41 −0,03%, ba sàn 18.776 tỷ (Nhân Dân 10/11); Dow 52.231,89 −0,30%, S&P 7.520,93 −0,38%, Nasdaq 25.065,88 −0,74%, Russell 2.821,38 −0,68%, VIX 19,46, 10 năm 4,98%, Brent 91,49 −1,17%, WTI 86,04, BTC ~73.809 −1,25%, ETH ~2.058 −3,43%, DXY 102,25, FTSE 100 10.751,59 −0,29%, DAX 26.347,45 +0,31% (Capp Notes 10/11).
+GIỮ SỐ CŨ: Nikkei/Hang Seng/KOSPI (10/11), OMO 9/11 (bơm ròng 5.648 tỷ), qua đêm 4,60% (9/11), tỷ giá trung tâm 25.600 (10/11) – chưa có số OMO 10/11, tỷ giá 11/11 công bố sau 07:00.
+
+RADAR
+- Thế giới: thay Chính trị 3–9/11 bằng bản cập nhật 9–10/11 (Qatar 2 tuần, Trump hoãn đánh; JPost, Khaleej Times, Rigzone); thêm Chiến sự 10/11 (tàu dầu, ADNOC); thay Kinh tế 9–10/11 bằng Kinh tế 10/11 (CPI, Fed, Phố Wall); giữ Chiến sự 8/11, bỏ Chiến sự 7/11.
+- Trong nước: thêm phiên 10/11 + NHNN mua USD; tin 10–11/11 (STB, OCB, HSG, cổ tức). Bỏ 3 tin 3/11 (quá 7 ngày).
+- Khối NHNN: van tiền chuyển "Bơm nhẹ"; số OMO 9/11, mua USD 11/11, qua đêm 4,60%, tỷ giá 10/11.
+LỊCH: bỏ 10/11; sửa 11/11, 12/11, 09/12; thêm 13/11 và mốc ~24/11 (hết 2 tuần Qatar).
+TRANH: eo biển bị khóa bằng sợi xích có ổ khóa vàng, tàu dầu chờ, đồng hồ cát trên mỏm đá (2 tuần hòa đàm), thùng dầu mũi tên xanh chỉ xuống.
