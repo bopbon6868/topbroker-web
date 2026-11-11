@@ -1,0 +1,19 @@
+Cập nhật phiên sáng Thứ Năm 12/11/2026 · 07:00 (chạy ~06:45–07:20 giờ VN). TCBS MCP chưa được cấp quyền, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, VN-Index/sparkline, độ rộng, khối ngoại 10 phiên, khối NHNN, lãi qua đêm, mảng N).
+
+BẢN TIN
+1. (Thế giới) Ghalibaf: Hormuz "không bao giờ trở lại" như trước chiến tranh, Iran – Oman cùng giám sát, "bóng ở sân Mỹ" (Al Jazeera 11/11); Trump đòi "thắng hoàn toàn" (Middle East Eye 11/11); Brent +1,39% lên 92,76 (EconoTimes 11/11). Kênh: giá xăng, CPI, tỷ giá.
+2. VN-Index +3,83 lên 1.746,90; VN30 −5,66; HOSE 136/157; GTGD 13.844 tỷ −18%; VIC góp 5,21 điểm (VietnamPlus, ĐTTC 11/11).
+3. Khối ngoại HOSE ~+74 tỷ, gom VIC 139, POW 79 (Người Quan Sát); OMO 11/11 hút ròng 2.892 tỷ, qua đêm 4,4% (10/11) (Người Quan Sát).
+4. Dow 52.486,49 +0,49%, S&P 7.619,38 +1,3%, Nasdaq 25.466,19 +1,6% (AP qua myMotherLode 11/11); CoreWeave +~25% (Motley Fool); vàng 3.989, SJC 137/140 tr (Thời báo Tài chính 06:30 12/11).
+5. Xăng 15:00 12/11 dự báo giảm 600–700 đ/lít, diesel 1.000–2.000 (index.vn); VEA không hưởng cổ tức 52,4% (Tinnhanhchungkhoan 12/11).
+
+SỐ MỚI: VN30 1.855,27 −0,30%, HNX 255,73 −0,21%, UPCoM 121,51 +0,08% (VietnamPlus 11/11); Russell 2.846,26 +0,9%; WTI 86,53 +0,57% (EconoTimes); FTSE 100 10.835,47 +0,78% (ad-hoc-news 11/11); BTC 74.389 +0,9% (Motley Fool 11/11); ETH 2.054,82 −1,69% (Fortune 7:30 ET 11/11); Nikkei 61.248,59 (BBN Times 11/11).
+GIỮ SỐ CŨ: VIX 19,46, lợi suất 10 năm 4,98%, DXY 102,25 (10/11 – trái phiếu Mỹ nghỉ lễ 11/11, chưa có VIX đóng cửa tin cậy); Hang Seng, KOSPI (AP 11/11); tỷ giá trung tâm 25.611 (11/11 – số 12/11 công bố sau 07:00).
+
+RADAR
+- Thế giới: thay Chính trị 9–10/11 bằng 9–11/11 (Ghalibaf, Trump, Rezaei; Al Jazeera, MEE, EconoTimes); thay Chiến sự 10/11 bằng 10–11/11 (Iran đánh đảo Didamar – Reuters qua JPost); thay Kinh tế 10/11 bằng 10–11/11 (Phố Wall hồi, vàng < 4.000); giữ Chiến sự 8/11.
+- Trong nước: thêm phiên 11/11, NHNN 10–11/11, sự kiện 12/11 (xăng, VEA, BVH, NVL, KOS). Bỏ 3 tin 4/11 (quá 7 ngày).
+- Khối NHNN: van tiền chuyển "Trung tính" (OMO 9–11/11: +5.648, −9.360, −2.892); qua đêm 4,40% (10/11); tỷ giá 11/11.
+LỊCH: bỏ 11/11; sửa 12/11, 18/11, ~24/11; thêm 26/11 (BVH).
+TRANH: eo biển giữa hai chòi canh đèn pha (Iran – Oman cùng giám sát), thanh chắn sọc đỏ trắng hạ ngang cửa eo, tàu dầu chờ, thùng dầu mũi tên đỏ chỉ lên (dầu bật lại).
