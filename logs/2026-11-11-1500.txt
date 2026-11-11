@@ -1,0 +1,11 @@
+Cập nhật chỉ số chiều 11/11/2026 (chạy 15:06–15:45 giờ VN)
+Đổi:
+- VN-Index 1.746,90, +3,83 điểm (+0,22%); HOSE 136 tăng / 157 giảm; GTGD HOSE ~13.844 tỷ; VIC, VHM góp ~6 điểm – Sài Gòn Đầu tư Tài chính (dttc.sggp.org.vn, 15:27 11/11)
+- Khối ngoại HOSE mua ròng ~74 tỷ (gom VIC ~138 tỷ, VHM ~46 tỷ; xả FPT ~48, ACB ~35, MBB ~29, STB ~26) – Sài Gòn Đầu tư Tài chính 11/11
+- NHNN OMO 10/11: trúng thầu 2.716 tỷ, đáo hạn 12.076 tỷ, hút ròng 9.360 tỷ, lãi 4,5%, lưu hành 115.500 tỷ – Người Quan Sát 10/11
+- Tỷ giá trung tâm 25.611, +11 đồng – Thị trường Tài chính Tiền tệ 09:40 11/11
+- Nikkei 225 61.248,59 +1,3%; Hang Seng 24.387,06 −0,7%; KOSPI 5.365,75 +2,4%; Brent 92,43 +1% – AP (KSAT) 11/11
+- HĐTL Mỹ đêm 10/11: Dow +0,27%, S&P 500 +0,55%, Nasdaq-100 +1,23% – StockTwits/Yahoo Finance
+- Bitcoin ~73.600, Ethereum ~2.050 (−~3%/ngày) – CaptainAltcoin 07:20 UTC 11/11
+Giữ số cũ: VN30, HNX-Index, UPCoM (10/11 – chưa có số chốt phiên 11/11 đáng tin), Mỹ đóng cửa 10/11, VIX, FTSE 100 (10/11), Vàng (sáng 11/11), Qua đêm LNH 4,60% (9/11).
+TCBS MCP chưa được cấp quyền; API topbroker không mở được qua WebFetch → dùng WebSearch/WebFetch.

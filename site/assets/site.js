@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Tư, 11/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Tư, 11/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -39,43 +39,43 @@ TB.PRODUCTS = [
 
 /* Thanh chỉ số: [nhãn, giá trị, thay đổi, chiều u/d/n, ghi chú thời điểm] */
 TB.TICKER = [
-  ['VN-Index','1.743,07','+1,68% (+28,75 điểm), lấy lại MA20; VIC, VHM góp ~15 điểm (Nhân Dân, Tuổi Trẻ)','u','10/11'],
+  ['VN-Index','1.746,90','+0,22% (+3,83 điểm); VIC, VHM góp ~6 điểm (Sài Gòn Đầu tư Tài chính)','u','11/11'],
   ['VN30','1.860,93','+1,68% (+30,8 điểm), 28 mã tăng – 2 giảm','u','10/11'],
-  ['HOSE tăng/giảm','221 / 94','51 đứng giá; HVN trần, BSR, PVD kéo lùi (Tuổi Trẻ)','u','10/11'],
-  ['Thanh khoản HOSE','16.901 tỷ','+22% so phiên 9/11; ba sàn 18.776 tỷ (Nhân Dân)','u','10/11'],
+  ['HOSE tăng/giảm','136 / 157','điểm số xanh nhưng số mã giảm nhiều hơn (Sài Gòn Đầu tư Tài chính)','d','11/11'],
+  ['Thanh khoản HOSE','~13.844 tỷ','giảm ~18% so phiên 10/11; SHB dẫn đầu ~674 tỷ (Sài Gòn Đầu tư Tài chính)','d','11/11'],
   ['Kháng cự VN-Index','1.750–1.770','Yuanta: có thể rung lắc ngắn hạn (Thời báo Ngân hàng)','n','10/11'],
-  ['Khối ngoại ba sàn','+461 tỷ','gom KDH, POW, SSI, VHM, NVL; xả FPT, VIX, MSB, MSN, PNJ (Nhân Dân)','u','10/11'],
+  ['Khối ngoại HOSE','+74 tỷ','mua ròng phiên thứ 2; gom VIC 138 tỷ, VHM 46 tỷ; xả FPT, ACB, MBB, STB (Sài Gòn Đầu tư Tài chính)','u','11/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
   ['NHNN mua USD giao ngay','giá 25.500','bắt đầu hôm nay; thứ Hai, thứ Tư hằng tuần, không cam kết bán lại (Tuổi Trẻ)','u','11/11'],
-  ['NHNN OMO','bơm ròng 5.648 tỷ','trúng thầu 8.685 tỷ, đáo hạn 3.036 tỷ, lãi 4,5% (Thời báo Ngân hàng)','u','9/11'],
+  ['NHNN OMO','hút ròng 9.360 tỷ','trúng thầu 2.716 tỷ, đáo hạn 12.076 tỷ, lãi 4,5%; lưu hành 115.500 tỷ (Người Quan Sát)','d','10/11'],
   ['NHNN hoán đổi USD/VND','tối đa 2 tỷ USD','kỳ hạn 182 ngày, phí 2,5%/năm (Thanh Niên)','n','6/11'],
   ['Qua đêm LNH','4,60%','nhỉnh hơn lãi OMO 4,5% (Thời báo Ngân hàng)','n','9/11'],
-  ['Tỷ giá trung tâm','25.600','−10 đồng (NHNN, Thời báo Ngân hàng)','u','10/11'],
+  ['Tỷ giá trung tâm','25.611','+11 đồng (NHNN, Thị trường Tài chính Tiền tệ)','d','11/11'],
   ['Mỹ – Iran','Qatar xin được ít nhất 2 tuần cho ngoại giao','còn vênh thứ tự gỡ phong tỏa, hạt nhân, tiền bị giữ (JPost)','n','10/11'],
   ['Trump','hoãn đánh Iran "lúc này"','nói chiến tranh sắp kết thúc nhưng vẫn sẵn sàng (Khaleej Times)','u','10/11'],
   ['Hormuz','tàu dầu vẫn trúng đòn','UKMTO báo tàu trúng vật thể lạ ngoài khơi Oman; IRGC nói tàu trúng mìn bốc cháy','d','10/11'],
   ['ADNOC','một tàu hư hại trong vùng biển UAE','đang ứng phó (Khaleej Times)','d','10/11'],
   ['Tàu bị tấn công tháng 10','37 vụ','nhiều nhất từ đầu chiến sự (Washington Institute qua JPost)','d','31/10'],
-  ['Brent','91,49','−1,17%, thấp nhất 2 tháng (Capp Notes)','d','10/11'],
+  ['Brent','92,43','+1% trong phiên châu Á (AP)','u','11/11'],
   ['WTI','86,04','−0,93%','d','10/11'],
   ['CPI Mỹ tháng 10','+0,4%/tháng','lõi +0,3%, nóng hơn dự báo (StockTitan)','d','10/11'],
   ['Fed Waller','nghiêng tăng lãi tháng 12','nói nên cân nhắc cả 0,5 điểm; Logan: cần tăng thêm 2 lần','d','10/11'],
-  ['Dow Jones','52.231,89','−0,30%','d','10/11'],
-  ['S&P 500','7.520,93','−0,38%','d','10/11'],
-  ['Nasdaq','25.065,88','−0,74%; Nvidia −5,47%','d','10/11'],
+  ['Dow Jones','52.231,89','−0,30%; hợp đồng tương lai đêm +0,27% (StockTwits)','d','10/11'],
+  ['S&P 500','7.520,93','−0,38%; hợp đồng tương lai đêm +0,55% (StockTwits)','d','10/11'],
+  ['Nasdaq','25.065,88','−0,74%; Nvidia −5,47%; HĐTL Nasdaq-100 đêm +1,23% (StockTwits)','d','10/11'],
   ['Russell 2000','2.821,38','−0,68%','d','10/11'],
   ['VIX','19,46','−2,31%','u','10/11'],
   ['Lợi suất TP Mỹ 10 năm','4,98%','+10 điểm cơ bản','d','10/11'],
   ['Chỉ số USD (DXY)','102,25','+0,58%','d','10/11'],
   ['Vàng','4.033','−2,6% sau CPI Mỹ (Báo Lào Cai)','d','sáng 11/11'],
   ['Vàng SJC','140,9 tr (bán)','−0,3 tr, mua 137,9 tr (Báo Lào Cai)','d','sáng 11/11'],
-  ['BTC','73.809','−1,25% (Capp Notes)','d','10/11'],
-  ['ETH','2.058','−3,43%','d','10/11'],
+  ['BTC','~73.600','−5% trong tuần (CaptainAltcoin)','d','14:20 11/11'],
+  ['ETH','~2.050','giảm gần 3% trong ngày (CaptainAltcoin)','d','14:20 11/11'],
   ['HNX','256,26','+0,40%','u','10/11'],
   ['UPCoM','121,41','−0,03%','d','10/11'],
-  ['Nikkei 225','60.459,58','+2,87% (+1.684 điểm), chip, AI hồi mạnh','u','10/11'],
-  ['Hang Seng','24.557,04','+0,44%','u','10/11'],
-  ['KOSPI','5.239,13','+4,39%, kích hoạt ngắt mạch đầu phiên','u','10/11'],
+  ['Nikkei 225','61.248,59','+1,3%, nhóm chip AI dẫn dắt (AP)','u','11/11'],
+  ['Hang Seng','24.387,06','−0,7% (AP)','d','11/11'],
+  ['KOSPI','5.365,75','+2,4% (AP)','u','11/11'],
   ['FTSE 100','10.751,59','−0,29%','d','10/11'],
   ['DAX','26.347,45','+0,31%','u','10/11'],
   ['STB','NHNN yêu cầu bổ sung tài liệu','về 32,5% cổ phần liên quan ông Trầm Bê (Vietstock)','n','11/11'],
