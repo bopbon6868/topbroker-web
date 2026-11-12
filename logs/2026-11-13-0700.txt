@@ -1,0 +1,19 @@
+Cập nhật phiên sáng Thứ Sáu 13/11/2026 · 07:00 (chạy ~06:46–07:20 giờ VN). Không có công cụ TCBS, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, VN-Index/sparkline, độ rộng, khối ngoại 10 phiên, khối NHNN, lãi qua đêm, mảng N).
+
+BẢN TIN
+1. (Thế giới) Trump: "không cần thỏa thuận với Iran", "có eo biển của họ", rút Vance khỏi đàm phán, Iran phủ nhận lịch đàm phán (Middle East Eye 12/11); Brent +3,3% lên 95,82, WTI +2,6% 88,74 (Eurasia Business News 12/11). Kênh: xăng kỳ sau, CPI, tỷ giá.
+2. VN-Index −12,15 về 1.734,75 (−0,70%), VN30 1.839,43 −0,85%, HOSE 94/199, GTGD 15.138 tỷ; hỗ trợ 1.720 (Thời báo Tài chính 12/11).
+3. Khối ngoại HOSE −876 tỷ, FPT −450, KDH −107, STB −99 (Thời báo Tài chính; Vietstock ghi >900 tỷ); OMO 12/11 hút ròng 447 tỷ, qua đêm 4,3% (11/11) (Người Quan Sát).
+4. Jensen Huang từ chức CEO Nvidia, NVDA −4,34% 166,19 (Eurasia Business News); Dow 52.297,09, S&P 7.592,40, Nasdaq 25.366,09 cùng ~−0,4% (AP qua KRMG); lợi suất 10 năm 5,10%, VIX 18,70 (Vistap Global).
+5. Vàng ~3.876 −2,77% (Kitco qua Eurasia Business News); SJC 136/139 tr, −1 tr (Báo Đà Nẵng 05:00 13/11); BTC 71.652 −3,94%, ETH 2.004 −4,24% (Cryptonro 17:20 GMT 12/11); xăng E5 19.390 −1.500 từ 15:00 12/11 (LuatVietnam).
+
+SỐ MỚI KHÁC: HNX 256,62 +0,35%, UPCoM 121,25 −0,26% (Thời báo Tài chính 12/11); Russell 2.799,06 −1,66%; Nikkei 60.798,84 −0,7%, Hang Seng 24.034,38 −1,2% (AP qua Click2Houston 12/11); FTSE 100 10.863,09 +0,25% (BBN Times 12/11); đơn trợ cấp thất nghiệp Mỹ 200.000 (Vistap Global).
+GIỮ SỐ CŨ: KOSPI 5.342,73 (12/11, Seoul Economic Daily); tỷ giá trung tâm 25.623 (12/11 – số 13/11 công bố sau 07:00); qua đêm 4,30% (11/11); DXY 102,25 (10/11).
+
+RADAR
+- Thế giới: thay Chính trị 9–11/11 bằng 9–12/11 (Trump "không cần thỏa thuận", Vance, Iran phủ nhận); thay Kinh tế 10–11/11 bằng 11–12/11 (Nvidia, Phố Wall, lợi suất 5,10%, vàng, Bitcoin); giữ Chiến sự 10–11/11, 8/11.
+- Trong nước: thêm phiên 12/11; NHNN 10–11/11 → 10–12/11; sự kiện 12/11 → 12–13/11 (xăng giảm, DPR, VSH, DBT). Bỏ tin 5/11 (quá 7 ngày).
+- Khối NHNN: OMO 12/11, qua đêm 11/11, tỷ giá 12/11; khối ngoại 10 phiên bỏ 29/10, thêm 12/11 (−876).
+LỊCH: bỏ 12/11; sửa 13/11, ~24/11; thêm 17/11 (Nvidia báo kết quả, CFO PNJ thôi nhiệm).
+TRANH: bàn đàm phán bỏ trống, một ghế bị đẩy đổ, giấy thỏa thuận xé đôi bay; eo biển với tàu dầu phía sau; thùng dầu mũi tên đỏ chỉ lên.
