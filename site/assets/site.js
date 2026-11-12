@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Năm, 12/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Năm, 12/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -39,23 +39,23 @@ TB.PRODUCTS = [
 
 /* Thanh chỉ số: [nhãn, giá trị, thay đổi, chiều u/d/n, ghi chú thời điểm] */
 TB.TICKER = [
-  ['VN-Index','1.746,90','+0,22% (+3,83 điểm); riêng VIC góp 5,21 điểm (VietnamPlus)','u','11/11'],
-  ['VN30','1.855,27','−0,30% (−5,66 điểm) dù VN-Index xanh (VietnamPlus)','d','11/11'],
-  ['HOSE tăng/giảm','136 / 157','điểm số xanh nhưng số mã giảm nhiều hơn (Sài Gòn Đầu tư Tài chính)','d','11/11'],
-  ['Thanh khoản HOSE','~13.844 tỷ','giảm ~18% so phiên 10/11 (VietnamPlus)','d','11/11'],
+  ['VN-Index','1.739,86','−0,40% (−7,04 điểm) chốt phiên sáng; 10:30 VIC lấy đi ~3,24 điểm (Tinnhanhchungkhoan, Vietstock); chưa có số chốt phiên chiều','d','11:30 12/11'],
+  ['VN30','~1.846,8','−8,5 điểm chốt phiên sáng; 7 mã tăng / 19 mã giảm (Tinnhanhchungkhoan)','d','11:30 12/11'],
+  ['HOSE tăng/giảm','102 / 179','sắc đỏ lan rộng phiên sáng (Tinnhanhchungkhoan)','d','11:30 12/11'],
+  ['Thanh khoản HOSE','~5.691 tỷ','phiên sáng, giảm 2,64% so sáng 11/11; thỏa thuận 1.400 tỷ (Tinnhanhchungkhoan)','d','11:30 12/11'],
   ['Kháng cự VN-Index','1.750–1.770','phiên 11/11 vượt 1.750 đầu phiên rồi bị đẩy lùi (VietnamPlus); Yuanta: có thể rung lắc','n','11/11'],
-  ['Khối ngoại HOSE','+74 tỷ','mua ròng phiên thứ 2; gom VIC ~139 tỷ, POW 79 tỷ, VHM 47 tỷ; xả FPT (Người Quan Sát, ĐTTC)','u','11/11'],
+  ['Khối ngoại HOSE','−~370 tỷ','bán ròng trở lại giữa phiên; mua ~260 tỷ, bán ~630 tỷ; xả FPT hơn 150 tỷ (Vietstock)','d','10:30 12/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
   ['NHNN OMO','hút ròng 2.892 tỷ','trúng thầu 1.281 tỷ kỳ 35 ngày, đáo hạn 4.173 tỷ, lãi 4,5%; lưu hành 112.608 tỷ (Người Quan Sát)','d','11/11'],
   ['NHNN mua USD giao ngay','giá 25.500','thứ Hai, thứ Tư hằng tuần từ 11/11, không cam kết bán lại (Tuổi Trẻ)','u','11/11'],
-  ['Qua đêm LNH','4,40%','giảm 0,1–0,2 điểm so đầu tuần, dưới lãi OMO 4,5% (Người Quan Sát)','u','10/11'],
-  ['Tỷ giá trung tâm','25.611','+11 đồng (NHNN, Thị trường Tài chính Tiền tệ)','d','11/11'],
+  ['Qua đêm LNH','4,30%','giảm 0,1–0,2 điểm so phiên trước, dưới lãi OMO 4,5% (Thời báo Ngân hàng)','u','11/11'],
+  ['Tỷ giá trung tâm','25.623','+12 đồng so 11/11 (NHNN, VOV, Doanh nghiệp & Tiếp thị)','d','12/11'],
   ['Hormuz','Iran: "không bao giờ trở lại như trước chiến tranh"','ông Ghalibaf: Iran – Oman cùng giám sát, "bóng đang ở sân Mỹ" (Al Jazeera)','d','11/11'],
   ['Trump','đòi "chiến thắng hoàn toàn" với Iran','"không phải 93%", phát biểu Ngày Cựu chiến binh (Middle East Eye)','d','11/11'],
   ['Iran đánh đảo Didamar (Oman)','phá hệ thống dẫn đường gần Hormuz','giới vận tải cho rằng ảnh hưởng hạn chế (Reuters qua JPost)','d','11/11'],
   ['Iran – hạt nhân','giữ lại uranium đã làm giàu','ông Rezaei nói dùng trong nước; Mỹ muốn đưa hạt nhân vào ngay vòng đầu (EconoTimes)','d','11/11'],
-  ['Brent','92,76','+1,39%, bật khỏi đáy 2 tháng; giảm ~21% từ đầu tháng 11 (EconoTimes)','u','11/11'],
-  ['WTI','86,53','+0,57% (EconoTimes)','u','11/11'],
+  ['Brent','92,51','−0,27% sáng 12/11 giờ châu Á (AP qua KPRC)','d','12/11'],
+  ['WTI','86,29','−0,28% (AP qua KPRC)','d','12/11'],
   ['Xăng E5 RON92','20.890 đ/lít','điều hành 15:00 hôm nay; doanh nghiệp dự báo xăng giảm 600–700 đ, dầu 1.000–2.000 đ (index.vn)','n','12/11'],
   ['CPI Mỹ tháng 10','+0,4%/tháng','lõi +0,3%, nóng hơn dự báo (StockTitan)','d','10/11'],
   ['Fed Waller','nghiêng tăng lãi tháng 12','nói nên cân nhắc cả 0,5 điểm; Logan: cần tăng thêm 2 lần','d','10/11'],
@@ -68,13 +68,13 @@ TB.TICKER = [
   ['Chỉ số USD (DXY)','102,25','+0,58%','d','10/11'],
   ['Vàng','3.989','mất mốc 4.000, giảm hơn 44 USD so sáng 11/11 (Thời báo Tài chính)','d','06:30 12/11'],
   ['Vàng SJC','140 tr (bán)','mua 137 tr; giảm khoảng 0,9 tr (Thời báo Tài chính)','d','06:30 12/11'],
-  ['BTC','74.389','+0,9% (Motley Fool)','u','11/11'],
+  ['BTC','~73.596','thấp hơn ~1,1% so 74.389 ngày 11/11; dưới EMA200 ~76.418 (Sunday Guardian)','d','12:14 IST 12/11'],
   ['ETH','2.054,82','−1,69%; −17,9% trong 1 tháng (Fortune)','d','7:30 ET 11/11'],
-  ['HNX','255,73','−0,21% (VietnamPlus)','d','11/11'],
-  ['UPCoM','121,51','+0,08% (VietnamPlus)','u','11/11'],
-  ['Nikkei 225','61.248,59','+1,3%, nhóm chip AI dẫn dắt (AP, BBN Times)','u','11/11'],
-  ['Hang Seng','24.387,06','−0,7% (AP)','d','11/11'],
-  ['KOSPI','5.365,75','+2,4% (AP)','u','11/11'],
+  ['HNX','256,28','+0,22% (+0,55 điểm) chốt phiên sáng (Tinnhanhchungkhoan)','u','11:30 12/11'],
+  ['UPCoM','120,99','−0,48% (−0,58 điểm) chốt phiên sáng (Tinnhanhchungkhoan)','d','11:30 12/11'],
+  ['Nikkei 225','~60.819','−0,7% (−~429 điểm), lo ngại biến động lãnh đạo Nvidia (NewsOnJapan)','d','12/11'],
+  ['Hang Seng','24.034,38','−1,2% trong phiên (AP qua KPRC)','d','12/11'],
+  ['KOSPI','5.342,73','−0,61% (−32,63 điểm); ngoại mua ròng 150,7 tỷ won (Seoul Economic Daily)','d','12/11'],
   ['FTSE 100','10.835,47','+0,78% (+83,88 điểm), năng lượng và công nghệ hồi (ad-hoc-news)','u','11/11'],
   ['Cổ tức hôm nay','VEA 52,4%','không hưởng cổ tức tiền, giá tham chiếu bị trừ (Tinnhanhchungkhoan)','n','12/11'],
   ['STB','NHNN yêu cầu bổ sung tài liệu','về 32,5% cổ phần liên quan ông Trầm Bê (Vietstock)','n','11/11'],

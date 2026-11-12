@@ -1,0 +1,12 @@
+Cập nhật chỉ số chiều 12/11/2026 (chạy 15:06–15:30 giờ VN)
+Lưu ý: đến 15:28 chưa tìm thấy bài báo nào có số chốt phiên chiều 12/11 (đóng cửa 14:45) → dùng số CHỐT PHIÊN SÁNG 11:30 12/11, ghi rõ mốc "sáng 12/11". Ô data-q trên trang tự lấy giá mới từ /api/quotes.
+Đổi:
+- VN-Index 1.739,86, −7,04 điểm (−0,40%); VN30 −8,5 điểm (≈1.846,77, −0,46%, tự tính từ 1.855,27); HNX 256,28 (+0,55, +0,22%); UPCoM 120,99 (−0,58, −0,48%); HOSE 102 tăng/179 giảm; GTGD HOSE phiên sáng ~5.691 tỷ (−2,64%) – Tinnhanhchungkhoan, chốt phiên sáng 12/11
+- Khối ngoại HOSE bán ròng ~370 tỷ lúc 10:30 (mua ~260, bán ~630; FPT >150 tỷ); VIC lấy đi ~3,24 điểm – Vietstock (qua vn.investing.com) 10:30 12/11
+- Tỷ giá trung tâm 25.623, +12 đồng – VOV, Doanh nghiệp & Tiếp thị 12/11
+- Qua đêm LNH 4,30% (11/11, −0,1–0,2 điểm) – Thời báo Ngân hàng "Điểm lại thông tin kinh tế ngày 11/11"
+- Nikkei 225 ~60.819 −0,7% (đóng cửa) – NewsOnJapan 12/11; KOSPI 5.342,73 −32,63 (−0,61%), ngoại mua ròng 150,7 tỷ won – Seoul Economic Daily 12/11; Hang Seng 24.034,38 −1,2% (trong phiên, chưa đóng cửa) – AP qua KPRC 12/11
+- Brent 92,51 −0,27%; WTI 86,29 −0,28% – AP qua KPRC 12/11 sáng giờ châu Á
+- Bitcoin ~73.596 (12:14 IST 12/11) – Sunday Guardian; % là so với 74.389 ngày 11/11 (tự tính)
+Giữ số cũ: NHNN OMO 11/11 (hút ròng 2.892 tỷ – chưa có số 12/11), Mỹ đóng cửa 11/11, VIX 10/11, FTSE 100 11/11, Vàng 06:30 12/11, ETH 11/11.
+TCBS MCP chưa được cấp quyền; API topbroker không mở được qua WebFetch → dùng WebSearch/WebFetch.
