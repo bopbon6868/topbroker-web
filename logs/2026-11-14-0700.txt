@@ -1,0 +1,20 @@
+Cập nhật phiên sáng Thứ Bảy 14/11/2026 · 07:00 (chạy ~06:46–07:30 giờ VN). Chế độ cuối tuần: sàn VN nghỉ, bản tin tổng kết tuần 9–13/11. Không có công cụ TCBS, dùng WebSearch/WebFetch.
+Sửa: TB.UPDATED, TB.TICKER (site.js); bản tin 5 tin, 4 ô .bn, giờ số liệu, tranh, 5 dòng Thị trường, 3 tin cần biết, Lịch (index.html); Radar (giờ, VN-Index/sparkline, độ rộng, khối ngoại 10 phiên, khối NHNN, lãi qua đêm, mảng N).
+
+BẢN TIN
+1. (Thế giới) Trump chọn "giữ nguyên hiện trạng": giữ phong tỏa, tấn công "khó xảy ra" (NPR 13/11); IRGC nói 2 siêu tàu dầu trúng nổ (The Nation dẫn Reuters 13/11); Brent chốt 95,84, tuần −2,5% (Vistap Global). Kênh: xăng, CPI, tỷ giá.
+2. VN-Index tuần +9,57 điểm (+0,55%) lên 1.734,93 (Vietstock); phiên 13/11 +0,18, HOSE 108/192 (Nhân Dân); mốc 1.724–1.725 (Điện tử & Ứng dụng).
+3. Khối ngoại tuần −878 tỷ 2 sàn (Vietstock); 13/11 mua ròng 301 tỷ 3 sàn, VIX 308 tỷ (Nhân Dân); NHNN hút ròng 18.153 tỷ 13/11, qua đêm 4,8% (12/11) (Người Quan Sát).
+4. Mỹ 13/11: Dow 52.347,55 +0,10%, S&P 7.561,67 −0,41%, Nasdaq 25.136,27 −0,91%, tuần +2,1/+2,5/+2,3% (AP qua KRMG); PPI +6,5%/năm, lợi suất 10 năm 5,15%, VIX 19,39 (Vistap Global).
+5. Vàng ~3.885, −gần 7% từ thứ Ba; SJC 135–138 tr (Thời báo Tài chính 06:30 14/11); BTC 68.341 −4,37% (Vistap Global 13/11).
+
+SỐ MỚI KHÁC: VN30 1.844,91 +0,30%, HNX 254,98 −0,64%, UPCoM 121,39 +0,12% (Nhân Dân 13/11); khối ngoại HOSE +320 tỷ, khớp lệnh HOSE 9.772 tỷ (Điện tử & Ứng dụng); WTI 88,56, vàng 3.876 −0,24% (Vistap Global); OMO 13/11 cho vay 22.123 tỷ, đáo hạn 40.276 tỷ, lưu hành 93.977 tỷ (Người Quan Sát).
+GIỮ SỐ CŨ: Nikkei, KOSPI (đóng cửa 13/11), Hang Seng (trong phiên 13/11), FTSE 100 (12/11) – không tìm được số đóng cửa 13/11; ETH (07:30 UTC 13/11); tỷ giá trung tâm 25.637 (13/11).
+
+RADAR
+- Thế giới: thêm Chiến sự 12–13/11 (2 siêu tàu dầu, Mỹ đánh đảo Iran, IRGC nhắm radar Bahrain); sửa Chính trị 9–12/11 → 9–13/11 (status quo, 7 điều kiện, Rubio); thay Kinh tế 11–12/11 bằng 12–13/11 (PPI, lợi suất 5,15%, Phố Wall tuần); giữ Chiến sự 10–11/11; bỏ Chiến sự 8/11 (giữ 4 tin).
+- Trong nước: thêm phiên 13/11 + tổng kết tuần; NHNN 10–12/11 → 10–13/11 (hút ròng 18.153 tỷ, qua đêm 4,8%, hoán đổi). Bỏ 4 tin 2–6/11, 4–6/11, 6/11 (quá 7 ngày).
+- Khối NHNN: van chuyển "Trung tính" → "Hút nhẹ"; OMO 13/11, qua đêm 12/11 (4,8%), tỷ giá 13/11; biểu đồ qua đêm thêm 12/11; khối ngoại 10 phiên bỏ 30/10, thêm 13/11 (+320).
+LỊCH: bỏ 13/11; thêm 16/11 (NHNN mua USD); sửa ~24/11, 09/12.
+TRANH: eo biển hẹp bị khóa bằng xích và ổ khóa cam, tàu dầu đứng chờ (một chiếc bốc khói), tàu chiến xám tuần tra – chủ đề "Mỹ khóa Hormuz, giữ nguyên hiện trạng".
+Ghi chú: số khối ngoại 12/11 (Thời báo Tài chính −876 tỷ HOSE) vẫn giữ trên biểu đồ; Vietstock tổng tuần HOSE ~−807 tỷ.
