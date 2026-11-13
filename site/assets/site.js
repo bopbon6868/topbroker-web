@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Sáu, 13/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Sáu, 13/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -39,21 +39,22 @@ TB.PRODUCTS = [
 
 /* Thanh chỉ số: [nhãn, giá trị, thay đổi, chiều u/d/n, ghi chú thời điểm] */
 TB.TICKER = [
-  ['VN-Index','1.734,75','−0,70% (−12,15 điểm), đứt mạch 2 phiên tăng; ngân hàng, chứng khoán kéo lùi (Thời báo Tài chính, Vietstock)','d','12/11'],
+  ['VN-Index','1.731,84','−0,17% (−2,91 điểm) chốt phiên sáng; FPT, VIC bị xả, ngân hàng gồng đỡ (Tinnhanhchungkhoan, Vietstock); phiên 12/11 đóng 1.734,75 (−0,70%)','d','sáng 13/11'],
   ['VN30','1.839,43','−0,85% (−15,84 điểm); 4 mã tăng / 22 mã giảm (Thời báo Tài chính)','d','12/11'],
-  ['HOSE tăng/giảm','94 / 199','chỉ 11/35 nhóm ngành tăng (Thời báo Tài chính)','d','12/11'],
-  ['Thanh khoản HOSE','15.138 tỷ','+9,34%; khối lượng 655 triệu cp, thấp hơn bình quân 20 phiên ~18% (Thời báo Tài chính)','n','12/11'],
+  ['HOSE tăng/giảm','98 / 193','chốt phiên sáng (Tinnhanhchungkhoan)','d','sáng 13/11'],
+  ['Thanh khoản HOSE','4.785 tỷ','khớp lệnh phiên sáng, −16% so sáng hôm trước; thỏa thuận thêm 1.351 tỷ (Tinnhanhchungkhoan); cả phiên 12/11: 15.138 tỷ','n','sáng 13/11'],
   ['Hỗ trợ VN-Index','1.720','đà hồi phụ thuộc việc giữ được mốc này (Thời báo Tài chính); cản 1.750–1.770 bị đẩy lùi 11/11','n','12/11'],
+  ['Khối ngoại sáng nay','−97 tỷ','bán ròng toàn thị trường giữa phiên sáng; FPT −48 tỷ nhiều nhất (Vietstock)','d','10:30 13/11'],
   ['Khối ngoại HOSE','−876 tỷ','bán ròng mạnh nhất mấy phiên gần đây; FPT −450 tỷ, KDH −107, STB −99; mua HDB 60, MSN 41 (Thời báo Tài chính)','d','12/11'],
   ['Khối ngoại tháng 10','−20.844 tỷ','mạnh nhất từ đầu năm','d','31/10'],
   ['NHNN OMO','hút ròng 447 tỷ','trúng thầu 6.325 tỷ kỳ 7, 14, 35 ngày, lãi 4,5%; đáo hạn 6.772 tỷ; lưu hành 112.131 tỷ (Người Quan Sát)','n','12/11'],
   ['NHNN mua USD giao ngay','giá 25.500','thứ Hai, thứ Tư hằng tuần từ 11/11, không cam kết bán lại (Tuổi Trẻ)','u','11/11'],
-  ['Qua đêm LNH','4,30%','dưới lãi OMO 4,5% (Người Quan Sát, Thời báo Ngân hàng)','u','11/11'],
-  ['Tỷ giá trung tâm','25.623','+12 đồng so 11/11 (NHNN, VOV, Doanh nghiệp & Tiếp thị)','d','12/11'],
+  ['Qua đêm LNH','4,80%','vượt lãi OMO 4,5%, từ 4,30% ngày 11/11; các kỳ hạn ≤1 tháng +0,1–0,5 điểm (Thời báo Ngân hàng)','d','12/11'],
+  ['Tỷ giá trung tâm','25.637','+14 đồng so 12/11; biên độ 24.355–26.919 (NHNN qua Doanh nghiệp & Tiếp thị)','d','13/11'],
   ['Mỹ – Iran','Trump: "không cần thỏa thuận với Iran"','"có tiền của họ, có eo biển của họ"; giao ông Vance lo việc trong nước; Iran phủ nhận có lịch đàm phán (Middle East Eye)','d','12/11'],
   ['Hormuz','Iran: "không bao giờ trở lại như trước chiến tranh"','ông Ghalibaf: Iran – Oman cùng giám sát (Al Jazeera); Mỹ – Iran đang phong tỏa đối đầu (Middle East Eye 12/11)','d','11/11'],
-  ['Brent','95,82','+3,3% (+3,06 USD) chốt phiên sau phát biểu của ông Trump (Eurasia Business News)','u','12/11'],
-  ['WTI','88,74','+2,6% (+2,21 USD) (Eurasia Business News)','u','12/11'],
+  ['Brent','95,70','−0,1% đầu phiên châu Á; 12/11 chốt 95,82 (+3,3%) sau phát biểu của ông Trump (AP, Eurasia Business News)','d','sáng 13/11'],
+  ['WTI','88,41','−0,4% đầu phiên châu Á; 12/11 chốt 88,74 (+2,6%) (AP)','d','sáng 13/11'],
   ['Xăng E5 RON92','19.390 đ/lít','−1.500 đ từ 15:00; E10 RON95 19.840 (−1.310), diesel 26.820 (−1.870); trích lại quỹ bình ổn 600 đ/lít (LuatVietnam)','d','12/11'],
   ['Nvidia','Jensen Huang từ chức CEO','hiệu lực ngay; CFO Colette Kress tạm quyền; NVDA −4,34% còn 166,19 USD, có lúc −14% (Eurasia Business News, The Block)','d','12/11'],
   ['Lợi suất TP Mỹ 10 năm','5,10%','+~10 điểm cơ bản (Vistap Global)','d','12/11'],
@@ -65,15 +66,15 @@ TB.TICKER = [
   ['Đơn trợ cấp thất nghiệp Mỹ','200.000','+9.000, cao hơn dự báo 195.000; tuần đến 7/11 (Vistap Global)','n','12/11'],
   ['CPI Mỹ tháng 10','+0,4%/tháng','lõi +0,3%, nóng hơn dự báo (StockTitan)','d','10/11'],
   ['Fed Waller','nghiêng tăng lãi tháng 12','nói nên cân nhắc cả 0,5 điểm; Logan: cần tăng thêm 2 lần','d','10/11'],
-  ['Vàng','~3.876','−2,77% (−110,6 USD), thủng 3.900 (Kitco qua Eurasia Business News)','d','cuối phiên Mỹ 12/11'],
+  ['Vàng','3.918,59','+1,1% hồi do bắt đáy, vẫn hướng tới tuần giảm; 12/11 −2,77% thủng 3.900 (Business Recorder, Kitco)','u','05:18 GMT 13/11'],
   ['Vàng SJC','139 tr (bán)','mua 136 tr; −1 tr/lượng (Báo Đà Nẵng)','d','05:00 13/11'],
-  ['BTC','71.652','−3,94%/24 giờ; đáy gần 12 tuần, hơn 750 triệu USD vị thế bị thanh lý (Cryptonro, The Block)','d','17:20 GMT 12/11'],
-  ['ETH','2.004','−4,24%/24 giờ (Cryptonro)','d','17:20 GMT 12/11'],
-  ['HNX','256,62','+0,35% (+0,89 điểm) (Thời báo Tài chính)','u','12/11'],
-  ['UPCoM','121,25','−0,26% (−0,32 điểm) (Thời báo Tài chính)','d','12/11'],
-  ['Nikkei 225','60.798,84','−0,7%, lo ngại lãnh đạo Nvidia (AP qua Click2Houston)','d','12/11'],
-  ['Hang Seng','24.034,38','−1,2% (AP qua Click2Houston)','d','12/11'],
-  ['KOSPI','5.342,73','−0,61% (−32,63 điểm); ngoại mua ròng 150,7 tỷ won (Seoul Economic Daily)','d','12/11'],
+  ['BTC','~69.000','−6,2%/24 giờ, có lúc 67.922; khoảng 1,3 tỷ USD vị thế bị thanh lý (CoinGecko qua CryptoTicker)','d','07:30 UTC 13/11'],
+  ['ETH','~1.942','−5,2%/24 giờ, thủng 2.000 (CoinGecko qua CryptoTicker)','d','07:30 UTC 13/11'],
+  ['HNX','255,93','−0,27% (−0,69 điểm) chốt phiên sáng (Tinnhanhchungkhoan)','d','sáng 13/11'],
+  ['UPCoM','121,28','+0,02% (+0,03 điểm) chốt phiên sáng (Tinnhanhchungkhoan)','u','sáng 13/11'],
+  ['Nikkei 225','61.142,35','+0,53%; cả tuần +6,46%, tuần tốt nhất 5 tháng (Rallies.ai)','u','đóng cửa 13/11'],
+  ['Hang Seng','23.786,48','−0,9% trong phiên, ảnh hưởng vụ lãnh đạo Nvidia (AP qua ClickOnDetroit)','d','trong phiên 13/11'],
+  ['KOSPI','5.290,53','−0,98% (−52,20 điểm), có lúc vượt 5.500 rồi đảo chiều khi khối ngoại bán ròng (Seoul Economic Daily)','d','đóng cửa 13/11'],
   ['FTSE 100','10.863,09','+0,25%, GDP Anh tăng tốc (BBN Times)','u','12/11'],
   ['Cổ tức hôm nay','DPR 14%, VSH 10%','không hưởng cổ tức tiền; DBT cổ tức cổ phiếu 100:7 (Tinnhanhchungkhoan)','n','13/11'],
   ['STB','NHNN yêu cầu bổ sung tài liệu','về 32,5% cổ phần liên quan ông Trầm Bê (Vietstock)','n','11/11'],

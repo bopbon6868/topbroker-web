@@ -1,0 +1,13 @@
+Cập nhật chỉ số chiều 13/11/2026 (chạy 15:07–15:30 giờ VN)
+Lưu ý: đến 15:25 chưa tìm thấy bài nào có số chốt phiên chiều 13/11 (đóng cửa 14:45) → dùng số CHỐT PHIÊN SÁNG 11:30 13/11, ghi rõ mốc "sáng 13/11". Ô data-q trên trang tự lấy giá mới từ /api/quotes.
+Đổi:
+- VN-Index 1.731,84 (−2,91 điểm, −0,17%); HNX 255,93 (−0,69, −0,27%); UPCoM 121,28 (+0,03, +0,02%); HOSE 98 tăng/193 giảm; khớp lệnh HOSE sáng 4.784,6 tỷ (−16%), thỏa thuận 1.351 tỷ – Tinnhanhchungkhoan, chốt phiên sáng 13/11
+- Khối ngoại bán ròng ~97 tỷ toàn thị trường giữa phiên sáng, FPT −48 tỷ – Vietstock (qua vn.investing.com) 13/11 (ticker); ô Dòng tiền giữ cả phiên 12/11 −876 tỷ
+- Tỷ giá trung tâm 25.637, +14 đồng – Doanh nghiệp & Tiếp thị 13/11
+- Qua đêm LNH 4,80% (12/11) – Thời báo Ngân hàng "Điểm lại thông tin kinh tế ngày 12/11"
+- Nikkei 61.142,35 +0,53% đóng cửa, tuần +6,46% – Rallies.ai; KOSPI 5.290,53 −52,20 (−0,98%) đóng cửa – Seoul Economic Daily; Hang Seng 23.786,48 −0,9% trong phiên – AP (ClickOnDetroit)
+- Brent 95,70 −0,1%, WTI 88,41 −0,4% đầu phiên châu Á 13/11 – AP
+- Vàng 3.918,59 +1,1% 05:18 GMT – Business Recorder
+- BTC ~69.000 −6,2%, ETH ~1.942 −5,2% 07:30 UTC – CoinGecko qua CryptoTicker
+Giữ số cũ: VN30 (12/11, không có số phiên sáng), Mỹ đóng cửa 12/11, VIX 12/11, FTSE 100 12/11, NHNN OMO 12/11 (chưa có số 13/11).
+Ghi chú: Thời báo Ngân hàng ghi khối ngoại 12/11 "mua ròng nhẹ 51 tỷ cả 3 sàn", khác số −876 tỷ HOSE trên web (Thời báo Tài chính, vninfor) → giữ nguyên, cần soát ở lần 7:00.
