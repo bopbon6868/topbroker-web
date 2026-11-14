@@ -13,7 +13,7 @@
 (function(){
 var TB = window.TB = {};
 
-TB.UPDATED = 'Thứ Bảy, 14/11/2026 · 07:00';
+TB.UPDATED = 'Thứ Bảy, 14/11/2026 · 15:00';
 
 /* status: 'live' = đang chạy, 'soon' = sắp ra mắt */
 TB.PRODUCTS = [
@@ -65,14 +65,14 @@ TB.TICKER = [
   ['Nvidia','CEO tạm quyền Colette Kress','sau khi ông Jensen Huang từ chức 12/11; điều tra độc lập đang tiếp tục; báo kết quả quý 17/11 (Vistap Global)','d','13/11'],
   ['Vàng','3.876','−0,24%; giảm gần 7% từ thứ Ba (Vistap Global; Thời báo Tài chính 14/11)','d','13/11'],
   ['Vàng SJC','138 tr (bán)','mua 135 tr; −1 tr/lượng phiên 13/11 (Thời báo Tài chính)','d','06:30 14/11'],
-  ['BTC','68.341','−4,37% (Vistap Global); 7 ngày −7% (Analytics Insight)','d','13/11'],
-  ['ETH','~1.942','−5,2%/24 giờ, thủng 2.000 (CoinGecko qua CryptoTicker)','d','07:30 UTC 13/11'],
+  ['BTC','~66.900','−3%/24 giờ, thấp nhất gần 3 tháng; cả tuần gần −12% (CoinGecko qua CryptoTicker)','d','03:50 UTC 14/11'],
+  ['ETH','~1.894','−1,6%/24 giờ, vẫn dưới mốc 2.000 (Panic Drop)','d','~05:00 UTC 14/11'],
   ['HNX','254,98','−0,64% (−1,64 điểm); cả tuần −0,68% (Nhân Dân, Vietstock)','d','13/11'],
   ['UPCoM','121,39','+0,12% (+0,14 điểm) (Nhân Dân)','u','13/11'],
   ['Nikkei 225','61.142,35','+0,53%; cả tuần +6,46%, tuần tốt nhất 5 tháng (Rallies.ai)','u','đóng cửa 13/11'],
-  ['Hang Seng','23.786,48','−0,9% trong phiên, ảnh hưởng vụ lãnh đạo Nvidia (AP qua ClickOnDetroit)','d','trong phiên 13/11'],
+  ['Hang Seng','23.637,60','−1,55% (−370,95 điểm), nhóm công nghệ bị bán sau vụ lãnh đạo Nvidia (ad-hoc-news, BusinessToday)','d','đóng cửa 13/11'],
   ['KOSPI','5.290,53','−0,98% (−52,20 điểm) (Seoul Economic Daily)','d','đóng cửa 13/11'],
-  ['FTSE 100','10.863,09','+0,25%, GDP Anh quý 3 +0,7% (BBN Times, Saxo)','u','12/11'],
+  ['FTSE 100','10.902,56','+0,36% (+39,47 điểm), đứng vững dù cổ phiếu công nghệ Mỹ giảm (Alliance News qua Yahoo Finance)','u','đóng cửa 13/11'],
   ['STB','NHNN yêu cầu bổ sung tài liệu','về 32,5% cổ phần liên quan ông Trầm Bê (Vietstock)','n','11/11'],
   ['PNJ','giám đốc tài chính từ nhiệm','hiệu lực 17/11 (Vietstock)','n','10/11'],
   ['MSCI','kỳ xem xét tháng 11','hiệu lực sau phiên 30/11; loại Strategy (MSTR) khỏi chỉ số (The Block)','n','12/11'],

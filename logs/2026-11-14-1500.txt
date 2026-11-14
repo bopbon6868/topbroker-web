@@ -1,0 +1,9 @@
+Cập nhật chỉ số chiều Thứ Bảy 14/11/2026 (chạy ~15:06–15:25 giờ VN). Chế độ cuối tuần: sàn VN nghỉ, giữ số đóng cửa 13/11. Không có công cụ TCBS, dùng WebSearch/WebFetch.
+Đổi:
+- Hang Seng 23.637,60, −1,55% (−370,95 điểm), đóng cửa 13/11 – ad-hoc-news, BusinessToday (thay số trong phiên 23.786,48)
+- FTSE 100 10.902,56, +39,47 (+0,36%), đóng cửa 13/11 – Alliance News qua Yahoo Finance UK (thay số 12/11)
+- BTC ~66.900, −3%/24h, cả tuần gần −12%, 03:50 UTC 14/11 – CoinGecko qua CryptoTicker
+- ETH ~1.894, −1,6%/24h, ~05:00 UTC 14/11 – Panic Drop (Substack)
+- TB.UPDATED → 'Thứ Bảy, 14/11/2026 · 15:00'
+Giữ số cũ (không có phiên mới do cuối tuần): VN-Index 1.734,93, VN30, HNX, UPCoM, khối ngoại HOSE +320 tỷ, NHNN hút ròng 18.153 tỷ, tỷ giá trung tâm 25.637 (13/11), qua đêm 4,80% (12/11); Mỹ, VIX, Nikkei, KOSPI, vàng, Brent (đóng cửa 13/11, bản 07:00 đã có).
+Ghi chú: Alliance News ghi Brent 96,59 chiều 13/11 (giờ London), trang giữ số chốt 95,84 (Vistap Global).
